@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/</link>
+    <description>Recent content in Tags on CEZARY PIĄTEK</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 27 Apr 2016 21:27:16 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Codeannotation</title>
+      <link>https://cezarypiatek.github.io/tags/codeannotation/</link>
+      <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/codeannotation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Livetemplates</title>
+      <link>https://cezarypiatek.github.io/tags/livetemplates/</link>
+      <pubDate>Sun, 13 Apr 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/livetemplates/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Resharper</title>
+      <link>https://cezarypiatek.github.io/tags/resharper/</link>
+      <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Svn</title>
+      <link>https://cezarypiatek.github.io/tags/svn/</link>
+      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/svn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tortoise</title>
+      <link>https://cezarypiatek.github.io/tags/tortoise/</link>
+      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/tortoise/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

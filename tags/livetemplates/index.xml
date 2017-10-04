@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Livetemplates on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/livetemplates/</link>
+    <description>Recent content in Livetemplates on CEZARY PIĄTEK</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 13 Apr 2014 17:38:18 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/livetemplates/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Don&#39;t write dull code - Resharper Live Templates</title>
+      <link>https://cezarypiatek.github.io/post/livetemplates/</link>
+      <pubDate>Sun, 13 Apr 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/livetemplates/</guid>
+      <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
+Template Explorer You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
+    </item>
+    
+  </channel>
+</rss>

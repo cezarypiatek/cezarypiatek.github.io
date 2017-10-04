@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Svn on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/svn/</link>
+    <description>Recent content in Svn on CEZARY PIĄTEK</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 21 Sep 2014 17:38:18 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/svn/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Save your history - TortoiseSVN and &#34;Repair move&#34; option.</title>
+      <link>https://cezarypiatek.github.io/post/my-first-post/</link>
+      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/my-first-post/</guid>
+      <description>&lt;p&gt;TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.
+&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
