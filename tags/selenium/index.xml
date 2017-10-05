@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Selenium on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/selenium/</link>
+    <description>Recent content in Selenium on CEZARY PIĄTEK</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Oct 2017 17:38:18 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/selenium/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Why clicking with Selenium is so hard.</title>
+      <link>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</link>
+      <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</guid>
+      <description>When I browse StackOverflow question tagged with selenium label, a lot of them are related to the problem of clicking on page elements. It seems to be most trivial task, but cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in &amp;ldquo;Interactable&amp;rdquo; state. There is a lot different factors that can cause that situation:</description>
+    </item>
+    
+  </channel>
+</rss>

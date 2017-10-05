@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</loc>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/projects/</loc>
     <lastmod>2017-10-03T20:17:23+02:00</lastmod>
   </url>
@@ -29,7 +34,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2017-10-03T20:17:23+02:00</lastmod>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -45,6 +50,12 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</loc>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
     <lastmod>2014-04-13T17:38:18+02:00</lastmod>
     <priority>0</priority>
@@ -52,13 +63,19 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2016-04-27T21:27:16+02:00</lastmod>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
     <lastmod>2016-04-27T21:27:16+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/selenium/</loc>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -77,6 +94,18 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/tortoise/</loc>
     <lastmod>2014-09-21T17:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/uitests/</loc>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/webdriver/</loc>
+    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
