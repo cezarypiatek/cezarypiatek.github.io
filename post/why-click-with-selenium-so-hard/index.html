@@ -113,8 +113,8 @@
 	</header>
 
 	<article>
-		<p>When I browse StackOverflow question tagged with selenium label, a lot of them are related to the problem of clicking on page elements.
-It seems to be most trivial task, but cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in  &ldquo;Interactable&rdquo; state. There is a lot different factors that can cause that situation:</p>
+		<p>When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements.
+It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in  &ldquo;Interactable&rdquo; state. There is a lot of different factors that can cause that situation:</p>
 
 <ol>
 <li>Element has zero dimension (width or height is equals to zero).</li>
@@ -124,7 +124,7 @@ It seems to be most trivial task, but cause a lot of problems. Very often invoki
 <li>&hellip;</li>
 </ol>
 
-<p>There is <strong>ExpectedConditions.ElementToBeClickable</strong> method in Selenium.Support library which at the first glance should solved the problem. So we wait for certain condition to be met before we perform click action.</p>
+<p>There is <strong>ExpectedConditions.ElementToBeClickable</strong> method in Selenium.Support library which at the first glance should solve the problem. So we wait for certain condition to be met before we perform click action.</p>
 
 <pre><code class="language-cs">internal static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
@@ -133,7 +133,7 @@ It seems to be most trivial task, but cause a lot of problems. Very often invoki
 }
 </code></pre>
 
-<p>But sometimes we still get the exception. So let check how ExpectedConditions.ElementToBeClickable method works:</p>
+<p>But sometimes we still get the exception. So lets check how ExpectedConditions.ElementToBeClickable method works:</p>
 
 <pre><code class="language-cs">public static Func&lt;IWebDriver, IWebElement&gt; ElementToBeClickable(IWebElement element)
 {
@@ -169,7 +169,7 @@ It seems to be most trivial task, but cause a lot of problems. Very often invoki
 <a href="https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L437">https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L437</a></p>
 
 <p>Even thought the code is pretty clear, there is a lot of comments which can help us understand how complex the problem is.
-The method documentation comment explain general rules of testing if element is &ldquo;Displayed&rdquo;</p>
+The method documentation comment explains general rules of testing if element is &ldquo;Displayed&rdquo;</p>
 
 <pre><code class="language-plaintext">/**
  * Determines whether an element is what a user would call &quot;shown&quot;. This means
@@ -192,7 +192,7 @@ The method documentation comment explain general rules of testing if element is 
  bot.dom.isShown = function(elem, opt_ignoreOpacity)
 </code></pre>
 
-<p>And everything seems so true, except that I was unable to find code which is responsible for checking if element is inside current viewport (maybe there another layer of proxy methods specific to given driver implementation). Another problem is that this code doesn&rsquo;t cover scenario when our click target element is behind the others. This could be easily detected with javascript</p>
+<p>And everything seems so true, except that I was unable to find code which is responsible for checking if element is inside current viewport (maybe there is another layer of proxy methods specific to given driver implementation). Another problem is that this code doesn&rsquo;t cover the scenario when our click target element is placed behind others. This could be easily detected with javascript</p>
 
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
@@ -211,7 +211,7 @@ The method documentation comment explain general rules of testing if element is 
 }
 </code></pre>
 
-<p>Unfortunately some drivers has problem with <strong>document.elementFromPoint</strong> and inline elements so I&rsquo;ve added checks of additional two points</p>
+<p>Unfortunately, some drivers have problem with <strong>document.elementFromPoint</strong> and inline elements so I&rsquo;ve added checks of additional two points</p>
 
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
@@ -233,7 +233,7 @@ The method documentation comment explain general rules of testing if element is 
 
 <p>It seems that <em>document.elementFromPoint(rec.left, rec.top)</em> should solve the problem by itself, but it doesn&rsquo;t work when element has rounded corners. This implementation is not perfect but gives a high level of confidence.</p>
 
-<p>O right, when we puts this all together and handle also the scenario when element is outside the viewport (some browser can handle this automatically) we can ends up with implementation as follows</p>
+<p>All right, when we put this altogether and handle also the scenario when element is outside the viewport (some browser can handle this automatically) we can end up with implementation as follows</p>
 
 <pre><code class="language-cs">static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
