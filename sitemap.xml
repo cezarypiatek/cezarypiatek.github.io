@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</loc>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</loc>
     <lastmod>2017-10-05T17:38:18+02:00</lastmod>
   </url>
@@ -34,7 +39,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -57,19 +62,19 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
-    <lastmod>2014-04-13T17:38:18+02:00</lastmod>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
-    <lastmod>2016-04-27T21:27:16+02:00</lastmod>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -88,6 +93,18 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/</loc>
     <lastmod>2016-04-27T21:27:16+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/todo/</loc>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/todoexplorer/</loc>
+    <lastmod>2017-11-22T22:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
