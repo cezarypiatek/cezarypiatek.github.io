@@ -98,7 +98,7 @@ static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement eleme
 				return element == subElement || element.contains(subElement);
 			}
 			var rec = element.getBoundingClientRect();                        
-			var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);                        
+			var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
 			return belongsToElement(elementAtPosition);
 		})(arguments[0]);                    
 	", element);
@@ -118,6 +118,7 @@ static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement eleme
 			{
 				return element == subElement || element.contains(subElement);
 			}
+			var rec = element.getBoundingClientRect();  
 			var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
 			var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
 			var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
