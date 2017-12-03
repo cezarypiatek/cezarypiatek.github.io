@@ -5,7 +5,7 @@ tags : ["TODO", "resharper", "livetemplates", "TodoExplorer"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
 ---
-It's a good practice to make all things done at the first approach. But in the real world it's ot always possible - for example we need to ask customer for clarification and it will take some time, or worst - we don't have enough time right now to implement things in the right way. In order to adress this issue, a TODO was invented to mark all those places in code requiring additional work. But the main disadvantage of TODO is that we mark code with it, commit it and forget about it. Sometimes somebody accidentally discovers some of those places in code but nobody is able to explain why this wasn't fixed yet. How can we use TODOs effectively? Fortunately Resharper comes to the rescue with To-do-Explorer.
+It's a good practice to make all things done at the first approach. But in the real world it's not always possible - for example we need to ask customer for clarification and it will take some time, or worst - we don't have enough time right now to implement things in the right way. In order to adress this issue, a TODO was invented to mark all those places in code requiring additional work. But the main disadvantage of TODO is that we mark code with it, commit it and forget about it. Sometimes somebody accidentally discovers some of those places in code but nobody is able to explain why this wasn't fixed yet. How can we use TODOs effectively? Fortunately Resharper comes to the rescue with To-do-Explorer.
 
 ![Resharper menu To-Do-Explorer](resharper_menu_todoexplorer.jpg)
 
