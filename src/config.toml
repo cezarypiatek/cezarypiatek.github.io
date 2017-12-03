@@ -21,6 +21,10 @@ paginate = 5
 	faicon = "twitter"
 	url = "https://twitter.com/cezary_piatek"
 	
+	[[params.socialbuttons]]
+	faicon = "rss"
+	url = "/index.xml"
+	
 	[[params.navlinks]]
 	name = "About"
 	url = "about/"
