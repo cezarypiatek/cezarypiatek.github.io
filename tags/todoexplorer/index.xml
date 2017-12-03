@@ -6,7 +6,7 @@
     <description>Recent content in Todoexplorer on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Nov 2017 22:38:18 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 03 Dec 2017 10:38:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/todoexplorer/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>How to manage TODO in your codebase.</title>
       <link>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</link>
-      <pubDate>Wed, 22 Nov 2017 22:38:18 +0200</pubDate>
+      <pubDate>Sun, 03 Dec 2017 10:38:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</guid>
       <description>It&amp;rsquo;s a good practice to make all things done at the first approach. But in the real world it&amp;rsquo;s not always possible - for example we need to ask customer for clarification and it will take some time, or worst - we don&amp;rsquo;t have enough time right now to implement things in the right way. In order to adress this issue, a TODO was invented to mark all those places in code requiring additional work.</description>
