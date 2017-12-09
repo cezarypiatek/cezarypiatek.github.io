@@ -12,6 +12,7 @@ paginate = 5
 	subtitle = "Natural born software developer"
 	header = "Welcome to my blog!"
 	analytics = "UA-18735584-9"
+	addThis = "ra-5a286b9b1c027c15"
 	
 	[[params.socialbuttons]]
 	faicon = "github"
@@ -20,10 +21,14 @@ paginate = 5
 	[[params.socialbuttons]]
 	faicon = "twitter"
 	url = "https://twitter.com/cezary_piatek"
+		
+	[[params.socialbuttons]]
+	faicon = "stack-overflow"
+	url = "https://stackoverflow.com/users/876060/cezarypiatek"
 	
 	[[params.socialbuttons]]
 	faicon = "rss"
-	url = "/index.xml"
+	url = "/index.xml"	
 	
 	[[params.navlinks]]
 	name = "About"
