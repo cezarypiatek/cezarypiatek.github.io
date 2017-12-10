@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</loc>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</loc>
     <lastmod>2017-12-03T10:38:18+02:00</lastmod>
   </url>
@@ -39,7 +44,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2017-12-03T10:38:18+02:00</lastmod>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -51,6 +56,18 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/codeannotation/</loc>
     <lastmod>2016-04-27T21:27:16+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/debugging/</loc>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/decompiler/</loc>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -68,13 +85,13 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2017-12-03T10:38:18+02:00</lastmod>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
-    <lastmod>2017-12-03T10:38:18+02:00</lastmod>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -87,6 +104,12 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/svn/</loc>
     <lastmod>2014-09-21T17:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/symbols/</loc>
+    <lastmod>2017-12-10T10:38:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   

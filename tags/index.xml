@@ -21,6 +21,24 @@
     </item>
     
     <item>
+      <title>Debugging</title>
+      <link>https://cezarypiatek.github.io/tags/debugging/</link>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Decompiler</title>
+      <link>https://cezarypiatek.github.io/tags/decompiler/</link>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/decompiler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Elementnotinteractableexception</title>
       <link>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</link>
       <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
@@ -41,7 +59,7 @@
     <item>
       <title>Resharper</title>
       <link>https://cezarypiatek.github.io/tags/resharper/</link>
-      <pubDate>Sun, 03 Dec 2017 10:38:18 +0200</pubDate>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
       <description></description>
@@ -62,6 +80,15 @@
       <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/svn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Symbols</title>
+      <link>https://cezarypiatek.github.io/tags/symbols/</link>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/symbols/</guid>
       <description></description>
     </item>
     
