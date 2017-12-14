@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Todoexplorer on CEZARY PIĄTEK</title>
-    <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
-    <description>Recent content in Todoexplorer on CEZARY PIĄTEK</description>
+    <title>Cleancode on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/cleancode/</link>
+    <description>Recent content in Cleancode on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 14 Dec 2017 22:34:18 +0200</lastBuildDate>
     
-	<atom:link href="https://cezarypiatek.github.io/tags/todoexplorer/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cezarypiatek.github.io/tags/cleancode/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://cezarypiatek.github.io/post/how-get-rid-of-toot-from-codebase/</guid>
       <description>I&amp;rsquo;ve recently written an article about managing TODOs in the codebase with TODOExplorer. I&amp;rsquo;ve also proposed an idea of introducing code snippet for TODOs which helps to keep all TODOs in predefined format as well as provides more information about delayed task (author, receiver, date, issue tracker id). This article was a result of a few discussions with my programmer-colleagues and I hoped that that idea of TODOs snippet was worth sharing (I&amp;rsquo;ve been using it in my project for a while).</description>
-    </item>
-    
-    <item>
-      <title>How to manage TODO in your codebase.</title>
-      <link>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</link>
-      <pubDate>Sun, 03 Dec 2017 10:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</guid>
-      <description>It&amp;rsquo;s a good practice to make all things done at the first approach. But in the real world it&amp;rsquo;s not always possible - for example we need to ask customer for clarification and it will take some time, or worst - we don&amp;rsquo;t have enough time right now to implement things in the right way. In order to adress this issue, a TODO was invented to mark all those places in code requiring additional work.</description>
     </item>
     
   </channel>
