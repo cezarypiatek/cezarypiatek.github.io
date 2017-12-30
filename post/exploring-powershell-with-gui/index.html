@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="Exploring PowerShell with graphical user interface.">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2017-12-30">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://cezarypiatek.github.io/post/exploring-powershell-with-gui/">
+    <meta property="og:site_name" content="CEZARY PIĄTEK">
+    
+    <meta property="og:tags" content="PowerShell">
+    
+    <meta property="og:tags" content="ise">
+    
+    <meta property="og:tags" content="GUI">
+    
+    <meta property="og:tags" content="PowerShellCookbook">
+    
+    <meta property="og:tags" content="VSCode">
+    
+    <meta name="generator" content="Hugo 0.29" />
+    <title>Exploring PowerShell with graphical user interface. &middot; CEZARY PIĄTEK</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="CEZARY PIĄTEK" />
+    
+    
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/about/">About</a>
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Exploring PowerShell with graphical user interface.</h1>
+	</header>
+
+	<article>
+		
+
+<p>I&rsquo;ve recently watched a pretty decent tutorial about DSC on Microsoft Virtual Academy. I&rsquo;m not a huge fan of video tutorials because it always takes more time to watch them than read a book/blog post (you can hack it by increasing video speed and save yourself a couple of minutes) but sometimes there is additional beneficial side effect - the presenter can show you (accidentally or not) some tips and tricks not strictly related to the core subject of the video. This post is an attempt of summarizing tricks from the DSC tutorial and my former knowledge about GUI tools associated with PowerShell. I find it useful when preparing PowerShell scripts and it should be helpful for people who start exploring PowerShell.</p>
+
+<p>Mentioned DSC tutorial can be found under the following links:</p>
+
+<p><a href="https://mva.microsoft.com/en-us/training-courses/getting-started-with-powershell-desired-state-configuration-dsc--8672?l=ZwHuclG1_2504984382">Getting Started with PowerShell Desired State Configuration (DSC)</a></p>
+
+<p><a href="https://mva.microsoft.com/en-US/training-courses/advanced-powershell-desired-state-configuration-dsc-and-custom-resources-8702?l=3DnsS2H1_1504984382">Advanced PowerShell Desired State Configuration (DSC) and Custom Resources</a></p>
+
+<h3 id="powershell-and-windows-explorer">PowerShell and Windows Explorer</h3>
+
+<p>The first tip is about switching between PowerShell console and Windows Explorer back and forth while keeping working directory context. This is the most trivial but at the same time very useful operation.
+In order to open Windows Explorer with current directory simply type:</p>
+
+<pre><code class="language-powershell">&gt; explorer .
+</code></pre>
+
+<p>&hellip; and to open PowerShell console with working directory set to currently opened folder within the Windows Explorer type <strong>powershell</strong> command in address bar.</p>
+
+<video controls>
+  <source src="explorer.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+<h3 id="browsing-scripts-in-console">Browsing scripts in console</h3>
+
+<p>When you are working in console environment and you want to check script content you can use <strong>Get-Content</strong> command to print script into screen in raw format or use <strong>Get-ColorizedContent</strong> to display script with line numbers and syntax highlighting. This cmdlet comes from <a href="https://www.powershellgallery.com/packages/PowerShellCookbook/1.3.6">PowerShellCookbook module</a> which could be easily installed with <strong>Install-Module</strong> cmdlet from <a href="https://www.powershellgallery.com">PowerShell gallery</a>.</p>
+
+<video controls>
+  <source src="showcontent.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+<h3 id="opening-powershell-ise-from-powershell-console">Opening PowerShell ISE from PowerShell console</h3>
+
+<p>There is no out-of-the-box editor which allows you to edit scripts right inside the PowerShell console. You can install <a href="https://stackoverflow.com/questions/11045077/edit-a-text-file-on-the-console-in-64-bit-windows">third-party console editors</a> or use PowerShell ISE which comes with Windows Management Framework. Simply type <strong>ise</strong> command with file path as the parameter to open it with ISE (you can skip file parameter to open a new instance of ISE with context set to current directory). In order to open another script in new ISE tab use <strong>psedit</strong> command (this command works only inside the ISE console).</p>
+
+<video controls>
+  <source src="ise.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+<p>PowerShell ISE is very useful to play around with PowerShell scripts because it allows you to execute your script partially (simply select parts of you code and press F8 to send it to PowerShell console).</p>
+
+<h3 id="opening-visual-studio-code-from-powershell-console">Opening Visual Studio Code from PowerShell console</h3>
+
+<p>A good alternative to PowerShell ISE could be <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell">Visual Studio Code with plugin for powershell</a>. I find VSCode better than ISE in terms of support for static analysis and debugging.</p>
+
+<p><img src="vscode_pluggin.jpg" alt="Visual Studio Code plugin for PowerShell" /></p>
+
+<p>When VSCode is your PowerShell editor of choice too, you can also easily switch from console to this environment. Just execute <strong>code</strong> command with file path as a parameter to open given script with VSCode or replace the file path parameter with &ldquo;.&rdquo; (dot sign) to load current directory as a workspace inside VSCode.</p>
+
+<pre><code class="language-powershell">&gt; code .
+</code></pre>
+
+<h3 id="filtering-result-list-with-out-gridview">Filtering result list with Out-GridView</h3>
+
+<p>When your command or script returns a long list it can be hard to spot interesting positions by scrolling through the console. You can make it a lot easier by redirecting the result to <strong>Out-GridView</strong> cmdlet (use <strong>ogv</strong> alias for shorten). The Out-GridView outputter presents data using grid control and allows to sort and filter results by defining complex criteria based on data attributes.</p>
+
+<video controls>
+  <source src="outgridview.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+<p>You can also use Out-GridView to select elements by providing  <strong>OutputMode</strong> parameter</p>
+
+<h3 id="exploring-powershell-cmdlets">Exploring PowerShell CmdLets</h3>
+
+<p>Sometimes it&rsquo;s hard to remember all method parameters (especially when we use them very rarely). You can check the list of available parameters by displaying method documentation inside the console with <strong>Get-Help</strong> command or utilizing dedicated form which could be created with <strong>Show-Command</strong> cmdlet.</p>
+
+<pre><code class="language-powershell">&gt; Show-Command Invoke-WebRequest 
+</code></pre>
+
+<p>If you don&rsquo;t remember the exact name of the method you can skip it and <strong>Show-Command</strong> cmdlet opens a window which allows you to search command by name. When you select a specific command all available parameter sets will be presented as tabs. You can select a given parameter set, provide values for parameters with dedicated form and click <em>Run</em> button to execute method. You can always get the method manual by clicking <em>help</em> button.</p>
+
+<video controls>
+  <source src="showcommand.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+<h3 id="inspecting-complex-objects">Inspecting complex objects</h3>
+
+<p>Another interesting cmdlet that we can find in <em>PowerShellCookbook</em> module is <strong>Show-Object</strong>. This command presents complex objects in the form of a tree. This expandable tree allows us to drill down and explore nested properties. It&rsquo;s extremely useful when we have to deal with unknown objects.</p>
+
+<video controls>
+  <source src="showobject1.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+</body>
+</html>

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</loc>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/</loc>
     <lastmod>2017-12-14T22:34:18+02:00</lastmod>
   </url>
@@ -49,7 +54,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2017-12-14T22:34:18+02:00</lastmod>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -89,6 +94,18 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/gui/</loc>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/ise/</loc>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
     <lastmod>2017-12-03T10:38:18+02:00</lastmod>
     <priority>0</priority>
@@ -96,7 +113,19 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2017-12-14T22:34:18+02:00</lastmod>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/powershell/</loc>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/powershellcookbook/</loc>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -151,6 +180,12 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/uitests/</loc>
     <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/vscode/</loc>
+    <lastmod>2017-12-30T10:34:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
