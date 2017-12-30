@@ -83,6 +83,6 @@ If you don't remember the exact name of the method you can skip it and **Show-Co
 Another interesting cmdlet that we can find in *PowerShellCookbook* module is **Show-Object**. This command presents complex objects in the form of a tree. This expandable tree allows us to drill down and explore nested properties. It's extremely useful when we have to deal with unknown objects.
 
 <video controls>
-  <source src="showobject1.mp4" type="video/mp4">  
+  <source src="showobject.mp4" type="video/mp4">  
   Your browser does not support the video tag.
 </video>
