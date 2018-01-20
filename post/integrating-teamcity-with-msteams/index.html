@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="">
+    <meta property="og:title" content="Integrating Team City with Microsoft Teams using PowerShell">
+    
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2018-01-20">
+    
+    <meta property="og:description" content="">
+    <meta property="og:url" content="https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/">	
+	<meta property="og:image" content="splashscreen.jpg">	
+    <meta property="og:site_name" content="CEZARY PIĄTEK">
+    
+    <meta property="og:tags" content="TeamCity">
+    
+    <meta property="og:tags" content="PowerShell">
+    
+    <meta property="og:tags" content="meta runner">
+    
+    <meta property="og:tags" content="MS Teams">
+    
+    <meta property="og:tags" content="Gitlab">
+    
+	<meta name="keywords" value="TeamCity, PowerShell, meta runner, MS Teams, Gitlab" />
+    <meta name="generator" content="Hugo 0.29" />
+    <title>Integrating Team City with Microsoft Teams using PowerShell &middot; CEZARY PIĄTEK</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="CEZARY PIĄTEK" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/about/">About</a>
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Integrating Team City with Microsoft Teams using PowerShell</h1>
+	</header>
+
+	<article>
+		
+
+<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+
+<p>With the beginning of new year I joined a new team where I help with project bootstrapping. I&rsquo;ve been configuring TeamCity, Gitlab and webservers. It&rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &ldquo;Integration&rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat. In my company MS Teams is the basic communication channel, so I gave it a shot and tried to connect the two systems. The configuration was very easy - Gitlab communicates with MS Teams via webhooks - and as result my team receives notification related to merge request on MS Teams channel. This is really cool, but it would be more useful if my continuous integration system could send notifications to my team&rsquo;s channel too. I checked all available build steps in TeamCity and there was noting related to MS Teams. Fortunately, nothing was lost - webhooks are pretty easy concepts so I was able to create this integration with little amount of work. For those who don’t know webhooks mechanism, it is nothing more than REST API. I checked <a href="https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors">MS Teams documentation</a> and in order to send message to MS Teams channel we have to submit POST request to given webhook url with json payload in the following format:</p>
+
+<pre><code class="language-javascript">{
+    title: &quot;Message title&quot;,
+    text: &quot;Message content&quot;
+}
+</code></pre>
+
+<p>The &ldquo;text&rdquo; field can accept html markup.  In order to generate webhook url use right click on given MS Teams channel, click &ldquo;Connectors&rdquo; from the context menu and select &ldquo;Incoming webhook&rdquo; on the &ldquo;Configuration&rdquo; list. The rest is pretty intuitive and easy. We&rsquo;ve got all required data but how can we send a web request from TeamCity? The easiest way without using third party tools is to use PowerShell build step. Powershell has <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1">Invoke-WebRequest</a> cmdlet which allows us to send webrequest very easily. The whole code required to send a message to MS Teams channel can look as follows:</p>
+
+<pre><code class="language-powershell">$body = @{
+    title= &quot;Message Title&quot;;
+    text= &quot;Message content&quot;
+} | ConvertTo-Json
+Invoke-WebRequest -Method Post -Uri &quot;http://my_ms_teams_channe_webook_url&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing
+</code></pre>
+
+<p>You have to remember about adding <strong>UseBasicParsing</strong> switch to <em>Invoke-WebRequest</em> cmdlet - without it you will get a weird error related to InternetExplorer. In order to run this in TeamCity pipeline add PowerShell build step and past the code from above.</p>
+
+<video controls>
+  <source src="create_powershell_buildstep.mp4" type="video/mp4">  
+  Your browser does not support the video tag.
+</video>
+
+<p>When we run build with this step we should get the following message on our MS Teams channel:</p>
+
+<p><img src="teams_simple_notification.jpg" alt="teams notification" /></p>
+
+<p>Alright, it was very easy. But how about reusability? I&rsquo;m not going to copy&amp;paste this Powershell script every time I need to send a message to MS Teams channel from TeamCity. For example, I need to send that notification twice during my deployment build: once to inform my team that I started deployment and the test environment will be not available for the next couple of minutes; and the second time when the deployment finished, notifying about that fact as well as version and changelog. Happily, TeamCity development team anticipated this requirement and provided <a href="https://confluence.jetbrains.com/display/TCD10/Working+with+Meta-Runner">meta runners</a> mechanism which allows to convert existing build step configuration into new reusable build step template. Before we convert our build step into meta runner we have to make it more generic by parametrization. Message title, content and webhook url will differ depending on the use case, so we can replace these values with TeamCity configuration parameters (parameter names should start and end with percentage sign).</p>
+
+<pre><code class="language-powershell">$body = @{
+    title= &quot;%MSTeams_MessageTitle%&quot;;
+    text= &quot;%MSTeams_MessageContent%t&quot;
+} | ConvertTo-Json
+Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing
+</code></pre>
+
+<p>After saving these changes a new parameter should appear in the &ldquo;Parameters&rdquo; tab in build configuration. You can tweak parameter options by editing it. You can define label and input type which will be used to present this parameter on the build step configuration form.</p>
+
+<p><video controls>
+  <source src="teamcity_parameters.mp4" type="video/mp4"><br />
+  Your browser does not support the video tag.
+</video></p>
+
+<p>Now you are ready to create meta runner based on your build step. In order to do that select &ldquo;Extract meta-runner&hellip;&rdquo; from the &ldquo;Actions&rdquo;  menu.</p>
+
+<p><video controls>
+  <source src="extract_metarunner.mp4" type="video/mp4"><br />
+  Your browser does not support the video tag.
+</video></p>
+
+<p>Be careful because TeamCity creates meta runner based not on given build step but on our whole pipeline from current build configuration. To change that we have to modify our meta runner xml definition by deleting redundant nodes: <strong>/meta-runner/settings/build-runners/runner</strong> and <strong>/meta-runner/settings/parameters/parameter</strong>. Meta runner definition after these changes should look as follows:</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;meta-runner name=&quot;Microsoft Teams Notification&quot;&gt;
+  &lt;description&gt;Send notification to MS Teams&lt;/description&gt;
+  &lt;settings&gt;
+    &lt;parameters&gt;
+      &lt;param name=&quot;MSTeams_MessageContent&quot; value=&quot;&quot; spec=&quot;text display='normal' label='Content' validationMode='any'&quot; /&gt;
+      &lt;param name=&quot;MSTeams_MessageTitle&quot; value=&quot;&quot; spec=&quot;text display='normal' label='Title' validationMode='any'&quot; /&gt;
+      &lt;param name=&quot;MSTeams_WebhookUrl&quot; value=&quot;&quot; spec=&quot;text display='normal' label='MS Teams Webhook Url' validationMode='any'&quot; /&gt;
+    &lt;/parameters&gt;
+    &lt;build-runners&gt;     
+      &lt;runner name=&quot;Send Teams Notification&quot; type=&quot;jetbrains_powershell&quot;&gt;
+        &lt;parameters&gt;
+          &lt;param name=&quot;jetbrains_powershell_errorToError&quot; value=&quot;true&quot; /&gt;
+          &lt;param name=&quot;jetbrains_powershell_execution&quot; value=&quot;PS1&quot; /&gt;
+          &lt;param name=&quot;jetbrains_powershell_noprofile&quot; value=&quot;true&quot; /&gt;
+          &lt;param name=&quot;jetbrains_powershell_script_code&quot;&gt;&lt;![CDATA[$body = @{
+    title= &quot;%MSTeams_MessageTitle%&quot;;
+    text= &quot;%MSTeams_MessageContent%t&quot;
+} | ConvertTo-Json
+Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing]]&gt;&lt;/param&gt;
+          &lt;param name=&quot;jetbrains_powershell_script_mode&quot; value=&quot;CODE&quot; /&gt;
+          &lt;param name=&quot;teamcity.step.mode&quot; value=&quot;default&quot; /&gt;
+        &lt;/parameters&gt;
+      &lt;/runner&gt;
+    &lt;/build-runners&gt;
+    &lt;requirements /&gt;
+  &lt;/settings&gt;
+&lt;/meta-runner&gt;
+</code></pre>
+
+<p>From now your meta runner should be available as a new runner type in build step configuration.</p>
+
+<p><img src="meta_runner_as_build_step.jpg" alt="New Runner Type" /></p>
+
+<p>This powershell-based meta runner has a very interesting feature. All parameters of this runner are passed as a string parameters to powershell cmdlet, hence the string interpolation should work. Simply speaking, any powershell expression wrapped in <strong>$()</strong> should be evaluated. Somebody can say that this can be used to Powershell Injection attacks but I think this is not the case as long as you control the environment. For me this is a really nice point of extensions which gives me a lot of possibilities. For example, if we want content of given file embedded in our message, we can achieve this by adding the following code in our message field:</p>
+
+<pre><code class="language-powershell">$(Get-Content -File file_with_additional_info.txt)
+</code></pre>
+
+<p>I used this hack in my deployment notification to add changelog from file to the message. Complete configuration of build step based on our new meta runner can look as follows:</p>
+
+<p><img src="teams_notification_configured.jpg" alt="Teams notification configuration" /></p>
+
+<p>The changelog file is generated by another powershell meta runner in the same build which is responsible for creating a package with application and wired up with deployment build via artifacts dependency. Definition of this meta runner can be found on my github in file <a href="https://github.com/cezarypiatek/TCMetaRunnersPowerPack/blob/master/src/ChangelogGenerator.xml">ChangelogGenerator.xml</a></p>
+
+<h2 id="tl-dr">TL;DR</h2>
+
+<p>TeamCity can send messages to MS Teams channel via webhooks mechanism. Use PowerShell build step to invoke webhook endpoint (send webrequest with <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webreques">Invoke-WebRequest</a> cmdlet). You can make it reusable by converting this build step into <a href="https://confluence.jetbrains.com/display/TCD10/Working+with+Meta-Runner">meta runner</a>. All meta runners presented here are available on my Github project <a href="https://github.com/cezarypiatek/TCMetaRunnersPowerPack">TCMetaRunnersPowerPack</a></p>
+
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+</body>
+</html>
