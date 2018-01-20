@@ -6,10 +6,19 @@
     <description>Recent content in Posts on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 Dec 2017 10:34:18 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jan 2018 19:38:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Integrating TeamCity with Microsoft Teams using PowerShell</title>
+      <link>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</link>
+      <pubDate>Sat, 20 Jan 2018 19:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</guid>
+      <description>With the beginning of new year I joined a new team where I help with project bootstrapping. I&amp;rsquo;ve been configuring TeamCity, Gitlab and webservers. It&amp;rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &amp;ldquo;Integration&amp;rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat.</description>
+    </item>
     
     <item>
       <title>Exploring PowerShell with graphical user interface.</title>
