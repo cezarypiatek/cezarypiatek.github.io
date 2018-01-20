@@ -6,6 +6,7 @@ tags : ["TeamCity", "PowerShell", "meta runner", "MS Teams", "Gitlab"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
 image: "splashscreen.jpg"
+isBlogpost: true
 ---
 ![splashscreen](splashscreen.jpg)
 

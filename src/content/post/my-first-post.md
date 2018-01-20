@@ -2,6 +2,7 @@
 title: "Save your history - TortoiseSVN and \"Repair move\" option."
 date: 2014-09-21T17:38:18+02:00
 tags : ["svn", "tortoise"]
+isBlogpost: true
 ---
 TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.
 <!--more-->

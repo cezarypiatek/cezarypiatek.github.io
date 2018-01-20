@@ -3,6 +3,7 @@ title: "Hunt your bugs in design time"
 date: 2016-04-27T21:27:16+02:00
 draft: false
 tags : ["resharper", "codeannotation"]
+isBlogpost: true
 ---
 
 Static analysis is a powerful feature of Visual Studio that helps us to spot syntax and semantic errors in our code. It works very well on currently edited file and runs on the whole solution as one of the compilation stages. But it would be a waste of time to run compilation every time you make changes that affect code outside currently edited file, only to check that you didn't cause any compilation errors. Luckily, Resharper comes to the rescue with Solution Wide Analysis tool. It tracks all issues in solution in a real time. For example if we change signature of method, it will immediately report all places in code which are not valid anymore. To turn on Solution-wide analysis you have to right click on the circle in the right-bottom corner of the Visual Studio window and from the context menu select "Analyze Errors in Solution".

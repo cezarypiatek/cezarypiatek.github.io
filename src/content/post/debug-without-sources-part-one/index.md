@@ -2,6 +2,7 @@
 title: "The fastest way do debug .net code without sources."
 date: 2017-12-10T10:38:18+02:00
 tags : ["debugging", "resharper", "symbols", "decompiler"]
+isBlogpost: true
 ---
 Some people used to say that a good programmer doesn't need to debug his own code.  However, sometimes we have a problem with third party libraries usage, for example: there is insufficient documentation or the module contains some bugs. Visual Studio has excellent debugging toolset but this is totally useless without symbols and sources (and this is often the case with third party libraries).  Thanks to Reshaper decompiler this shouldn’t be a problem anymore.
 
