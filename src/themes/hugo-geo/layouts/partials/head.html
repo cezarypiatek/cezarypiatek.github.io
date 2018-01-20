@@ -19,6 +19,12 @@
     {{ range .Params.tags }}
     <meta property="og:tags" content="{{ . }}">
     {{ end }}
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="{{ .Params.image }}">
+	<meta property="twitter:title" content="{{ .Title }}">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="{{ .Description }}">
+
 	<meta name="keywords" value="{{range $index, $element := .Params.tags}}{{if $index}}, {{end}}{{$element}}{{end}}" />
     {{ .Hugo.Generator }}
     <title>{{ .Title }} &middot; {{ .Site.Title }}</title>
