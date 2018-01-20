@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <meta name="description" content="How to send notification to Microsoft Teams channel from TeamCity using PowerShell build step and how to make it reusable with meta runners.">   
         
-    <meta property="article:published_time" content="2018-01-20">
+    <meta property="article:published_time" content="2018-01-21">
 	<meta property="og:type" content="article">
     
 	<meta property="og:locale" content="en_US">	
@@ -155,10 +155,9 @@ Invoke-WebRequest -Method Post -Uri &quot;http://my_ms_teams_channe_webook_url&q
 
 <p>You have to remember about adding <strong>UseBasicParsing</strong> switch to <em>Invoke-WebRequest</em> cmdlet - without it you will get a weird error related to InternetExplorer. In order to run this in TeamCity pipeline add PowerShell build step and past the code from above.</p>
 
-<video controls>
-  <source src="create_powershell_buildstep.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/VHPKLnYGd2o?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 <p>When we run build with this step we should get the following message on our MS Teams channel:</p>
 
@@ -175,17 +174,15 @@ Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body
 
 <p>After saving these changes a new parameter should appear in the &ldquo;Parameters&rdquo; tab in build configuration. You can tweak parameter options by editing it. You can define label and input type which will be used to present this parameter on the build step configuration form.</p>
 
-<p><video controls>
-  <source src="teamcity_parameters.mp4" type="video/mp4"><br />
-  Your browser does not support the video tag.
-</video></p>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/U2bm8sGXt1A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 <p>Now you are ready to create meta runner based on your build step. In order to do that select &ldquo;Extract meta-runner&hellip;&rdquo; from the &ldquo;Actions&rdquo;  menu.</p>
 
-<p><video controls>
-  <source src="extract_metarunner.mp4" type="video/mp4"><br />
-  Your browser does not support the video tag.
-</video></p>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/F9yi8jUomXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 <p>Be careful because TeamCity creates meta runner based not on given build step but on our whole pipeline from current build configuration. To change that we have to modify our meta runner xml definition by deleting redundant nodes: <strong>/meta-runner/settings/build-runners/runner</strong> and <strong>/meta-runner/settings/parameters/parameter</strong>. Meta runner definition after these changes should look as follows:</p>
 
@@ -302,6 +299,13 @@ Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body
   
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  <script>
+  $(document).ready(function(){   
+    $(".video-container").fitVids();
+  });
+</script>
 </body>
 </html>

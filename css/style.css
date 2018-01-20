@@ -4,3 +4,7 @@ article img, article video {
 	margin: auto;
 	display: block;
 }
+
+.video-container{
+	margin: 15px auto;	
+}
