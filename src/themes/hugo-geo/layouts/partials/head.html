@@ -14,13 +14,13 @@
     {{ end }}
     <meta property="og:description" content="{{ .Description }}">
     <meta property="og:url" content="{{ .Permalink }}">	
-	<meta property="og:image" content="{{ .Params.image }}">	
+	<meta property="og:image" content="{{ .Permalink }}{{ .Params.image }}">	
     <meta property="og:site_name" content="{{ .Site.Title }}">
     {{ range .Params.tags }}
     <meta property="og:tags" content="{{ . }}">
     {{ end }}
 	<meta property="twitter:card" content="summary_large_image" >
-	<meta property="twitter:image" content="{{ .Params.image }}">
+	<meta property="twitter:image" content="{{ .Permalink }}{{ .Params.image }}">
 	<meta property="twitter:title" content="{{ .Title }}">	
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="{{ .Description }}">
