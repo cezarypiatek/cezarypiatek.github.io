@@ -5,7 +5,7 @@ date: 2018-02-05T00:22:00+02:00
 tags : ["AutoMapper", "orm", "crud", "mapping", "cleancode", "static analysis"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
-image: "splashscreen.jpg"
+image: "social_splashscreen.jpg"
 isBlogpost: true
 ---
 ![splashscreen](splashscreen.jpg)
