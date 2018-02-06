@@ -193,16 +193,46 @@ For me, the static analysis plays a really important role in managing the projec
 
 <p>Some people say that AutoMapper is perfectly fine for simple projects, but believe me - there is no such thing as simple project. Even when it looks simple at the beginning - sooner or later it gets complex. Starting with straigth one-to-one mapping between entities and dtos (or whatever types of objects you need to map) doesn&rsquo;t mean that you won&rsquo;t need to implement the following requirements in further stages of your project development:</p>
 
-<p>1) Formatting
-2) Composing one object from few others (ViewModel build with data that comes from couple of different entities)
-3) Conditional mapping based on business and security rules
-4) Limited access to given model&rsquo;s attributes based on user permissions.</p>
+<ol>
+<li>Formatting</li>
+<li>Composing one object from few others (ViewModel build with data that comes from couple of different entities)</li>
+<li>Conditional mapping based on business and security rules</li>
+<li>Limited access to given model&rsquo;s attributes based on user permissions.</li>
+</ol>
 
 <p>People tend to put this complex mapping logic inside the AutoMapper configuration because this is the fastest way to achieve expected effect. I think it&rsquo;s a really bad practice to put your business and security logic inside some infrastructure tool configuration. This is the beginning of slippery slope and in the long term it will make the development, testing and maintenance more complicated. You can say ok - if I&rsquo;ve got complex mapping then I write it explicitly. But then you have two ways of implementing one thing - AutoMapper and explicit mapping. And then the question appears: &ldquo;When should I use which?&rdquo;. And the answer is: &ldquo;it depends&hellip;&rdquo;. And you introduce chaos into your codebase.</p>
 
 <h2 id="how-to-organize-mappings">How to organize mappings</h2>
 
-<p>Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this &ldquo;dummy&rdquo; code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I&rsquo;ve mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo* and MapFrom* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context).</p>
+<p>Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this &ldquo;dummy&rdquo; code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I&rsquo;ve mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo* and MapFrom* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context). Example service mapper can look like this below:</p>
+
+<pre><code class="language-cs">public class UserServiceMapper{
+
+    private readonly AddressServiceMapper addressServiceMapper;
+    
+    public UserServiceMapper(AddressServiceMapper addressServiceMapper)
+    {
+        this.addressServiceMapper = this.addressServiceMapper;
+    }
+    
+    public UserDTO MapToUserDTO(UserEntity entity)
+    {
+        return new UserDTO {
+            FirstName = entity.FirstName,
+            LastName = entity.LastName,
+            Address = this.addressServiceMapper.MapToAddressDTO(entity.Address)
+        };
+    }
+    
+    public void UpdateUserEntity(UserEntity entity, UserDTO dto)
+    {
+        entity.FirstName = dto.FirstName;
+        entity.LastName = dto.LastName;
+        entity.Age = dto.Age;
+        this.addressServiceMapper.UpdateAddress(entity.Address, dto.Address);
+    }
+}
+</code></pre>
 
 <h2 id="final-thought">Final thought</h2>
 

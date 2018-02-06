@@ -65,15 +65,44 @@ In the example above I've been expecting *NullReferenceException* when I called 
 
 Some people say that AutoMapper is perfectly fine for simple projects, but believe me - there is no such thing as simple project. Even when it looks simple at the beginning - sooner or later it gets complex. Starting with straigth one-to-one mapping between entities and dtos (or whatever types of objects you need to map) doesn't mean that you won't need to implement the following requirements in further stages of your project development:
 
-1) Formatting
-2) Composing one object from few others (ViewModel build with data that comes from couple of different entities)
-3) Conditional mapping based on business and security rules
-4) Limited access to given model's attributes based on user permissions.
+1. Formatting
+2. Composing one object from few others (ViewModel build with data that comes from couple of different entities)
+3. Conditional mapping based on business and security rules
+4. Limited access to given model's attributes based on user permissions.
 
 People tend to put this complex mapping logic inside the AutoMapper configuration because this is the fastest way to achieve expected effect. I think it's a really bad practice to put your business and security logic inside some infrastructure tool configuration. This is the beginning of slippery slope and in the long term it will make the development, testing and maintenance more complicated. You can say ok - if I've got complex mapping then I write it explicitly. But then you have two ways of implementing one thing - AutoMapper and explicit mapping. And then the question appears: "When should I use which?". And the answer is: "it depends...". And you introduce chaos into your codebase.
 
 ## How to organize mappings
-Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this "dummy" code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I've mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo\* and MapFrom\* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context).
+Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this "dummy" code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I've mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo\* and MapFrom\* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context). Example service mapper can look like this below:
+
+```cs
+public class UserServiceMapper{
+
+	private readonly AddressServiceMapper addressServiceMapper;
+	
+	public UserServiceMapper(AddressServiceMapper addressServiceMapper)
+	{
+		this.addressServiceMapper = this.addressServiceMapper;
+	}
+	
+	public UserDTO MapToUserDTO(UserEntity entity)
+	{
+		return new UserDTO {
+			FirstName = entity.FirstName,
+			LastName = entity.LastName,
+			Address = this.addressServiceMapper.MapToAddressDTO(entity.Address)
+		};
+	}
+	
+	public void UpdateUserEntity(UserEntity entity, UserDTO dto)
+	{
+		entity.FirstName = dto.FirstName;
+		entity.LastName = dto.LastName;
+		entity.Age = dto.Age;
+		this.addressServiceMapper.UpdateAddress(entity.Address, dto.Address);
+	}
+}
+```
 
 ## Final thought
 AutoMapper is probably good for really small, short-lived projects or proof of concepts, but when you start to care about your code quality, you should definitely rethink all pros and cons regarding using AutoMapper. When you observe problems like the ones described in this blog post, you should consider abandoning AutoMapper and start to write your mappings explicitly (it really doesn't hurt). If you encountered other problems which arised from using AutoMapper I would be really appreciate if you could share your experience in the comment section down below.
