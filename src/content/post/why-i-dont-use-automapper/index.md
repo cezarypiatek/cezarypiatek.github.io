@@ -23,7 +23,7 @@ For me, the static analysis plays a really important role in managing the projec
 
 ![Use inspection error as build failure condition](failure_condition.jpg)
 
-This will definitely save your code from really sophisticated bugs. You can read more about problems that can be solved thanks to static analysis in my post devoted to [Resharep Solution Wide Analysis](/post/hunt-your-bugs-design-time/)
+This will definitely save your code from really sophisticated bugs. You can read more about problems that can be solved thanks to static analysis in my post devoted to [Resharper Solution Wide Analysis](/post/hunt-your-bugs-design-time/)
 
 ## Helpless code navigation
 Another problem is that it is not possible to find out which field from DTO maps to which field in entity (or entities). When we use tools like "show usages" it shows us only this single occurrence because there is no explicit mapping in the codebase. The resolution is to explicitly write mapping configuration for all the fields we want to map, but do I really need a heavy reflection mechanism to rewrite value from field in one object to another?
