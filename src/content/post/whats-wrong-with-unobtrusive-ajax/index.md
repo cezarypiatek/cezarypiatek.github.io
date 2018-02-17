@@ -1,5 +1,5 @@
 ---
-title: "Whtat's wrong with jquery.unobtrusive-ajax and how to fix it."
+title: "What's wrong with default ajax support for ASP.NET MVC and how to fix it."
 description: ""
 date: 2018-02-15T00:22:00+02:00
 tags : ["Content-Security-Policy", "csp", "ASP.NET MVC", "ajax", "cleancode"]
@@ -10,9 +10,10 @@ isBlogpost: true
 ---
 ![splashscreen](splashscreen.jpg)
 
-jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certenely know. It shipped with MVC boostrapping template and it's responsible for providing plubbing code which helps to add ajax functionality to rendered forms and links. Unfortunately it has a few design drowback which could have negative impact on our system architecture. In this post I'm going to show you all jquery.unobtrusive-ajax.js related problems which I encountered in my 5 years journey as a ASP.NET MVC fronted developer and how to fix it.
+jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certenely know. It shipped with MVC boostrapping template and it's responsible for providing plubbing code which helps to add ajax functionality to rendered forms and links. Unfortunately it has a few design drowback which could have negative impact on our system architecture and generate additional hidden costs. In this post I'm going to show you all jquery.unobtrusive-ajax.js related problems which I encountered in my 5 years journey as a ASP.NET MVC fronted developer and how to fix it.
 
 ## How it works.
+Before we start let me briefly remind you how jquery.unobtrusive-ajax.js works. As I've mentioned in the introduction, this library adds ajax support for forms and hyperlinks. In order to use it you have to provide set of appropiates  data-ajax-* attributes which will be "interpreted" by the javascript library. You don't need to type this attributes directly - you can use AjaxOptions object which is accepted by razor helpers and translated into given html attributes. These attributes are responsible for configuring ajax connection, selecting of the predefined behavior for handling ajax response and providing custom callbacks for given ajax events. These last mentioned can be provided in the form of javascript method name, but nothing prevents us from typing full javascript expression. A sample usage of AjaxOptions with conjuctionwith Ajax.BeginForm can looks as follows.
 
 ```razor
 @using (Ajax.BeginForm("SaveData", new AjaxOptions { OnSuccess = "alert(\"Data successfuly saved!\");" }))
@@ -22,6 +23,7 @@ jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC develop
     <input type="submit" value="Submit"/>
 }
 ```
+This razor code is translated into the following html markup.
 
 ```html
 <form action="/Home/SaveData" data-ajax="true" data-ajax-success="alert(&quot;Data successfuly saved!&quot;);" id="form0" method="post">
@@ -29,7 +31,7 @@ jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC develop
     <input type="submit" value="Submit">
 </form>
 ```
-If you switch in web.config **UnobtrusiveJavaScriptEnabled"** flag to false you get the code as below which is some kind of fallback in case you don't have jquery (it requires another Microsoft JavaScript library).
+If you switch in web.config **"UnobtrusiveJavaScriptEnabled"** flag to false you get the code as below which is some kind of fallback in case you don't have jquery (it requires another Microsoft JavaScript library).
 
 ```html
 <form action="/Home/SaveData" id="form0" method="post" onclick="Sys.Mvc.AsyncForm.handleClick(this, new Sys.UI.DomEvent(event));" onsubmit="Sys.Mvc.AsyncForm.handleSubmit(this, new Sys.UI.DomEvent(event), { insertionMode: Sys.Mvc.InsertionMode.replace, onSuccess: Function.createDelegate(this, alert(&quot;Data successfuly saved!&quot;);) });">    
@@ -43,6 +45,9 @@ window.mvcClientValidationMetadata.push({"Fields":[],"FormId":"form0","ReplaceVa
 //]]>
 </script>
 ```
+After analysing this "non-obtrusive" version I very doubt if this works with ajax callback's provided as a javascript expression (probably the javascript literals are only valid value.)
+
+In ASP Core there is no longer AjaxHelper and AjaxOptions but you can still use jquery.unobtrusive-ajax.js functionality by providing data-ajax-* attributes manually.
 
 ## Is it truly unobtrusive?
 
@@ -51,26 +56,43 @@ I think te root of all problems is laying in the (miss)understanding of "unobtru
 
 > A programming philosophy known as unobtrusive JavaScript argues that content (HTML) and behavior (JavaScript code) should as much as possible be kept separate. According to this programming philosophy, JavaScript is best embedded in HTML documents using \<script> elements with src attributes.
 
-The are few other postulates of this paradigm (such as Graceful degradation) but this one is especially important from the clean code perspective. According to this definition jquery.unobtrusive-ajax.js is not even a close to unobtrusive javascript complience because it requires providing javascript callbacks inside the html attributes.
-
-I think the author(s) of this library was mainly focus on the aspect of Graceful degradation, which has in nowadays marginal meaning and totally forgot about separation of concerns between Javascript and HTML code.
+The are few other postulates of this paradigm (such as Graceful degradation) but this one is especially important from the clean code perspective. 
 
 ![mem](is_it_truly_unobtrusive.jpg)
+
+According to this definition jquery.unobtrusive-ajax.js is not even a close to unobtrusive javascript complience because it requires providing javascript callbacks inside the html attributes. I think the author(s) of this library was mainly focus on the aspect of Graceful degradation, which has in nowadays marginal meaning and totally forgot about separation of concerns between Javascript and HTML code.
 
 ## Implications
 
 The main issue is not the compliance with the definition but this programming style (I mean messing javascript code with html markup) has some serious ramification. First of all this code is really hard to maintain. If you put javascript code inside html atttributes you won't be able to refactor it, debug or verify syntax correctness. This is also sometimes abused to build your javascript dynamically (by concatenating strings) which could results with the potential XSS atack.
-Another disavantage is that when you need to invoke function inside this "inline" code it requires global accessability of this function. This means  you can't put your function definition inside private context (for example wrapping inside immediate invocation of anonymous function). Exposing function globally can have negative effects such as name collisions (which cause method overriding) amd it makes harder to keep context separation. And the most serious drowback, which can even prevent releasing our software to the production due the security reasons, is lack of Content-Security-Policy compliance. I've been developing software for financial sector so the security audits were mandatory and CSP compliance was also veryfied. For those who don't know CSP is another security mechanism which prevents against XSS attacks. This is preety easity to implement - you have to only add "Content-Security-Policy" header to http response. However, enabling CSP has impact onto how javascript and css is interpreted. Since now you can't use inline scripts and styles and can't evaluate javascript dynamically (expressions such as "eval()" and "new Function()" are forbidden). So when you add CSP header all your javascript code which is wired by jquery.unobtrusive-ajax stop working.
+
+Another disavantage is that when you need to invoke function inside this "inline" code it requires global accessability of this function. This means  you can't put your function definition inside private context (for example wrapping inside immediate invocation of anonymous function). Exposing function globally can have negative effects such as name collisions (which cause method overriding) amd it makes harder to keep context separation. 
+
+And the most serious drowback, which can even prevent releasing our software to the production due to the security reasons, is lack of Content-Security-Policy compliance. I've been developing software for financial sector so the security audits were mandatory and CSP compliance was also veryfied. (RFI and RFP) For those who don't know CSP is another security mechanism which prevents against XSS attacks. This is preety easity to implement - you have to only add "Content-Security-Policy" header to http response. However, enabling CSP has impact onto how javascript and css is interpreted. Since now you can't use inline scripts and styles and can't evaluate javascript dynamically (expressions such as "eval()" and "new Function()" are forbidden). When you add CSP header all your javascript code which is wired by jquery.unobtrusive-ajax stop working.
 
 ![CSP Error](csp_error.jpg)
 
 ## How to fix it?
 
+Now we know that the broken part of jquery.unobtrusive-ajax.js is about providing callback for ajax events so we have to find out a different way for creating these subscriptions.
+Unfortunatelly, I wasn't able to find any solution that wasn't imply modification of jquery.unobtrusive-ajax.js source code. I'm not a huge fan of midifying third party libraries for given project purpose because this has a lot of drawbacks (for example you have to manually apply all updates and there is much more). I've even decided do send PR with fix proposal but it was rejected with not entirely unclear reasons so I've stucked with private modification of this library.
+
+After quick analysis of jquery.unobtrusive-ajax.js sourcecode we can easily spot the places where are callback are invoked (I mark this places with arrows as you can see below)
+
+
+![](callbacks_invocation_places.jpg)
+
+
+One of the possible solutions is to replace these lines with code that trigger custom events on related DOM element. Instead of calling callback function directly we shifft into event oriented direction which gives us a really nice point of extensibility. A sample implementation can look as follows:
+
+![](dom_event_solution.jpg)
+
+Now we can subscribe for those ajax events in more elegant way directly from js code:
 
 ```js
-(function(){
+$(function(){
 	$("#SampleForm").on("ajax:begin", function (event, ajaxData) {
-    console.log("Begin");
+    	console.log("Begin");
 	});
 
 	$("#SampleForm").on("ajax:complete", function (event, ajaxData) {
@@ -84,5 +106,29 @@ Another disavantage is that when you need to invoke function inside this "inline
 	$("#SampleForm").on("ajax:failure", function (event, ajaxData) {
 		console.log("Failure");
 	});
-})();
+});
 ```
+The id attributes is not required for this solution, you can located interesting element in any way you want, but this is good practice to assign unique id to every form (If you don't do that BeginForm helper assign a "default" value). If you are working with element that occurs multiple times (for example delete button on every list item) you can use a class selector to locate element for subscription as follows:
+
+```js
+$(function(){
+	$(".button-delete").on("ajax:begin", function (event, ajaxData) {
+    	console.log("Begin");
+	});
+});
+```
+... or in more efficient way:
+
+```js
+$(function(){
+	$("#ProductList").on("ajax:begin", ".button-delete", function (event, ajaxData) {
+    	console.log("Begin");
+	});
+});
+```
+
+Unfortunally this solution has feq drawbacks which can materialized in certain use cases. Namely this fix is based on DOM events so when the element with subscription is deleted from the DOM, certain callback will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or it's parent element) - the complete subscription will be ignored. Another disadantage can be the necessary to wait wit creating subscription until given element appears in the DOM (which could be an issue with dinamically loaded elements) but this is more versatile problem related to DOM events and dynamic content.
+
+## Final thought
+
+This fake "unobtrusive" sense is not only jquery.unobtrusive-ajax.js related problem. You should always check CSP compliance of your javascript library/framework of choice before you start any development. Postponing this verification can generated additional costs and even results in system rewriting.
