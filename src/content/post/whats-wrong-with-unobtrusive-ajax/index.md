@@ -1,5 +1,5 @@
 ---
-title: "What's wrong with default ajax support for ASP.NET MVC and how to fix it."
+title: "What's wrong with default ajax support in ASP.NET MVC and how to fix it."
 description: ""
 date: 2018-02-15T00:22:00+02:00
 tags : ["Content-Security-Policy", "csp", "ASP.NET MVC", "ajax", "cleancode"]
@@ -127,7 +127,73 @@ $(function(){
 });
 ```
 
-Unfortunally this solution has feq drawbacks which can materialized in certain use cases. Namely this fix is based on DOM events so when the element with subscription is deleted from the DOM, certain callback will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or it's parent element) - the complete subscription will be ignored. Another disadantage can be the necessary to wait wit creating subscription until given element appears in the DOM (which could be an issue with dinamically loaded elements) but this is more versatile problem related to DOM events and dynamic content.
+Unfortunally this solution has few drawbacks which can materialized in certain use cases. Namely this fix is based on DOM events so when the element with subscription is deleted from the DOM, certain callback will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or it's parent element) - the complete subscription will be ignored. Another disadantage can be the necessary to wait wit creating subscription until given element appears in the DOM (which could be an issue with dinamically loaded elements) but this is more versatile problem related to DOM events and dynamic content.
+
+Another possible solution that could address all formerly mentioned issues as well as drowback of the previous solution is to publish events through custom event aggreator instead of triggering it on DOM tree. You can declare this event aggregator globally or incject with some kind of DI container (I'll never understand why there is a need for DI container in dynamic language like javascript). You put the code responsible for triggering events in the same places as in the previous solution or organized it in separeted unit without the need to modify jquery.unobtrusive-ajax.js thanks to [global ajax event handlers](https://api.jquery.com/category/ajax/global-ajax-event-handlers/). Unfortunatelly, this is not totally true because in global handlers we have no information about the DOM element which the ajax events are corelated with. We can smuggle the element responsible for context throught the ajax options with the small modification to jquery.unobtrusive-ajax.js:
+
+![](context_element.jpg)
+
+Now we are able to utilize global ajax event handlers to publish our custom events:
+
+```javascript
+$(function () {
+    var $document = $(document);
+    $document.ajaxSend(function (event, xhr, settings) {
+        AjaxEventAggregator.publish("send", settings.contextElement, arguments);
+     });
+
+    $document.ajaxComplete(function (event, xhr, settings) {
+       AjaxEventAggregator.publish("complete", settings.contextElement, arguments);
+    });
+    
+    $document.ajaxError(function (event, xhr, settings, error) {
+        AjaxEventAggregator.publish("error", settings.contextElement, arguments);
+    });
+
+    $document.ajaxSuccess(function (event, xhr, settings, data) {       
+        AjaxEventAggregator.publish("success", settings.contextElement, arguments);
+    });
+});
+```
+
+Inside the AjaxEventAggregator implementation you should somehow determine channel name base on the parameter which receive the value of settings.contextElement (you can use the id or value of other custom attribute. for example data-ajax-channel) and publish the event only to subscriptions for given event on given channel.
+
+```javascript
+var AjaxEventAggregator = AjaxEventAggregator || {};
+$.extend(AjaxEventAggregator, (function () {
+	return {       
+		subscribe: function (ajaxEventName, channel, callback) {
+			//subscribe for given ajax event on channell
+		},       
+		publish: function (ajaxEventName, eventSource, args) {
+			//determine the channel name base on eventSource and publish given event on this channel
+		}
+	}
+})());
+```
+
+Now we can subscibe for the given ajax events in the following way (I'm using form id for channel name)
+
+```javascript
+(function(){
+	AjaxEventAggregator.subscribe("send", "SampleForm", function (data) {
+      	console.log("send");
+    });
+
+	AjaxEventAggregator.subscribe("complete", "SampleForm", function (data) {
+		console.log("complete");
+    });
+
+	AjaxEventAggregator.subscribe("error", "SampleForm", function (data) {
+		console.log("error");
+    });
+
+	AjaxEventAggregator.subscribe("success", "SampleForm", function (data) {
+		console.log("success");
+    });
+})();
+```
+
 
 ## Final thought
 
