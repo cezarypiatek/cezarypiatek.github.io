@@ -6,10 +6,28 @@
     <description>Recent content in Tags on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Feb 2018 00:22:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 18 Feb 2018 00:22:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Ajax</title>
+      <link>https://cezarypiatek.github.io/tags/ajax/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/ajax/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Asp.net Mvc</title>
+      <link>https://cezarypiatek.github.io/tags/asp.net-mvc/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/asp.net-mvc/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Automapper</title>
@@ -23,7 +41,7 @@
     <item>
       <title>Cleancode</title>
       <link>https://cezarypiatek.github.io/tags/cleancode/</link>
-      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/cleancode/</guid>
       <description></description>
@@ -39,11 +57,29 @@
     </item>
     
     <item>
+      <title>Content Security Policy</title>
+      <link>https://cezarypiatek.github.io/tags/content-security-policy/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/content-security-policy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Crud</title>
       <link>https://cezarypiatek.github.io/tags/crud/</link>
       <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/crud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Csp</title>
+      <link>https://cezarypiatek.github.io/tags/csp/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/csp/</guid>
       <description></description>
     </item>
     
@@ -98,6 +134,15 @@
       <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/ise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Javascript</title>
+      <link>https://cezarypiatek.github.io/tags/javascript/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/javascript/</guid>
       <description></description>
     </item>
     

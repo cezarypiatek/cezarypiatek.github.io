@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ajax on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/ajax/</link>
+    <description>Recent content in Ajax on CEZARY PIĄTEK</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Feb 2018 00:22:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/ajax/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>What&#39;s wrong with default ajax support in ASP.NET MVC and how to fix it.</title>
+      <link>https://cezarypiatek.github.io/post/whats-wrong-with-unobtrusive-ajax/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/whats-wrong-with-unobtrusive-ajax/</guid>
+      <description>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&amp;rsquo;s shipped with MVC bootstrapping template and it&amp;rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&amp;rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.</description>
+    </item>
+    
+  </channel>
+</rss>
