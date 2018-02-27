@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</loc>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/whats-wrong-with-unobtrusive-ajax/</loc>
     <lastmod>2018-02-18T00:22:00+02:00</lastmod>
   </url>
@@ -81,13 +86,13 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/automapper/</loc>
-    <lastmod>2018-02-05T00:22:00+02:00</lastmod>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2018-02-18T00:22:00+02:00</lastmod>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -99,6 +104,12 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/cleancode/</loc>
     <lastmod>2018-02-18T00:22:00+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/code-generating/</loc>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -176,7 +187,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/mapping/</loc>
-    <lastmod>2018-02-05T00:22:00+02:00</lastmod>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -200,7 +211,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2018-02-18T00:22:00+02:00</lastmod>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -219,6 +230,12 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
     <lastmod>2017-12-14T22:34:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
+    <lastmod>2018-02-27T00:23:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   

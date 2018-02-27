@@ -32,7 +32,7 @@
     <item>
       <title>Automapper</title>
       <link>https://cezarypiatek.github.io/tags/automapper/</link>
-      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/automapper/</guid>
       <description></description>
@@ -44,6 +44,15 @@
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/cleancode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Code Generating</title>
+      <link>https://cezarypiatek.github.io/tags/code-generating/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/code-generating/</guid>
       <description></description>
     </item>
     
@@ -158,7 +167,7 @@
     <item>
       <title>Mapping</title>
       <link>https://cezarypiatek.github.io/tags/mapping/</link>
-      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/mapping/</guid>
       <description></description>
@@ -215,6 +224,15 @@
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Roslyn</title>
+      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     

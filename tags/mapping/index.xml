@@ -6,10 +6,19 @@
     <description>Recent content in Mapping on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 Feb 2018 00:22:00 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 27 Feb 2018 00:23:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/mapping/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Generate mapping code with Roslyn code fix provider.</title>
+      <link>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</guid>
+      <description>A few weeks ago I posted about negative aspects of applying AutoMapper. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like T4Scaffoling or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in T4 syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking.</description>
+    </item>
     
     <item>
       <title>The reasons behind why I don&#39;t use AutoMapper.</title>

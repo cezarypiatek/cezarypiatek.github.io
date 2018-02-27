@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">   
+        
+    <meta property="article:published_time" content="2018-02-27">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/">	
+	<meta property="og:title" content="Generate mapping code with Roslyn code fix provider.">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/splashscreen.jpg">
+    <meta property="og:description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">
+    <meta property="og:site_name" content="CEZARY PIĄTEK">
+    
+    <meta property="og:tags" content="AutoMapper">
+    
+    <meta property="og:tags" content="Roslyn">
+    
+    <meta property="og:tags" content="mapping">
+    
+    <meta property="og:tags" content="code generating">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/splashscreen.jpg">
+	<meta property="twitter:title" content="Generate mapping code with Roslyn code fix provider.">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">
+
+	<meta name="keywords" value="AutoMapper, Roslyn, mapping, code generating" />
+    <meta name="generator" content="Hugo 0.29" />
+    <title>Generate mapping code with Roslyn code fix provider. &middot; CEZARY PIĄTEK</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="CEZARY PIĄTEK" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/about/">About</a>
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Generate mapping code with Roslyn code fix provider.</h1>
+	</header>
+
+	<article>
+		<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+
+<p>A few weeks ago I posted about negative aspects of applying AutoMapper. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like <a href="https://www.nuget.org/packages/T4Scaffolding/">T4Scaffoling</a> or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in <a href="https://msdn.microsoft.com/en-us/library/bb126445.aspx">T4</a> syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking. Then I tried to generate code with PowerShell and <a href="https://docs.microsoft.com/en-us/dotnet/api/envdte">EnvDTE</a>. It worked but it had some limitations and it wasn&rsquo;t convenient enough to start using it on a daily basis. I gave it one more try and after publication of mentioned post I started looking for an existing Roslyn-based solution that could be a really nice substitution for AutoMapper. That&rsquo;s how I found <a href="https://github.com/nejcskofic/ObjectMapper">ObjectMapper</a> project.</p>
+
+<p>At first it looked promising but after some analysis I found few things I didn&rsquo;t like about it. For instance, it requires referencing additional library which contains attributes and interfaces used to mark mapping methods. In practice it means that I need to install additional nuget package to every project in which I want to use mapping generation feature which is quite uncomfortable. So I&rsquo;ve tried to create my own version which will be distributed in the form of Visual Studio Extension and will use conventions to locate candidates for potential mapping methods. I was interested in generating implementation for the following kinds of methods:</p>
+
+<ul>
+<li>Pure mapping method - non-void method that takes single parameter</li>
+</ul>
+
+<pre><code class="language-csharp">  public UserDTO Map(UserEntity entity)
+  {
+      throw new NotImplementedException();
+  }
+</code></pre>
+
+<ul>
+<li>Updating method - void method that takes two parameters</li>
+</ul>
+
+<pre><code class="language-csharp">  public void Update(UserDTO source, UserEntity target)
+  {
+      throw new NotImplementedException();
+  }
+</code></pre>
+
+<ul>
+<li>Mapping Constructor - constructor that takes single parameter</li>
+</ul>
+
+<pre><code class="language-csharp">  public UserDTO(UserEntity user)
+  {
+      
+  }
+</code></pre>
+
+<ul>
+<li>Updating member method - void member method that takes single parameter</li>
+</ul>
+
+<pre><code class="language-csharp">  public void UpdateWith(UserEntity en)
+  {
+      throw new NotImplementedException();
+  }
+</code></pre>
+
+<p>Thanks to the abilities Roslyn gives, I could quite easily create code fix provider that generates implementation for the types of mapping methods mentioned above. A sample code generation in action looks as follows:</p>
+
+<p><img src="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method.gif" alt="mapping code generation" /></p>
+
+<p>I&rsquo;ve publish source code on <a href="https://github.com/cezarypiatek/MappingGenerator">github</a> and if you are interested in testing it in action you can install it as Visual Studio Extension from <a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">Visual Studio Marketplace</a>. For now it covers a few basic scenarios (you can read more about it on github) and there is a lot of things that could be improved such as:</p>
+
+<ul>
+<li>extracting method for mapping complex properties</li>
+<li>reusing existing mapping method to map complex properties</li>
+<li>using initialization block to create new objects</li>
+<li>updating collection instead of replacing content completely</li>
+<li>improving local variables names generating to avoid collisions</li>
+</ul>
+
+<p>With a new asset in my developer toolbox now I&rsquo;m able to quickly generate this boring mapping code and focus enirely on the real coding problems. There is also another positive side effect that comes from the convention-based mappings - it enforces the cohesion of naming. If you have different names for the same thing on both mapping sides you have more code to write manually ;)</p>
+
+		  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  <script>
+  $(document).ready(function(){   
+    $(".video-container").fitVids();
+  });
+</script>
+</body>
+</html>
