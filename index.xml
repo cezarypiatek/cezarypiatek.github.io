@@ -98,13 +98,12 @@
       <pubDate>Tue, 03 Oct 2017 20:17:23 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/projects/</guid>
-      <description>DependencyGraph
-A small F# application to visualize .net assembly dependencies.
- VanillaTransformer
-VanillaTransformer is a simple generic text file transformer. It was designed for configuration transforming as an alternative for XML-Document-Transform tool. Unlike XML-DT, it works with any kind of text file (not only XML) and is much simpler to use.
+      <description>Mapping Generator
+&amp;ldquo;AutoMapper&amp;rdquo; like, Roslyn based, code fix provider that allows to generate mapping code in design time. You can download it as Visual Studio Extension from Visual Studio Marketplace.
  Tellurium
-A utility pack to create maintainanble UI tests for ASP.NET MVC projects using Selenium
- Code Topology</description>
+A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.NET MVC projects.
+ Project Graphs
+PowerShell module to draw a graph of c# projects dependencies. It can also spot some kind of issues with libraries and nuget packages references (for example: multiple version of the same library\package).</description>
     </item>
     
     <item>
