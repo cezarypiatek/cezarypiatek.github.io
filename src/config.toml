@@ -17,22 +17,22 @@ paginate = 5
 	[[params.socialbuttons]]
 	faicon = "github"
 	url = "https://github.com/cezarypiatek"
+	title = "Check my Open Source works"
 	
 	[[params.socialbuttons]]
 	faicon = "twitter"
 	url = "https://twitter.com/cezary_piatek"
+	title = "Follow me on twitter"
 		
 	[[params.socialbuttons]]
 	faicon = "stack-overflow"
 	url = "https://stackoverflow.com/users/876060/cezarypiatek"
+	title = "Check my StackOverflow profile"
 	
 	[[params.socialbuttons]]
 	faicon = "rss"
 	url = "/index.xml"	
-	
-	[[params.navlinks]]
-	name = "About"
-	url = "about/"
+	title = "Be up to date - subscribe to my rss feed channel"
 	
 	[[params.navlinks]]
 	name = "Blog"
@@ -40,4 +40,8 @@ paginate = 5
 
 	[[params.navlinks]]
 	name = "Projects"
-	url = "projects/"		
+	url = "projects/"
+
+	[[params.navlinks]]
+	name = "About me"
+	url = "about/"	

@@ -8,3 +8,11 @@ article img, article video {
 .video-container{
 	margin: 15px auto;	
 }
+#social{
+		background-color: rgba(200,200,200,0.3);
+		padding:10px;
+	}
+#social .fa-github{color:black;}
+#social .fa-twitter{color:#1C88CC;}
+#social .fa-rss{color:orange;}
+#social .fa-stack-overflow{color:darkorange;}
