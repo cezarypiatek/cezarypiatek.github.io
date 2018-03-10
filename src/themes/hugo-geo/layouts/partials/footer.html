@@ -34,10 +34,13 @@
   <script src="{{ . }}"></script>
   {{ end }}
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid={{- .Site.Params.addThis -}}" async></script>
-  <script>
-  $(document).ready(function(){   
-    $(".video-container").fitVids();
-  });
-</script>
+  {{ if .Params.hasVideo }}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>  
+	<script>
+	  $(document).ready(function(){   
+		$(".video-container").fitVids();
+	  });
+	</script>
+  {{end}}
 </body>
 </html>
