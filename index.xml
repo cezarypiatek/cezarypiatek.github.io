@@ -6,10 +6,19 @@
     <description>Recent content on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 27 Feb 2018 00:23:45 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 16 Apr 2018 00:22:53 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Validating fields of NHibernate model</title>
+      <link>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</link>
+      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</guid>
+      <description>The challenge Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
+    </item>
     
     <item>
       <title>Generate mapping code with Roslyn code fix provider.</title>

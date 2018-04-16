@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to demystify NHibernate exception by detecting invalid fields before committing changes to database">   
+        
+    <meta property="article:published_time" content="2018-04-16">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/">	
+	<meta property="og:title" content="Validating fields of NHibernate model">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/splashscreen.jpg">
+    <meta property="og:description" content="How to demystify NHibernate exception by detecting invalid fields before committing changes to database">
+    <meta property="og:site_name" content="CEZARY PIĄTEK">
+    
+    <meta property="og:tags" content="data model">
+    
+    <meta property="og:tags" content="NHibernate">
+    
+    <meta property="og:tags" content="SQLite">
+    
+    <meta property="og:tags" content="SQL Server">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/splashscreen.jpg">
+	<meta property="twitter:title" content="Validating fields of NHibernate model">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to demystify NHibernate exception by detecting invalid fields before committing changes to database">
+
+	<meta name="keywords" value="data model, NHibernate, SQLite, SQL Server" />
+    <meta name="generator" content="Hugo 0.29" />
+    <title>Validating fields of NHibernate model &middot; CEZARY PIĄTEK</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="CEZARY PIĄTEK" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Validating fields of NHibernate model</h1>
+		  
+		<div><i class="fa fa-calendar"></i> 16 April 2018</div>
+		<hr />
+		
+	</header>
+
+	<article>
+		
+
+<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+
+<h2 id="the-challenge">The challenge</h2>
+
+<p>Recently I&rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:</p>
+
+<pre><code class="language-plaintext">NHibernate.Exceptions.GenericADOException: could not execute batch command.[SQL: SQL not available] ---&gt; System.Data.SqlClient.SqlException: String or binary data would be truncated.
+The statement has been terminated.
+</code></pre>
+
+<p>Investigating this kind of error is very hard because the message is quite cryptic. It only says that some data exceeded given length constraints. We have no clue which field or even entity is the source of the problem (especially that the exception occurs only after calling <code>Flush()</code> method). I tried to search for some debugging advices in google but the only suggestion I found was to use <a href="https://github.com/darioquintana/NHibernate-Validator">NHibernate Validator</a> or implement <a href="http://nhibernate.info/doc/nhibernate-reference/events.html">Nhibernate listeners</a> that performs appropriate validation. NHibernate Validator seems to be overwhelming for my requirement (and I don&rsquo;t want to pollute my data model with additional validation attributes) so I&rsquo;ve decided to implement <code>IPreUpdateEventListener</code> and <code>IPreInsertEventListener</code> listeners which will be checking if values used in SQL query don&rsquo;t exceed the maximum length declared in NHibernate mappings.</p>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>The problem concerns only string and binary fields so there are only two cases that should be handled (if I&rsquo;m missing something please correct me). In order to implement validation I needed to figure out the following things:</p>
+
+<ol>
+<li>How to extract fields which will be used in SQL query</li>
+<li>How to access the length limits from NHibernate model definition</li>
+</ol>
+
+<p>Having this information, I need to check if the field value doesn&rsquo;t exceed the limit and the limit is not infinitive.</p>
+
+<p>Checking if value exceeds the limit which is infinitive seems to be redundant but it makes sense when we know how the infinitive length constrains are defined in NHibernate. Default NHibernate string length limit is 4000 characters. If we need to create a column that holds &lsquo;infinitive&rsquo; string we have to set the length to 4001.</p>
+
+<pre><code class="language-csharp">public static class MappingExtensions
+{
+    internal const int MaxNhibernateStringLength = 4001;
+
+    public static PropertyPart InfinitiveString([NotNull] this PropertyPart property)
+    {
+        return property.Length(MaxNhibernateStringLength);
+    }
+}
+</code></pre>
+
+<p>This results in creating a column of type <code>nvarchar(max)</code> (in SQL Server).
+For binary fields, in order to create a column that holds any size of data, we simply need to set the length to <code>int.MaxValue</code> which results with <code>varbinary(max)</code> column type.
+When we try to retrieve field length information from NHibernated metadata, we get exactly the same values as we set, so these costs should be consulted during field length validation.</p>
+
+<p>My final implementation looks as follows:</p>
+
+<pre><code class="language-csharp">public class LengthValidatorListener: IPreUpdateEventListener, IPreInsertEventListener
+{
+  private const int InfinityBinaryLength = int.MaxValue;
+  private const int InfinityStringLength = MappingExtensions.MaxNhibernateStringLength;
+
+  [NotNull] 
+  public Task&lt;bool&gt; OnPreUpdateAsync([NotNull] PreUpdateEvent @event, CancellationToken cancellationToken)
+  {
+      cancellationToken.ThrowIfCancellationRequested();
+      var result = OnPreUpdate(@event);
+      return Task.FromResult(result);
+  }
+
+  public bool OnPreUpdate([NotNull] PreUpdateEvent @event)
+  {
+      ValidateLength(@event.Session, @event.Entity, @event.Persister, @event.State);
+      return false;
+  }
+
+  [NotNull] 
+  public Task&lt;bool&gt; OnPreInsertAsync([NotNull] PreInsertEvent @event, CancellationToken cancellationToken)
+  {
+      cancellationToken.ThrowIfCancellationRequested();
+      var result = OnPreInsert(@event);
+      return Task.FromResult(result);
+  }
+
+  public bool OnPreInsert([NotNull] PreInsertEvent @event)
+  {
+      ValidateLength(@event.Session, @event.Entity, @event.Persister, @event.State);
+      return false;
+  }
+
+  private static void ValidateLength([NotNull] ISession session,  [NotNull] object entity, [NotNull] IEntityPersister eventPersister, [NotNull] object[] state)
+  {
+      var entityName = entity.GetType().Name;
+      var entityMetadata = GetMetadataForEntity(session, entity);
+
+      for (int porpertyIndex = 0; porpertyIndex &lt; eventPersister.PropertyNames.Length; porpertyIndex++)
+      {
+          var propertyValue = state[porpertyIndex];
+          if (propertyValue == null)
+          {
+              continue;
+          }
+          var propertyName = eventPersister.PropertyNames[porpertyIndex];
+          var propertyType = entityMetadata.GetPropertyType(propertyName);
+          if (propertyType is StringType stringPropertyType)
+          {
+              if (stringPropertyType.SqlType.Length != InfinityStringLength)
+              {
+                  if (propertyValue is string value)
+                  {
+                      if (value.Length &gt; stringPropertyType.SqlType.Length)
+                      {
+                          throw DataModelValidationException.StringFieldLengthExceeded(propertyName, entityName, value, stringPropertyType);
+                      }
+                  }
+              }
+          }
+          else if (propertyType is BinaryType binaryPropertyType)
+          {
+              if (binaryPropertyType.SqlType.Length != InfinityBinaryLength)
+              {
+                  if (propertyValue is byte[] value)
+                  {
+                      if (value.Length &gt; binaryPropertyType.SqlType.Length)
+                      {
+                          throw DataModelValidationException.BinaryFieldLengthExceeded(propertyName, entityName, value, binaryPropertyType);
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+  [NotNull] 
+  private static IClassMetadata GetMetadataForEntity([NotNull] ISession session, [NotNull] object entity)
+  {
+      var entityType = entity.GetType();
+      return session.SessionFactory.GetAllClassMetadata()
+                      .First(x =&gt; x.Value.MappedClass == entityType)
+                      .Value;
+  }
+}
+</code></pre>
+
+<h3 id="exception-design">Exception design</h3>
+
+<p>After detecting invalid situation I need to throw exception that contains as much information as is required to efficiently spot the issue source. For this problem class we need the following information</p>
+
+<ol>
+<li>What is the name of the class and the field that contains value exceeding the limit</li>
+<li>What is the value that exceeded the limit</li>
+<li>What is the length of the value that exceeded the limit</li>
+<li>What is the limit</li>
+</ol>
+
+<p>The string that exceeded the limit can be very long and could make the error message hard to analyze, so instead of merging it into error message I decided to put it in Exception field for the debugging purpose (for binary data it&rsquo;s the only reasonable solution). I&rsquo;ve also added two factory methods that create exceptions for issues with string and binary data.</p>
+
+<pre><code class="language-csharp">public class DataModelValidationException:Exception
+{
+    [NotNull, Pure]
+    public static DataModelValidationException BinaryFieldLengthExceeded(
+        [NotNull] string propertyName,
+        [NotNull] string entityName,
+        [NotNull] byte[] value,
+        [NotNull] BinaryType propertyType)
+    {
+        var message = $&quot;Binary field '{propertyName}' of '{entityName}' entity with [length={value.Length}] exceeded the limitation of {propertyType.SqlType.Length} length&quot;;
+        return new DataModelValidationException(message, value);
+    }
+
+    [NotNull, Pure]
+    public static DataModelValidationException StringFieldLengthExceeded(
+        [NotNull] string propertyName,
+        [NotNull] string entityName,
+        [NotNull] string value,
+        [NotNull] StringType propertyType)
+    {
+        var message = $&quot;String field '{propertyName}' of '{entityName}' entity with [length={value.Length}] exceeded the limitation of {propertyType.SqlType.Length} characters.&quot;;
+        return new DataModelValidationException(message, value);
+    }
+
+    private DataModelValidationException(string message, object propertyValue) 
+    : base(message)
+    {
+        PropertyValue = propertyValue;
+    }
+
+    public object PropertyValue { get; }
+}
+</code></pre>
+
+<p>I&rsquo;m using Resharper code annotation to enrich static code analysis. The <code>[Pure]</code> attribute saves us from the situation when somebody invokes exception factory method and by mistake forgets to add <code>throw</code> keyword (believe me, this happens).</p>
+
+<h3 id="listener-registration">Listener registration</h3>
+
+<p>The last thing we need is to register our <code>LengthValidatorListener</code> in Nhibernate configuration.</p>
+
+<pre><code class="language-csharp">protected override Configuration GetConfiguration()
+{
+    var configuration = new NHibernate.Cfg.Configuration().Configure();
+    var lengthValidatorListener = new LengthValidatorListener();
+    configuration.SetListener(ListenerType.PreUpdate, lengthValidatorListener);
+    configuration.SetListener(ListenerType.PreInsert, lengthValidatorListener);
+    return configuration;
+}
+</code></pre>
+
+<h2 id="profits">Profits</h2>
+
+<p>Since now every time some field value exceeds the length limitation we get a very descriptive exception that allows us to immediately locate the culprit. And there is one additional positive side effect of this solution - it works independently of database provider. Even if we run our test on SQLite (which doesn&rsquo;t obey the length constraints from NHibernate mappings) we should be able to detect length limit violation.</p>
+
+		  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+</body>
+</html>
