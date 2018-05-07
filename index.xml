@@ -6,10 +6,19 @@
     <description>Recent content on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 16 Apr 2018 00:22:53 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 07 May 2018 00:21:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Space eaten up by Resharper</title>
+      <link>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</link>
+      <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</guid>
+      <description>My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&amp;rsquo;m running out of free space. When there is a need I&amp;rsquo;m starting clearing-up by emptying c:\Users\user_name\AppData\Local\Temp\ and c:\Users\user_name\Downloads\ directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use WinDirStart to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.</description>
+    </item>
     
     <item>
       <title>Validating fields of NHibernate model</title>

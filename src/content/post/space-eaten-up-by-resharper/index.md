@@ -1,7 +1,7 @@
 ---
 title: "Space eaten up by Resharper"
 description: "How to easily regain free space by deleting old Resharper cache."
-date: 2018-05-07T00:22:53+02:00
+date: 2018-05-07T00:21:45+02:00
 tags : ["tools", "Resharper", "WinDirStat", ]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]

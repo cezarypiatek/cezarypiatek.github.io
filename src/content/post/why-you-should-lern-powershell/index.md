@@ -1,7 +1,7 @@
 ---
 title: "10 reasons why you should lern powershell"
 description: "My list of AutoMapper disadvantages which you should consider before using it in your project."
-date: 2018-052-05T00:22:00+02:00
+date: 2018-05-05T00:22:00+02:00
 tags : ["AutoMapper", "orm", "crud", "mapping", "cleancode", "static analysis"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]

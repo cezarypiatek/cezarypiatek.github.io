@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</loc>
+    <lastmod>2018-05-07T00:21:45+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</loc>
     <lastmod>2018-04-16T00:22:53+02:00</lastmod>
   </url>
@@ -97,7 +102,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2018-04-16T00:22:53+02:00</lastmod>
+    <lastmod>2018-05-07T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -228,7 +233,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2018-04-16T00:22:53+02:00</lastmod>
+    <lastmod>2018-05-07T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -246,7 +251,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
-    <lastmod>2017-12-14T22:34:18+02:00</lastmod>
+    <lastmod>2018-05-07T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -317,6 +322,12 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/tools/</loc>
+    <lastmod>2018-05-07T00:21:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/tortoise/</loc>
     <lastmod>2014-09-21T17:38:18+02:00</lastmod>
     <priority>0</priority>
@@ -337,6 +348,12 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/webdriver/</loc>
     <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/windirstat/</loc>
+    <lastmod>2018-05-07T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
