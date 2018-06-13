@@ -6,10 +6,19 @@
     <description>Recent content in Posts on CEZARY PIĄTEK</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 07 May 2018 00:21:45 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 13 Jun 2018 00:21:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Be the first to know of the bug</title>
+      <link>https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/</link>
+      <pubDate>Wed, 13 Jun 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/</guid>
+      <description>Over a year ago I heard for the first time about the ELK stack. Since then I&amp;rsquo;ve had an opportunity to help five teams to implements ELK as a part of their development process (one team is using it on production, the rest of them so far only in development environment). ELK stands for ElasticSearch-Logstash-Kibana and it&amp;rsquo;s a set of services that helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data.</description>
+    </item>
     
     <item>
       <title>Space eaten up by Resharper</title>

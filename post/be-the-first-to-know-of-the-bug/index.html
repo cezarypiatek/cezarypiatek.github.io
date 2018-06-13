@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to configure Logstash to send notifications to Microsoft Teams">   
+        
+    <meta property="article:published_time" content="2018-06-13">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/">	
+	<meta property="og:title" content="Be the first to know of the bug">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/splashscreen.jpg">
+    <meta property="og:description" content="How to configure Logstash to send notifications to Microsoft Teams">
+    <meta property="og:site_name" content="CEZARY PIĄTEK">
+    
+    <meta property="og:tags" content="ELK">
+    
+    <meta property="og:tags" content="Logstash">
+    
+    <meta property="og:tags" content="MS Teams">
+    
+    <meta property="og:tags" content="logging">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/splashscreen.jpg">
+	<meta property="twitter:title" content="Be the first to know of the bug">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to configure Logstash to send notifications to Microsoft Teams">
+
+	<meta name="keywords" value="ELK, Logstash, MS Teams, logging" />
+    <meta name="generator" content="Hugo 0.29" />
+    <title>Be the first to know of the bug &middot; CEZARY PIĄTEK</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="CEZARY PIĄTEK" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Be the first to know of the bug</h1>
+		  
+		<div><i class="fa fa-calendar"></i> 13 June 2018</div>
+		<hr />
+		
+	</header>
+
+	<article>
+		
+
+<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+
+<p>Over a year ago I heard for the first time about the <code>ELK stack</code>. Since then I&rsquo;ve had an opportunity to help five teams to implements ELK as a part of their development process (one team is using it on production, the rest of them so far only in development environment). ELK stands for <code>ElasticSearch-Logstash-Kibana</code> and it&rsquo;s a set of services that helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data. It is a very powerful tool because of its modular architecture. Each component is highly configurable and easy to extend, so it certainly allows you to make many productivity-boosting improvements in your development process. <strong>If you are not using ELK (or any alternative) you should put it as the number one on your TODO list - especially if you are doing microservices.</strong>.</p>
+
+<h2 id="shorten-the-feedback-loop">Shorten the feedback loop<a href="#shorten-the-feedback-loop" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>One of my ideas for increasing productivity of my team with ELK was to integrate it with <code>Microsoft Teams</code>. I wanted to shorten the feedback loop between error occurrence and diagnosis phase by notifying development team about the issue right after of the occurrence through the dedicated <code>Microsoft Teams Channel</code>. The recipe for this improvement is quite simple: <code>Microsoft Teams</code> can receive notification via webhook (I wrote a dedicated blog post about  <a href="../../post/integrating-teamcity-with-msteams/">using webhooks to send notifications to MS Teams</a>) and <code>Logstash</code> -  which is responsible for processing logs - ships with <a href="https://www.elastic.co/guide/en/logstash/current/plugins-outputs-http.html">http output plugin</a> that allows sending data through HTTP protocol. The complete solution can be implemented in only two steps:</p>
+
+<ol>
+<li>Acquire the MS Teams channel webhook URL (<a href="https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors#setting-up-a-custom-incoming-webhook">detailed description here</a>)</li>
+<li>Add HTTP output plugin configuration to your Logstash config file.</li>
+</ol>
+
+<p>A sufficient Logstash HTTP plugin configuration for sending messages to MS Teams can look as follows:</p>
+
+<pre><code class="language-plaintext">output { 
+   if ([level] == &quot;ERROR&quot;){
+      http {
+        url =&gt; &quot;MSTEAMS_CHANNEL_WEBHOOK_URL&quot;
+        http_method =&gt; &quot;post&quot;
+        content_type =&gt; &quot;application/json&quot;
+        format =&gt; &quot;json&quot;
+        mapping =&gt; [ &quot;title&quot;, &quot;MESSAGE_TITLE&quot;, &quot;text&quot;, 'MESSAGE_DETAILS' ]
+      }
+  }
+}
+</code></pre>
+
+<p>The <code>level</code> attribute contains information about log entry level (DEBUG, INFO, ERROR etc). From now on, every time Logstash processes error log entry, it will send a message to MS Teams.</p>
+
+<h2 id="notification-shape">Notification shape<a href="#notification-shape" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The notification sent to MS Teams channel should contain as much information as needed for fast diagnosis of the issue. In my implementation I used the following attributes:</p>
+
+<ul>
+<li>Precise date of the error occurence</li>
+<li>Application name (our system consists of two web applications)</li>
+<li>Environment name (we have a few testing environments for different purposes)</li>
+<li>Invoked Rest API endpoint URL</li>
+<li>Stacktrace</li>
+<li>Link to Kibana filter for all entries from this API invocation (I filter by app, environment and request id)</li>
+<li>A link that helps to create JIRA issue</li>
+</ul>
+
+<p>MS Teams accepts messages containing HTML and markdown, so you can format the message appropriately. A sample message looks as follows:</p>
+
+<p><img src="sample_ms_teams_message.jpg" alt="Sample MS Teams message" /></p>
+
+<h3 id="creating-kibana-filter-link">Creating Kibana filter link<a href="#creating-kibana-filter-link" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>Adding a Kibana link filtering entry logs related to given issue is quite easy. In the first step, you have to go to Kibana <code>Discovery</code> tab and create a filter that presents data from given request: select appropriate index, select fields to present and add the filter by requestId (I assume that your logs contain some kind of id that correlates entries from given request together). Every time you change filter parameters Kibana updates browser URL to reflect those settings. Now copy the browser URL and parametrize it by replacing hardcoded request id with <code>%{requestId}</code> placeholder. If the filter link is too long and bloats the message, you can extract it to a separate field with <code>mutate filter</code> and use it as a reference in the message sent to MS Teams. This trick helped me to improve readability and maintainability of Logstash configuration.</p>
+
+<pre><code class="language-plaintext">filter {
+    if [level] ==&quot;ERROR&quot;{
+       mutate {
+          add_field =&gt; { 
+              &quot;filterUrl&quot; =&gt; &quot;http://kibana.elk.mydomain.com:5601/app/kibana#/discover/4cc251b0-0d9d-11e8-83b5-4d431ddda270?_g=()&amp;_a=(columns:!(logger,level,logmessage,app_name,app_env),filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'8a4dc130-42dc-11e8-83b5-4d431ddda270',key:app_env,negate:!f,params:(query:%{app_env},type:phrase),type:phrase,value:%{app_env}),query:(match:(app_env:(query:%{app_env},type:phrase)))),('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'8a4dc130-42dc-11e8-83b5-4d431ddda270',key:app_name,negate:!f,params:(query:%{app_name},type:phrase),type:phrase,value:%{app_name}),query:(match:(app_name:(query:%{app_name},type:phrase))))),index:'8a4dc130-42dc-11e8-83b5-4d431ddda270',interval:auto,query:(language:lucene,query:'requestId:%{requestId}'),sort:!('@timestamp',desc))&quot;
+          }
+        }
+    }
+  } 
+}
+
+output {   
+  if ([level] == &quot;ERROR&quot;){
+      http {
+        url =&gt; &quot;MSTEAMS_CHANNEL_WEBHOOK_URL&quot;
+        http_method =&gt; &quot;post&quot;
+        content_type =&gt; &quot;application/json&quot;
+        format =&gt; &quot;json&quot;
+        mapping =&gt; [ &quot;title&quot;, &quot;[%{timestamp}][%{app_name} - %{app_env}] Unexpected exception occurred&quot;, &quot;text&quot;, '%{logmessage}&lt;br/&gt;&lt;strong&gt;Endpoint: &lt;/strong&gt; %{requestUrl}&lt;/br&gt;&lt;strong&gt;More details on&lt;/strong&gt; &lt;a href=&quot;%{filterUrl}&quot;&gt;Kibana&lt;/a&gt;&lt;br /&gt;&lt;hr/&gt;&lt;pre&gt;%{exception}&lt;/pre&gt;' ]
+      }
+  }
+}
+</code></pre>
+
+<p>Those Kibana filter links are very useful but have one flaw. By default, Kibana shows entries from the last 15-minute time period, so when somebody opens the link after 15 minutes - he gets nothing. There are two solutions: inform your team members that they need to pay attention to time filter; or add the time-related attribute to your link and parametrize it. So far I&rsquo;ve stayed with the first solution.</p>
+
+<h3 id="create-jira-issue-link">Create JIRA issue link<a href="#create-jira-issue-link" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>I&rsquo;ve also wanted to simplify the process of creating JIRA issue based on the data from the error notification. JIRA allows automating issue creation with REST API or by the special direct link.
+Unfortunately, I wasn&rsquo;t able to embed the link that send POST request to JIRA API in MS Teams message (as far as I know, it is possible with <a href="https://docs.microsoft.com/en-us/outlook/actionable-messages/actionable-messages-via-connectors">actionable message card</a> but there is a limitation of the Logstash HTTP plugin <a href="https://github.com/logstash-plugins/logstash-output-http/issues/4">issue#4</a> that prevents to create nested arrays inside JSON message). I choose the <a href="https://confluence.atlassian.com/jirakb/creating-issues-via-direct-html-links-159474.html">JIRA direct link</a> which should be in the following format:</p>
+
+<pre><code>https://jira.mydomain.com/secure/CreateIssueDetails!init.jspa?pid={PROJECT_ID}&amp;issuetype={ISSUE_TYPE_ID}&amp;summary={ERROR_MESSAGE}&amp;description={STACKTRACE}
+</code></pre>
+
+<p>Values of <em>PROJECT_ID</em> and <em>ISSUE_TYPE_ID</em> can be retrieved through JIRA REST API by sending GET request to the following endpoint (replace XXX with the project key - the prefix of issue key from given project)</p>
+
+<pre><code class="language-plaintext">https://jira.mydomain.com/rest/api/2/project/XXXX
+</code></pre>
+
+<p>Now you can compose JIRA issue creation link in Logstash analogously as Kibana filter link.</p>
+
+<p>Unfortunately, this solution is not perfect. It&rsquo;s not possible to create subtasks and the size of the information that can be attached is limited. On top of that, MS Teams has a problem with long hyperlinks in messages - they stop being clickable. The simple workaround was to add information that you have to copy this link ;)</p>
+
+<h3 id="too-much-notifications">Too much notifications<a href="#too-much-notifications" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>After connecting Logstash with MS Teams I observed I was getting too many notifications, to the point I stopped paying attention. This whole solution seemed useless. Having analyzed it again though, I discovered that only a subset of events was valuable. To deal with that I made a few optimizations.</p>
+
+<p>The first step I took was introducing a new category for log entry - <code>FATAL</code>. So far we were using only INFO, DEBUG and ERROR levels. The ERROR entries contained information about an invalid situation which was foreseen and handled in the code as well as truly unexpected. I wanted to get notifications only about the scenarios which weren&rsquo;t handled and could cause inappropriate or unexpected behavior of our system. Extracting <code>FATAL</code> category for truly unexpected exceptions allowed me to filter out a lot of noise. <strong>So now handled exceptions are logged with ERROR level and the unexpected one with FATAL.</strong></p>
+
+<pre><code class="language-plaintext">output { 
+   if ([level] == &quot;FATAL&quot;){
+      http {
+        url =&gt; &quot;MSTEAMS_CHANNEL_WEBHOOK_URL&quot;
+        http_method =&gt; &quot;post&quot;
+        content_type =&gt; &quot;application/json&quot;
+        format =&gt; &quot;json&quot;
+        mapping =&gt; [ &quot;title&quot;, &quot;MESSAGE_TITLE&quot;, &quot;text&quot;, 'MESSAGE_DETAILS' ]
+      }
+  }
+}
+</code></pre>
+
+<p>The second optimization was introducing a throttling. If the same error occurs multiple times in given time window we want to get notification only once. This is possible with Logstash throttle plugin. In the following configuration I&rsquo;m using throttle plugin to mark the first message in the 60s time frame, uniquely identified by &ldquo;%{app_name}%{app_env}%{logmessage}%{exception}&rdquo; key, with &ldquo;throttled&rdquo; tag. Afterwards, in the output section, I filter only messages containing &ldquo;throttled&rdquo; tag (the rest is ignored by HTTP plugin)</p>
+
+<pre><code class="language-plaintext">filter {  
+    if [level] ==&quot;FATAL&quot;{
+        throttle{
+          period =&gt; 60
+          max_age =&gt; 120
+          before_count =&gt; -1
+          after_count =&gt; 1
+          key =&gt; &quot;%{app_name}%{app_env}%{logmessage}%{exception}&quot;
+          add_tag =&gt; &quot;throttled&quot;
+      }
+    }
+  } 
+}
+
+output { 
+   if ([level] == &quot;FATAL&quot;)  and (&quot;throttled&quot; not in [tags]){
+      http {
+        url =&gt; &quot;MSTEAMS_CHANNEL_WEBHOOK_URL&quot;
+        http_method =&gt; &quot;post&quot;
+        content_type =&gt; &quot;application/json&quot;
+        format =&gt; &quot;json&quot;
+        mapping =&gt; [ &quot;title&quot;, &quot;MESSAGE_TITLE&quot;, &quot;text&quot;, 'MESSAGE_DETAILS' ]
+      }
+  }
+}
+</code></pre>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Thanks to modularity and rich set of plugins ELK gives a lot of possibilities. As you can see it was quite easy to build Logstash-MsTeams integration. It enabled faster responding for app errors and detecting bugs which could normally remain unnoticed for a long period. I wonder if you have any other ideas - implemented already or not - for utilizing ELK which can help to improve productivity? I would appreciate if you could share them in the comment section.</p>
+    
+		  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+</body>
+</html>

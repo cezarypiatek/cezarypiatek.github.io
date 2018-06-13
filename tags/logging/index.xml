@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Logging on CEZARY PIĄTEK</title>
+    <link>https://cezarypiatek.github.io/tags/logging/</link>
+    <description>Recent content in Logging on CEZARY PIĄTEK</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 13 Jun 2018 00:21:45 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/logging/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Be the first to know of the bug</title>
+      <link>https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/</link>
+      <pubDate>Wed, 13 Jun 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/</guid>
+      <description>Over a year ago I heard for the first time about the ELK stack. Since then I&amp;rsquo;ve had an opportunity to help five teams to implements ELK as a part of their development process (one team is using it on production, the rest of them so far only in development environment). ELK stands for ElasticSearch-Logstash-Kibana and it&amp;rsquo;s a set of services that helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data.</description>
+    </item>
+    
+  </channel>
+</rss>

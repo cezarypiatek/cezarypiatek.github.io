@@ -144,7 +144,7 @@
 
 <p>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&rsquo;s shipped with MVC bootstrapping template and it&rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.NET MVC frontend developer, and how to fix them.</p>
 
-<h2 id="how-it-works">How it works.</h2>
+<h2 id="how-it-works">How it works.<a href="#how-it-works" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Before we start, let me briefly remind you how jquery.unobtrusive-ajax.js works. As I&rsquo;ve mentioned in the introduction, this library adds ajax support for forms and hyperlinks. In order to use it you have to provide a set of appropriate data-ajax-* attributes which will be &ldquo;interpreted&rdquo; by the javascript library. You don&rsquo;t need to type these attributes directly - you can use AjaxOptions object accepted by razor helpers and translated into given html attributes. These attributes are responsible for configuring ajax connection, selecting the predefined behavior for handling ajax response and providing custom callbacks for given ajax events. The latter can be entered in the form of javascript method name, but nothing prevents us from typing full javascript expression. A sample usage of AjaxOptions with conjunction of Ajax.BeginForm can look as follows.</p>
 
@@ -182,7 +182,7 @@ window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot
 
 <p>In ASP Core there is no longer AjaxHelper and AjaxOptions but you can still use jquery.unobtrusive-ajax.js functionality by providing data-ajax-* attributes manually.</p>
 
-<h2 id="is-it-truly-unobtrusive">Is it truly unobtrusive?</h2>
+<h2 id="is-it-truly-unobtrusive">Is it truly unobtrusive?<a href="#is-it-truly-unobtrusive" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>I think the root of all problems lays in the (miss)understanding of &ldquo;unobtrusive javascript&rdquo; term. According to <a href="https://en.wikipedia.org/wiki/Unobtrusive_JavaScript">Wikipedia</a> the concept of unobtrusive javascript appeared for the very first time in Stuart Langridge&rsquo;s article <a href="https://kryogenix.org/code/browser/aqlists/">Unobtrusive DHTML, and the power of unordered lists</a> from 2002. A better explanation we can find in David Flanagan&rsquo;s book &ldquo;JavaScript: The Definitive Guide&rdquo; which looks as follows:</p>
 
@@ -196,7 +196,7 @@ window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot
 
 <p>According to this definition jquery.unobtrusive-ajax.js is not even close to unobtrusive approach compliance because it requires providing javascript callbacks inside the html attributes. I think the author(s) of this library was mainly focused on the aspect of Graceful degradation - which nowadays has marginal meaning - and totally forgot about separation of concerns between Javascript and HTML code.</p>
 
-<h2 id="implications">Implications</h2>
+<h2 id="implications">Implications<a href="#implications" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>The main issue is not the compliance with the definition but the fact that this programming style (I mean messing javascript code with html markup) has some serious ramification. First of all, this code is really hard to maintain. If you put javascript code inside html atttributes you won&rsquo;t be able to refactor it with automatic refactoring tools, debug or verify syntax correctness. This is also  abused sometimes to build javascript dynamically (by concatenating strings) which could result with the potential XSS attack.</p>
 
@@ -206,7 +206,7 @@ window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot
 
 <p><img src="csp_error.jpg" alt="CSP Error" /></p>
 
-<h2 id="how-to-fix-it">How to fix it?</h2>
+<h2 id="how-to-fix-it">How to fix it?<a href="#how-to-fix-it" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Now we know that the broken part of jquery.unobtrusive-ajax.js is about providing callback for ajax events, so we have to find a different way for creating these subscriptions.
 Unfortunately, I wasn&rsquo;t able to find any solution that wouldn&rsquo;t imply modification of jquery.unobtrusive-ajax.js source code. I&rsquo;m not a huge fan of modifying third party libraries for given project purpose because this has a lot of negative implications (for example you have to manually apply all updates and there is much more). I&rsquo;ve even decided to send PR with fix proposal but it was rejected with not entirely clear reasons, so I&rsquo;ve stucked with private modification of this library.</p>
@@ -333,10 +333,10 @@ $.extend(AjaxEventAggregator, (function () {
 <li>You improve the maintainability of your code responsible for handling ajax events.</li>
 </ol>
 
-<h2 id="final-thought">Final thought</h2>
+<h2 id="final-thought">Final thought<a href="#final-thought" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>This fake &ldquo;unobtrusive&rdquo; sense is not only jquery.unobtrusive-ajax.js related problem. You should always check CSP compliance of your javascript library/framework of choice before you start any development. Postponing this verification can generate additional costs and even result with system rewriting.</p>
-
+    
 		  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
 		<div class="addthis_inline_share_toolbox"></div>
