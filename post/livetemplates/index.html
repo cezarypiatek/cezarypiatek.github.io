@@ -132,7 +132,7 @@
 
 <p>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.</p>
 
-<h2 id="template-explorer">Template Explorer</h2>
+<h2 id="template-explorer">Template Explorer<a href="#template-explorer" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&gt; Template Explorer&hellip;).</p>
 
@@ -160,13 +160,13 @@
 
 <p>We can find there buttons to create new template, create new category, edit existing template, delete existing template and import/export templates. There’s also a combo that allow as to select a resharper layer in which the templates will be placed. That simply helps us to hide or share our templates.</p>
 
-<h2 id="about-layers">About Layers</h2>
+<h2 id="about-layers">About Layers<a href="#about-layers" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p><img src="resharper_layers.png" alt="" /></p>
 
 <p>Resharper introduces four layers: &ldquo;Smart&rdquo;, &ldquo;Solution personal&rdquo;, &ldquo;Solution team-shared&rdquo; and &ldquo;This computer&rdquo;. This four layers help you organize your templates. They are especially helpful when you want to have some common templates  for all project or different templates for particular projects. Settings (and templates definition as well) for the ‘Solution “XXX” team-shared’ layer are persisted in &lsquo;XXX.DotSettings&rsquo; file, settings of ‘Solution “XXX” personal’ are in &lsquo;XXX.DotSettings.user&rsquo; (where XXX is the solution name). The files are in your solution folder. All the templates that you want to share with your project mates should be placed in “team-shared” layer and the &lsquo;XXX.DotSettings&rsquo; file should be managed by version control system (if you use one). Templates localized in person layer are available only for you, and file &lsquo;XXX.DotSettings.user&rsquo; should be ignored by version control system (otherwise you override you team mates&rsquo; private settings). &ldquo;This computer&rdquo; contains templates available for all solutions developed on your machine. &ldquo;Smart&rdquo; layer presents effective templates set. It’s a union of all templates from all layers filtered by priority (the highest priority has &ldquo;personal&rdquo; layer, and the lowest priority has &ldquo;this computer&rdquo; layer). You can find more about resharper layers in reshareper doc (Reference: <a href="http://www.jetbrains.com/resharper/webhelp/Reference__Settings_Layers.html">Settings Layers</a> and <a href="http://www.jetbrains.com/resharper/webhelp/Sharing_Configuration_Options.html">Sharing Configuration Options</a>).</p>
 
-<h2 id="template-inserting">Template inserting</h2>
+<h2 id="template-inserting">Template inserting<a href="#template-inserting" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Using Live Templates is pretty easy. In order to insert an inline Live Template you just need to write  a shortcut of given template in the code and press the Tab key. To wrap a code in Surround Template select a code that you wan to wrap, press alt+enter and select from the &ldquo;Surround with..&rdquo; menu a template that you want to use. The table below shows some useful shortcuts that helps you with template inserting:</p>
 
@@ -200,9 +200,9 @@
 </tbody>
 </table>
 
-<h2 id="create-own-templates">Create own templates</h2>
+<h2 id="create-own-templates">Create own templates<a href="#create-own-templates" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
-<h3 id="example-1-inline-live-template">Example 1: Inline Live Template</h3>
+<h3 id="example-1-inline-live-template">Example 1: Inline Live Template<a href="#example-1-inline-live-template" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 
 <p>It’s time to show you how you can define your own live template. I’ll start with live template for inline completion. I want to create a template that speeds up creating a jquery widget using widget factory. Without live template, every time I created widget I had to start with writing the following code:</p>
 
@@ -214,7 +214,7 @@
 
 <p>My template has one custom parameter – widget name. After saving the changes templates should be ready to use. You can test it by typing keyword ‘widget’ and pressing tab key inside javascript file. To move between parameters press the tab key again. That’s all. Pretty easy, isn’t it?</p>
 
-<h3 id="example-2-surround-template">Example 2: Surround Template</h3>
+<h3 id="example-2-surround-template">Example 2: Surround Template<a href="#example-2-surround-template" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 
 <p>Now we create a surround template. It will be a template to insert MiniProfiler section inside existing code. Every time I want to use Miniprofiler I have to wrap my code in using section as the following code shows:</p>
 
@@ -234,7 +234,7 @@
 
 <p>In ‘Choose Template’ window select ‘Mini profiler section’ and check ‘Add to quicklist’ option. Click ‘Ok’ and our template will be inserted. From now, ‘Mini profiler section’ option should be available in ‘Surround with…’ submenu.</p>
 
-<h3 id="example-3-file-template">Example 3: File Template</h3>
+<h3 id="example-3-file-template">Example 3: File Template<a href="#example-3-file-template" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 
 <p>Let’s say we have a web application and all edit forms are displayed in popup. Every time we want to create edit form we have to previously create file and write the same constant code construction, for example something like the following code:</p>
 
@@ -264,10 +264,10 @@
 
 <p>In “Choose Template” window select “Razor C#” scope and our new template should be visible on templates list. Select “Add to quicklist” and click “Ok” button. From now on our template should be available in “New from Template” menu list.</p>
 
-<h2 id="summary">Summary</h2>
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>As you have seen above, Live Templates is a very powerful tool that is easy to configure and use . It allows you to save some time and makes coding more fun. Additionally, using templates makes it easier to keep naming and code structure conventions as well as avoid copy&amp;paste mistakes.</p>
-
+    
 		  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
 		<div class="addthis_inline_share_toolbox"></div>

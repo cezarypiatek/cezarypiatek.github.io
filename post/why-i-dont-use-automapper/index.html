@@ -148,7 +148,7 @@
 
 <p>Over 5 years ago I participated in a project where there was a trial of using AutoMapper but happily we drown back from this idea in time. Bear with me and I&rsquo;ll explain you why this was a good decision.</p>
 
-<h2 id="misleading-static-analysis">Misleading static analysis</h2>
+<h2 id="misleading-static-analysis">Misleading static analysis<a href="#misleading-static-analysis" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>The first problem is that static analysis starts to report that some fields from my entity are never used. There is no direct reference in the code because on one side ORM automatically maps those fields into database table columns and on the other side there is AutoMapper. This issue is related to fields which are not involved in any business logic and they are simply read from user input, saved into database and read back only for raw presentation purpose (the business always wants to gather as much information as possible). So when we take advice from static analysis report and we drop those fields, we simply break the system. We could mark those fields with [UsedImplicity] attributes (if you use Resharper static analysis) or disable this inspection completely, but that only hides the problem. We experience the same situation with DTO objects. On one side there&rsquo;s AutoMapper, on the other - some kind of serializer. And again, if we rename or drop the field we silently break the system. We&rsquo;ll get feedback only when we run some kind of test during the runtime.
 For me, the static analysis plays a really important role in managing the project&rsquo;s code quality and when some library starts to undermine the credibility of this report I have to have a really good reason to choose that library. It&rsquo;s the same situation like in the story about a building with a broken window - when we have to ignore some set of errors caused by usage of given library, sooner or later we start to ignore other errors because we are not able to distinguish which one is a real problem. If you are in a situation where you are not burdened with errors that you have to mentally ignore, you can treat static analysis as another type of test for your system. You can run static analysis tool as a part of your continuous integration pipeline and treat all reported errors the same way as you treat failed unit tests.</p>
@@ -157,11 +157,11 @@ For me, the static analysis plays a really important role in managing the projec
 
 <p>This will definitely save your code from really sophisticated bugs. You can read more about problems that can be solved thanks to static analysis in my post devoted to <a href="../../post/hunt-your-bugs-design-time/">Resharper Solution Wide Analysis</a></p>
 
-<h2 id="helpless-code-navigation">Helpless code navigation</h2>
+<h2 id="helpless-code-navigation">Helpless code navigation<a href="#helpless-code-navigation" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Another problem is that it is not possible to find out which field from DTO maps to which field in entity (or entities). When we use tools like &ldquo;show usages&rdquo; it shows us only this single occurrence because there is no explicit mapping in the codebase. The resolution is to explicitly write mapping configuration for all the fields we want to map, but do I really need a heavy reflection mechanism to rewrite value from field in one object to another?</p>
 
-<h2 id="hard-to-debug">Hard to debug</h2>
+<h2 id="hard-to-debug">Hard to debug<a href="#hard-to-debug" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>The next important issue is fluent configuration. I&rsquo;m not a huge fan of this code writing approach, actually I don&rsquo;t like it at all. Why? It&rsquo;s very hard to debug this kind of code and sometimes it&rsquo;s even impossible. This is not a code which is evaluated, it&rsquo;s only a declarative description of expected behavior. Your &ldquo;code&rdquo; is processed by third party library which produces real code based on this description. Even if you provide mapping code within <strong>MapFrom&lt;&gt;</strong> method, you can&rsquo;t put there breakpoint and expect that program invocation stops when you call  <strong>Mapper.Map&lt;&gt;()</strong> method. This is due the fact that <strong>MapFrom&lt;&gt;()</strong> is expecting <strong>Expression&lt;Func&lt;TSource, TSourceMember&gt;&gt;</strong> not <strong>Func&lt;TSource, TSourceMember&gt;</strong>.  And if you have a bug in your mapping code you don&rsquo;t get exception in the place where you could potentially expect it. Actually you don&rsquo;t get any exception at all. I observed that AutoMapper is somehow swallowing exception that occurs during the mapping. These reasons makes debugging very hard.</p>
 
@@ -193,7 +193,7 @@ For me, the static analysis plays a really important role in managing the projec
 }
 </code></pre>
 
-<h2 id="broken-code-organization">Broken code organization</h2>
+<h2 id="broken-code-organization">Broken code organization<a href="#broken-code-organization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Some people say that AutoMapper is perfectly fine for simple projects, but believe me - there is no such thing as simple project. Even when it looks simple at the beginning - sooner or later it gets complex. Starting with straigth one-to-one mapping between entities and dtos (or whatever types of objects you need to map) doesn&rsquo;t mean that you won&rsquo;t need to implement the following requirements in further stages of your project development:</p>
 
@@ -206,7 +206,7 @@ For me, the static analysis plays a really important role in managing the projec
 
 <p>People tend to put this complex mapping logic inside the AutoMapper configuration because this is the fastest way to achieve expected effect. I think it&rsquo;s a really bad practice to put your business and security logic inside some infrastructure tool configuration. This is the beginning of slippery slope and in the long term it will make the development, testing and maintenance more complicated. You can say ok - if I&rsquo;ve got complex mapping then I write it explicitly. But then you have two ways of implementing one thing - AutoMapper and explicit mapping. And then the question appears: &ldquo;When should I use which?&rdquo;. And the answer is: &ldquo;it depends&hellip;&rdquo;. And you introduce chaos into your codebase.</p>
 
-<h2 id="how-to-organize-mappings">How to organize mappings</h2>
+<h2 id="how-to-organize-mappings">How to organize mappings<a href="#how-to-organize-mappings" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this &ldquo;dummy&rdquo; code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I&rsquo;ve mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo* and MapFrom* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context). Example service mapper can look like this below:</p>
 
@@ -238,10 +238,10 @@ For me, the static analysis plays a really important role in managing the projec
 }
 </code></pre>
 
-<h2 id="final-thought">Final thought</h2>
+<h2 id="final-thought">Final thought<a href="#final-thought" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>AutoMapper is probably good for really small, short-lived projects or proof of concepts, but when you start to care about your code quality, you should definitely rethink all pros and cons regarding using AutoMapper. When you observe problems like the ones described in this blog post, you should consider abandoning AutoMapper and start to write your mappings explicitly (it really doesn&rsquo;t hurt). If you encountered other problems which arised from using AutoMapper I would be really appreciate if you could share your experience in the comment section down below.</p>
-
+    
 		  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
 		<div class="addthis_inline_share_toolbox"></div>
