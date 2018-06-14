@@ -1,15 +1,61 @@
 ---
 title: "Demystifying ELK stack"
 description: "How to easily implement centralized loging system based on ELK stack."
-date: 2018-01-25T00:05:18+02:00
+date: 2018-06-17T00:05:18+02:00
 tags : ["Kibana", "Logstash", "ElasticSearch", "ELK", "Filebeat", "logging"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
 image: "splashscreen.jpg"
 isBlogpost: true
-draft: true
+draft: false
 ---
 ![splashscreen](splashscreen.jpg)
+
+
+## Introduction
+ - collecting logs from multiple servers, appps, in different formats
+ - at first it may sounds complicated but I do my best to clarify this topic here. I will show you step by step how to implement ELK in your existing project without making any changes in your code base.
+
+## Setup ELK with Docker
+Don't waste time on installing all components by hand. Use Existing, preconfigured docker images. There are two options:
+ - Single image https://elk-docker.readthedocs.io/
+ - Docker compose https://github.com/deviantony/docker-elk
+
+## Collecting logs with Filebeat
+ - install filebeat
+ - configure filebeat
+ - run debugging
+
+
+## Processing logs with Logstash
+ - input, filter, output
+ - configure parsing
+ - links to logstash debugger
+ - info about logstash debugger inside x-pack
+ - checking logs
+
+
+## Presenting logs with Kibana
+ - configure index [you need to inject data into Logstash before being able to configure a Logstash index pattern via the Kibana web UI. ]
+ - how to use discovery
+ - generate links for single entry and filter
+
+## Maintenance
+ -  listing and removing index throught kibana
+ -  Use Elastic API with postman
+ -  Cron job
+
+
+## Key to the success
+ - Educate your team
+ - Where it's accessible
+ - How to use it
+ 
+## Summary
+
+
+
+
 
 1. Problem description
 2. Architecture overview
