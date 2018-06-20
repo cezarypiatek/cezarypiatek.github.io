@@ -12,28 +12,125 @@ draft: false
 ![splashscreen](splashscreen.jpg)
 
 
+The purpose of this blog post is to summarize my knowledge about settuping ELK stack for existing project without need to make any changes in your codebase. The first time when I tried to do that it took me a few days. In the last project (It was the four time) I was able to make it work in three hours. My application is build with ASP.NET framework hosted on IIS and logging with `log4net`, but it doesn't mattern because ELK is capable to collect, process, store and presents logs in any formats. I hope you can find this notes valuable and it helps you to save some time.
+
 ## Introduction
  - collecting logs from multiple servers, appps, in different formats
  - at first it may sounds complicated but I do my best to clarify this topic here. I will show you step by step how to implement ELK in your existing project without making any changes in your code base.
 
-## Setup ELK with Docker
-Don't waste time on installing all components by hand. Use Existing, preconfigured docker images. There are two options:
- - Single image https://elk-docker.readthedocs.io/
- - Docker compose https://github.com/deviantony/docker-elk
+## Setup ELK
+
+At first you need a Linux serwer which will be responsible for processing and storing log data. You have to install there ElasticSearch, Logstash and Kibana. You can do it manually by yourself or save a lot of time and use preconfigured docker images. In the docker path we have two options:
+
+ - Single image https://elk-docker.readthedocs.io/ All services are packed into single image. This is not an official release but the documentation is excellent.
+ - Docker compose https://github.com/deviantony/docker-elk Every service comes as a separated official docker image combine together with docker compose file.
+
+Because the both solutions are very well documented it's needles to duplicate it here.
+
 
 ## Collecting logs with Filebeat
- - install filebeat
- - configure filebeat
- - run debugging
+
+Filebeat is responsible for collecting your log data and send it to Logstash. In order to install Filebeat download appriopiate archive with binarries from https://www.elastic.co/downloads/beats/filebeat and extract it on the serwer where your logs are stored. I'm not recomending choosing `c:\Program Files\` or `c:\Program Files (x86)\` paths because `user access control` make it hard to update configuration file. After extracting archive, open `PowerShell` console, go to the dicrectory with FileBeat binaries and execute the following scrip
+
+```powershell
+./install-service-filebeat.ps1
+```
+
+This should install `filebeat` as a Windows service. Use `Get-Service filebeat` to verify the current status of filebeat service. No you have to configure filebeat to harvest log data produced by your application. Filebeat havesting configuration is located in `filebeat.yml` file and minimal configuration that works for me looks as follows:
+
+
+```yml
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - c:\inetpub\wwwroot\MyApp\logs\
+  scan_frequency: 10
+  encoding: utf-8
+  multiline.pattern: '^(\d{4}-\d{2}-\d{2}\s)'
+  multiline.negate: true 
+  multiline.match: after  
+  fields_under_root: true
+  fields:
+    app_env: test
+    app_name: client
+    type: web
+
+output.logstash:  
+  hosts: ["10.0.2.12:5044"]
+  bulk_max_size: 1024
+```
+
+To make it work with your log data you should modifie the following options:
+
+ - `paths` should point to the location where your app is producing files with logs. Directory paths are accepted and conrete files as well (wildcards are accepted to)
+ - `multiline.pattern` - regex pattern that match the begining of the new log entry inside the log file. In my case I'm expecting a line that starts with a date in the follogin format yyyy-MM-dd.
+ - `fields` - a set of additional attributes that will be added to each log entry. I'm using it later to build ElasticSearch index and identifie the logs source.
+ - `output.logstash` - `hosts` this is ip and port where the logstash is installed and listening. (TODO: how to extract it from docker)
+
+Filebat configuration is the yaml format which is sensible for whitespace. I'm using `VisualStudioCode` with `yaml` plugin to avoid potential problem cause by invalid intendation.
+After updating Filebeat configuration restart the service using `Restart-Service filebeat` powershell command. If you are not sure that Filebeat is working as expected stop Filebeat service with `Stop-Service filebat` and run it in the debbug mode using command `filebeat -e -d "publish"` where all events will be printed in the console. [Here](https://www.elastic.co/guide/en/beats/filebeat/1.1/enable-filebeat-debugging.html) you can read more about filebeat debugging.
 
 
 ## Processing logs with Logstash
- - input, filter, output
- - configure parsing
- - links to logstash debugger
- - info about logstash debugger inside x-pack
- - checking logs
+Another piece of our logging stack is Logstash. This service is responsible for processing log entries. Its configuration consists of three parts
+ - input 
+ - filter 
+ - output
+ 
+In the `input` section we have to configure plugin that allows us to receive data from filebeat. The `filter` section is responsible for parsing and transforming log entries.
+The `output` section allows to set plugin that sends structural logs to target storage (ElasticSearch in our case)
 
+In order to parse logs you have to use [Grok filter](https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html). `Grok` is DSL that can be described as regular expression on the steroids. It allows to use standard `regexp` as well as predefined patterns (there is even an option to create own patterns). A list of default patterns is available [here](https://github.com/elastic/logstash/blob/v1.4.2/patterns/grok-patterns). Pattern that handles multiline entries should starts with `(?m)`. Sample multiline patter can looks as follows:
+
+```plaintext
+(?m)%{TIMESTAMP_ISO8601:timestamp}~~\[%{NUMBER:thread}\]~~\[%{USERNAME:user}\]~~\[%{DATA:ipAddress}\]~~\[%{DATA:requestUrl}\]~~\[%{DATA:requestId}\]~~%{DATA:level}~~%{DATA:logger}~~%{DATA:message}~~%{GREEDYDATA:exception}\|\|
+```
+
+To test your grok pattern you can use the followings on-line grok debuggers:
+
+- http://grokdebug.herokuapp.com/ - Works with multiline but handles only single entry
+- http://grokconstructor.appspot.com/do/match - Works with multiple log entries but unfortunately is not accepting `(?m)` at the begging (multiline switch can be used for subpatterns, checkout this [example](http://grokconstructor.appspot.com/do/match?example=0))
+
+Grok debbugger is also a part of Kibana X-Pack ([Grok debugger in X-Pack](https://www.elastic.co/guide/en/kibana/current/grokdebugger-getting-started.html)).
+
+Sample logstash configuration with input listening to filebeat and ouput set to elasticsearch:
+
+```
+input {
+  beats {
+    port => 5044
+  }
+}
+filter {
+  grok {      
+      match => { "message" => "(?m)^%{TIMESTAMP_ISO8601:timestamp}~~\[%{DATA:thread}\]~~\[%{DATA:user}\]~~\[%{DATA:requestId}\]~~\[%{DATA:userHost}\]~~\[%{DATA:requestUrl}\]~~%{DATA:level}~~%{DATA:logger}~~%{DATA:logmessage}~~%{DATA:exception}\|\|" }
+      add_field => { 
+        "received_at" => "%{@timestamp}" 
+        "received_from" => "%{host}"
+      }
+      remove_field => ["message"]      
+    }
+  date {
+    match => [ "timestamp", "yyyy-MM-dd HH:mm:ss:SSS" ]
+  }
+}
+
+output { 
+  elasticsearch {
+    hosts => ["127.0.0.1:9200"]
+    sniffing => true
+    manage_template => false 
+    index => "%{app_name}_%{app_env}_%{type}-%{+YYYY.MM.dd}"
+    document_type => "%{[@metadata][type]}"
+  }
+}
+```
+
+Please notice that besides the grok filter I've also used `date` filter to set date type for field containint our timestamp (thanks to that Kibana will be able to use it for time  filter).
+
+Save your logstash config in `MyApp.conf` file and put under `/etc/logstash/conf.d` path (if you are using docker copy to the directory that is mapped to this volume). To copy files between windows and linux machine I'm using [WinScp](https://winscp.net/eng/download.php)
+
+After updating logstash configuration you have to restart this service with command `systemctl restart logstash`. If there is a problem with restarting logstash you can check its logs in `/var/log/logstash` directory.
 
 ## Presenting logs with Kibana
  - configure index [you need to inject data into Logstash before being able to configure a Logstash index pattern via the Kibana web UI. ]
@@ -44,6 +141,28 @@ Don't waste time on installing all components by hand. Use Existing, preconfigur
  -  listing and removing index throught kibana
  -  Use Elastic API with postman
  -  Cron job
+![Elastic is not working](elastic_is_down.jpg)
+
+
+You can remove old indices using ElasticSeach API. In order to send request to ElasticSearch API you can use any REST client ([postman](https://www.getpostman.com/) or event powershell `Invoke-RestMethod` cmdlet).
+
+![Kibana dev tools](kibana_dev_tools.jpg)
+
+Gettting list of all indices:
+
+```powershell
+Invoke-RestMethod -Method Get -Uri http://your-elk.domain.com:9200/_cat/indices
+```
+
+Delete indices which match given pattern
+
+```powershell
+Invoke-RestMethod -Method Delete -Uri http://your-elk.domain.com:9200/my_index_pattern-*
+```
+Be carefull not tu drop `.kibana` index.
+
+
+[Curator](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.1/delete_indices.html)
 
 
 ## Key to the success

@@ -12,6 +12,7 @@ draft: true
 ![splashscreen](splashscreen.jpg)
 
 At the beginning of my professional software developer career, I have a few unsuccessful attempts to learn PowerShell. I tried to learn from online tutorials but... All of them described a set of selected cmdlets and describe how to combine them together. I gave up for few years but again... After reading XXX and YYY I've got a solid explanation of basic PowerShell concepts and that totally change my every-day work. A few weeks ago I started working on my own Powershell training which should be mainly focused on what possibilities gives knowledge of that scripting language and how to apply it to automate our work. In the first part of the course, I'm going to describe what are the most valuable features of Powershell. In this blog post, I gave you a free sample of my course by summing up this part, so if you wonder why should you learn PowerShell instead of other scripting languages you have to definitely keep reading.
+
 ### #1 Object-oriented 
 
 Powershell functions can return data that are not plaintext but have a structure. You don't need to be a Regex-Master to write powershell scripts.
