@@ -42,5 +42,15 @@
 	  });
 	</script>
   {{end}}
+  {{ if .Params.isBlogpost }}  
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+{{end}}
 </body>
 </html>
