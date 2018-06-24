@@ -12,7 +12,7 @@ draft: false
 ![splashscreen](splashscreen.jpg)
 
 
-The purpose of this blog post is to summarize my knowledge about settuping ELK stack for existing project without need to make any changes in your codebase. The first time when I tried to do that it took me a few days. In the last project (It was the four time) I was able to make it work in three hours. My application is build with ASP.NET framework hosted on IIS and logging with `log4net`, but it doesn't mattern because ELK is capable to collect, process, store and presents logs in any formats. I hope you can find this notes valuable and it helps you to save some time.
+The purpose of this blog post is to summarize my knowledge about settuping ELK stack for existing project without need to make any changes in your codebase. The first time when I tried to do that it took me a few days. In the last project (It was the four time) I was able to make it work in three hours. My application is build with ASP.NET framework hosted on IIS and logging with `log4net`, but it doesn't mattern because ELK is capable to collect, process, store and presents logs that comes in any formats. I hope you can find this notes valuable and it helps you to save some time.
 
 ## Introduction
  - collecting logs from multiple servers, appps, in different formats
@@ -36,7 +36,7 @@ Filebeat is responsible for collecting your log data and send it to Logstash. In
 ./install-service-filebeat.ps1
 ```
 
-This should install `filebeat` as a Windows service. Use `Get-Service filebeat` to verify the current status of filebeat service. No you have to configure filebeat to harvest log data produced by your application. Filebeat havesting configuration is located in `filebeat.yml` file and minimal configuration that works for me looks as follows:
+This should install `filebeat` as a Windows service. Use `Get-Service filebeat` to verify the current status of filebeat service. In the next step you have to configure filebeat to harvest log data produced by your application. Filebeat havesting configuration is located in `filebeat.yml` file and minimal configuration that works for me looks as follows:
 
 
 ```yml
@@ -67,7 +67,7 @@ To make it work with your log data you should modifie the following options:
  - `fields` - a set of additional attributes that will be added to each log entry. I'm using it later to build ElasticSearch index and identifie the logs source.
  - `output.logstash` - `hosts` this is ip and port where the logstash is installed and listening. (TODO: how to extract it from docker)
 
-Filebat configuration is the yaml format which is sensible for whitespace. I'm using `VisualStudioCode` with `yaml` plugin to avoid potential problem cause by invalid intendation.
+Filebat configuration is in the yaml format which is sensible for whitespace. I'm using `VisualStudioCode` with [yaml plugin](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) to avoid potential problem cause by invalid intendation.
 After updating Filebeat configuration restart the service using `Restart-Service filebeat` powershell command. If you are not sure that Filebeat is working as expected stop Filebeat service with `Stop-Service filebat` and run it in the debbug mode using command `filebeat -e -d "publish"` where all events will be printed in the console. [Here](https://www.elastic.co/guide/en/beats/filebeat/1.1/enable-filebeat-debugging.html) you can read more about filebeat debugging.
 
 
@@ -133,6 +133,10 @@ Save your logstash config in `MyApp.conf` file and put under `/etc/logstash/conf
 After updating logstash configuration you have to restart this service with command `systemctl restart logstash`. If there is a problem with restarting logstash you can check its logs in `/var/log/logstash` directory.
 
 ## Presenting logs with Kibana
+The last thing that left to do is to configure log presentation in Kibana. At first we have to configure index pattern. Open Kibana in web browser (type your ELK server address with port 5601). Go to `Management -> Index Patterns -> Create Index Patter`. In the `Step 1` provide your index name with the date replaced by wildcard (This is the value defined in logstash configuration for `output.elasticsearch.index`). You need to inject data into elasticsearch before being able to configure it (if there is no index maching your patter, make sure that the filebeat and logstash are working correctly) In the `Step 2` select `@timestamp` field for `Time Filter field name`. After successfuly creating index, you can go to `Discover` tab and start quering your new index.
+
+
+
  - configure index [you need to inject data into Logstash before being able to configure a Logstash index pattern via the Kibana web UI. ]
  - how to use discovery
  - generate links for single entry and filter
