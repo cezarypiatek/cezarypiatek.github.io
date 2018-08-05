@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on CEZARY PIĄTEK</title>
+    <title>Tags on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/tags/</link>
-    <description>Recent content in Tags on CEZARY PIĄTEK</description>
+    <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 18 Feb 2018 00:22:00 +0200</lastBuildDate>
@@ -311,7 +311,7 @@
     <item>
       <title>Selenium</title>
       <link>https://cezarypiatek.github.io/tags/selenium/</link>
-      <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
+      <pubDate>Sun, 05 Aug 2018 00:21:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/selenium/</guid>
       <description></description>
@@ -372,6 +372,15 @@
     </item>
     
     <item>
+      <title>Testing</title>
+      <link>https://cezarypiatek.github.io/tags/testing/</link>
+      <pubDate>Sun, 05 Aug 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Todo</title>
       <link>https://cezarypiatek.github.io/tags/todo/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
@@ -404,6 +413,15 @@
       <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/tortoise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ui Tests</title>
+      <link>https://cezarypiatek.github.io/tags/ui-tests/</link>
+      <pubDate>Sun, 05 Aug 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/ui-tests/</guid>
       <description></description>
     </item>
     

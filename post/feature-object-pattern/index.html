@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Creating maintainable UI test with Feature Object Pattern.">   
+        
+    <meta property="article:published_time" content="2018-08-05">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/feature-object-pattern/">	
+	<meta property="og:title" content="Feature Object Pattern">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/feature-object-pattern/splashscreen.jpg">
+    <meta property="og:description" content="Creating maintainable UI test with Feature Object Pattern.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="Selenium">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="ui-tests">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/feature-object-pattern/splashscreen.jpg">
+	<meta property="twitter:title" content="Feature Object Pattern">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Creating maintainable UI test with Feature Object Pattern.">
+
+	<meta name="keywords" value="Selenium, testing, ui-tests" />
+    <meta name="generator" content="Hugo 0.44" />
+    <title>Feature Object Pattern &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>Feature Object Pattern</h1>
+		  
+		<div><i class="fa fa-calendar"></i> 5 August 2018</div>
+		<hr />
+		
+	</header>
+
+	<article>
+		
+
+<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+
+<p>When it comes to writing maintainable UI test there always appears the term of <code>Page Object Pattern</code>. For those who are not familiar with <code>Page Object</code>, it&rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler <a href="https://martinfowler.com/bliki/PageObject.html">here</a>.</p>
+
+<p>Page Objects can be prepared by programmers who participate in development of tested application. This approach is very efficient because the programmer knows best the implementation details, how particular elements were built and how to interact with them. Such Page Object can be then used by testers to automate test cases. I think this is the most effective way of preparing automatic UI tests because everybody does what they know best. A testing person is excused from the need of getting to know how the tested app is built, how the used technology works and they can focus entirely on automatig test cases using high level testing api.</p>
+
+<h2 id="introduction-of-feature-object">Introduction of Feature Object<a href="#introduction-of-feature-object" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<blockquote>
+<p>A page object wraps a HTML page, or fragment, with an application-specific API, allowing you to manipulate page elements without digging around in the HTML.</p>
+</blockquote>
+
+<p>This is a quote from Martin Fowler&rsquo;s Page Object description. We can take it a little further by applying the <code>divide and conquer</code> rule and introduce a new kind of object that represents a single type of building element appearing repeatedly in tested application. These can be objects such as lists, tables, trees, forms etc. I call this kind of wrapper a <code>Feature Object Pattern</code>. This approach has a few benefits. It allows to program interaction with given type of element only once and reuse it everywhere in the tests. We can use <code>Feature Object</code> to compose Page Object of them by adding contextual integration. When a given type of element changes, it only requires modificaion in one place. One of the positive side effects is that it enforces on the programmers to build the application in a consistent way (all list, tables, forms etc should be constructed and behave consistently). This is a counterpart of the component approach in application development. Each component (or set of components) should be reflected by <code>Feature Object</code>. Before we start writing a UI test, we should perform analysis by identifying the application building elements and prepare the appropriate <code>Feature Object</code> for them. Similar to Page Object, in order to make the process more efficient, they should be prepared by the developer.</p>
+
+<h2 id="implementing-feature-objects">Implementing Feature Objects<a href="#implementing-feature-objects" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I&rsquo;ve made an attempt of implementing generic <code>Feature Objects</code> for elements such as forms, lists, tables and trees in my Selenium wrapper called <a href="https://github.com/cezarypiatek/Tellurium">Tellurium</a> which is available on Github.  A sample usage of these <code>Feature Objects</code> is described on the project&rsquo;s wiki in the following sections:</p>
+
+<ul>
+<li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-lists">Working with lists</a></li>
+<li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-tables">Working with tables</a></li>
+<li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-trees">Working with trees</a></li>
+<li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-forms">Working with forms</a></li>
+</ul>
+
+<p>If you are interested in implementation details, please inspect source code of the following classes: <a href="https://github.com/cezarypiatek/Tellurium/blob/6bd0673a04464f67ea6a41700c5d3419a9e028ce/Src/MvcPages/WebPages/WebTree.cs">WebTree</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebList.cs">WebList</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebTable.cs">WebTable</a> and <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebForms/WebForm.cs">WebForm</a>. This project is written in C#, but I&rsquo;m pretty sure that these classes can be easily ported to your programming language of choice.</p>
+
+<p>Let&rsquo;s look how we can handle tables using <code>WebTable</code> wrapper from <code>Tellurium</code> project:</p>
+
+<pre><code class="language-csharp">var table = browserAdapter.GetTableWithId(&quot;SampleTable&quot;);
+table[1] //access second row
+table[1][0].Text //access second row, first column
+table[1][0].Text //access second row, first column cell's text
+table[0][&quot;Column Name&quot;].Text //access first row, column with caption  &quot;Column Name&quot; 
+
+table.First() //access first row
+table.First().First() //access first row, first column
+table.Last().Last() //access last row, last column
+table.FindItemWithText(&quot;Example row&quot;)[1] //access row with text &quot;Example row&quot;, second colum
+</code></pre>
+
+<p>As we see, this is a very simple, elegant, intuitive and readable way of interacting with tables. We don&rsquo;t need to know how the table was built, what the underlying markup looks like and what do particular tags mean. Another interesting example shows how easily we can work with forms using <code>WebForm</code> wrapper:</p>
+
+<pre><code class="language-csharp">var loginForm = browserAdapter.GetForm(&quot;RegistrationForm&quot;);
+loginForm.SetFieldValueByLabel(&quot;First name&quot;, &quot;John&quot;);
+loginForm.SetFieldValueByLabel(&quot;Last name&quot;, &quot;Doe&quot;);
+loginForm.ClickOnElementWithText(&quot;Register&quot;);
+</code></pre>
+
+<h2 id="building-page-object-from-feature-objects">Building Page Object from Feature Objects<a href="#building-page-object-from-feature-objects" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Having <code>Feature Objects</code>representing forms and lists, we can use them to build <code>Page Object</code> for user list with filters:</p>
+
+<pre><code class="language-csharp">public class UserListPage()
+{
+  private readonly Lazy&lt;WebForm&gt; filterForm;
+  private readonly Lazy&lt;WebList&gt; userList;
+  private readonly new Lazy&lt;WebList&gt; listPagination;
+
+  public UserListPage(WebDriver  driver){    
+    this.filterForm = new Lazy&lt;WebForm&gt;(x =&gt; driver.FindFormWithId(&quot;UserFilterForm&quot;));
+    this.userList = new Lazy&lt;WebList&gt;(x =&gt; driver.FindListWithId(&quot;UserList&quot;));
+    this.listPagination = new Lazy&lt;WebList&gt;(x =&gt; driver.FindListWithId(&quot;UserListPagination&quot;));
+  }
+
+  public void FilterWith(Action&lt;Form&gt; fillFilterFormAction)
+  {
+      fillFilterFormAction(this.filterForm);
+      this.filterForm.Value.ClickOnElementWithText(&quot;Filter&quot;);
+  }
+
+  public void LoadPage(int pageNo){
+      this.listPagination.Value.ClickOnElementWithText($&quot;{pageNo}&quot;);
+  }
+
+  public int GetNumberOfUsers(){
+    return this.userList.Value.Count;
+  }
+
+  public void OpenUserDetails(string userName)
+  {
+      var listItem =  this.userList.Value.FindItemWithText(userName);
+      listItem.ClickOnElementWithText(&quot;Details&quot;);
+  }
+}
+</code></pre>
+
+<p>In this example <code>Feature Objects</code> were used to handle the following page elements:</p>
+
+<ul>
+<li>filter form</li>
+<li>list of users</li>
+<li>pagination bar (list of page numbers).</li>
+</ul>
+
+<p>With our <code>Page Object</code> we can easily create a test that is very concise and readable:</p>
+
+<pre><code class="language-csharp">[Test]
+public void should_be_able_to_filter_users()
+{  
+  //ARRANGE
+  var driver = this.GetDriver();
+  var userList = driver.GoToUserList();
+
+  //ACT
+  userList.FilterWith(filter =&gt; {
+    filter.SetFieldValueByLabel(&quot;Department&quot;, &quot;Security&quot;);
+    filter.SetFieldValueByLabel(&quot;Severity&quot;, &quot;Senior&quot;);
+  });
+
+  //ASSERT
+  Assert.AreEquals(5, userList.GetNumberOfUsers())
+}
+</code></pre>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>If you want to create maintainable UI Tests, you should definitely utilize <code>Page Object Pattern</code> in conjunction with <code>Feature Object Pattern</code>. In order to make the process of preparing UI Tests more effective, the people responsible for automating test cases should be supported by programmers developing tested application and building appropriate Page Objects and Feature Objects. If you don&rsquo;t know how to start building Feature Objects you can check the implementations of <a href="https://github.com/cezarypiatek/Tellurium/blob/6bd0673a04464f67ea6a41700c5d3419a9e028ce/Src/MvcPages/WebPages/WebTree.cs">WebTree</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebList.cs">WebList</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebTable.cs">WebTable</a> and <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebForms/WebForm.cs">WebForm</a> from <a href="https://github.com/cezarypiatek/Tellurium">Tellurium</a> Project. I used it to automate tests for the application that consist of 100+ forms and it works like a charm.</p>
+    
+		  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

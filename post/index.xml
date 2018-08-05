@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on CEZARY PIĄTEK</title>
+    <title>Posts on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/post/</link>
-    <description>Recent content in Posts on CEZARY PIĄTEK</description>
+    <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jul 2018 00:21:18 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 05 Aug 2018 00:21:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Feature Object Pattern</title>
+      <link>https://cezarypiatek.github.io/post/feature-object-pattern/</link>
+      <pubDate>Sun, 05 Aug 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/feature-object-pattern/</guid>
+      <description>When it comes to writing maintainable UI test there always appears the term of Page Object Pattern. For those who are not familiar with Page Object, it&amp;rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler here.</description>
+    </item>
+    
+    <item>
+      <title>Reactive testing</title>
+      <link>https://cezarypiatek.github.io/post/reactive-testing/</link>
+      <pubDate>Sat, 21 Jul 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/reactive-testing/</guid>
+      <description>public class UserListPage() { private readonly WebDriver driver; private readonly Lazy&amp;lt;Form&amp;gt; filterForm; private readonly Lazy&amp;lt;List&amp;gt; userList; private readonly new Lazy&amp;lt;List&amp;gt; listPagination; public UserListPage(WebDriver driver){ this.driver = driver; this.filterForm = new Lazy&amp;lt;Form&amp;gt;(x=&amp;gt; driver.FindFormWithId(&amp;quot;UserFilterForm&amp;quot;)); this.userList = new Lazy&amp;lt;List&amp;gt;(x=&amp;gt; driver.FindListWithId(&amp;quot;UserList&amp;quot;)); this.listPagination = new Lazy&amp;lt;List&amp;gt;(x=&amp;gt; driver.FindListWithId(&amp;quot;UserListPagination&amp;quot;)); } public void FilterWith(Action&amp;lt;Form&amp;gt; fillFilterFormAction) { fillFilterFormAction(this.filterForm); this.userList.Value.AffectWith(()=&amp;gt; this.filterForm.Value.ClickOnElementWithText(&amp;quot;Filter&amp;quot;)); } public void LoadPage(int pageNo){ this.userList.Value.AffectWith(()=&amp;gt; this.listPagination.Value.ClickOnElementWithText($&amp;quot;{pageNo}&amp;quot;)); } public int GetNumberOfUsers(){ return this.userList.Value.Count; } public void OpenUserDetails(string userName) { var listItem = this.</description>
+    </item>
     
     <item>
       <title>Demystifying ELK stack</title>
