@@ -2,7 +2,7 @@
 title: "No more StaleElementReferenceException"
 description: "How to globally handle problem of StaleElementReferenceException in UI tests"
 date: 2018-08-08T00:21:18+02:00
-tags : ["Selenium", "testing", "ui-tests"]
+tags : ["Selenium", "testing", "ui-tests", "webdriver"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
 image: "splashscreen.jpg"

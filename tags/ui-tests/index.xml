@@ -30,5 +30,14 @@
       <description>When it comes to writing maintainable UI test there always appears the term of Page Object Pattern. For those who are not familiar with Page Object, it&amp;rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler here.</description>
     </item>
     
+    <item>
+      <title>Why clicking with Selenium is so hard.</title>
+      <link>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</link>
+      <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</guid>
+      <description>When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements. It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in &amp;ldquo;Interactable&amp;rdquo; state.</description>
+    </item>
+    
   </channel>
 </rss>

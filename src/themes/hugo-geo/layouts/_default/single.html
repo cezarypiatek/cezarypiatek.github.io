@@ -21,6 +21,29 @@
 		<div class="addthis_inline_share_toolbox"></div>
 		{{end}}
 	</article>
+	{{ $related := .Site.RegularPages.Related . | first 3 }}
+	{{ with $related }}
+	<h3>See Also</h3>
+	<div class="row">
+		{{ range . }}
+			{{if isset .Params "image" }}
+				{{ $original := .Resources.GetMatch (.Params.Image) }}
+				{{ .Scratch.Set "image" ($original.Fill "320x240") }}
+				{{ $image := .Scratch.Get "image" }}
+				<div class="col-sm-4">
+						<a href="{{ .RelPermalink }}" >
+						<div class="card">
+								<img class="card-img-top" src="{{$image.RelPermalink}}" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">{{ .Title }}</h5>
+								<p class="card-text">{{ .Description }}</p>						  
+								</div>
+							</div></a>
+				</div>		
+			{{end}}
+		{{ end }}
+	</div>
+	{{ end }}
 </main>
 
 <div id="bottom-nav" class="text-center center-block">
