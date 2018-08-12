@@ -9,8 +9,6 @@ image: "splashscreen.jpg"
 isBlogpost: true
 draft: false
 ---
-![splashscreen](splashscreen.jpg)
-
 `StaleElementReferenceException` can be definitely classified as the nightmare no 1 of people who write automated test with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most often meet are:
 
 - an element was removed in the meantime
@@ -36,7 +34,7 @@ publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
 }
 ```
 
-The mapping between UI elements and object that represents them is showed in the diagram below:
+The mapping between UI elements and objects which represents them is showed in the diagram below:
 
 ![stable element relation diagram](stable_element_diagram.jpg)
 

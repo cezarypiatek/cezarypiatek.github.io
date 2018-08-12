@@ -124,6 +124,45 @@
 	<div class="panel panel-default">
 	<div class="panel-header">
 		<h3>
+			<a href="https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/">No more StaleElementReferenceException</a>
+			<br>
+			<small>
+				8 August 2018
+			</small>
+		</h3>
+	</div>
+	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
+		StaleElementReferenceException can be definitely classified as the nightmare no 1 of people who write automated test with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most often meet are:
+ an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework  In the first case, StaleElementReferenceException indicate the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by our UI framework and shouldn&rsquo;t affect our UI test.
+		
+			... <a href="https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/">Read More</a>
+		
+	</div>
+	<div class="panel-footer">
+		
+		<small class="text-muted">
+			
+			
+				<a href="https://cezarypiatek.github.io/tags/selenium"><span class="label label-success">Selenium</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/testing"><span class="label label-success">testing</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/ui-tests"><span class="label label-success">ui-tests</span></a>
+			
+		</small>
+		
+	</div>
+</div>
+
+
+	<div class="panel panel-default">
+	<div class="panel-header">
+		<h3>
 			<a href="https://cezarypiatek.github.io/post/feature-object-pattern/">Feature Object Pattern</a>
 			<br>
 			<small>
@@ -132,6 +171,11 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/feature-object-pattern//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
 		When it comes to writing maintainable UI test there always appears the term of Page Object Pattern. For those who are not familiar with Page Object, it&rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler here.
 		
 			... <a href="https://cezarypiatek.github.io/post/feature-object-pattern/">Read More</a>
@@ -165,6 +209,11 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/demystifying-elk-stack//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
 		Let&rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&rsquo;s quite a challenge.
 		
 			... <a href="https://cezarypiatek.github.io/post/demystifying-elk-stack/">Read More</a>
@@ -204,6 +253,11 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
 		Over a year ago I heard for the first time about the ELK stack. Since then I&rsquo;ve had an opportunity to help five teams to implements ELK as a part of their development process (one team is using it on production, the rest of them so far only in development environment). ELK stands for ElasticSearch-Logstash-Kibana and it&rsquo;s a set of services that helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data.
 		
 			... <a href="https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/">Read More</a>
@@ -239,6 +293,11 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/space-eaten-up-by-resharper//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
 		My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&rsquo;m running out of free space. When there is a need I&rsquo;m starting clearing-up by emptying c:\Users\user_name\AppData\Local\Temp\ and c:\Users\user_name\Downloads\ directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use WinDirStart to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.
 		
 			... <a href="https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/">Read More</a>
@@ -254,41 +313,6 @@
 				<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">Resharper</span></a>
 			
 				<a href="https://cezarypiatek.github.io/tags/windirstat"><span class="label label-success">WinDirStat</span></a>
-			
-		</small>
-		
-	</div>
-</div>
-
-
-	<div class="panel panel-default">
-	<div class="panel-header">
-		<h3>
-			<a href="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/">Validating fields of NHibernate model</a>
-			<br>
-			<small>
-				16 April 2018
-			</small>
-		</h3>
-	</div>
-	<div class="panel-body">
-		The challenge Recently I&rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).
-		
-			... <a href="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/">Read More</a>
-		
-	</div>
-	<div class="panel-footer">
-		
-		<small class="text-muted">
-			
-			
-				<a href="https://cezarypiatek.github.io/tags/data-model"><span class="label label-success">data model</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/nhibernate"><span class="label label-success">NHibernate</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/sqlite"><span class="label label-success">SQLite</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/sql-server"><span class="label label-success">SQL Server</span></a>
 			
 		</small>
 		

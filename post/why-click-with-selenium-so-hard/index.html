@@ -12,7 +12,7 @@
 	<meta property="og:locale" content="en_US">	
 	<meta property="og:url" content="https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/">	
 	<meta property="og:title" content="Why clicking with Selenium is so hard.">
-	<meta property="og:image" content="https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/splashscreen.jpg">
     <meta property="og:description" content="">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
@@ -25,7 +25,7 @@
     <meta property="og:tags" content="ElementNotInteractableException">
     
 	<meta property="twitter:card" content="summary_large_image" >
-	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/">
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/splashscreen.jpg">
 	<meta property="twitter:title" content="Why clicking with Selenium is so hard.">	
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="">
@@ -134,6 +134,10 @@
 	</header>
 
 	<article>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
 		<p>When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements.
 It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in  &ldquo;Interactable&rdquo; state. There is a lot of different factors that can cause that situation:</p>
 

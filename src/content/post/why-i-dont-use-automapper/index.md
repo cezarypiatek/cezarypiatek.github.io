@@ -8,8 +8,6 @@ css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.
 image: "social_splashscreen.jpg"
 isBlogpost: true
 ---
-![splashscreen](splashscreen.jpg)
-
 The idea behind this blog post is pretty old but I haven't had enough motivation to write this down till now. Recently, I've came across a couple of new articles about AutoMapper and I've been struck when I saw how people utilize AutoMapper in their projects. I've encountered cases when AutoMapper transforms simple thing like mapping values from object to other into a really complex problem, which results with highly complicated code only for the price of not writing mappings explicitly. Finally, I've found a provoking tweet on my timeline that definitely motivated me to materialize my reflections about AutoMapper into the form of this blog post.
 
 ![tweet](tweet.jpg)

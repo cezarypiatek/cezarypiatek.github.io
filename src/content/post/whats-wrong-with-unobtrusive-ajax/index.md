@@ -8,8 +8,6 @@ css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
-![splashscreen](splashscreen.jpg)
-
 jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It's shipped with MVC bootstrapping template and it's responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I'm going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.NET MVC frontend developer, and how to fix them.
 
 ## How it works.

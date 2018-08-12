@@ -9,8 +9,6 @@ image: "splashscreen.jpg"
 isBlogpost: true
 draft: false
 ---
-![splashscreen](splashscreen.jpg)
-
 When it comes to writing maintainable UI test there always appears the term of `Page Object Pattern`. For those who are not familiar with `Page Object`, it's the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler [here](https://martinfowler.com/bliki/PageObject.html). 
 
 Page Objects can be prepared by programmers who participate in development of tested application. This approach is very efficient because the programmer knows best the implementation details, how particular elements were built and how to interact with them. Such Page Object can be then used by testers to automate test cases. I think this is the most effective way of preparing automatic UI tests because everybody does what they know best. A testing person is excused from the need of getting to know how the tested app is built, how the used technology works and they can focus entirely on automatig test cases using high level testing api. 

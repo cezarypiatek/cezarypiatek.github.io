@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to globally handle problem of StaleElementReferenceException in UI tests">   
+        
+    <meta property="article:published_time" content="2018-08-08">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/">	
+	<meta property="og:title" content="No more StaleElementReferenceException">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/splashscreen.jpg">
+    <meta property="og:description" content="How to globally handle problem of StaleElementReferenceException in UI tests">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="Selenium">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="ui-tests">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/splashscreen.jpg">
+	<meta property="twitter:title" content="No more StaleElementReferenceException">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to globally handle problem of StaleElementReferenceException in UI tests">
+
+	<meta name="keywords" value="Selenium, testing, ui-tests" />
+    <meta name="generator" content="Hugo 0.44" />
+    <title>No more StaleElementReferenceException &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/cezary_piatek" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<header>
+		<h1>No more StaleElementReferenceException</h1>
+		  
+		<div><i class="fa fa-calendar"></i> 8 August 2018</div>
+		<hr />
+		
+	</header>
+
+	<article>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p><code>StaleElementReferenceException</code> can be definitely classified as the nightmare no 1 of people who write automated test with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most often meet are:</p>
+
+<ul>
+<li>an element was removed in the meantime</li>
+<li>an element was replaced with newer content (for example by <code>Ajax</code>)</li>
+<li>an element was re-rendered by JavaScript view/template framework</li>
+</ul>
+
+<p>In the first case, <code>StaleElementReferenceException</code> indicate the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by our UI framework and shouldn&rsquo;t affect our UI test. All of the solutions that I&rsquo;ve found in the network are based on applying try-catch-retry pattern around the places where the problem occurs. However, this could degrade readability and maintainability. So how to get rid of <code>StaleElementReferenceException</code> without introducing technical debt and changing the way we interact with web elements?</p>
+
+<h2 id="stablewebelement-to-the-rescue">StableWebElement to the rescue!<a href="#stablewebelement-to-the-rescue" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I got the idea of <code>StableWebElement</code> – a wrapper for <code>IWebElement</code> which could detect the situation of stale reference and try to find a new reference to the original element. (all this happened behind the scene) The key element of this wrapper is memoization of searching context (parent element) and locator.  Let&rsquo;s see how it works on example. We have a users list, which is a collection of list elements and each list element contains a button to deactivate the user. In order to perform user deactivation we have to find users list, next we have to find list element that represents given user and at the end, we need to locate deactivation button inside the list element. The code for automating it with Selenium can looks as follows:</p>
+
+<pre><code class="language-csharp">[Test]
+publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
+{
+    var userList = webDriver.FindElement(By.Id(&quot;UserList&quot;));
+    var userListElement = userList.FindElement(By.XPath(&quot;*[2]&quot;));
+    var deactivationButton = userListElement.FindElement(By.CssSelector(&quot;.deactivate-button&quot;));
+    deactivationButton.Click();
+}
+</code></pre>
+
+<p>The mapping between UI elements and objects which represents them is showed in the diagram below:</p>
+
+<p><img src="stable_element_diagram.jpg" alt="stable element relation diagram" /></p>
+
+<p>The problem of stale reference can occur on any level of our object hierarchy: our deactivate button could be re-rendered, it&rsquo;s containing list element or the whole user list was replaced with the newer version of HTML.</p>
+
+<h3 id="implementing-stablewebelement">Implementing StableWebElement<a href="#implementing-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<pre><code class="language-csharp">public interface IStableWebElement : IWebElement, ILocatable, ITakesScreenshot, IWrapsElement, IWrapsDriver
+{
+    void RegenerateElement();
+    bool IsStale();
+    string GetDescription();
+}
+</code></pre>
+
+<p>At first, I thought that extending <code>IWebElement</code> will be enough, but after running my test suit I encounter a few methods from Selenium that accepts <code>IWebElement</code> and perform casting to different interfaces that are not in the IWebElement inheritance hierarchy.</p>
+
+<p>Now we create an implementation of our <code>IStableWebElement</code> interface:</p>
+
+<pre><code class="language-csharp">public class StableWebElement: IStableWebElement
+{
+    private readonly ISearchContext parent;
+    private IWebElement element;
+    private readonly By locator;
+
+    public StableWebElement(IWebElement elemen, ISearchContext parent, By locator)
+    {
+        this.parent = parent;
+        this.element = element;
+        this.locator = locator;
+    }
+}
+</code></pre>
+
+<p>All of the methods from the interface should be implemented as a proxy for original methods on the <code>element</code> object in the following manner:</p>
+
+<pre><code class="language-csharp">public void SendKeys(string text)
+{
+    Execute(() =&gt; element.SendKeys(text));
+}
+
+public void Click()
+{
+    Execute(() =&gt; element.Click());
+}
+
+public bool Displayed 
+{ 
+    get 
+    { 
+        return Execute(() =&gt; element.Displayed); 
+    } 
+}
+</code></pre>
+
+<p>All original methods were wrapped in the <code>Execute</code> method which is responsible for detecting of <code>StaleElementReferenceException</code> during original method invocation. When the exception occurs we try to restore element reference by invoking <code>RegenerateElement</code> and retry the operation. There are two <code>Execute</code> methods because we have to wrap with them methods and functions (notice that one return generic element and the second one return void):</p>
+
+<pre><code class="language-cs">private T Execute&lt;T&gt;(Func&lt;T&gt; function)
+{
+    T result = default (T);
+    Execute(() =&gt; { result = function(); });
+    return result;
+}
+
+private void Execute(Action action)
+{
+    var success = RetryHelper.Retry(3, () =&gt;
+    {
+        try
+        {
+            action();
+            return true;
+        }
+        catch (StaleElementReferenceException)
+        {
+            RegenerateElement();
+            return false;
+        }
+    });
+    if (success == false)
+    {
+        throw new WebElementNotFoundException(&quot;Element is no longer accessible&quot;);
+    }
+}
+</code></pre>
+
+<p>And the most interesting part is the <code>RegenerateElement</code> method:</p>
+
+<pre><code class="language-csharp">public void RegenerateElement()
+{
+    var stableParent = parent as IStableWebElement;
+    if (stableParent != null &amp;&amp; stableParent.IsStale())
+    {
+        stableParent.RegenerateElement();
+    }
+    try
+    {
+        this.element = this.parent.FindElement(locator);
+    }
+    catch(Exception ex)
+    {
+        throw new CannotFindElementByException(locator, parent, ex);  
+    }
+}
+</code></pre>
+
+<p>At first, we check if our parent (which is our search context) is also affected by stale reference. If so we perform <code>RegenerateElement</code> method on the parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the relation chain). After we retrieve the reference to the parent we also need to find a fresh version of the current element using new parent and memorized locator. If any exception occurs during searching for the current element that means the element truly disappear and the StaleReferenceException was an indicator of the true problem. The last missing part is the method that detects if the element has a stale reference.</p>
+
+<pre><code class="language-cs">public bool IsStale()
+{
+    try
+    {
+        //INFO: If element is stale accessing any property should throw exception        
+        var tagName = this.element.TagName;
+        return false;
+    }
+    catch (StaleElementReferenceException )
+    {
+        return true;
+    }
+}
+</code></pre>
+
+<h3 id="applying-stablewebelement">Applying StableWebElement<a href="#applying-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>In order to use StableWebElement we need to add extension method for <code>ISearchContex</code> that search for given element and wrap it into our StableWebElement proxy:</p>
+
+<pre><code class="language-csharp">static class StableElementExtensions
+{
+    public static IStableWebElement FindStableElement(this ISearchContext context, By locator)
+    {
+        var element = context.FindElement(locator);
+        return new StableWebElement(context, element, locator);
+    }    
+
+    public static ReadOnlyCollection&lt;IStableWebElement&gt; FindStableElements(this ISearchContext context, By locator)
+    {        
+        return  context.FindElements(locator
+                .Select(x=&gt; new StableWebElement(context, x, locator))
+                .ToList()
+                .AsReadOnly();
+    }    
+}
+</code></pre>
+
+<p>Now we have to replace all invocation of <code>FindElement</code> with our new extension method. If we don&rsquo;t need to be explicitly about using this new approach we can tweak <code>FindElement</code> and <code>FindElements</code> methods from our <code>StableWebElement</code> wrapper to intercept the real result and wrap it into StableWebElement:</p>
+
+<pre><code class="language-cs">public IWebElement FindElement(By locator)
+{
+    var foundElement = Execute(() =&gt; element.FindElement(locator));
+    return new StableWebElement(this.parent, foundElement, locator);
+}
+
+public ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
+{
+    return Execute(() =&gt; element.FindElements(locator))
+        .Select(x=&gt; new StableWebElement(this.parent, x, locator))
+        .ToList()
+        .AsReadOnly();
+}
+</code></pre>
+
+<p>This little trick allows us to introduce <code>StableWebElement</code> almost transparently into existing codebase with minimal effort. I said &ldquo;almost&rdquo; because we need to still use <code>FindStableElement</code> extension method on search context which is <code>WebDriver</code> (or we can create a wrapper for <code>WebDriver</code> that use the same trick as StableWebElement).</p>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>All methods for locating WebElement in my test always return StableWebElement wrapper and the problem with StaleObjectReferenceException disappeared.</p>
+
+<p>The full implementation of <code>StableWebElement</code> can be found in <code>Tellurium</code> project <a href="https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs">here</a></p>
+    
+		  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

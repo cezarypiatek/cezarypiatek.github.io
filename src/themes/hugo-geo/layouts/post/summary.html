@@ -9,6 +9,11 @@
 		</h3>
 	</div>
 	<div class="panel-body">
+		{{ if isset .Params "image" }}
+		<div class="splash-box">
+			<img src="{{.Permalink}}/{{.Params.Image}}" width="100%" /><br/><br/>
+		</div>
+		{{ end }}
 		{{.Summary}}
 		{{ if .Truncated }}
 			... <a href="{{ .Permalink }}">Read More</a>
