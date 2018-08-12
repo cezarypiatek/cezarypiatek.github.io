@@ -3,6 +3,7 @@ title: "Don't write dull code - Resharper Live Templates"
 date: 2014-04-13T17:38:18+02:00
 tags : ["resharper", "livetemplates"]
 isBlogpost: true
+image: "splashscreen.jpg"
 ---
 
 One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
