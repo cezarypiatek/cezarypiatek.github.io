@@ -8,8 +8,6 @@ css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
-![splashscreen](splashscreen.jpg)
-
 ## The challenge
 Recently I've had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:
 

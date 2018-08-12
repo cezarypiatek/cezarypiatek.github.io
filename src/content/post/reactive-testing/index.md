@@ -9,8 +9,6 @@ image: "splashscreen.jpg"
 isBlogpost: true
 draft: true
 ---
-![splashscreen](splashscreen.jpg)
-
 ```csharp
 public class UserListPage()
 {

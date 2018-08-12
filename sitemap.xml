@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</loc>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/feature-object-pattern/</loc>
     <lastmod>2018-08-05T00:21:18+02:00</lastmod>
   </url>
@@ -88,7 +93,7 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/post/my-first-post/</loc>
+    <loc>https://cezarypiatek.github.io/post/save-tortoise-history-with-repair-move/</loc>
     <lastmod>2014-09-21T17:38:18+02:00</lastmod>
   </url>
   
@@ -122,7 +127,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2018-08-05T00:21:18+02:00</lastmod>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -284,7 +289,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2018-08-05T00:21:18+02:00</lastmod>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -314,7 +319,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/selenium/</loc>
-    <lastmod>2018-08-05T00:21:18+02:00</lastmod>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -362,7 +367,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/testing/</loc>
-    <lastmod>2018-08-05T00:21:18+02:00</lastmod>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -392,13 +397,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/ui-tests/</loc>
-    <lastmod>2018-08-05T00:21:18+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/uitests/</loc>
-    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -410,7 +409,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/webdriver/</loc>
-    <lastmod>2017-10-05T17:38:18+02:00</lastmod>
+    <lastmod>2018-08-12T00:21:18+02:00</lastmod>
     <priority>0</priority>
   </url>
   

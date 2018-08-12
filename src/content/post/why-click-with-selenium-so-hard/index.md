@@ -1,10 +1,11 @@
 ---
 title: "Why clicking with Selenium is so hard."
 date: 2017-10-05T17:38:18+02:00
-tags : ["selenium", "uitests", "webdriver", "ElementNotInteractableException"]
+tags : ["selenium", "ui-tests", "webdriver", "ElementNotInteractableException"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
 isBlogpost: true
+image: "splashscreen.jpg"
 ---
 When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements.
 It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in  "Interactable" state. There is a lot of different factors that can cause that situation:

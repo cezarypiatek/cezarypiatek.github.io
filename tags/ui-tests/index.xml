@@ -6,10 +6,20 @@
     <description>Recent content in Ui Tests on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Aug 2018 00:21:18 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 12 Aug 2018 00:21:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/ui-tests/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>No more StaleElementReferenceException</title>
+      <link>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</link>
+      <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</guid>
+      <description>StaleElementReferenceException can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:
+ an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework  In the first case, StaleElementReferenceException indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
+    </item>
     
     <item>
       <title>Feature Object Pattern</title>
@@ -18,6 +28,15 @@
       
       <guid>https://cezarypiatek.github.io/post/feature-object-pattern/</guid>
       <description>When it comes to writing maintainable UI test there always appears the term of Page Object Pattern. For those who are not familiar with Page Object, it&amp;rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler here.</description>
+    </item>
+    
+    <item>
+      <title>Why clicking with Selenium is so hard.</title>
+      <link>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</link>
+      <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</guid>
+      <description>When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements. It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in &amp;ldquo;Interactable&amp;rdquo; state.</description>
     </item>
     
   </channel>

@@ -18,9 +18,9 @@
     
     <meta property="og:tags" content="tools">
     
-    <meta property="og:tags" content="Resharper">
+    <meta property="og:tags" content="resharper">
     
-    <meta property="og:tags" content="WinDirStat">
+    <meta property="og:tags" content="windirstat">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/splashscreen.jpg">
@@ -28,7 +28,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to easily regain free space by deleting old Resharper cache.">
 
-	<meta name="keywords" value="tools, Resharper, WinDirStat" />
+	<meta name="keywords" value="tools, resharper, windirstat" />
     <meta name="generator" content="Hugo 0.44" />
     <title>Space eaten up by Resharper &middot; Cezary Piątek Blog</title>
     
@@ -132,9 +132,11 @@
 	</header>
 
 	<article>
-		<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
-
-<p>My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&rsquo;m running out of free space. When there is a need I&rsquo;m starting clearing-up by emptying <code>c:\Users\user_name\AppData\Local\Temp\</code> and <code>c:\Users\user_name\Downloads\</code> directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use <a href="https://windirstat.net/">WinDirStart</a> to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.; so you can easily drill down the tree looking for elements eating up your free space. There is also a colorful tree map that allows you to immediately spot large files.</p>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&rsquo;m running out of free space. When there is a need I&rsquo;m starting clearing-up by emptying <code>c:\Users\user_name\AppData\Local\Temp\</code> and <code>c:\Users\user_name\Downloads\</code> directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use <a href="https://windirstat.net/">WinDirStart</a> to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.; so you can easily drill down the tree looking for elements eating up your free space. There is also a colorful tree map that allows you to immediately spot large files.</p>
 
 <p>One of my interesting discoveries were Resharper cache files which can weigh even over few GB. Those files can be found inside the appropriate directory under <code>C:\Users\user_name\AppData\Local\JetBrains\Transient\</code> path (there are also cache files for other JetBrains products). From my observation those files tend to survive the Resharper updates, so there is a very high possibility that you have cache files for old version which are totally useless now. Besides old versions there are cache files for <strong>all solutions that have been opened</strong> by Visual Studio with enabled Resharper - and again - some of them are probably not necessary anymore. After deleting those files Resharper can slow down for a moment until it rebuilds cache for currently opened solution but we will have cached data for only what is truly necessary and we should regain some free space on the hard drive.</p>
 
@@ -150,10 +152,66 @@
 <p>If you find <code>WindDirStat</code> useful you can support this project financialy using the <code>Support this project</code> button on the project&rsquo;s website footer <a href="https://windirstat.net/">https://windirstat.net/</a></p>
     
 		  
-		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
 	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/how-get-rid-of-todo-from-codebase/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/how-get-rid-of-todo-from-codebase/splashscreen_hue4546ab00f78e7c845990f7df11dec67_116982_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">Get rid of TODOs from your codebase.</h5>
+								<p class="card-text"></p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/debug-without-sources-part-one/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/debug-without-sources-part-one/splashscreen_hue4546ab00f78e7c845990f7df11dec67_45474_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">The fastest way do debug .net code without sources.</h5>
+								<p class="card-text"></p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/how-to-manage-todo-in-codebase/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/how-to-manage-todo-in-codebase/splashscreen_hue4546ab00f78e7c845990f7df11dec67_118641_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">How to manage TODO in your codebase.</h5>
+								<p class="card-text"></p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
 </main>
 
 <div id="bottom-nav" class="text-center center-block">

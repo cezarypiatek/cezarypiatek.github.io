@@ -16,15 +16,15 @@
     <meta property="og:description" content="How to send notification to Microsoft Teams channel from TeamCity using PowerShell build step and how to make it reusable with meta runners.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="TeamCity">
+    <meta property="og:tags" content="teamcity">
     
-    <meta property="og:tags" content="PowerShell">
+    <meta property="og:tags" content="powershell">
     
     <meta property="og:tags" content="meta runner">
     
-    <meta property="og:tags" content="MS Teams">
+    <meta property="og:tags" content="ms teams">
     
-    <meta property="og:tags" content="Gitlab">
+    <meta property="og:tags" content="gitlab">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/splashscreen.jpg">
@@ -32,7 +32,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to send notification to Microsoft Teams channel from TeamCity using PowerShell build step and how to make it reusable with meta runners.">
 
-	<meta name="keywords" value="TeamCity, PowerShell, meta runner, MS Teams, Gitlab" />
+	<meta name="keywords" value="teamcity, powershell, meta runner, ms teams, gitlab" />
     <meta name="generator" content="Hugo 0.44" />
     <title>Integrating TeamCity with Microsoft Teams using PowerShell &middot; Cezary Piątek Blog</title>
     
@@ -137,8 +137,10 @@
 
 	<article>
 		
-
-<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
 
 <p>With the beginning of new year I joined a new team where I help with project bootstrapping. I&rsquo;ve been configuring TeamCity, Gitlab and webservers. It&rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &ldquo;Integration&rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat. In my company MS Teams is the basic communication channel, so I gave it a shot and tried to connect the two systems. The configuration was very easy - Gitlab communicates with MS Teams via webhooks - and as result my team receives notification related to merge request on MS Teams channel. This is really cool, but it would be more useful if my continuous integration system could send notifications to my team&rsquo;s channel too. I checked all available build steps in TeamCity and there was noting related to MS Teams. Fortunately, nothing was lost - webhooks are pretty easy concepts so I was able to create this integration with little amount of work. For those who don’t know webhooks mechanism, it is nothing more than REST API. I checked <a href="https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors">MS Teams documentation</a> and in order to send message to MS Teams channel we have to submit POST request to given webhook url with json payload in the following format:</p>
 
@@ -240,10 +242,50 @@ Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body
 <p>TeamCity can send messages to MS Teams channel via webhooks mechanism. Use PowerShell build step to invoke webhook endpoint (send webrequest with <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webreques">Invoke-WebRequest</a> cmdlet). You can make it reusable by converting this build step into <a href="https://confluence.jetbrains.com/display/TCD10/Working+with+Meta-Runner">meta runner</a>. All meta runners presented here are available on my Github project <a href="https://github.com/cezarypiatek/TCMetaRunnersPowerPack">TCMetaRunnersPowerPack</a></p>
     
 		  
-		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
 	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/be-the-first-to-know-of-the-bug/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/be-the-first-to-know-of-the-bug/splashscreen_hue4546ab00f78e7c845990f7df11dec67_146195_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">Be the first to know of the bug</h5>
+								<p class="card-text">How to configure Logstash to send notifications to Microsoft Teams</p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/exploring-powershell-with-gui/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/exploring-powershell-with-gui/splashscreen_hue4546ab00f78e7c845990f7df11dec67_151408_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">Exploring PowerShell with graphical user interface.</h5>
+								<p class="card-text"></p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
 </main>
 
 <div id="bottom-nav" class="text-center center-block">

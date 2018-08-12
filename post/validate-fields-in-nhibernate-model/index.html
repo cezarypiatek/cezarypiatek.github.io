@@ -18,11 +18,11 @@
     
     <meta property="og:tags" content="data model">
     
-    <meta property="og:tags" content="NHibernate">
+    <meta property="og:tags" content="nhibernate">
     
-    <meta property="og:tags" content="SQLite">
+    <meta property="og:tags" content="sqlite">
     
-    <meta property="og:tags" content="SQL Server">
+    <meta property="og:tags" content="sql server">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/splashscreen.jpg">
@@ -30,7 +30,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to demystify NHibernate exception by detecting invalid fields before committing changes to database">
 
-	<meta name="keywords" value="data model, NHibernate, SQLite, SQL Server" />
+	<meta name="keywords" value="data model, nhibernate, sqlite, sql server" />
     <meta name="generator" content="Hugo 0.44" />
     <title>Validating fields of NHibernate model &middot; Cezary Piątek Blog</title>
     
@@ -135,8 +135,10 @@
 
 	<article>
 		
-
-<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
 
 <h2 id="the-challenge">The challenge<a href="#the-challenge" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
@@ -333,10 +335,12 @@ When we try to retrieve field length information from NHibernated metadata, we g
 <p>Since now every time some field value exceeds the length limitation we get a very descriptive exception that allows us to immediately locate the culprit. And there is one additional positive side effect of this solution - it works independently of database provider. Even if we run our test on SQLite (which doesn&rsquo;t obey the length constraints from NHibernate mappings) we should be able to detect length limit violation.</p>
     
 		  
-		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
 	</article>
+	
+	
 </main>
 
 <div id="bottom-nav" class="text-center center-block">

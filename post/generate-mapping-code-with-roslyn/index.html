@@ -16,9 +16,9 @@
     <meta property="og:description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="AutoMapper">
+    <meta property="og:tags" content="automapper">
     
-    <meta property="og:tags" content="Roslyn">
+    <meta property="og:tags" content="roslyn">
     
     <meta property="og:tags" content="mapping">
     
@@ -30,7 +30,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">
 
-	<meta name="keywords" value="AutoMapper, Roslyn, mapping, code generating" />
+	<meta name="keywords" value="automapper, roslyn, mapping, code generating" />
     <meta name="generator" content="Hugo 0.44" />
     <title>Generate mapping code with Roslyn code fix provider. &middot; Cezary Piątek Blog</title>
     
@@ -134,9 +134,11 @@
 	</header>
 
 	<article>
-		<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
-
-<p>A few weeks ago I posted about <a href="../../post/why-i-dont-use-automapper/">negative aspects of applying AutoMapper</a>. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like <a href="https://www.nuget.org/packages/T4Scaffolding/">T4Scaffoling</a> or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in <a href="https://msdn.microsoft.com/en-us/library/bb126445.aspx">T4</a> syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking. Then I tried to generate code with PowerShell and <a href="https://docs.microsoft.com/en-us/dotnet/api/envdte">EnvDTE</a>. It worked but it had some limitations and it wasn&rsquo;t convenient enough to start using it on a daily basis. I gave it one more try and after publication of mentioned post I started looking for an existing Roslyn-based solution that could be a really nice substitution for AutoMapper. That&rsquo;s how I found <a href="https://github.com/nejcskofic/ObjectMapper">ObjectMapper</a> project.</p>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>A few weeks ago I posted about <a href="../../post/why-i-dont-use-automapper/">negative aspects of applying AutoMapper</a>. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like <a href="https://www.nuget.org/packages/T4Scaffolding/">T4Scaffoling</a> or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in <a href="https://msdn.microsoft.com/en-us/library/bb126445.aspx">T4</a> syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking. Then I tried to generate code with PowerShell and <a href="https://docs.microsoft.com/en-us/dotnet/api/envdte">EnvDTE</a>. It worked but it had some limitations and it wasn&rsquo;t convenient enough to start using it on a daily basis. I gave it one more try and after publication of mentioned post I started looking for an existing Roslyn-based solution that could be a really nice substitution for AutoMapper. That&rsquo;s how I found <a href="https://github.com/nejcskofic/ObjectMapper">ObjectMapper</a> project.</p>
 
 <p>At first it looked promising but after some analysis I found few things I didn&rsquo;t like about it. For instance, it requires referencing additional library which contains attributes and interfaces used to mark mapping methods. In practice it means that I need to install additional nuget package to every project in which I want to use mapping generation feature which is quite uncomfortable. So I&rsquo;ve tried to create my own version which will be distributed in the form of Visual Studio Extension and will use conventions to locate candidates for potential mapping methods. I was interested in generating implementation for the following kinds of methods:</p>
 
@@ -197,10 +199,34 @@
 <p>With a new asset in my developer toolbox now I&rsquo;m able to quickly generate this boring mapping code and focus enirely on the real coding problems. There is also another positive side effect that comes from the convention-based mappings - it enforces the cohesion of naming. If you have different names for the same thing on both mapping sides you have more code to write manually ;)</p>
     
 		  
-		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
 	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/why-i-dont-use-automapper/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/why-i-dont-use-automapper/social_splashscreen_hu3795b174da3073e92a87eaa41b63620e_50068_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">The reasons behind why I don&#39;t use AutoMapper.</h5>
+								<p class="card-text">My list of AutoMapper disadvantages which you should consider before using it in your project.</p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
 </main>
 
 <div id="bottom-nav" class="text-center center-block">

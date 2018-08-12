@@ -8,9 +8,6 @@ css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
-![splashscreen](splashscreen.jpg)
-
-
 Over a year ago I heard for the first time about the `ELK stack`. Since then I've had an opportunity to help five teams to implements ELK as a part of their development process (one team is using it on production, the rest of them so far only in development environment). ELK stands for `ElasticSearch-Logstash-Kibana` and it's a set of services that helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data. It is a very powerful tool because of its modular architecture. Each component is highly configurable and easy to extend, so it certainly allows you to make many productivity-boosting improvements in your development process. **If you are not using ELK (or any alternative) you should put it as the number one on your TODO list - especially if you are doing microservices.**. 
 
 ## Shorten the feedback loop

@@ -16,3 +16,29 @@ article img, article video {
 #social .fa-twitter{color:#1C88CC;}
 #social .fa-rss{color:orange;}
 #social .fa-stack-overflow{color:darkorange;}
+
+.card .card-img-top
+{
+	width: 100%!important;
+}
+.card-body {
+    margin: 0 10px;
+}
+
+.card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+	width: auto!important;
+}

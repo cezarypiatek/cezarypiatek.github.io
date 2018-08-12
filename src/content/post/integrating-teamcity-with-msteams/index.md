@@ -9,9 +9,6 @@ image: "splashscreen.jpg"
 isBlogpost: true
 hasVideo: true
 ---
-![splashscreen](splashscreen.jpg)
-
-
 With the beginning of new year I joined a new team where I help with project bootstrapping. I've been configuring TeamCity, Gitlab and webservers. It's the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the "Integration" bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat. In my company MS Teams is the basic communication channel, so I gave it a shot and tried to connect the two systems. The configuration was very easy - Gitlab communicates with MS Teams via webhooks - and as result my team receives notification related to merge request on MS Teams channel. This is really cool, but it would be more useful if my continuous integration system could send notifications to my team's channel too. I checked all available build steps in TeamCity and there was noting related to MS Teams. Fortunately, nothing was lost - webhooks are pretty easy concepts so I was able to create this integration with little amount of work. For those who don’t know webhooks mechanism, it is nothing more than REST API. I checked [MS Teams documentation](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors) and in order to send message to MS Teams channel we have to submit POST request to given webhook url with json payload in the following format:
 
 ```javascript

@@ -16,15 +16,15 @@
     <meta property="og:description" content="How to easily implement centralized logging system based on ELK stack.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="Kibana">
+    <meta property="og:tags" content="kibana">
     
-    <meta property="og:tags" content="Logstash">
+    <meta property="og:tags" content="logstash">
     
-    <meta property="og:tags" content="ElasticSearch">
+    <meta property="og:tags" content="elasticsearch">
     
-    <meta property="og:tags" content="ELK">
+    <meta property="og:tags" content="elk">
     
-    <meta property="og:tags" content="Filebeat">
+    <meta property="og:tags" content="filebeat">
     
     <meta property="og:tags" content="logging">
     
@@ -34,7 +34,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to easily implement centralized logging system based on ELK stack.">
 
-	<meta name="keywords" value="Kibana, Logstash, ElasticSearch, ELK, Filebeat, logging" />
+	<meta name="keywords" value="kibana, logstash, elasticsearch, elk, filebeat, logging" />
     <meta name="generator" content="Hugo 0.44" />
     <title>Demystifying ELK stack &middot; Cezary Piątek Blog</title>
     
@@ -139,8 +139,10 @@
 
 	<article>
 		
-
-<p><img src="splashscreen.jpg" alt="splashscreen" /></p>
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
 
 <p>Let&rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&rsquo;s quite a challenge. If it still sounds like your current job you should definitely adopt ELK stack.</p>
 
@@ -338,10 +340,34 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 <p>This sounds very obvious but I&rsquo;ve met a team where somebody devoted a lot of time to configure ELK, but there were no profits from this because he forgot to teach his colleges how to use it. So after you run ELK in your team, make a meeting and show everybody how to access and use it. I can guarantee you that if they know how to effectively use Kibana, they will quickly become addictied and never want to go back to manually searching through log files.</p>
     
 		  
-		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons bellow.</p>	
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
 	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-sm-4">
+						<a href="../../post/be-the-first-to-know-of-the-bug/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/be-the-first-to-know-of-the-bug/splashscreen_hue4546ab00f78e7c845990f7df11dec67_146195_320x240_fill_q75_box_smart1.jpg" alt="Card image cap">
+								<div class="card-body">
+								<h5 class="card-title">Be the first to know of the bug</h5>
+								<p class="card-text">How to configure Logstash to send notifications to Microsoft Teams</p>						  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
 </main>
 
 <div id="bottom-nav" class="text-center center-block">
