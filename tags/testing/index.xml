@@ -6,7 +6,7 @@
     <description>Recent content in Testing on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 Aug 2018 00:21:18 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 12 Aug 2018 00:21:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/testing/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,11 +14,11 @@
     <item>
       <title>No more StaleElementReferenceException</title>
       <link>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</link>
-      <pubDate>Wed, 08 Aug 2018 00:21:18 +0200</pubDate>
+      <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</guid>
-      <description>StaleElementReferenceException can be definitely classified as the nightmare no 1 of people who write automated test with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most often meet are:
- an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework  In the first case, StaleElementReferenceException indicate the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by our UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
+      <description>StaleElementReferenceException can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:
+ an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework  In the first case, StaleElementReferenceException indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
     </item>
     
     <item>

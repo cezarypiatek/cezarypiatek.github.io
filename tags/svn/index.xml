@@ -13,10 +13,10 @@
     
     <item>
       <title>Save your history - TortoiseSVN and &#34;Repair move&#34; option.</title>
-      <link>https://cezarypiatek.github.io/post/my-first-post/</link>
+      <link>https://cezarypiatek.github.io/post/save-tortoise-history-with-repair-move/</link>
       <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/post/my-first-post/</guid>
+      <guid>https://cezarypiatek.github.io/post/save-tortoise-history-with-repair-move/</guid>
       <description>&lt;p&gt;TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.
 &lt;/p&gt;</description>
     </item>
