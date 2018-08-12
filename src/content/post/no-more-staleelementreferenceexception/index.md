@@ -11,19 +11,19 @@ draft: false
 ---
 ![splashscreen](splashscreen.jpg)
 
-`StaleElementReferenceException` can be definetely classified as the nightmare no 1 of people who write automated test with Selenium framework. This exception occures when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most often meet are:
+`StaleElementReferenceException` can be definitely classified as the nightmare no 1 of people who write automated test with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most often meet are:
 
-- element was removed in the meantime
-- element was replace with newer content (for example by `Ajax`)
-- element was re-rendered by JavaScript view/template framework
+- an element was removed in the meantime
+- an element was replaced with newer content (for example by `Ajax`)
+- an element was re-rendered by JavaScript view/template framework
 
-In the first case `StaleElementReferenceException` indicate the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly cause by our UI framework and should't affect our UI test. All of the solution that I've found in the network are based on applying try-catch-retry pattern around the places that where the problem occures. However this could degradate readability and maintability. So how to get rid of `StaleElementReferenceException` without introducing technical debt and changing the way we interact with web elements?
+In the first case, `StaleElementReferenceException` indicate the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by our UI framework and shouldn't affect our UI test. All of the solutions that I've found in the network are based on applying try-catch-retry pattern around the places where the problem occurs. However, this could degrade readability and maintainability. So how to get rid of `StaleElementReferenceException` without introducing technical debt and changing the way we interact with web elements?
 
 
 
 ## StableWebElement to the rescue!
 
-I got the idea of `StableWebElement` – a wrapper for `IWebElement` which could detect situation of stale reference and try to find a new reference to the original element. (all this happend behind the scene) The key element of this wrapper is memoization of searching context (parent element) and locator.  Let's see how it works on example. We have an users list, which is collection of list elements and each list element contains a button to deactivate the user. In order to perform user deactivation we have to find users list, next we have to find list element that represents given user and at the end we need to located deactivation button inside the list element. The code for automating it with Selenium can looks as follows:
+I got the idea of `StableWebElement` – a wrapper for `IWebElement` which could detect the situation of stale reference and try to find a new reference to the original element. (all this happened behind the scene) The key element of this wrapper is memoization of searching context (parent element) and locator.  Let's see how it works on example. We have a users list, which is a collection of list elements and each list element contains a button to deactivate the user. In order to perform user deactivation we have to find users list, next we have to find list element that represents given user and at the end, we need to locate deactivation button inside the list element. The code for automating it with Selenium can looks as follows:
 
 ```csharp
 [Test]
@@ -36,15 +36,12 @@ publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
 }
 ```
 
-Mapping between UI elements and object that represents them is showed on the diagram below:
+The mapping between UI elements and object that represents them is showed in the diagram below:
 
 ![stable element relation diagram](stable_element_diagram.jpg)
 
 
-The problem of stale reference can occure on any level of our object hirerchy: our deactive button could be re-rendered, it's containing list element or the whole user list was replace with the newer version of html.
-
-All methods for locating WebElement in my test always return StableWebElement wrapper and the problem with StaleObjectReferenceException disappeared.
-
+The problem of stale reference can occur on any level of our object hierarchy: our deactivate button could be re-rendered, it's containing list element or the whole user list was replaced with the newer version of HTML.
 
 ### Implementing StableWebElement 
 
@@ -58,9 +55,9 @@ public interface IStableWebElement : IWebElement, ILocatable, ITakesScreenshot, 
 }
 ```
 
-At first I thought that extending `IWebElement` will be enought, but after running my test suit I encounter a few methods from Selenium that accepts `IWebElement` and perform casting to different interfaces that are not in IWebElement inheritance hierarchy.
+At first, I thought that extending `IWebElement` will be enough, but after running my test suit I encounter a few methods from Selenium that accepts `IWebElement` and perform casting to different interfaces that are not in the IWebElement inheritance hierarchy.
 
-Now we create and implementation of our `IStableWebElement` interface:
+Now we create an implementation of our `IStableWebElement` interface:
 
 ```csharp
 public class StableWebElement: IStableWebElement
@@ -100,7 +97,7 @@ public bool Displayed
 }
 ```
 
-All original methods were wrapped in `Execute` method which is responsible for detecting of `StaleElementReferenceException` during original method invocation. When the exception occures we try to restore element refrerence by invoking `RegenerateElement` and retry the operation. There are two `Execute` methods because we have to wrap with them methods and functions (notice that one return generic element and the second one return void):
+All original methods were wrapped in the `Execute` method which is responsible for detecting of `StaleElementReferenceException` during original method invocation. When the exception occurs we try to restore element reference by invoking `RegenerateElement` and retry the operation. There are two `Execute` methods because we have to wrap with them methods and functions (notice that one return generic element and the second one return void):
 
 ```cs
 private T Execute<T>(Func<T> function)
@@ -153,7 +150,7 @@ public void RegenerateElement()
 }
 ```
 
-At first we check if our parent (which is our search context) is also affected by stale reference. If so we perform `RegenerateElement` method on parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the relation chain). After we retrieve reference to the parent we also need to find fresh version of current element using new parent and memorized locator. If any exception occures during searching for current element that means the element truly disappear and the StaleReferenceException was indicator of the true problem. The last missing part is the method that detect if element has stale reference.
+At first, we check if our parent (which is our search context) is also affected by stale reference. If so we perform `RegenerateElement` method on the parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the relation chain). After we retrieve the reference to the parent we also need to find a fresh version of the current element using new parent and memorized locator. If any exception occurs during searching for the current element that means the element truly disappear and the StaleReferenceException was an indicator of the true problem. The last missing part is the method that detects if the element has a stale reference.
 
 
 ```cs
@@ -196,7 +193,7 @@ static class StableElementExtensions
 }
 ```
 
-Now we have to replace all invocation of `FindElement` with our new extension method. If we don't need to be explicity about using this new approach we can tweek `FindElement` and `FindElements` methods from our `StableWebElement` wrapper to intercept the real result and wrap it into StableWebElement:
+Now we have to replace all invocation of `FindElement` with our new extension method. If we don't need to be explicitly about using this new approach we can tweak `FindElement` and `FindElements` methods from our `StableWebElement` wrapper to intercept the real result and wrap it into StableWebElement:
 
 ```cs
 public IWebElement FindElement(By locator)
@@ -214,10 +211,11 @@ public ReadOnlyCollection<IWebElement> FindElements(By locator)
 }
 ```
 
-This little trick allows us to introduce `StableWebElement` almost transparently into exisitng codebase with minimal effort. I said "almost" because we need to still use `FindStableElement` extension method on serch context which is `WebDriver` (or we can create a wrapper for `WebDriver` that use the same trick as StableWebElement).
+This little trick allows us to introduce `StableWebElement` almost transparently into existing codebase with minimal effort. I said "almost" because we need to still use `FindStableElement` extension method on search context which is `WebDriver` (or we can create a wrapper for `WebDriver` that use the same trick as StableWebElement).
 
 
 ## Summary
+All methods for locating WebElement in my test always return StableWebElement wrapper and the problem with StaleObjectReferenceException disappeared.
 
 The full implementation of `StableWebElement` can be found in `Tellurium` project [here](https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs)
 
