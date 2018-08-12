@@ -43,7 +43,7 @@ Mapping between UI elements and object that represents them is showed on the dia
 
 The problem of stale reference can occure on any level of our object hirerchy: our deactive button could be re-rendered, it's containing list element or the whole user list was replace with the newer version of html.
 
-All method for locating WebElement in my test always return StableWebElement wrapper and the problem with StaleObjectReferenceException disappeared.
+All methods for locating WebElement in my test always return StableWebElement wrapper and the problem with StaleObjectReferenceException disappeared.
 
 
 ### Implementing StableWebElement 
@@ -78,7 +78,7 @@ public class StableWebElement: IStableWebElement
 }
 ```
 
-All of the methos from the interface should be implemented as a proxy for original methods on the `element` object in the following manner:
+All of the methods from the interface should be implemented as a proxy for original methods on the `element` object in the following manner:
 
 ```csharp
 public void SendKeys(string text)
@@ -153,7 +153,7 @@ public void RegenerateElement()
 }
 ```
 
-At first we check if our parent (which is our search context) is also affected by stale reference. If so we perform `RegenerateElement` method on parent. This creates recursion and we are able to restore reference to the root element (no matter how many parents are on the relation chain). After we retrieve reference to the parent we also need to find fresh version of current element using new parent and memorized locator. If any exception occures during searching current element that means the element truly disappear and the StaleReferenceException was indicator of the true problem. The last missing part is the method that detect if element has stale reference.
+At first we check if our parent (which is our search context) is also affected by stale reference. If so we perform `RegenerateElement` method on parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the relation chain). After we retrieve reference to the parent we also need to find fresh version of current element using new parent and memorized locator. If any exception occures during searching for current element that means the element truly disappear and the StaleReferenceException was indicator of the true problem. The last missing part is the method that detect if element has stale reference.
 
 
 ```cs
@@ -172,18 +172,52 @@ public bool IsStale()
 }
 ```
 
-//TODO: wrap FindElement method
+### Applying StableWebElement 
 
+In order to use StableWebElement we need to add extension method for `ISearchContex` that search for given element and wrap it into our StableWebElement proxy:
 
-The full implementation of `StableWebElement` can be found in `Tellurium` project [here](https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs)
 
 ```csharp
 static class StableElementExtensions
 {
-    public static IStableWebElement FindStableElement(this ISearchContext context, By by)
+    public static IStableWebElement FindStableElement(this ISearchContext context, By locator)
     {
-        var element = context.FindElement(by);
-        return new StableWebElement(context, element, by, SearchApproachType.First);
+        var element = context.FindElement(locator);
+        return new StableWebElement(context, element, locator);
+    }    
+
+    public static ReadOnlyCollection<IStableWebElement> FindStableElements(this ISearchContext context, By locator)
+    {        
+        return  context.FindElements(locator
+                .Select(x=> new StableWebElement(context, x, locator))
+                .ToList()
+                .AsReadOnly();
     }    
 }
 ```
+
+Now we have to replace all invocation of `FindElement` with our new extension method. If we don't need to be explicity about using this new approach we can tweek `FindElement` and `FindElements` methods from our `StableWebElement` wrapper to intercept the real result and wrap it into StableWebElement:
+
+```cs
+public IWebElement FindElement(By locator)
+{
+    var foundElement = Execute(() => element.FindElement(locator));
+    return new StableWebElement(this.parent, foundElement, locator);
+}
+
+public ReadOnlyCollection<IWebElement> FindElements(By locator)
+{
+    return Execute(() => element.FindElements(locator))
+        .Select(x=> new StableWebElement(this.parent, x, locator))
+        .ToList()
+        .AsReadOnly();
+}
+```
+
+This little trick allows us to introduce `StableWebElement` almost transparently into exisitng codebase with minimal effort. I said "almost" because we need to still use `FindStableElement` extension method on serch context which is `WebDriver` (or we can create a wrapper for `WebDriver` that use the same trick as StableWebElement).
+
+
+## Summary
+
+The full implementation of `StableWebElement` can be found in `Tellurium` project [here](https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs)
+
