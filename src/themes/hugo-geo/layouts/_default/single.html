@@ -2,15 +2,14 @@
 {{ partial "nav.html" . }}
 
 <main>
-	<header>
-		<h1>{{ .Title }}</h1>
-		{{ if .Params.isBlogpost }}  
-		<div><i class="fa fa-calendar"></i> {{ .Date.Format "2 January 2006"}}</div>
-		<hr />
-		{{end}}
-	</header>
-
 	<article>
+		<header>
+			<h1>{{ .Title }}</h1>
+			{{ if .Params.isBlogpost }}  
+			<div><i class="fa fa-calendar"></i> <time>{{ .Date.Format "2 January 2006"}}</time></div>
+			<hr />
+			{{end}}
+		</header>
 		{{if isset .Params "image"}}
 			<img src="{{.Params.Image}}" width="100%" />
 			<br />
