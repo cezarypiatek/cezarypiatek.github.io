@@ -21,7 +21,7 @@ paginate = 5
 	
 	[[params.socialbuttons]]
 	faicon = "twitter"
-	url = "https://twitter.com/cezary_piatek"
+	url = "https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&ref_src=twsrc%5Etfw&region=follow_link&screen_name=cezary_piatek&tw_p=followbutton"
 	title = "Follow me on twitter"
 		
 	[[params.socialbuttons]]
