@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Architecture</title>
+      <link>https://cezarypiatek.github.io/tags/architecture/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Asp.net Mvc</title>
       <link>https://cezarypiatek.github.io/tags/asp.net-mvc/</link>
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
@@ -71,6 +80,24 @@
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/content-security-policy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cqrs</title>
+      <link>https://cezarypiatek.github.io/tags/cqrs/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/cqrs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cqs</title>
+      <link>https://cezarypiatek.github.io/tags/cqs/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/cqs/</guid>
       <description></description>
     </item>
     
@@ -203,7 +230,7 @@
     <item>
       <title>Livetemplates</title>
       <link>https://cezarypiatek.github.io/tags/livetemplates/</link>
-      <pubDate>Sun, 03 Dec 2017 10:38:18 +0200</pubDate>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/livetemplates/</guid>
       <description></description>
@@ -293,7 +320,7 @@
     <item>
       <title>Resharper</title>
       <link>https://cezarypiatek.github.io/tags/resharper/</link>
-      <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
       <description></description>
