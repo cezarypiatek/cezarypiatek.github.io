@@ -13,18 +13,18 @@ A year ago during my trip to the one of Software developer conference, I got a l
 
 ## It's not all light and bright 
 
-THE CQRS/CQS pattern works great, I immediately found a lot of benefits. It helps me to enforce separation of concers, single responsibility and consistency in my codebase as well as eliminate all that AOP magic with restoring full control over the code execution. Unfortunatelly, there is also a boring side of the implementing CQRS - **THE TYPING**. Everytime when I want to add new command I need to add 2 clasess (`Command` and `CommandHandler`) and for new query 3 classes (`Query`, `QueryResult` and `QueryHandler`) and there is a lot of `copy&paste` work to keep the naming consistency which is very important because of the `CommandDispatcher` and `QueryDispatcher` it is very hard to navigate throught the codebase. In order to make this tedious part of CQRS more convenient I've prepare a couple of snippets with Resharper's `LiveTemplates` which help to create, consume and test commands and queries. 
+The CQRS/CQS pattern works great, I immediately found a lot of benefits. It helps me to enforce separation of concerns, single responsibility, and consistency in my codebase as well as eliminate all that AOP magic with restoring full control over the code execution. Unfortunately, there is also a boring side of the implementing CQRS - **THE TYPING**. Everytime when I want to add new command I need to add 2 classes (`Command` and `CommandHandler`) and for every new query 3 classes (`Query`, `QueryResult` and `QueryHandler`) and there is a lot of `copy&paste` work to keep the naming consistency which is very important because of the `CommandDispatcher` and `QueryDispatcher` it is very hard to navigate through the codebase. In order to make this tedious part of CQRS more convenient, I've prepared a couple of snippets with Resharper's `LiveTemplates` which help to create, consume and test commands and queries. 
 
 
 ## Creating Commands and Queries
 
-I started from creating templates for commands and queries definition. For building them I used multi-file template option which is availabla at `File Template` tab in `Templates Explorer`.
+I started by creating templates for commands and queries definition. For building them I used multi-file template option which is available at `File Template` tab in `Templates Explorer`.
 
-For `New Command` template we ned to crete two files: one for `Command` and one for `CommandHandler`. Each file share the two placeholders: `$CommandName$` with macro set to `Current file name without extension` and `$namespace$` with `Default namespace for current file` macro. You can see the complete configuration on the following screenshot:
+For `New Command` template we need to create two files: one for `Command` and one for `CommandHandler`. Each file shares the two placeholders: `$CommandName$` with the macro set to `Current file name without extension` and `$namespace$` with `Default namespace for current file` macro. You can see the complete configuration on the following screenshot:
 
 ![Command template configuration](CommandDefinition.jpg)
 
-`New query` template consists of tree files: `Query`, `QueryResult` and `QueryHandler`. There are two placeholders: `$QueryName$` and `$namespace$`. Macros are assigned analogously as for *New Command* template. A detailed configuration looks as follows:
+`New query` template consists of three files: `Query`, `QueryResult` and `QueryHandler`. There are two placeholders: `$QueryName$` and `$namespace$`. Macros are assigned analogously as for *New Command* template. A detailed configuration looks as follows:
 
 ![Query template configuration](QueryDefinition.jpg)
 
@@ -33,14 +33,35 @@ Now we can easily add commadns and queries using predefined multi-file templates
 
 ![Insert command using template](insert_command.gif)
 
-In order to save some clicking it's good to check "Add to quicklist" option in "Choose template" window. After that choosen template should be available in quick menu available after pressing "alt + insert" on selected directory:
+In order to save some clicking, it's good to check "Add to quicklist" option in "Choose template" window. After that chosen template should be available in quick menu available after pressing `alt + insert` on the selected directory:
 
 ![quick list](quicklist.jpg)
 
 
 ## Dispatching 
+The next set of snippets which could be helpful in CQRS codebase is the one that allows dispatching commands and queries in controller's actions. These are an inline template which could be prepared using "Template Explorer -> Live Templates" tab. A definition of this templates can looks as follows:
+
+![command dispatching template](command_action_definition.jpg)
+
+![query dispatching template](query_action_definition.jpg)
+
+I assigned `ca` shortcut for `Command action` and `qa` for `Query action`. Now we can easily insert actions which dispatch command and queries.
+
+![Dispatch commadn and query](dispatch_command_and_query.gif)
+
+As you can see these templates save me a lot of typing and ensure that I don't forget to decorate my actions with necessary attributes (`[HttpPost]` and `[FromBody]` for commands and `[HttpGet]` for queries). 
 
 ## Testing
 
+The last template that I needed to work with CQRS was the one that helps me with creating Unit Tests for commands and queries. A template definition looks as below:
+
+![Command test template](command_test_template.jpg)
+
+![Query test template](query_test_template.jpg)
+
+Now using `ct` snippet for commands and `qt` snippet for queries we can easily create stubs for our tests:
+
+![Insert command and query tests](insert_command_and_query_tests.gif)
+
 ## Summary
-Resharper LiveTemplates is a powerful mechanism that can easily relieve you of boring typing, helps to enforce naming consistency and allowing to focus on implementing business requirements. All snippets presented in this blog post are available here. You can import them as a separate layer in your Resharper configuration and easily adjust to your CQRS framework. If you are interested in how to configure and consume your own templates I recommend you to read my article [Don't write dull code - Resharper Live Templates](/post/livetemplates/)
+Resharper LiveTemplates is a powerful mechanism that can easily relieve you of boring typing, helps to enforce code consistency and allowing to focus on implementing what is important - the business requirements. All snippets presented in this blog post are available at Github [here](https://github.com/cezarypiatek/CQRSsnippets). You can import them as a separate layer in your Resharper configuration and easily adjust to your CQRS framework of choice. If you are interested in how to configure and consume your own templates I recommend you to read my article [Don't write dull code - Resharper Live Templates](/post/livetemplates/) I'm curious if you have any other ideas for snippets that could help with CQRS apps. If you have one I will be appreciated for sharing in the comments section.
