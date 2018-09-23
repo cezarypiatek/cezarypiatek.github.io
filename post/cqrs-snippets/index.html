@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Skip the boring part of the CQRS with Resharper snippets.">   
+        
+    <meta property="article:published_time" content="2018-09-23">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/cqrs-snippets/">	
+	<meta property="og:title" content="CQRS snippets">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/cqrs-snippets/splashscreen.jpg">
+    <meta property="og:description" content="Skip the boring part of the CQRS with Resharper snippets.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="cqrs">
+    
+    <meta property="og:tags" content="cqs">
+    
+    <meta property="og:tags" content="architecture">
+    
+    <meta property="og:tags" content="resharper">
+    
+    <meta property="og:tags" content="livetemplates">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/cqrs-snippets/splashscreen.jpg">
+	<meta property="twitter:title" content="CQRS snippets">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Skip the boring part of the CQRS with Resharper snippets.">
+
+	<meta name="keywords" value="cqrs, cqs, architecture, resharper, livetemplates" />
+    <meta name="generator" content="Hugo 0.44" />
+    <title>CQRS snippets &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>CQRS snippets</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>23 September 2018</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned <code>CQRS</code> and <code>CQS</code> patterns. I heard about them many times before but I&rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects. There are existing libraries which facilitate building application with CQRS pattern but I wanted to implement it by myself from the scratch, in order to better understand the concept. I based my implementation on <a href="https://www.future-processing.pl/blog/cqrs-simple-architecture/">CQRS – Simple architecture</a> article but the idea is also pretty clearly explained by Greg Young in his famous presentation <a href="https://www.infoq.com/presentations/8-lines-code-refactoring">8 Lines of Code </a></p>
+
+<h2 id="it-s-not-all-light-and-bright">It&rsquo;s not all light and bright<a href="#it-s-not-all-light-and-bright" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The CQRS/CQS pattern works great, I immediately found a lot of benefits. It helps me to enforce separation of concerns, single responsibility and consistency in my codebase, as well as eliminate all that AOP magic with restoring full control over the code execution. Unfortunately, there is also a boring side of implementing CQRS - <strong>THE TYPING</strong>. Every time I want to add new command, I need to add 2 classes (<code>Command</code> and <code>CommandHandler</code>) and for every new query 3 classes (<code>Query</code>, <code>QueryResult</code> and <code>QueryHandler</code>). There is a lot of <code>copy&amp;paste</code> work to keep the naming consistency which is very important because <code>CommandDispatcher</code> and <code>QueryDispatcher</code> make it hard to navigate through the codebase. I prepared a couple of snippets with Resharper&rsquo;s <code>LiveTemplates</code> which help to create, consume and test commands and queries to make this tedious part of CQRS more convenient.</p>
+
+<h2 id="creating-commands-and-queries">Creating Commands and Queries<a href="#creating-commands-and-queries" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I started by creating templates for commands and queries definition. For building them I used multi-file template option which is available at <code>File Template</code> tab in <code>Templates Explorer</code>.</p>
+
+<p>For <code>New Command</code> template we need to create two files: one for <code>Command</code> and one for <code>CommandHandler</code>. Each file shares two placeholders: <code>$CommandName$</code> with the macro set to <code>Current file name without extension</code> and <code>$namespace$</code> with <code>Default namespace for current file</code> macro. You can see the complete configuration on the following screenshot:</p>
+
+<p><img src="CommandDefinition.jpg" alt="Command template configuration" /></p>
+
+<p><code>New query</code> template consists of three files: <code>Query</code>, <code>QueryResult</code> and <code>QueryHandler</code>. There are two placeholders: <code>$QueryName$</code> and <code>$namespace$</code>. Macros are assigned analogously as for <em>New Command</em> template. A detailed configuration looks as follows:</p>
+
+<p><img src="QueryDefinition.jpg" alt="Query template configuration" /></p>
+
+<p>Now we can easily add commadns and queries using predefined multi-file templates:</p>
+
+<p><img src="insert_command.gif" alt="Insert command using template" /></p>
+
+<p>In order to save some clicking, it&rsquo;s good to check &ldquo;Add to quicklist&rdquo; option in &ldquo;Choose template&rdquo; window. After that, chosen template should be available in quick menu after pressing <code>alt + insert</code> on selected directory:</p>
+
+<p><img src="quicklist.jpg" alt="quick list" /></p>
+
+<h2 id="dispatching">Dispatching<a href="#dispatching" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Next set of snippets which could be helpful in CQRS codebase is one that allows dispatching commands and queries in controller&rsquo;s actions. It is an inline template which could be prepared using &ldquo;Template Explorer -&gt; Live Templates&rdquo; tab. The definition of such template can looks as follows:</p>
+
+<p><img src="command_action_definition.jpg" alt="command dispatching template" /></p>
+
+<p><img src="query_action_definition.jpg" alt="query dispatching template" /></p>
+
+<p>I assigned <code>ca</code> shortcut for <code>Command action</code> and <code>qa</code> for <code>Query action</code>. Now we can easily insert actions which dispatch commands and queries.</p>
+
+<p><img src="dispatch_command_and_query.gif" alt="Dispatch command and query" /></p>
+
+<p>As you can see, these templates save me a lot of typing and ensure that I don&rsquo;t forget to decorate my actions with necessary attributes (<code>[HttpPost]</code> and <code>[FromBody]</code> for commands and <code>[HttpGet]</code> for queries).</p>
+
+<h2 id="testing">Testing<a href="#testing" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The last template that I needed to work with CQRS was one that helps me with creating Unit Tests for commands and queries. The template definitions look as below:</p>
+
+<p><img src="command_test_template.jpg" alt="Command test template" /></p>
+
+<p><img src="query_test_template.jpg" alt="Query test template" /></p>
+
+<p>Now using <code>ct</code> snippet for commands and <code>qt</code> snippet for queries we can easily create stubs for our tests:</p>
+
+<p><img src="insert_command_and_query_tests.gif" alt="Insert command and query tests" /></p>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Resharper LiveTemplates is a powerful mechanism that can easily relieve you of boring typing, help to enforce code consistency and allow to focus on implementing what is important - the business requirements. All snippets presented in this blog post are available at Github <a href="https://github.com/cezarypiatek/CQRSsnippets">here</a>. You can import them as a separate layer in your Resharper configuration and easily adjust to your CQRS framework of choice. If you are interested in how to configure and consume your own templates, I recommend you to read my article <a href="../../post/livetemplates/">Don&rsquo;t write dull code - Resharper Live Templates</a> I&rsquo;m curious if you have any other ideas for snippets that could help with CQRS apps. If you do, I would appreciate if you could share them in the comment section below.</p>
+    
+		  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/how-to-manage-todo-in-codebase/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/how-to-manage-todo-in-codebase/splashscreen_hue4546ab00f78e7c845990f7df11dec67_118641_320x240_fill_q75_box_smart1.jpg" alt="How to manage TODO in your codebase.">
+								<div class="card-body">
+									<h5 class="card-title">How to manage TODO in your codebase.</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/livetemplates/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/livetemplates/splashscreen_hue4546ab00f78e7c845990f7df11dec67_86294_320x240_fill_q75_box_smart1.jpg" alt="Don&#39;t write dull code - Resharper Live Templates">
+								<div class="card-body">
+									<h5 class="card-title">Don&#39;t write dull code - Resharper Live Templates</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/space-eaten-up-by-resharper/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/space-eaten-up-by-resharper/splashscreen_hud143dd1da9dd0089b4faa4a81a03d743_111682_320x240_fill_q75_box_smart1.jpg" alt="Space eaten up by Resharper">
+								<div class="card-body">
+									<h5 class="card-title">Space eaten up by Resharper</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

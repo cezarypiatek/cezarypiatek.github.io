@@ -6,10 +6,19 @@
     <description>Recent content in Livetemplates on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Dec 2017 10:38:18 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 23 Sep 2018 00:20:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/livetemplates/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CQRS snippets</title>
+      <link>https://cezarypiatek.github.io/post/cqrs-snippets/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/cqrs-snippets/</guid>
+      <description>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned CQRS and CQS patterns. I heard about them many times before but I&amp;rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects.</description>
+    </item>
     
     <item>
       <title>How to manage TODO in your codebase.</title>
