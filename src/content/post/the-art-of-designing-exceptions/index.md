@@ -1,8 +1,8 @@
 ---
 title: "The art of designing exceptions"
 description: "Skip the boring part of the CQRS with Resharper snippets."
-date: 2018-10-14T00:20:45+02:00
-tags : ["exceptions", "architecture"]
+date: 2018-10-16T00:20:45+02:00
+tags : ["exceptions", "architecture", "CoreCLR", "best practices", "cleancode"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
 image: "splashscreen.jpg"
@@ -41,7 +41,7 @@ and the most useful overloads are those which acceptes `parameterName`. When we 
 Here comes the 'message` parameter value
 Parameter name: args
 ```
-Despite the `message` parameter value (first line of the exception message) the first question that comes to our mind is `What was the value of invalid argument?`. Now it's our responsibility to provider comprehensive explanation and current value everytime when we throw exception for given validation. A better approach would be own in our codebase a helper function that accepts also argument value and produce exception that explain current situation:
+Despite the `message` parameter value (first line of the exception message) the first question that comes to our mind is **What was the value of invalid argument?**. Now it's our responsibility to provider comprehensive explanation and current value everytime when we throw exception for given validation. A better approach would be own in our codebase a helper function that accepts also argument value and produce exception that explain current situation:
 
 ```csharp
 public class Fail
@@ -68,16 +68,30 @@ public ArgumentOutOfRangeException(string message, Exception innerException)
 public ArgumentOutOfRangeException(string paramName, object actualValue, string message)
 ```
 
-The message produce by this overload looks as follows (the first line comes from `message` parameter):
+The message produce by this overload looks as follows:
 
 ```plaintext
-Age out of allowed range
-Parameter name: age
-Actual value was 120.
+<message>
+Parameter name: <parameterName>
+Actual value was <actualValue>.
 ```
-Seeing this message we immediately start asking questions: "Why this age value is invalid?", "What are the limitation for this value"? Ofcouse I could provide all that information everytime would be a very tedious.
-A better soulution would be a intoducing an interface that allows to check if given value falls into allowed range, Objects that implement this interface can be use to verify given value correctnes and also can be pass to exception factory in case when we want to inform about exceeding the allowed range:
+Seeing this message we immediately start asking question: **"What are the limitation for this value"?** Ofcouse this information could be included in `message` parameter but constructing the message using the same patter everytime would be a very tedious. Let's take a look at one of the [DateTime constructors](https://github.com/dotnet/coreclr/blob/57f8358221a3c4ad7f1608f625bc3c5936618505/src/System.Private.CoreLib/shared/System/DateTime.cs#L228)
 
+```csharp
+public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
+{
+    if (millisecond < 0 || millisecond >= MillisPerSecond)
+    {
+        throw new ArgumentOutOfRangeException(nameof(millisecond), SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1));
+    }
+    long ticks = DateToTicks(year, month, day) + TimeToTicks(hour, minute, second);
+    ticks += millisecond * TicksPerMillisecond;
+    if (ticks < MinTicks || ticks > MaxTicks)
+        throw new ArgumentException(SR.Arg_DateTimeRange);
+    _dateData = (ulong)ticks;
+}
+```
+As we see there is a validation for `milisecond` parameter. If the value doesn't belong to `[0, MillisPerSecond)` range then the `ArgumentOutOfRangeException` exception is thrown. Exception message is composed using `SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1)` statement. In order to compose the message somebody had to know that there is dedicated format string `SR.ArgumentOutOfRange_Range` and he had to duplicated the values of range endpoints from the if statement (This validation logic is duplicated four times in `DateTime` struct). I've found the statement `SR.Format(SR.ArgumentOutOfRange_Range, MIN, MAX)` in 28 files in CoreCLR source code!!! (There was also a `string.Format(CultureInfo.CurrentCulture, SR.ArgumentOutOfRange_Range,  MIN, MAX)` variation too!!!). For me here's two issues: range info duplication and error message compose logic duplication. These probles can be solved by introducing an interface that represent the range. Object that implement this interface can be use to verify given value correctnes and also can be pass to exception factory in case when we want to inform about exceeding the allowed range:
 
 ```csharp
 
@@ -102,7 +116,7 @@ public class Fail
 }
 ```
 
-A sample implementation and usage of `IRange<>` can looks as follows:
+A sample implementation of `IRange<>` can looks as follows:
 
 ```csharp
 public class OpenRange<T>:IRange<T> where T:IComparable<T>
@@ -120,21 +134,28 @@ public class OpenRange<T>:IRange<T> where T:IComparable<T>
 
     public string GetDescription() => $"({min}) - {max})"
 }
+```
 
+Using our new range facility we can rewrite `DateTime` constructor in the following way:
 
-public class BonusCalculator{
-    
-    private static IRange<int> allowedAgeRange = new  OpenRange<int>(20, 60);
+```csharp
+private static IRange<int> allowedMilisecondRange = new LeftClosedRightOpenRange<int>(0, MillisPerSecond);
+private static IRange<long> allowedTicksRange = new ClosedRange<long>(MinTicks, MaxTicks);
 
-    public int CalculatePointsForAge(int age){
-        if(allowedAgeRange.Contains(age) == false)
-        {
-            throw Fail.BecauseArgumentOutOfRange(age, nameof(age), allowedAgeRange);
-        }
-        //TODO: Implement calculation logic
+public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
+{
+    if (allowedMilisecondRange.Contains(millisecond) == false)
+    {
+        throw Fail.BecauseArgumentOutOfRange(millisecond, nameof(millisecond), allowedMilisecondRange);
     }
+    long ticks = DateToTicks(year, month, day) + TimeToTicks(hour, minute, second);
+    ticks += millisecond * TicksPerMillisecond;
+    if (allowedTicksRange.Contains(ticks) == false)
+    {
+        throw Fail.BecauseArgumentOutOfRange(ticks, nameof(ticks), allowedTicksRange);
+    }   
+    _dateData = (ulong)ticks;
 }
-
 ```
 
 As we see `IRange<>` help us improve code readibility, reduce the duplication of information about the allowed range and facilitate throwing exception.
@@ -208,60 +229,6 @@ private void DoSomething(SampleEnum option)
 }
 ```
 
-
-## DateTime example
-
-```csharp
-public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, DateTimeKind kind)
-{
-    if (millisecond < 0 || millisecond >= 1000)
-    throw new ArgumentOutOfRangeException(nameof (millisecond), Environment.GetResourceString("ArgumentOutOfRange_Range", (object) 0, (object) 999));
-    switch (kind)
-    {
-    case DateTimeKind.Unspecified:
-    case DateTimeKind.Utc:
-    case DateTimeKind.Local:
-        long num = DateTime.DateToTicks(year, month, day) + DateTime.TimeToTicks(hour, minute, second) + (long) millisecond * 10000L;
-        if (num < 0L || num > 3155378975999999999L)
-        throw new ArgumentException(Environment.GetResourceString("Arg_DateTimeRange"));
-        this.dateData = (ulong) (num | (long) kind << 62);
-        break;
-    default:
-        throw new ArgumentException(Environment.GetResourceString("Argument_InvalidDateTimeKind"), nameof (kind));
-    }
-}
-```
-
-```csharp
-
-private static IRange<int> miliseondAllowedRange = new LeftOpenRightClosedRange<int>(0, 1000);
-private static IRange<long> magicNumAllowedRange = new OpenRange<long>(0L, 3155378975999999999L);
-
-public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, DateTimeKind kind)
-{
-    if (miliseondAllowedRange.Contains(millisecond) == false)
-    {
-        throw Fail.BecauseArgumentOutOfRange(nameof(millisecond), millisecond, miliseondAllowedRange)       
-    }
-    switch (kind)
-    {
-        case DateTimeKind.Unspecified:
-        case DateTimeKind.Utc:
-        case DateTimeKind.Local:
-            long num = DateTime.DateToTicks(year, month, day) + DateTime.TimeToTicks(hour, minute, second) + (long) millisecond * 10000L;
-            if (magicNumAllowedRange.Contains(num) == false)
-            {
-                throw Fail.BecauseArgumentOutOfRange(nameof(num), num, magicNumAllowedRange);
-            }
-            
-            this.dateData = (ulong) (num | (long) kind << 62);
-            break;
-        default:
-           throw Fail.BecauseEnumOutOfRange(nameof(option), option);;
-    }
-}
-```
-
 ### FileNotFoundException
 
 
@@ -274,7 +241,7 @@ public FileNotFoundException(string message, string fileName)
 public FileNotFoundException(string message, string fileName, Exception innerException)
 ```
 
-Thoses are the public constructor for `FileNotFoundException`. The three first should be forbidden. The only useful versions are these ones which accepts `fileName` parameter but there is still missing crucial information - "Where the file was looking for?". In order make diagnostic less painful we can introduce a helper which accepts `fileName` as well as list of potential locations and produce exception with comprehensive message:
+Thoses are the public constructor for `FileNotFoundException`. The three first should be forbidden. The only useful versions are these ones which accepts `fileName` parameter but there is still missing crucial information - **Where the file was looking for?**. In order make diagnostic less painful we can introduce a helper which accepts `fileName` as well as list of potential locations and produce exception with comprehensive message:
 
 
 ```csharp
@@ -291,7 +258,45 @@ public static class Fail
 
 ## Missing context information
 
-//TODO: Passing context - catching and rethrow
+Sometimes we don't have in given context enougth information to create a comprehensive error message. We can pass the missing information from the outside but this has a few disadvantages: this additional parameters pollute our API and and bound our method to given invocatio context making it less reusable. Let's take and example: we want to load in our application data stored in multiple `XML` files. Method that is responsible for loading data loops throught the list of files, read the content and pass it to the component reponsible for parsing `XML`:
+
+```csharp
+
+public IReadonlyList<SampleData> LoadData(IReadonlyList<string> files)
+{
+    var result = new List<SampleData>();
+    foreach(var file in files)
+    {
+        var rawConent = File.ReadAllText(file);
+        var data = xmlDataParser.Parse(rawContent);
+        result.AddRange(data);
+    }
+    return result;
+}
+```
+
+If there are any parsing errors we would like to inform why the structure is invalid and also which file contains this corrupted content. Content verification logic is a part of the parser but it's totally unaware of the content physical source. We have two solution: we can design the parser to return a structure that contains besides the data also an detailed information about errors if any occures; or we can catch the exception throwed by the parser and wrap it in new exception that provide the context information.
+
+```csharp
+public IReadonlyList<SampleData> LoadData(IReadonlyList<string> files)
+{
+    var result = new List<SampleData>();
+    foreach(var file in files)
+    {   
+        try
+        {
+            var rawConent = File.ReadAllText(file);
+            var data = xmlDataParser.Parse(rawContent);
+            result.AddRange(data);
+        }catch(Exception exception)
+        {
+            throw new DataLoadException($"Cannot load data from file '{file}'", exception)
+        }
+    }
+    return result;
+}
+```
+
 
 Of courcse there are situation when we cannot reveal in exception too much information for example for security reasons or we don't want to overhelm user with technical details.
 
