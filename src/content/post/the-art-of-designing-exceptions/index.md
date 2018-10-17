@@ -9,7 +9,7 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-Have you ever been in the situation when discovered in logs exception force you to spend the next couple of minutes or even hours figuring out what exactly went wrong? The message was very cryptic and the only useful information that guides you to the crime scene was a stack trace. But after arriving there you still have no idea what really happened and what is the culprit. And the most frustrating part is that in many cases the reason is very trivial and could be diagnosed immediately if the error message contains sufficient information. Sounds familiar? I was in this situation many times before, especially when I was working with 3rd party libraries. In this blog post, I would like to share with you my thoughts and experience related to designing exception.
+Have you ever been in the situation when discovered in the logs an exception that force you to spend the next couple of minutes or even hours figuring out what exactly went wrong? The message was very cryptic and the only useful information that guides you to the crime scene was a stack trace. But after arriving there you still have no idea what really happened and what was the culprit. And the most frustrating part is that in many cases the reason is very trivial and could be diagnosed immediately if the error message contains sufficient information. Sounds familiar? I was in this situation many times before, especially when I was working with 3rd party libraries. In this blog post, I would like to share with you my thoughts and experience related to designing exception.
 
 
 ## Official guideline
@@ -22,11 +22,11 @@ First of all, there is a chapter in [Framework Design Guideline](https://docs.mi
 
 - [Exceptions and Performance](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions-and-performance) 
 
-Obeying this guideline should at some point make our life easier but there are also areas for more improvement especially in terms of information which should be included in the exception.
+Obeying this guideline should at some point make our life easier but there are also areas for more improvement, especially in terms of information which should be included in the exception.
 
 
 ## ArgumentException
-Let's take a look at `ArgumentException` which comes from the standard library and is used for notifying about invalid parameters.  We have the following constructors on our disposal:
+Let's take a look at `ArgumentException` which comes from the standard library and is used for notifying about invalid parameters.  We have the following constructors at our disposal:
 
 ```csharp
 public ArgumentException()
@@ -35,13 +35,13 @@ public ArgumentException(string message, string paramName)
 public ArgumentException(string message, string paramName, Exception innerException)
 ```
 
-and the most useful overloads are those which acceptes `parameterName`. When we try to throw this exception we've got the following message:
+and the most useful overloads are those which accepts `parameterName`. When we try to throw this exception we've got the following message:
 
 ```plaintext
-Here comes the 'message` parameter value
-Parameter name: args
+<message>
+Parameter name: <parameterName>
 ```
-Despite the `message` parameter value (first line of the exception message) the first question that comes to our mind is **What was the value of invalid argument?**. Now it's our responsibility to provider comprehensive explanation and current value everytime when we throw exception for given validation. A better approach would be own in our codebase a helper function that accepts also argument value and produce exception that explain current situation:
+Despite the `message` parameter value (the first line of the exception message), the first question that comes to our mind is **What was the value of invalid argument?**. Now it's our responsibility to provide a comprehensive explanation that contains current value every time when we throw an exception using the aforementioned constructor. A better approach would be own in our codebase a helper function that enforces providing also the argument value and produces the exception with a message that explains current situation:
 
 ```csharp
 public class Fail
@@ -54,11 +54,11 @@ public class Fail
 }
 ```
 
-Where the `XXX` is the reason why the argument was invalid. This solution take off the burden of making up the exception message everytime and enforce the need of providing argument current value. If there is a requirement for internationalization you can easily move the exception message to the resource file (remember about converting string interpolation into `string.Format`);
+Where the `XXX` part in the helper name is the reason why the argument was invalid. This solution takes off the burden of making up the exception message every time and enforces the need for providing argument current value. If there is a requirement for internationalization you can easily move the exception message to the resource file (remember about converting string interpolation into `string.Format`);
 
 ### ArgumentOutOfRangeException - numeric values
 
-One of the BCL exceptions that specify the reason for invalid parameter is `ArgumentOutOfRangeException`. The situation is a litte bit better than in `ArgumentException` case base as we see below there is a constructor overload that accept `parameterName` as well as `actualValue`:
+One of the `BCL` exceptions that specify the reason for the invalid parameter is `ArgumentOutOfRangeException`. The situation is a little bit better than in `ArgumentException` case because as we see below there is a constructor overload that accepts `parameterName` as well as `actualValue`:
 
 ```csharp
 public ArgumentOutOfRangeException()
@@ -68,14 +68,14 @@ public ArgumentOutOfRangeException(string message, Exception innerException)
 public ArgumentOutOfRangeException(string paramName, object actualValue, string message)
 ```
 
-The message produce by this overload looks as follows:
+The message produced by this overload looks as follows:
 
 ```plaintext
 <message>
 Parameter name: <parameterName>
 Actual value was <actualValue>.
 ```
-Seeing this message we immediately start asking question: **"What are the limitation for this value"?** Ofcouse this information could be included in `message` parameter but constructing the message using the same patter everytime would be a very tedious. Let's take a look at one of the [DateTime constructors](https://github.com/dotnet/coreclr/blob/57f8358221a3c4ad7f1608f625bc3c5936618505/src/System.Private.CoreLib/shared/System/DateTime.cs#L228)
+Seeing this message we immediately start asking the question: **"What are the limitation for this value"?** Of course, this information could be included in `message` parameter but constructing the message using the same pattern everytime would be very tedious. Let's take a look at one of the [DateTime constructor](https://github.com/dotnet/coreclr/blob/57f8358221a3c4ad7f1608f625bc3c5936618505/src/System.Private.CoreLib/shared/System/DateTime.cs#L228):
 
 ```csharp
 public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
@@ -91,7 +91,7 @@ public DateTime(int year, int month, int day, int hour, int minute, int second, 
     _dateData = (ulong)ticks;
 }
 ```
-As we see there is a validation for `milisecond` parameter. If the value doesn't belong to `[0, MillisPerSecond)` range then the `ArgumentOutOfRangeException` exception is thrown. Exception message is composed using `SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1)` statement. In order to compose the message somebody had to know that there is dedicated format string `SR.ArgumentOutOfRange_Range` and he had to duplicated the values of range endpoints from the if statement (This validation logic is duplicated four times in `DateTime` struct). I've found the statement `SR.Format(SR.ArgumentOutOfRange_Range, MIN, MAX)` in 28 files in CoreCLR source code!!! (There was also a `string.Format(CultureInfo.CurrentCulture, SR.ArgumentOutOfRange_Range,  MIN, MAX)` variation too!!!). For me here's two issues: range info duplication and error message compose logic duplication. These probles can be solved by introducing an interface that represent the range. Object that implement this interface can be use to verify given value correctnes and also can be pass to exception factory in case when we want to inform about exceeding the allowed range:
+As we see there is a validation for `millisecond` parameter. If the value doesn't belong to `[0, MillisPerSecond)` range then the `ArgumentOutOfRangeException` exception is thrown. The exception message is composed using `SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1)` statement. In order to compose the message, somebody had to know that he must use a special `SR.Format()` finction with a dedicated constant `SR.ArgumentOutOfRange_Range` and he had to duplicate the values of range endpoints from the if statement (This validation logic is duplicated four times in `DateTime` struct). I've found the statement `SR.Format(SR.ArgumentOutOfRange_Range, MIN, MAX)` in 28 files in CoreCLR source code!!! (There was also a `string.Format(CultureInfo.CurrentCulture, SR.ArgumentOutOfRange_Range,  MIN, MAX)` variation too!!!). For me there are two issues: range info duplication and error message compose logic duplication. These problems can be solved by introducing an interface that represents the range. An object that implement this interface can be used to verify given value correctness and also can be pass to exception factory in a case when we want to inform about exceeding the allowed range:
 
 ```csharp
 
@@ -158,13 +158,13 @@ public DateTime(int year, int month, int day, int hour, int minute, int second, 
 }
 ```
 
-As we see `IRange<>` help us improve code readibility, reduce the duplication of information about the allowed range and facilitate throwing exception.
-Actually this solution is not limited to the classical numeric ranges. You can have a class that implements `IRange<string>` and verify if given value belogs to predefined set of strings. Just remember to compose appropiate description in `GetDescription()` method.
+As we see `IRange<>` help us improve code readability, reduce the duplication of information about the allowed range and facilitate throwing the exception. It also enforces consistency in our codebase - a ready recipe for testing and informing about values outside the range.
+Actually, this solution is not limited to the classical numeric ranges. You can have a class that implements `IRange<string>` and verify if given value belongs to a predefined set of strings. Just remember to compose appropriate description in `GetDescription()` method.
 
 
 ## ArgumentOutOfRange - enum values
 
-The special situation when we what to use `ArgumentOutOfRange` is `default` case in `switch` statement for enum values. Here is the default code generated by Resharper for `switch` over a enum variable:
+The special situation when we what to use `ArgumentOutOfRange` is `default` case in the `switch` statement for enum values. Here is the default code generated by Resharper for `switch` over an enum variable:
 
 ```csharp
 private void DoSomething(SampleEnum option)
@@ -197,7 +197,7 @@ Parameter name: option
 Actual value was null.
 ```
 
-In order to make it much easier to diagnose we can add a dedicated helper that construct exception explaining what really happend:
+In order to make it much easier to diagnose we can add a dedicated helper that construct exception explaining what really happened:
 
 
 ```csharp
@@ -241,7 +241,7 @@ public FileNotFoundException(string message, string fileName)
 public FileNotFoundException(string message, string fileName, Exception innerException)
 ```
 
-Thoses are the public constructor for `FileNotFoundException`. The three first should be forbidden. The only useful versions are these ones which accepts `fileName` parameter but there is still missing crucial information - **Where the file was looking for?**. In order make diagnostic less painful we can introduce a helper which accepts `fileName` as well as list of potential locations and produce exception with comprehensive message:
+Those are the public constructor for `FileNotFoundException`. The three first should be forbidden. The only useful versions are these ones which accept `fileName` parameter but there is still missing crucial information - **Where the file was looking for?**. In order to make diagnostic less painful we can introduce a helper which accepts `fileName` as well as the list of potential locations and produce exception with comprehensive message:
 
 
 ```csharp
@@ -258,7 +258,7 @@ public static class Fail
 
 ## Missing context information
 
-Sometimes we don't have in given context enougth information to create a comprehensive error message. We can pass the missing information from the outside but this has a few disadvantages: this additional parameters pollute our API and and bound our method to given invocatio context making it less reusable. Let's take and example: we want to load in our application data stored in multiple `XML` files. Method that is responsible for loading data loops throught the list of files, read the content and pass it to the component reponsible for parsing `XML`:
+Sometimes we don't have in given context enough information to create a comprehensive error message. We can pass the missing information from the outside but this has a few disadvantages: this additional parameters pollute our API and bound our method to given invocation context making it less reusable. Let's take an example: we want to load in our application data stored in multiple `XML` files. The method that is responsible for loading data loops through the list of files, read the content and pass it to the component responsible for parsing `XML`:
 
 ```csharp
 
@@ -275,7 +275,28 @@ public IReadonlyList<SampleData> LoadData(IReadonlyList<string> files)
 }
 ```
 
-If there are any parsing errors we would like to inform why the structure is invalid and also which file contains this corrupted content. Content verification logic is a part of the parser but it's totally unaware of the content physical source. We have two solution: we can design the parser to return a structure that contains besides the data also an detailed information about errors if any occures; or we can catch the exception throwed by the parser and wrap it in new exception that provide the context information.
+If there are any parsing errors we would like to inform why the structure is invalid and also which file contains this corrupted content. Content verification logic is a part of the parser but it's totally unaware of the content physical source. We have two solutions: we can design the parser to return a structure that contains besides the data also an detailed information about errors if any occurs: 
+
+```csharp
+public IReadonlyList<SampleData> LoadData(IReadonlyList<string> files)
+{
+    var result = new List<SampleData>();
+    foreach(var file in files)
+    {   
+        var rawConent = File.ReadAllText(file);
+        var parsingResult = xmlDataParser.Parse(rawContent);
+        if(parsingResult.IsSuccess == false)
+        {
+            throw new DataLoadException($"Cannot load data from file '{file}'. Reason: {parsingResult.ErrorMessage}")
+        }
+        result.AddRange(parsingResult.Data);
+    }
+    return result;
+}
+```
+
+
+or we can catch the exception throwed by the parser and wrap it in new exception that provide the context information.
 
 ```csharp
 public IReadonlyList<SampleData> LoadData(IReadonlyList<string> files)
@@ -296,13 +317,11 @@ public IReadonlyList<SampleData> LoadData(IReadonlyList<string> files)
     return result;
 }
 ```
-
-
-Of courcse there are situation when we cannot reveal in exception too much information for example for security reasons or we don't want to overhelm user with technical details.
+Of course, from the performance point of view, the first approach is way much better. It also gives us more flexibility - we can collect error information from all files and forward somehow a complete summary. Unfortunately, sometimes the contract is enforced by the third party library and the `try-catch-throw` is the only possible option to handle this scenario.
 
 ## [Pure] attribute
 
-All of my exception factory methods were decorated with `[Pure]` attribute. This attribute comes from [JetBrains.Annotations](https://www.nuget.org/packages/JetBrains.Annotations/) nuget package and it is intendent to mark [pure functions](https://en.wikipedia.org/wiki/Pure_function) - the functions which have no side effects. If you are using `Resharper` and have enabled `Solution wide analysis` this attribute can save you a lot of troubles when you forget to add `throw` keyword before exception factory method invocation:
+All of my exception factory methods are decorated with `[Pure]` attribute. This attribute comes from [JetBrains.Annotations](https://www.nuget.org/packages/JetBrains.Annotations/) NuGet package and it is intended to mark [pure functions](https://en.wikipedia.org/wiki/Pure_function) - the functions which have no side effects. If you are using `Resharper` and have enabled `Solution-wide analysis` this attribute can save you a lot of troubles when you forget to add `throw` keyword before exception factory method invocation:
 
 ![missing throw keyword example](missing_throw.jpg)
 
@@ -310,7 +329,8 @@ You can read more about `Resharper code annotations` in my "[Hunt your bugs in d
 
 
 ## Summary
-Everytime when you are writing `throw` statement think about people who could find this exception in logs and what question they could ask. The good exception message is the one that explain in comprehensinve way what exactly conditions took place which cause this exceptional situation. There is no need to ask any question to figure out what happend. An appropiate exception design allows to save a lot of time consumers of your libraries, people who take over the support or even you too. 
+Every time when you are writing `throw` statement think about people who could find this exception in logs and what question they could ask. The good exception message is the one that explains in a comprehensive way what exactly conditions took place which caused this exceptional situation. There is no need to ask any question to figure out what happened. An appropriate exception design allows saving a lot of time consumers of your libraries, people who take over the support or even you too. 
+
 
 ### Call for action
-I am curious **what was the most misterious exception that you have ever encounter** and how much time did it take to solve the riddle? Please share your experience in the comment section down below.
+I am curious **what was the most mysterious exception that you have ever encounter** and how much time did it take to solve the riddle? Please share your experience in the comment section down below.
