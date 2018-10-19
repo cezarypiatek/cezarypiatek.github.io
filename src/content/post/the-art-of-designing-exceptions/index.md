@@ -1,7 +1,7 @@
 ---
 title: "The art of designing exceptions"
-description: "Skip the boring part of the CQRS with Resharper snippets."
-date: 2018-10-16T00:20:45+02:00
+description: "All that stuff before you catch them all."
+date: 2018-10-19T00:09:00+02:00
 tags : ["exceptions", "architecture", "CoreCLR", "best practices", "cleancode"]
 scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
 css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]

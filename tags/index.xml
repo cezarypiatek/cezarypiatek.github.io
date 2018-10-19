@@ -23,7 +23,7 @@
     <item>
       <title>Architecture</title>
       <link>https://cezarypiatek.github.io/tags/architecture/</link>
-      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/architecture/</guid>
       <description></description>
@@ -48,9 +48,18 @@
     </item>
     
     <item>
+      <title>Best Practices</title>
+      <link>https://cezarypiatek.github.io/tags/best-practices/</link>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/best-practices/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Cleancode</title>
       <link>https://cezarypiatek.github.io/tags/cleancode/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/cleancode/</guid>
       <description></description>
@@ -80,6 +89,15 @@
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/content-security-policy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Coreclr</title>
+      <link>https://cezarypiatek.github.io/tags/coreclr/</link>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/coreclr/</guid>
       <description></description>
     </item>
     
@@ -170,6 +188,15 @@
       <pubDate>Thu, 05 Jul 2018 00:21:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/elk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exceptions</title>
+      <link>https://cezarypiatek.github.io/tags/exceptions/</link>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/exceptions/</guid>
       <description></description>
     </item>
     
