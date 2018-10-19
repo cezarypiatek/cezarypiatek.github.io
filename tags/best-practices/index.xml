@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Architecture on Cezary Piątek Blog</title>
-    <link>https://cezarypiatek.github.io/tags/architecture/</link>
-    <description>Recent content in Architecture on Cezary Piątek Blog</description>
+    <title>Best Practices on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/best-practices/</link>
+    <description>Recent content in Best Practices on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 19 Oct 2018 00:09:00 +0200</lastBuildDate>
     
-	<atom:link href="https://cezarypiatek.github.io/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cezarypiatek.github.io/tags/best-practices/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://cezarypiatek.github.io/post/the-art-of-designing-exceptions/</guid>
       <description>Have you ever been in a situation when you discovered an exception in the logs that forced you to spend the next couple of minutes - or even hours - figuring out what exactly went wrong? The message was very cryptic and the only useful information that guided you to the crime scene was a stack trace. And after arriving there, you still had no idea what had really happened and what was the culprit.</description>
-    </item>
-    
-    <item>
-      <title>CQRS snippets</title>
-      <link>https://cezarypiatek.github.io/post/cqrs-snippets/</link>
-      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/cqrs-snippets/</guid>
-      <description>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned CQRS and CQS patterns. I heard about them many times before but I&amp;rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects.</description>
     </item>
     
   </channel>
