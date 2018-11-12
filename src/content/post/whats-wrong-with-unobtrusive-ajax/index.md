@@ -3,8 +3,7 @@ title: "What's wrong with default ajax support in ASP.NET MVC and how to fix it.
 description: "Why the javascript library can stop you from releasing to the production and how to prevent it."
 date: 2018-02-18T00:22:00+02:00
 tags : ["Content-Security-Policy", "csp", "ASP.NET MVC", "ajax", "cleancode", “javascript”]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---

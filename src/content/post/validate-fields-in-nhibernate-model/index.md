@@ -3,8 +3,7 @@ title: "Validating fields of NHibernate model"
 description: "How to demystify NHibernate exception by detecting invalid fields before committing changes to database"
 date: 2018-04-16T00:22:53+02:00
 tags : ["data model", "NHibernate", "SQLite", "SQL Server"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---

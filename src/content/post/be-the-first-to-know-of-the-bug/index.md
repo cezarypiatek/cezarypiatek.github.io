@@ -3,8 +3,7 @@ title: "Be the first to know of the bug"
 description: "How to configure Logstash to send notifications to Microsoft Teams"
 date: 2018-06-13T00:21:45+02:00
 tags : ["ELK", "Logstash", "MS Teams", "logging" ]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
@@ -19,7 +18,7 @@ One of my ideas for increasing productivity of my team with ELK was to integrate
 
 A sufficient Logstash HTTP plugin configuration for sending messages to MS Teams can look as follows:
 
-```plaintext
+```
 output { 
    if ([level] == "ERROR"){
       http {
@@ -54,7 +53,7 @@ MS Teams accepts messages containing HTML and markdown, so you can format the me
 ### Creating Kibana filter link
 Adding a Kibana link filtering entry logs related to given issue is quite easy. In the first step, you have to go to Kibana `Discovery` tab and create a filter that presents data from given request: select appropriate index, select fields to present and add the filter by requestId (I assume that your logs contain some kind of id that correlates entries from given request together). Every time you change filter parameters Kibana updates browser URL to reflect those settings. Now copy the browser URL and parametrize it by replacing hardcoded request id with `%{requestId}` placeholder. If the filter link is too long and bloats the message, you can extract it to a separate field with `mutate filter` and use it as a reference in the message sent to MS Teams. This trick helped me to improve readability and maintainability of Logstash configuration.
 
-```plaintext
+```
 filter {
     if [level] =="ERROR"{
        mutate {
@@ -106,7 +105,7 @@ After connecting Logstash with MS Teams I observed I was getting too many notifi
 
 The first step I took was introducing a new category for log entry - `FATAL`. So far we were using only INFO, DEBUG and ERROR levels. The ERROR entries contained information about an invalid situation which was foreseen and handled in the code as well as truly unexpected. I wanted to get notifications only about the scenarios which weren't handled and could cause inappropriate or unexpected behavior of our system. Extracting `FATAL` category for truly unexpected exceptions allowed me to filter out a lot of noise. **So now handled exceptions are logged with ERROR level and the unexpected one with FATAL.**
 
-```plaintext
+```
 output { 
    if ([level] == "FATAL"){
       http {
@@ -123,7 +122,7 @@ output {
 The second optimization was introducing a throttling. If the same error occurs multiple times in given time window we want to get notification only once. This is possible with Logstash throttle plugin. In the following configuration I'm using throttle plugin to mark the first message in the 60s time frame, uniquely identified by "%{app_name}%{app_env}%{logmessage}%{exception}" key, with "throttled" tag. Afterwards, in the output section, I filter only messages containing "throttled" tag (the rest is ignored by HTTP plugin)
 
 
-```plaintext
+```
 filter {  
     if [level] =="FATAL"{
         throttle{

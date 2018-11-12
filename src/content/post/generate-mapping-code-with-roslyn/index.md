@@ -3,8 +3,7 @@ title: "Generate mapping code with Roslyn code fix provider."
 description: "How to substitute AutoMapper with Roslyn code fix provider that generates code in design time."
 date: 2018-02-27T00:23:45+02:00
 tags : ["AutoMapper", "Roslyn", "mapping", "code generating"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---

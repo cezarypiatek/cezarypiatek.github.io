@@ -2,8 +2,7 @@
 title: "How to manage TODO in your codebase."
 date: 2017-12-03T10:38:18+02:00
 tags : ["TODO", "resharper", "livetemplates", "TodoExplorer"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 isBlogpost: true
 image: "splashscreen.jpg"
 ---

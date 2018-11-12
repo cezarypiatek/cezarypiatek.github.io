@@ -3,8 +3,7 @@ title: "The art of designing exceptions"
 description: "All that stuff before you catch them all."
 date: 2018-10-19T00:09:00+02:00
 tags : ["exceptions", "architecture", "CoreCLR", "best practices", "cleancode"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---

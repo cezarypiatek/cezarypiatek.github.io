@@ -3,8 +3,7 @@ title: "CQRS snippets"
 description: "Skip the boring part of the CQRS with Resharper snippets."
 date: 2018-09-23T00:20:45+02:00
 tags : ["CQRS", "CQS", "architecture", "resharper", "LiveTemplates" ]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---

@@ -3,8 +3,7 @@ title: "Reactive testing"
 description: "Creating maintainable UI test with reactive approach"
 date: 2018-07-21T00:21:18+02:00
 tags : ["Selenium", "testing", "ui-tests"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 draft: true

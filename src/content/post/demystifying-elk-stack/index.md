@@ -3,8 +3,8 @@ title: "Demystifying ELK stack"
 description: "How to easily implement centralized logging system based on ELK stack."
 date: 2018-07-05T00:21:18+02:00
 tags : ["Kibana", "Logstash", "ElasticSearch", "ELK", "Filebeat", "logging"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", "//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
+highlightLang: ["yaml"]
 image: "splashscreen.jpg"
 isBlogpost: true
 draft: false
@@ -44,7 +44,7 @@ Filebeat is responsible for collecting log data from files and sending it to Log
 This should install `filebeat` as a Windows service. Use `Get-Service filebeat` to verify the current status of filebeat service. In the next step, you have to configure filebeat to harvest log data produced by your application. Filebeat harvesting configuration is located in `filebeat.yml` file and minimal configuration that works for me looks as follows:
 
 
-```yml
+```yaml
 filebeat.prospectors:
 - input_type: log
   paths:
