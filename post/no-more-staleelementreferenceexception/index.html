@@ -34,9 +34,9 @@
     <meta name="generator" content="Hugo 0.44" />
     <title>No more StaleElementReferenceException &middot; Cezary Piątek Blog</title>
     
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
     
     <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
     
@@ -333,7 +333,8 @@ public ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
 
 <p>After applying <code>StableWebElement</code> in my UI Test the problem of <code>StaleObjectReferenceException</code> was completely eliminated. Utilizing the proxy pattern allowed me to introduce the <code>StableWebElement</code> with minimal effort, preserving standard Selenium API and keeping the readability of my test code. An attempt of implementation of <code>StableWebElement</code> can be found in <code>Tellurium</code> project <a href="https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs">here</a>.</p>
     
-		  
+		
+		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
@@ -431,11 +432,10 @@ public ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
   <script src="https://cezarypiatek.github.io//js/App.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
   
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
   

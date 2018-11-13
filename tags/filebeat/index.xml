@@ -6,10 +6,20 @@
     <description>Recent content in Filebeat on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jul 2018 00:21:18 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 13 Nov 2018 00:21:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/filebeat/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tips and Tricks for managing ELK configuration</title>
+      <link>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</link>
+      <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</guid>
+      <description>&lt;p&gt;A few months ago I published &amp;ldquo;&lt;a href=&#34;../../post/demystifying-elk-stack/&#34;&gt;Demystifying ELK stack&lt;/a&gt;&amp;rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&amp;rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&amp;rsquo;re worth sharing.
+&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Demystifying ELK stack</title>

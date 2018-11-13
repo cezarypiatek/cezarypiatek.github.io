@@ -38,9 +38,9 @@
     <meta name="generator" content="Hugo 0.44" />
     <title>Demystifying ELK stack &middot; Cezary Piątek Blog</title>
     
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
     
     <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
     
@@ -178,7 +178,7 @@
 
 <p>This should install <code>filebeat</code> as a Windows service. Use <code>Get-Service filebeat</code> to verify the current status of filebeat service. In the next step, you have to configure filebeat to harvest log data produced by your application. Filebeat harvesting configuration is located in <code>filebeat.yml</code> file and minimal configuration that works for me looks as follows:</p>
 
-<pre><code class="language-yml">filebeat.prospectors:
+<pre><code class="language-yaml">filebeat.prospectors:
 - input_type: log
   paths:
     - c:\inetpub\wwwroot\MyApp\logs\
@@ -338,7 +338,8 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 
 <p>This sounds very obvious but I&rsquo;ve met a team where somebody devoted a lot of time to configure ELK, but there were no profits from this because he forgot to teach his colleges how to use it. So after you run ELK in your team, make a meeting and show everybody how to access and use it. I can guarantee you that if they know how to effectively use Kibana, they will quickly become addictied and never want to go back to manually searching through log files.</p>
     
-		  
+		
+		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
@@ -347,6 +348,21 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 	
 	<h3>See Also</h3>
 	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/tips-and-tricks-for-managing-elk-configuration/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/tips-and-tricks-for-managing-elk-configuration/splashscreen_hue4546ab00f78e7c845990f7df11dec67_211482_320x240_fill_q75_box_smart1.jpg" alt="Tips and Tricks for managing ELK configuration">
+								<div class="card-body">
+									<h5 class="card-title">Tips and Tricks for managing ELK configuration</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
 		
 			
 				
@@ -421,11 +437,12 @@ In this situation, you have to interact directly with ElasticSeach API using RES
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/yaml.min.js"></script>
+		
+  
   <script src="https://cezarypiatek.github.io//js/App.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
   
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
   
