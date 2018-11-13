@@ -4,7 +4,7 @@ description: "How to easily implement centralized logging system based on ELK st
 date: 2018-07-05T00:21:18+02:00
 tags : ["Kibana", "Logstash", "ElasticSearch", "ELK", "Filebeat", "logging"]
 highlight: true
-highlightLang: ["yaml"]
+highlightLang: ["yaml", "powershell"]
 image: "splashscreen.jpg"
 isBlogpost: true
 draft: false
