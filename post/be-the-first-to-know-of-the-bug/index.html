@@ -34,9 +34,9 @@
     <meta name="generator" content="Hugo 0.44" />
     <title>Be the first to know of the bug &middot; Cezary Piątek Blog</title>
     
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
     
     <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
     
@@ -152,7 +152,7 @@
 
 <p>A sufficient Logstash HTTP plugin configuration for sending messages to MS Teams can look as follows:</p>
 
-<pre><code class="language-plaintext">output { 
+<pre><code>output { 
    if ([level] == &quot;ERROR&quot;){
       http {
         url =&gt; &quot;MSTEAMS_CHANNEL_WEBHOOK_URL&quot;
@@ -189,7 +189,7 @@
 
 <p>Adding a Kibana link filtering entry logs related to given issue is quite easy. In the first step, you have to go to Kibana <code>Discovery</code> tab and create a filter that presents data from given request: select appropriate index, select fields to present and add the filter by requestId (I assume that your logs contain some kind of id that correlates entries from given request together). Every time you change filter parameters Kibana updates browser URL to reflect those settings. Now copy the browser URL and parametrize it by replacing hardcoded request id with <code>%{requestId}</code> placeholder. If the filter link is too long and bloats the message, you can extract it to a separate field with <code>mutate filter</code> and use it as a reference in the message sent to MS Teams. This trick helped me to improve readability and maintainability of Logstash configuration.</p>
 
-<pre><code class="language-plaintext">filter {
+<pre><code>filter {
     if [level] ==&quot;ERROR&quot;{
        mutate {
           add_field =&gt; { 
@@ -238,7 +238,7 @@ Unfortunately, I wasn&rsquo;t able to embed the link that send POST request to J
 
 <p>The first step I took was introducing a new category for log entry - <code>FATAL</code>. So far we were using only INFO, DEBUG and ERROR levels. The ERROR entries contained information about an invalid situation which was foreseen and handled in the code as well as truly unexpected. I wanted to get notifications only about the scenarios which weren&rsquo;t handled and could cause inappropriate or unexpected behavior of our system. Extracting <code>FATAL</code> category for truly unexpected exceptions allowed me to filter out a lot of noise. <strong>So now handled exceptions are logged with ERROR level and the unexpected one with FATAL.</strong></p>
 
-<pre><code class="language-plaintext">output { 
+<pre><code>output { 
    if ([level] == &quot;FATAL&quot;){
       http {
         url =&gt; &quot;MSTEAMS_CHANNEL_WEBHOOK_URL&quot;
@@ -253,7 +253,7 @@ Unfortunately, I wasn&rsquo;t able to embed the link that send POST request to J
 
 <p>The second optimization was introducing a throttling. If the same error occurs multiple times in given time window we want to get notification only once. This is possible with Logstash throttle plugin. In the following configuration I&rsquo;m using throttle plugin to mark the first message in the 60s time frame, uniquely identified by &ldquo;%{app_name}%{app_env}%{logmessage}%{exception}&rdquo; key, with &ldquo;throttled&rdquo; tag. Afterwards, in the output section, I filter only messages containing &ldquo;throttled&rdquo; tag (the rest is ignored by HTTP plugin)</p>
 
-<pre><code class="language-plaintext">filter {  
+<pre><code>filter {  
     if [level] ==&quot;FATAL&quot;{
         throttle{
           period =&gt; 60
@@ -284,7 +284,8 @@ output {
 
 <p>Thanks to modularity and rich set of plugins ELK gives a lot of possibilities. As you can see it was quite easy to build Logstash-MsTeams integration. It enabled faster responding for app errors and detecting bugs which could normally remain unnoticed for a long period. I wonder if you have any other ideas - implemented already or not - for utilizing ELK which can help to improve productivity? I would appreciate if you could share them in the comment section.</p>
     
-		  
+		
+		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
 		<div class="addthis_inline_share_toolbox"></div>
 		
@@ -293,6 +294,21 @@ output {
 	
 	<h3>See Also</h3>
 	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/tips-and-tricks-for-managing-elk-configuration/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/tips-and-tricks-for-managing-elk-configuration/splashscreen_hue4546ab00f78e7c845990f7df11dec67_211482_320x240_fill_q75_box_smart1.jpg" alt="Tips and Tricks for managing ELK configuration">
+								<div class="card-body">
+									<h5 class="card-title">Tips and Tricks for managing ELK configuration</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
 		
 			
 				
@@ -382,11 +398,10 @@ output {
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
   <script src="https://cezarypiatek.github.io//js/App.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>
   
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
   

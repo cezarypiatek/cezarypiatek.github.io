@@ -3,8 +3,8 @@ title: "Integrating TeamCity with Microsoft Teams using PowerShell"
 description: "How to send notification to Microsoft Teams channel from TeamCity using PowerShell build step and how to make it reusable with meta runners."
 date: 2018-01-21T00:05:18+02:00
 tags : ["TeamCity", "PowerShell", "meta runner", "MS Teams", "Gitlab"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
+highlightLang: ["powershell"]
 image: "splashscreen.jpg"
 isBlogpost: true
 hasVideo: true

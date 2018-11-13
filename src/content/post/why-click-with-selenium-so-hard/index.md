@@ -2,8 +2,7 @@
 title: "Why clicking with Selenium is so hard."
 date: 2017-10-05T17:38:18+02:00
 tags : ["selenium", "ui-tests", "webdriver", "ElementNotInteractableException"]
-scripts : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"]
-css : ["//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"]
+highlight: true
 isBlogpost: true
 image: "splashscreen.jpg"
 ---
