@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to configure an automated cleanup of old log indicies in ELK">   
+        
+    <meta property="article:published_time" content="2018-12-09">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/">	
+	<meta property="og:title" content="Scheduled ElasticSearch index cleanup">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/splashscreen.jpg">
+    <meta property="og:description" content="How to configure an automated cleanup of old log indicies in ELK">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="elk">
+    
+    <meta property="og:tags" content="elasticsearch">
+    
+    <meta property="og:tags" content="devops">
+    
+    <meta property="og:tags" content="logging">
+    
+    <meta property="og:tags" content="curator">
+    
+    <meta property="og:tags" content="cron">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/splashscreen.jpg">
+	<meta property="twitter:title" content="Scheduled ElasticSearch index cleanup">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to configure an automated cleanup of old log indicies in ELK">
+
+	<meta name="keywords" value="elk, elasticsearch, devops, logging, curator, cron" />
+    <meta name="generator" content="Hugo 0.44" />
+    <title>Scheduled ElasticSearch index cleanup &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Scheduled ElasticSearch index cleanup</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>9 December 2018</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>It&rsquo;s been over a year since I&rsquo;ve started using ELK stack for logging purpose. In the meantime, I was able to successfully introduce it in a few development teams, totally changing the way we are working with application logs. Everything is working fine and the only downside so far was the need for periodical maintenance work. By maintenance, I mean removing old indices. If the disk free space drops below certain level the ElasticSearch stops working correctly. This behavior is controlled by a number of ElasticSearch parameters described in  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/disk-allocator.html">Disk-based Shard Allocation</a> section. Together with ElasticSearch, Kibana also goes down and when we try to use it we get the error screen with <code>Elasticsearch plugin is read</code> message as below:</p>
+
+<p><img src="elastic_is_down.jpg" alt="broken elastic" /></p>
+
+<p>In this situation, all Kibana functions are disabled, even the <code>DevTool</code> page. In order to bring it back to life, we have to restart <code>ElasticSearch</code> service and free some disk space by deleting old indices. Because <code>DevTool</code> is not available we have to do this using anything that can issue HTTP <code>POST</code> request (for example <code>curl</code> or <code>Postman</code>). According to Murphy&rsquo;s law, this always happens when you badly need to check something in the logs, so it would be great to have a mechanism that prevents this kind of <code>ELK downtime</code>.</p>
+
+<p>There is a lesser known tool from Elastic stable called <code>curator</code> which can help with managing ElasticSearch indices. In this post, I will show you how to build a self-maintenance mechanism for <code>ELK</code> stack using <code>curator</code> together with <code>cron</code> scheduler.</p>
+
+<h2 id="before-we-start">Before we start<a href="#before-we-start" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>In order to avoid all problems related to insufficient permissions, I&rsquo;ve started from switching to root user with <code>sudo su</code> command.</p>
+
+<h2 id="installing-curator">Installing curator<a href="#installing-curator" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Before we install <code>curator</code> we have to update package repository path. Without it <code>apt-get</code> will install curator&rsquo;s old version. In order to do that, please add the following line to <code>/etc/apt/sources.list</code> file:</p>
+
+<pre><code class="language-plaintext">deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main
+</code></pre>
+
+<p>After adding this new repository path we have to download the package lists and update them to get information on the newest versions of packages and their dependencies. This can be simply achieved with the command:</p>
+
+<pre><code class="language-shell">apt-get update
+</code></pre>
+
+<p>Now we can install <code>curator</code> with <code>apt-get</code>:</p>
+
+<pre><code class="language-shell">apt-get install elasticsearch-curator
+</code></pre>
+
+<p>After installation, please verify <code>curator</code> version:</p>
+
+<pre><code class="language-shell">curator --version
+</code></pre>
+
+<p>If you have a version older than 5.X or you experienced any problems during the installation, please check <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/apt-repository.html">the official installation instruction</a>.</p>
+
+<h2 id="configure-curator">Configure curator<a href="#configure-curator" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>We need to prepare two configuration files:</p>
+
+<ul>
+<li><code>config.yml</code> - general options related to curator usage</li>
+<li><code>action.yml</code> -  description for actions that will be performed on ElasticSearch indices</li>
+</ul>
+
+<p>Let&rsquo;s starts from  <code>curator</code> configuration:</p>
+
+<pre><code class="language-yaml">---
+client:
+  hosts:
+    - 127.0.0.1
+  port: 9200
+  url_prefix:
+  use_ssl: False
+  certificate:
+  client_cert:
+  client_key:
+  ssl_no_validate: False
+  http_auth:
+  timeout: 30
+  master_only: False
+
+logging:
+  loglevel: INFO
+  logfile:  /var/log/curator/curator.log
+  logformat: default
+  blacklist: ['elasticsearch', 'urllib3']
+</code></pre>
+
+<p>Save this content to <code>config.yml</code>. For correct logging, you need to create <code>/var/log/curator</code> directory.
+Sometimes using <code>127.0.0.1</code> for <code>client.hosts</code> is not working and you need to provide the real IP address (I think it depends on server configuration).  For more info about curator configuration please check <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/configfile.html">the official reference</a>.</p>
+
+<p>Prepare <code>action.yml</code> file with cleanup configuration:</p>
+
+<pre><code class="language-yaml">---
+actions:
+  1:
+    action: delete_indices
+    description: &gt;-
+      Delete indices older than 14 days (based on index creation date)
+    options:
+      ignore_empty_list: True
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: test_
+    - filtertype: age
+      source: creation_date
+      direction: older
+      unit: days
+      unit_count: 14
+
+</code></pre>
+
+<p>In this example I&rsquo;ve defined the action that deletes all indices selected by two filters:</p>
+
+<ul>
+<li><code>patter</code> that select all indices which names starts with <code>test_</code> prefix</li>
+<li><code>age</code> to select indices that creation date is older than 14 days.</li>
+</ul>
+
+<p>All filters are combined with <code>AND</code> operator. All available filters are described <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/filters.html">here</a>.  More info about action configuration <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/actions.html">here</a>.</p>
+
+<p>Copy both files: <code>config.yml</code> and <code>action.yml</code> to <code>/opt/curator-config/</code> directory. Now we can perform cleanup by running <code>curator</code> with parameters as follows:</p>
+
+<pre><code class="language-shell">curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml
+</code></pre>
+
+<p>The output should be logged to <code>/var/log/curator/curator.log</code> file.</p>
+
+<h2 id="schedule-periodical-clean-up">Schedule periodical clean-up<a href="#schedule-periodical-clean-up" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Now we have to schedule the clean-up with <code>cron</code> scheduler. In order to configure <code>cron</code> use the following command:</p>
+
+<pre><code class="language-shell">crontab -e
+</code></pre>
+
+<p>You should get the following info:</p>
+
+<pre><code class="language-shell">Select an editor.  To change later, run 'select-editor'.
+  1. /bin/ed
+  2. /bin/nano        &lt;---- easiest
+  3. /usr/bin/vim.basic
+  4. /usr/bin/vim.tiny
+
+Choose 1-4 [2]:
+</code></pre>
+
+<p>Select your favorite text editor and add the following entry at the end of the opened file</p>
+
+<pre><code class="language-shell">0 0 * * * /usr/bin/curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml &gt;/dev/null 2&gt;&amp;1
+</code></pre>
+
+<p>Each line in the crontab configuration has the following format:</p>
+
+<pre><code>&lt;time-expression&gt; &lt;command-to-execute&gt;
+</code></pre>
+
+<p>In my example, I used <code>0 0 * * *</code> as a time-expression which means that my command will run every day at midnight. If you don&rsquo;t know crontab time syntax you can easily generate the desired expression using <a href="https://crontab-generator.org/">https://crontab-generator.org/</a>. After saving crontab config file, if everything was configured correctly, you should get <code>crontab: installing new crontab</code> message. That&rsquo;s all. You can verify if everything is working correctly by examining <code>/var/log/curator/curator.log</code>  log file.</p>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>As you saw, thanks to <code>curator</code> and <code>cron</code> scheduler I was able to create the mechanism for automated ELK maintenance. Now I don&rsquo;t need to worry anymore that ELK server will run out of free disk space and bring all logging stack down. I would like to thank Robert Łysoń (<a href="https://twitter.com/RobertLyson">@RobertLyson</a>) who helped me with preparing  <code>curator</code> configuration. Next time the beer is on me ;)</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/tips-and-tricks-for-managing-elk-configuration/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/tips-and-tricks-for-managing-elk-configuration/splashscreen_hue4546ab00f78e7c845990f7df11dec67_211482_320x240_fill_q75_box_smart1.jpg" alt="Tips and Tricks for managing ELK configuration">
+								<div class="card-body">
+									<h5 class="card-title">Tips and Tricks for managing ELK configuration</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/demystifying-elk-stack/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/demystifying-elk-stack/splashscreen_hu9f79fda19cbd542b2b7783e3c538d10d_137272_320x240_fill_q75_box_smart1.jpg" alt="Demystifying ELK stack">
+								<div class="card-body">
+									<h5 class="card-title">Demystifying ELK stack</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/be-the-first-to-know-of-the-bug/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/be-the-first-to-know-of-the-bug/splashscreen_hue4546ab00f78e7c845990f7df11dec67_146195_320x240_fill_q75_box_smart1.jpg" alt="Be the first to know of the bug">
+								<div class="card-body">
+									<h5 class="card-title">Be the first to know of the bug</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/yaml.min.js"></script>
+		
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>
