@@ -120,6 +120,15 @@
     </item>
     
     <item>
+      <title>Cron</title>
+      <link>https://cezarypiatek.github.io/tags/cron/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/cron/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Crud</title>
       <link>https://cezarypiatek.github.io/tags/crud/</link>
       <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
@@ -134,6 +143,15 @@
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/csp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Curator</title>
+      <link>https://cezarypiatek.github.io/tags/curator/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/curator/</guid>
       <description></description>
     </item>
     
@@ -165,9 +183,18 @@
     </item>
     
     <item>
+      <title>Devops</title>
+      <link>https://cezarypiatek.github.io/tags/devops/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Elasticsearch</title>
       <link>https://cezarypiatek.github.io/tags/elasticsearch/</link>
-      <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/elasticsearch/</guid>
       <description></description>
@@ -185,7 +212,7 @@
     <item>
       <title>Elk</title>
       <link>https://cezarypiatek.github.io/tags/elk/</link>
-      <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/elk/</guid>
       <description></description>
@@ -266,7 +293,7 @@
     <item>
       <title>Logging</title>
       <link>https://cezarypiatek.github.io/tags/logging/</link>
-      <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/logging/</guid>
       <description></description>

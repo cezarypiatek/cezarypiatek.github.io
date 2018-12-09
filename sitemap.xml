@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</loc>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</loc>
     <lastmod>2018-11-13T00:21:18+02:00</lastmod>
   </url>
@@ -154,7 +159,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2018-11-13T00:21:18+02:00</lastmod>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -201,6 +206,12 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/cron/</loc>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/crud/</loc>
     <lastmod>2018-02-05T00:22:00+02:00</lastmod>
     <priority>0</priority>
@@ -209,6 +220,12 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/csp/</loc>
     <lastmod>2018-02-18T00:22:00+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/curator/</loc>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -231,8 +248,14 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/devops/</loc>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/elasticsearch/</loc>
-    <lastmod>2018-11-13T00:21:18+02:00</lastmod>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -244,7 +267,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/elk/</loc>
-    <lastmod>2018-11-13T00:21:18+02:00</lastmod>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -298,7 +321,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/logging/</loc>
-    <lastmod>2018-11-13T00:21:18+02:00</lastmod>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -340,7 +363,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2018-11-13T00:21:18+02:00</lastmod>
+    <lastmod>2018-12-09T00:21:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
