@@ -27,24 +27,34 @@ With `Test Explorer` you can run, debug and managed all your unit tests. You can
 
 If you have a problem with discovering your test via `Test Explorer` please verify if you have an appropriate settings for processor architecture in test settings: `Tests-> Test Settings -> Default Processor Architecture`
 
-Beside the `Test Explorer`, Visual Studio has also support for Unit Test via `code lens` mechanism. You can turn this on/off in `Tools -> Options -> Text Editor -> All Languages -> CodeLens -> Show test status`. After enabling this option you will be able to see test status right to method signature and run test with extra menu:
+Beside the `Test Explorer`, Visual Studio has also support for Unit Test via `code lens` mechanism. You can turn this on/off in `Tools -> Options -> Text Editor -> All Languages -> CodeLens -> Show test status`. After enabling this option you will be able to see test status right to method signature and run test from extra menu:
 
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/b8D9VaRkbHQ?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
+### How to run xUnit test in Visual Studio
 
-- [Running xUnit Test in Visual Studio](https://xunit.github.io/docs/getting-started/netfx/visual-studio)
-- [NUnit Visual Studio test adapter](https://github.com/nunit/docs/wiki/Visual-Studio-Test-Adapter)
+For `xUnit` things look similar to `NUnit`.  You have to install [xunit.runner.visualstudio](https://www.nuget.org/packages/xunit.runner.visualstudio/) nuget package to your project with tests. More info about `xUnit` and Visual Studio can be found in article [Running xUnit Test in Visual Studio](https://xunit.github.io/docs/getting-started/netfx/visual-studio).
 
-+ net core ??
+
 ## Discoverity 
 (no code lens on TestFixture)
 ## Performance
 ## Code Coverage
-## Continous Testing
+## Continuos Testing
 ## Load tests
 https://docs.microsoft.com/en-us/visualstudio/test/quickstart-create-a-load-test-project?view=vs-2017
 ## Profiling
 
 ## Summary
+
+| Feature           | Visual Studio         | Resharper |
+|-------------------|-----------------------|-----------|
+| NUnit support     | Test adapter required | Native    |
+| xUnit support     | Test adapter required | Native    |
+| Code coverage     | Enterprise edition    | Ultimate edition |
+| Continuos testing | Enterprise edition    | Ultimate edition |
+| Performance | | |
+| dot net core | | |
+

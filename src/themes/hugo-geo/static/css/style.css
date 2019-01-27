@@ -46,3 +46,8 @@ article img, article video {
 .hljs{
     margin:-12px;
 }
+
+table td, table th {
+    padding: 0 10px 0 10px;
+    border: 1px solid black!important;
+}
