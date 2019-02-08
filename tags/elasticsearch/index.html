@@ -113,20 +113,144 @@
 			<div class="row">
 				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
 
-<article>
-	<header>
-		<h1>Elasticsearch</a></h1>
-	</header>
-<ul>
-	
-	<li><a href="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/">Scheduled ElasticSearch index cleanup</a></li>
-	
-	<li><a href="https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/">Tips and Tricks for managing ELK configuration</a></li>
-	
-	<li><a href="https://cezarypiatek.github.io/post/demystifying-elk-stack/">Demystifying ELK stack</a></li>
-	
-</ul>
-</article>
+
+<header>
+	<h1>Articles about: Elasticsearch</a></h1>
+</header>
+
+
+	<div class="panel panel-default">
+		<div class="panel-header">
+			<h3>
+				<a href="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/">Scheduled ElasticSearch index cleanup</a>
+				<br>
+				<small>
+					<time>9 December 2018</time>
+				</small>
+			</h3>
+		</div>
+		<div class="panel-body">
+			
+			<div class="splash-box">
+				<img src="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup//splashscreen.jpg" width="100%" /><br/><br/>
+			</div>
+			
+			It&rsquo;s been over a year since I&rsquo;ve started using ELK stack for logging purpose. In the meantime, I was able to successfully introduce it in a few development teams, totally changing the way we are working with application logs. Everything is working fine and the only downside so far was the need for periodical maintenance work. By maintenance, I mean removing old indices. If the disk free space drops below certain level the ElasticSearch stops working correctly.
+			
+				... <a href="https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/">Read More</a>
+			
+		</div>
+		<div class="panel-footer">
+			
+			<small class="text-muted">
+				
+				
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">elasticsearch</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/devops"><span class="label label-success">devops</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/logging"><span class="label label-success">logging</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/curator"><span class="label label-success">curator</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/cron"><span class="label label-success">cron</span></a>
+				
+			</small>
+			
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-header">
+			<h3>
+				<a href="https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/">Tips and Tricks for managing ELK configuration</a>
+				<br>
+				<small>
+					<time>13 November 2018</time>
+				</small>
+			</h3>
+		</div>
+		<div class="panel-body">
+			
+			<div class="splash-box">
+				<img src="https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration//splashscreen.jpg" width="100%" /><br/><br/>
+			</div>
+			
+			<p>A few months ago I published &ldquo;<a href="../../post/demystifying-elk-stack/">Demystifying ELK stack</a>&rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&rsquo;re worth sharing.
+</p>
+			
+				... <a href="https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/">Read More</a>
+			
+		</div>
+		<div class="panel-footer">
+			
+			<small class="text-muted">
+				
+				
+					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">logstash</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">elasticsearch</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/filebeat"><span class="label label-success">filebeat</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/logging"><span class="label label-success">logging</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">powershell</span></a>
+				
+			</small>
+			
+		</div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-header">
+			<h3>
+				<a href="https://cezarypiatek.github.io/post/demystifying-elk-stack/">Demystifying ELK stack</a>
+				<br>
+				<small>
+					<time>5 July 2018</time>
+				</small>
+			</h3>
+		</div>
+		<div class="panel-body">
+			
+			<div class="splash-box">
+				<img src="https://cezarypiatek.github.io/post/demystifying-elk-stack//splashscreen.jpg" width="100%" /><br/><br/>
+			</div>
+			
+			Let&rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&rsquo;s quite a challenge.
+			
+				... <a href="https://cezarypiatek.github.io/post/demystifying-elk-stack/">Read More</a>
+			
+		</div>
+		<div class="panel-footer">
+			
+			<small class="text-muted">
+				
+				
+					<a href="https://cezarypiatek.github.io/tags/kibana"><span class="label label-success">kibana</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">logstash</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">elasticsearch</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/filebeat"><span class="label label-success">filebeat</span></a>
+				
+					<a href="https://cezarypiatek.github.io/tags/logging"><span class="label label-success">logging</span></a>
+				
+			</small>
+			
+		</div>
+	</div>
+
+
+
 
 						  </div>
 					</div>

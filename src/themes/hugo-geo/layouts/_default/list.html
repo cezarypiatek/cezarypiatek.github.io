@@ -1,15 +1,46 @@
 {{ partial "head.html" . }}
 {{ partial "nav.html" . }}
 
-<article>
-	<header>
-		<h1>{{ .Title }}</a></h1>
-	</header>
-<ul>
-	{{ range .Data.Pages }}
-	<li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
-	{{ end }}
-</ul>
-</article>
+
+<header>
+	<h1>Articles about: {{ .Title }}</a></h1>
+</header>
+
+{{ range .Data.Pages }}
+	<div class="panel panel-default">
+		<div class="panel-header">
+			<h3>
+				<a href="{{ .Permalink }}">{{ .Title }}</a>
+				<br>
+				<small>
+					<time>{{ .Date.Format "2 January 2006" }}</time>
+				</small>
+			</h3>
+		</div>
+		<div class="panel-body">
+			{{ if isset .Params "image" }}
+			<div class="splash-box">
+				<img src="{{.Permalink}}/{{.Params.Image}}" width="100%" /><br/><br/>
+			</div>
+			{{ end }}
+			{{.Summary}}
+			{{ if .Truncated }}
+				... <a href="{{ .Permalink }}">Read More</a>
+			{{ end }}
+		</div>
+		<div class="panel-footer">
+			{{ if isset .Params "tags" }}
+			<small class="text-muted">
+				{{ $base := .Site.BaseURL }}
+				{{ range $tag := .Params.tags }}
+					<a href="{{ $base }}tags/{{ $tag | urlize }}"><span class="label label-success">{{ . }}</span></a>
+				{{ end }}
+			</small>
+			{{ end }}
+		</div>
+	</div>
+{{ end }}
+
+
 
 {{ partial "footer.html" . }}
