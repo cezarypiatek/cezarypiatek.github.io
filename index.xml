@@ -199,12 +199,12 @@ PowerShell module to draw a graph of c# projects dependencies. It can also spot 
     </item>
     
     <item>
-      <title>About</title>
+      <title>About me</title>
       <link>https://cezarypiatek.github.io/about/</link>
       <pubDate>Tue, 03 Oct 2017 19:59:11 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/about/</guid>
-      <description>I started programming at 10 years old trying to retype some simple Basic programs from an old user guide to my C-64. It was just a temporary hobby but a few years later I bought a programmer magazine with C++ Builder on CD and started to write my first real programs. In high school I got interested in web development using Html, JavaScript and PHP. I graduated from the University of Science and Technology AGH (Kraków, Poland).</description>
+      <description>.avatar{ float: left; margin: 0 15px 15px 0; width: 30%; } #certificats{ width:100%; margin: 20px 0px; } #certificats td{ vertical-align:top; } #contact{ font-size: 6em; text-align: center; }  I&amp;rsquo;m a passionate software developer with over 7 years of professional experience. Most of the time I&amp;rsquo;ve been designing and developing front-end solutions for companies from the financial sector. I’ve been working on desktop and web-based software development using Microsoft .NET platform and attending projects using WPF, Silverlight and MVC frameworks.</description>
     </item>
     
     <item>
