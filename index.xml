@@ -6,10 +6,19 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Dec 2018 00:21:45 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 09 Feb 2019 19:59:11 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Public speaking</title>
+      <link>https://cezarypiatek.github.io/public-speaking/</link>
+      <pubDate>Sat, 09 Feb 2019 19:59:11 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/public-speaking/</guid>
+      <description>Upcoming  [2019-02-19] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 115. spotkanie Wrocławskiej Grupy .NET  Past  [2019-01-15] &amp;quot;Tworzenie łatwych w utrzymaniu oraz stabilnych testów UI&amp;quot; - KraQA #36 [2018-12-04] &amp;quot;Programisto, rozwijaj się!&amp;quot; - Dzień IT Politechniki Krakowskiej [2018-11-07] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn.&amp;quot; - 114. spotkanie KGD.NET [2017-11-30] &amp;quot;Narzędzia programistyczne, które zwiększą twoją atrakcyjność na rynku pracy&amp;quot; - Dzień IT Politechniki Krakowskiej [2017-10-25] &amp;quot;Tworzenie łatwych w utrzymaniu oraz stabilnych testów UI dla aplikacji ASP.</description>
+    </item>
     
     <item>
       <title>Scheduled ElasticSearch index cleanup</title>

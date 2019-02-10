@@ -43,6 +43,10 @@ paginate = 5
 	url = "projects/"
 
 	[[params.navlinks]]
+	name = "Speaking"
+	url = "public-speaking/"
+
+	[[params.navlinks]]
 	name = "About me"
 	url = "about/"
 
