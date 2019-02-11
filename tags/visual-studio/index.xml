@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visual Studio on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
+    <description>Recent content in Visual Studio on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 11 Feb 2019 00:20:45 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/visual-studio/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Renovate your .NET solution</title>
+      <link>https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/</link>
+      <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/</guid>
+      <description>In the early days of dotnet core, there was an attempt of changing the C# project file format. The old &amp;ldquo;csproj&amp;rdquo; based on XML format was replaced with .xproj/project.json. However, after releasing dotnet core 1.0 the authors decided to get back to XML file. The format stayed the same but the specification went through a major change. With the new schema, a lot of improvements come into .net development and they are not restricted only to dotnet core projects.</description>
+    </item>
+    
+  </channel>
+</rss>

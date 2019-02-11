@@ -2,7 +2,7 @@
 title: "The art of designing exceptions"
 description: "All that stuff before you catch them all."
 date: 2018-10-19T00:09:00+02:00
-tags : ["exceptions", "architecture", "CoreCLR", "best practices", "cleancode"]
+tags : ["dotnet", "c#", "exceptions", "architecture", "CoreCLR", "best practices", "cleancode"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true

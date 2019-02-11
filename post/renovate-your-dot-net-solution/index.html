@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Why you should definitely convert your C# projects to VS2017 format.">   
+        
+    <meta property="article:published_time" content="2019-02-11">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/">	
+	<meta property="og:title" content="Renovate your .NET solution">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/splashscreen.jpg">
+    <meta property="og:description" content="Why you should definitely convert your C# projects to VS2017 format.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="c#">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="visual studio">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/splashscreen.jpg">
+	<meta property="twitter:title" content="Renovate your .NET solution">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Why you should definitely convert your C# projects to VS2017 format.">
+
+	<meta name="keywords" value="c#, dotnet, visual studio" />
+    <meta name="generator" content="Hugo 0.44" />
+    <title>Renovate your .NET solution &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Renovate your .NET solution</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>11 February 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>In the early days of dotnet core, there was an attempt of changing the C# project file format. The old &ldquo;csproj&rdquo; based on <code>XML</code> format was replaced with  <code>.xproj/project.json</code>. However, after releasing <code>dotnet core 1.0</code> the authors decided to get back to <code>XML</code> file.  The format stayed the same but the specification went through a major change. With the new schema, a lot of improvements come into .net development and they are not restricted only to dotnet core projects.</p>
+
+<h2 id="changes">Changes<a href="#changes" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<h3 id="files-information-diet">Files information diet<a href="#files-information-diet" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>In <code>VS2007</code> format the <code>csproj</code> is not a ledger of all project files anymore. This decision has a few benefits. The first one is that we have much fewer conflict situations during committing changes into VCS. Two people can simultaneously add files into the same project and not to worry about the need for merging conflicts. The second one is related to the order in the codebase. I used to work with people who have a bad habit of excluding files from the project instead of deleting them completely. This results in polluting codebase with unnecessary files and causes a lot of confusion (a lot of questions, such as: &ldquo;Is it still necessary?&rdquo;, &ldquo;Why this is not included into the project?&rdquo;). With the new csproj format this problem disappeared almost completely. Of course, there is still an option of excluding files from the project but the result is an additional entry in csproj and - thanks to that - it is much easier to spot it during code review.</p>
+
+<h3 id="nuget">Nuget<a href="#nuget" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>With the new <code>csproj</code> format a few changes also come to the nuget. At first, the <code>packages.config</code> has been abandoned and the information about referenced NuGet packages was moved into <code>csproj</code> file - all NuGet dependencies are now listed as <code>PackageReference</code> nodes. The next change is related to creating your own NuGet packages. You don&rsquo;t need <code>nuspec</code> file anymore to generate a NuGet package from your project - all the package metadata is inside the project file. And the most important information: working with NuGet is much nicer because it&rsquo;s finally fast. There is a tremendous difference in NuGet performance between projects in the old and new format. In the old format, even the simplest actions such as install or update a single package were painfully slow. The issue is described here: <a href="https://github.com/NuGet/Home/issues/5805">Why is everything related to NuGet package restore/upgrade so slow</a> and the only working solution is a migration to new csproj format.</p>
+
+<h3 id="project-references">Project references<a href="#project-references" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>The new project format also changed the way how the information about dependencies is stored. First of all, the <code>ProjectReference</code> node has been simplified and we only need a <code>csproj</code> path to reference other project.</p>
+
+<p><strong>Old project reference style:</strong></p>
+
+<pre><code class="language-xml">&lt;ProjectReference Include=&quot;..\..\Domain.Invoice\Domain.Invoice.csproj&quot;&gt;
+    &lt;Project&gt;{f7cc9baa-c366-4652-b1e6-a96a82bceb1f}&lt;/Project&gt;
+    &lt;Name&gt;Domain.Invoice&lt;/Name&gt;
+&lt;/ProjectReference&gt;
+</code></pre>
+
+<p><strong>New project reference style:</strong></p>
+
+<pre><code class="language-xml">&lt;ProjectReference Include=&quot;..\..\Domain.Invoice\Domain.Invoice.csproj&quot; /&gt;
+</code></pre>
+
+<p>The way of referencing NuGet packages has also been changed. As I&rsquo;ve mentioned before there is no <code>package.config</code> anymore and the information about NuGet references from the <code>package.config</code> and project file was merged and simplified. Currently, in order to add NuGet package, we only need a <code>PackageReference</code> entry in <code>csproj</code> with appropriate attributes pointing to the right package id and version. The information about location of downloaded libraries was removed. Those changes solved the problem of potential inconsistency between the information about the package in <code>package.config</code> and csproj file - in the past, I came across the situation when somebody upgraded the package and forgot to commit one of those two files. With new csproj format this is not possible anymore.</p>
+
+<p><strong>Old NuGet reference style:</strong></p>
+
+<pre><code class="language-xml">&lt;Reference Include=&quot;Castle.Core, Version=4.3.1, Culture=neutral, processorArchitecture=MSIL&quot;&gt;
+    &lt;HintPath&gt;..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll&lt;/HintPath&gt;
+&lt;/Reference&gt;
+</code></pre>
+
+<p><strong>New NuGet reference style:</strong></p>
+
+<pre><code class="language-xml"> &lt;PackageReference Include=&quot;Castle.Core&quot; Version=&quot;4.3.1&quot; /&gt;
+</code></pre>
+
+<p>All project references are very clearly presented now in the <code>Solution Explorer</code> in the form of a tree, divided into categories based on the dependency source:</p>
+
+<p><img src="project_references.jpg" alt="Project references" /></p>
+
+<h2 id="benefits-for-everyone">Benefits for everyone<a href="#benefits-for-everyone" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I&rsquo;ve encountered an opinion that the new c# project format is uniquely associated with dotnet core on numerous occasions. This is probably caused by the fact that the Visual Studio template <code>Class Library (.NET Framework)</code> is still based on the old csproj format. The truth is that the new format can be used not only for dotnet core and dotnet standard but for the .NET Framework projects, too. If you are using Visual Studio 2017, you can even migrate existing projects into the new format. In order to create a C# project with .NET Framework that utilizes the new format, you have to select <code>Class Library (.NET standard)</code> template and after that change manually the value of <code>&lt;TargetFramework&gt;</code> node inside the csproj file to the appropriate <a href="https://docs.microsoft.com/en-us/dotnet/standard/frameworks">Target Framework Moniker (TFM)</a>. For example, for <code>.NET Framework 4.7.2</code> you have to use <code>&lt;TargetFramework&gt;net472&lt;/TargetFramework&gt;</code>. The video below shows how to do that correctly:</p>
+
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/QlIZ056vYjw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<h2 id="migration">Migration<a href="#migration" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>As I&rsquo;ve mentioned before, you can migrate existing .NET solution into the new csproj format and take advantage of all the new features. The migration is very easy thanks to the <a href="https://github.com/hvanbakel/CsprojToVs2017">CsprojToVs2017</a> command line tool. You just need to download and run the tool with the path to the <code>sln</code> file as the parameter. However, if your codebase is polluted with unnecessary <code>cs</code> files that have been detached from the project, you have to perform cleanup before you make a migration. For that occasion, I&rsquo;ve prepared a couple of <code>PowerShell</code> cmdlets that help to spot all unused files within the source code. This code should be run directly from the <code>Package Manager Console</code> in the Visual Studio.</p>
+
+<pre><code class="language-powershell">function Search-ItemsRecursive{
+  [CmdletBinding()]
+  param($ProjectItems, $Filter, [switch]$Recurse=$false)
+  foreach ($item in $ProjectItems) {
+    if($(. $Filter $item))
+    {
+        $item
+    }else{
+        if(($item.ProjectItems -ne $null) -and $Recurse){
+            Search-ItemsRecursive -ProjectItems $item.ProjectItems -Filter $Filter -Recurse:$Recurse
+        }
+    }
+  }
+}
+
+function Find-OrphanFilesInSolution([switch]$IgnoreObj=$true){
+    Get-Project -All | Find-OrphanFilesInProject -IgnoreObj:$IgnoreObj
+}    
+
+function Find-OrphanFilesInProject{    
+    [CmdletBinding()]
+    param([Parameter(ValueFromPipeline=$true)]$Projects, [switch]$IgnoreObj=$true)
+    process{
+        $toProcess = if($Projects){$Projects}else{Get-Project}    
+        foreach($p in $toProcess){
+            $projectPath = Split-Path $p.FullName -Parent
+            $csFilesInProject = Search-ItemsRecursive -ProjectItems $p.ProjectItems -Filter {param($item)$item.Name -like &quot;*.cs&quot;} -Recurse |% {$_.Properties.Item(&quot;FullPath&quot;).Value}
+            dir $projectPath -Filter &quot;*.cs&quot; -Recurse |? { $csFilesInProject -notcontains $_.FullName } |? {(-not $IgnoreObj) -or ($_.Directory -notlike &quot;*\obj*&quot;)} |select FullName 
+        }
+    }    
+}
+</code></pre>
+
+<p>In order to perform cleanup, you have to execute the following steps:</p>
+
+<ol>
+<li>Paste the code of cmdlets into <code>Package Manager Console</code></li>
+<li>Invoke <code>Find-OrphanFilesInSolution</code> to get the complete list of unused C# files</li>
+<li>Invoke <code>Find-OrphanFilesInSolution | Remove-Item</code> in order to delete unused C# files</li>
+</ol>
+
+<p>The only thing that caused an issue for me during the migration was the resource files because they still need to be explicitly referenced inside the csproj file. At the time when I was performing the migration on my solution (over a year ago), this scenario was not supported by the <code>CsprojToVs2017</code> tool, so if you have <code>resx</code> files in your project you have to pay attention to them and fix them manually in case this is still an issue.</p>
+
+<h2 id="reusing-project-configuration">Reusing project configuration<a href="#reusing-project-configuration" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>After migrating projects into the new format it&rsquo;s good to extract common projects configuration into <code>Directory.Build.props</code> file and put into the solution root directory. This will save you a lot of time in the future when there is a need to change common properties for all projects such as a framework or C# language version. This mechanism is very well described by <a href="https://www.thomaslevesque.com/">Thomas Levesque</a> in his article  <a href="https://www.thomaslevesque.com/2017/09/18/common-msbuild-properties-and-items-with-directory-build-props/">COMMON MSBUILD PROPERTIES AND ITEMS WITH DIRECTORY.BUILD.PROPS</a>.  My `<code>Directory.Build.props</code> file looks as follows:</p>
+
+<pre><code class="language-xml">&lt;Project&gt;
+    &lt;PropertyGroup&gt;
+        &lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt;
+         &lt;Platforms&gt;x64&lt;/Platforms&gt;
+         &lt;RunCodeAnalysis&gt;false&lt;/RunCodeAnalysis&gt;
+         &lt;LangVersion&gt;7.2&lt;/LangVersion&gt;
+    &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The new csproj format comes with a lot of benefits. The project file is much cleaner than before and many well known issues related to dotnet development were solved with the new schema. And the most important information: this new format is not reserved only for dotnet core - you can utilize it no matter what kind of .net framework you are using - it works event with Full .NET Framework. You should definitely start using it if it hasn&rsquo;t happen so far.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/the-art-of-designing-exceptions/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/the-art-of-designing-exceptions/splashscreen_hue4546ab00f78e7c845990f7df11dec67_126549_320x240_fill_q75_box_smart1.jpg" alt="The art of designing exceptions">
+								<div class="card-body">
+									<h5 class="card-title">The art of designing exceptions</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/powershell.min.js"></script>
+		
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>
