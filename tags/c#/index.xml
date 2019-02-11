@@ -29,5 +29,23 @@
       <description>Have you ever been in a situation when you discovered an exception in the logs that forced you to spend the next couple of minutes - or even hours - figuring out what exactly went wrong? The message was very cryptic and the only useful information that guided you to the crime scene was a stack trace. And after arriving there, you still had no idea what had really happened and what was the culprit.</description>
     </item>
     
+    <item>
+      <title>Generate mapping code with Roslyn code fix provider.</title>
+      <link>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</guid>
+      <description>A few weeks ago I posted about negative aspects of applying AutoMapper. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like T4Scaffoling or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in T4 syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking.</description>
+    </item>
+    
+    <item>
+      <title>The reasons behind why I don&#39;t use AutoMapper.</title>
+      <link>https://cezarypiatek.github.io/post/why-i-dont-use-automapper/</link>
+      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/why-i-dont-use-automapper/</guid>
+      <description>The idea behind this blog post is pretty old but I haven&amp;rsquo;t had enough motivation to write this down till now. Recently, I&amp;rsquo;ve came across a couple of new articles about AutoMapper and I&amp;rsquo;ve been struck when I saw how people utilize AutoMapper in their projects. I&amp;rsquo;ve encountered cases when AutoMapper transforms simple thing like mapping values from object to other into a really complex problem, which results with highly complicated code only for the price of not writing mappings explicitly.</description>
+    </item>
+    
   </channel>
 </rss>
