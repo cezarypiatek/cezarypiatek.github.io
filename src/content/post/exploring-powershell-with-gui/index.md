@@ -22,27 +22,25 @@ In order to open Windows Explorer with current directory simply type:
 ```
 ... and to open PowerShell console with working directory set to currently opened folder within the Windows Explorer type **powershell** command in address bar.
 
-<video controls>
-  <source src="explorer.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/cDhM1wreRtw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 ### Browsing scripts in console
 When you are working in console environment and you want to check script content you can use **Get-Content** command to print script into screen in raw format or use **Get-ColorizedContent** to display script with line numbers and syntax highlighting. This cmdlet comes from [PowerShellCookbook module](https://www.powershellgallery.com/packages/PowerShellCookbook/1.3.6) which could be easily installed with **Install-Module** cmdlet from [PowerShell gallery](https://www.powershellgallery.com).
 
-<video controls>
-  <source src="showcontent.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/iELQGYxJclw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
 
 
 ### Opening PowerShell ISE from PowerShell console
 There is no out-of-the-box editor which allows you to edit scripts right inside the PowerShell console. You can install [third-party console editors](https://stackoverflow.com/questions/11045077/edit-a-text-file-on-the-console-in-64-bit-windows) or use PowerShell ISE which comes with Windows Management Framework. Simply type **ise** command with file path as the parameter to open it with ISE (you can skip file parameter to open a new instance of ISE with context set to current directory). In order to open another script in new ISE tab use **psedit** command (this command works only inside the ISE console).
 
-<video controls>
-  <source src="ise.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/sc50cA7M6CY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 PowerShell ISE is very useful to play around with PowerShell scripts because it allows you to execute your script partially (simply select parts of you code and press F8 to send it to PowerShell console).
 
@@ -60,10 +58,9 @@ When VSCode is your PowerShell editor of choice too, you can also easily switch 
 ### Filtering result list with Out-GridView
 When your command or script returns a long list it can be hard to spot interesting positions by scrolling through the console. You can make it a lot easier by redirecting the result to **Out-GridView** cmdlet (use **ogv** alias for shorten). The Out-GridView outputter presents data using grid control and allows to sort and filter results by defining complex criteria based on data attributes.
 
-<video controls>
-  <source src="outgridview.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/bNyBg_wEnxY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 You can also use Out-GridView to select elements by providing  **OutputMode** parameter
 
@@ -75,16 +72,15 @@ Sometimes it's hard to remember all method parameters (especially when we use th
 ```
 If you don't remember the exact name of the method you can skip it and **Show-Command** cmdlet opens a window which allows you to search command by name. When you select a specific command all available parameter sets will be presented as tabs. You can select a given parameter set, provide values for parameters with dedicated form and click *Run* button to execute method. You can always get the method manual by clicking *help* button.
 
-<video controls>
-  <source src="showcommand.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/mZEY1W9-pR8?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
 
 ### Inspecting complex objects
 
 Another interesting cmdlet that we can find in *PowerShellCookbook* module is **Show-Object**. This command presents complex objects in the form of a tree. This expandable tree allows us to drill down and explore nested properties. It's extremely useful when we have to deal with unknown objects.
 
-<video controls>
-  <source src="showobject.mp4" type="video/mp4">  
-  Your browser does not support the video tag.
-</video>
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/tfx85SkqSEc?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
