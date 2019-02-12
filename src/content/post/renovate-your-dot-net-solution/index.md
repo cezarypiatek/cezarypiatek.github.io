@@ -72,46 +72,14 @@ I've encountered an opinion that the new c# project format is uniquely associate
 
 As I've mentioned before, you can migrate existing .NET solution into the new csproj format and take advantage of all the new features. The migration is very easy thanks to the [CsprojToVs2017](https://github.com/hvanbakel/CsprojToVs2017) command line tool. You just need to download and run the tool with the path to the `sln` file as the parameter. However, if your codebase is polluted with unnecessary `cs` files that have been detached from the project, you have to perform cleanup before you make a migration. For that occasion, I've prepared a couple of `PowerShell` cmdlets that help to spot all unused files within the source code. This code should be run directly from the `Package Manager Console` in the Visual Studio.
 
-
-```powershell
-function Search-ItemsRecursive{
-  [CmdletBinding()]
-  param($ProjectItems, $Filter, [switch]$Recurse=$false)
-  foreach ($item in $ProjectItems) {
-    if($(. $Filter $item))
-    {
-        $item
-    }else{
-        if(($item.ProjectItems -ne $null) -and $Recurse){
-            Search-ItemsRecursive -ProjectItems $item.ProjectItems -Filter $Filter -Recurse:$Recurse
-        }
-    }
-  }
-}
-
-function Find-OrphanFilesInSolution([switch]$IgnoreObj=$true){
-    Get-Project -All | Find-OrphanFilesInProject -IgnoreObj:$IgnoreObj
-}    
-
-function Find-OrphanFilesInProject{    
-    [CmdletBinding()]
-    param([Parameter(ValueFromPipeline=$true)]$Projects, [switch]$IgnoreObj=$true)
-    process{
-        $toProcess = if($Projects){$Projects}else{Get-Project}    
-        foreach($p in $toProcess){
-            $projectPath = Split-Path $p.FullName -Parent
-            $csFilesInProject = Search-ItemsRecursive -ProjectItems $p.ProjectItems -Filter {param($item)$item.Name -like "*.cs"} -Recurse |% {$_.Properties.Item("FullPath").Value}
-            dir $projectPath -Filter "*.cs" -Recurse |? { $csFilesInProject -notcontains $_.FullName } |? {(-not $IgnoreObj) -or ($_.Directory -notlike "*\obj*")} |select FullName 
-        }
-    }    
-}
-```
+<script src="https://gist.github.com/cezarypiatek/4881ceef6fc8c439ab7611c41133144b.js"></script>
 
 In order to perform cleanup, you have to execute the following steps:
 
-1. Paste the code of cmdlets into `Package Manager Console`
-2. Invoke `Find-OrphanFilesInSolution` to get the complete list of unused C# files
-3. Invoke `Find-OrphanFilesInSolution | Remove-Item` in order to delete unused C# files
+1. Save the code from the gist above into `ProjectOrphanScouter.ps1` file
+2. Load the script into `Package Manager Console` by invoking `.  full_path_to_script/ProjectOrphanScouter.ps1` (the dot at the begging is important)
+3. Invoke `Find-OrphanFilesInSolution` to get the complete list of unused C# files
+4. Invoke `Find-OrphanFilesInSolution | Remove-Item` in order to delete unused C# files
 
 The only thing that caused an issue for me during the migration was the resource files because they still need to be explicitly referenced inside the csproj file. At the time when I was performing the migration on my solution (over a year ago), this scenario was not supported by the `CsprojToVs2017` tool, so if you have `resx` files in your project you have to pay attention to them and fix them manually in case this is still an issue.
 
@@ -134,3 +102,6 @@ After migrating projects into the new format it's good to extract common project
 
 ## Summary
 The new csproj format comes with a lot of benefits. The project file is much cleaner than before and many well known issues related to dotnet development were solved with the new schema. And the most important information: this new format is not reserved only for dotnet core - you can utilize it no matter what kind of .net framework you are using - it works event with Full .NET Framework. You should definitely start using it if it hasn't happen so far.
+
+
+__UPDATE 2019-02-12:__  The new csproj format still isn't supported with .NET Framework's ASP.NET MVC. You can track the issue on github [#2670](https://github.com/dotnet/project-system/issues/2670). However, until the issue is resolved, you can have a mix of projects in old and new format inside a single solution.

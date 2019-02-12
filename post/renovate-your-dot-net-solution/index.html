@@ -200,43 +200,13 @@
 
 <p>As I&rsquo;ve mentioned before, you can migrate existing .NET solution into the new csproj format and take advantage of all the new features. The migration is very easy thanks to the <a href="https://github.com/hvanbakel/CsprojToVs2017">CsprojToVs2017</a> command line tool. You just need to download and run the tool with the path to the <code>sln</code> file as the parameter. However, if your codebase is polluted with unnecessary <code>cs</code> files that have been detached from the project, you have to perform cleanup before you make a migration. For that occasion, I&rsquo;ve prepared a couple of <code>PowerShell</code> cmdlets that help to spot all unused files within the source code. This code should be run directly from the <code>Package Manager Console</code> in the Visual Studio.</p>
 
-<pre><code class="language-powershell">function Search-ItemsRecursive{
-  [CmdletBinding()]
-  param($ProjectItems, $Filter, [switch]$Recurse=$false)
-  foreach ($item in $ProjectItems) {
-    if($(. $Filter $item))
-    {
-        $item
-    }else{
-        if(($item.ProjectItems -ne $null) -and $Recurse){
-            Search-ItemsRecursive -ProjectItems $item.ProjectItems -Filter $Filter -Recurse:$Recurse
-        }
-    }
-  }
-}
-
-function Find-OrphanFilesInSolution([switch]$IgnoreObj=$true){
-    Get-Project -All | Find-OrphanFilesInProject -IgnoreObj:$IgnoreObj
-}    
-
-function Find-OrphanFilesInProject{    
-    [CmdletBinding()]
-    param([Parameter(ValueFromPipeline=$true)]$Projects, [switch]$IgnoreObj=$true)
-    process{
-        $toProcess = if($Projects){$Projects}else{Get-Project}    
-        foreach($p in $toProcess){
-            $projectPath = Split-Path $p.FullName -Parent
-            $csFilesInProject = Search-ItemsRecursive -ProjectItems $p.ProjectItems -Filter {param($item)$item.Name -like &quot;*.cs&quot;} -Recurse |% {$_.Properties.Item(&quot;FullPath&quot;).Value}
-            dir $projectPath -Filter &quot;*.cs&quot; -Recurse |? { $csFilesInProject -notcontains $_.FullName } |? {(-not $IgnoreObj) -or ($_.Directory -notlike &quot;*\obj*&quot;)} |select FullName 
-        }
-    }    
-}
-</code></pre>
+<script src="https://gist.github.com/cezarypiatek/4881ceef6fc8c439ab7611c41133144b.js"></script>
 
 <p>In order to perform cleanup, you have to execute the following steps:</p>
 
 <ol>
-<li>Paste the code of cmdlets into <code>Package Manager Console</code></li>
+<li>Save the code from the gist above into <code>ProjectOrphanScouter.ps1</code> file</li>
+<li>Load the script into <code>Package Manager Console</code> by invoking <code>.  full_path_to_script/ProjectOrphanScouter.ps1</code> (the dot at the begging is important)</li>
 <li>Invoke <code>Find-OrphanFilesInSolution</code> to get the complete list of unused C# files</li>
 <li>Invoke <code>Find-OrphanFilesInSolution | Remove-Item</code> in order to delete unused C# files</li>
 </ol>
@@ -260,6 +230,8 @@ function Find-OrphanFilesInProject{
 <h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>The new csproj format comes with a lot of benefits. The project file is much cleaner than before and many well known issues related to dotnet development were solved with the new schema. And the most important information: this new format is not reserved only for dotnet core - you can utilize it no matter what kind of .net framework you are using - it works event with Full .NET Framework. You should definitely start using it if it hasn&rsquo;t happen so far.</p>
+
+<p><strong>UPDATE 2019-02-12:</strong>  The new csproj format still isn&rsquo;t supported with .NET Framework&rsquo;s ASP.NET MVC. You can track the issue on github <a href="https://github.com/dotnet/project-system/issues/2670">#2670</a>. However, until the issue is resolved, you can have a mix of projects in old and new format inside a single solution.</p>
     
 		
 		<hr/>  

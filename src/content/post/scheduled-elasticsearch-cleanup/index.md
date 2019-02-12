@@ -109,7 +109,7 @@ actions:
 
 In this example I've defined the action that deletes all indices selected by two filters: 
 
-- `patter` that select all indices which names starts with `test_` prefix 
+- `pattern` that select all indices which names starts with `test_` prefix (It's good to use this filer because it save you from accidental deleting ELK internal indices)
 - `age` to select indices that creation date is older than 14 days. 
 
 All filters are combined with `AND` operator. All available filters are described [here](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/filters.html).  More info about action configuration [here](https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/actions.html). 
