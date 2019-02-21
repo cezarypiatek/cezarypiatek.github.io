@@ -105,3 +105,8 @@ The new csproj format comes with a lot of benefits. The project file is much cle
 
 
 __UPDATE 2019-02-12:__  The new csproj format still isn't supported with .NET Framework's ASP.NET MVC. You can track the issue on github [#2670](https://github.com/dotnet/project-system/issues/2670). However, until the issue is resolved, you can have a mix of projects in old and new format inside a single solution.
+
+
+__UPDATE 2019-02-21:__   If you want to go even further with the renovation I highly recommend checking the [Sharpen](https://github.com/sharpenrocks/Sharpen) project. `Thanks to that extension  you can easily start introducing new C# features into your codebase.`
+
+![](https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png)
