@@ -1,7 +1,7 @@
 ---
 title: "Best practices for using PowerShell with TeamCity"
 date: 2019-03-22T10:34:18+02:00
-tags : ["PowerShell", "TeamCity", "continuous integration", "devops"]
+tags : ["PowerShell", "TeamCity", "continuous integration", "VSCode"]
 isBlogpost: true
 image: "splashscreen.jpg"
 highlight: true
@@ -69,13 +69,24 @@ After turning on strict mode PowerShell will report all uninitialized variables 
 
 
 
-And the last my advice that should help you to avoid dummy mistakes is: `Always use a decent IDE to create and edit your powershell scripts`. I'm currently working with VSCode  with PowerShell plugin which seems to be more powerful than `PowerShell ISE`. It ships with a rich set of snippets, is able to detect unused variables, allows to track method usages and provides a really nice experience in terms of debugging scripts. You can read about all features [here](https://code.visualstudio.com/docs/languages/powershell).
+And the last my advice that should help you to avoid dummy mistakes is: 
+
+> Always use a decent IDE to create and edit your powershell scripts. 
+
+I'm currently working with VSCode  with PowerShell plugin which seems to be more powerful than `PowerShell ISE`. It ships with a rich set of snippets, is able to detect unused variables, allows to track method usages and provides a really nice experience in terms of debugging scripts. It also has integrated `PSScriptAnalyzer` module which helps to detect many issues related to the code correctness and quality. You can read about all features [here](https://code.visualstudio.com/docs/languages/powershell).
 
 
 ## Using scrips
-- avoid inline scripts
-- pull all your project specific scripts in version control
-- convert project non-specific scripts into meta runner
+
+TeamCity PowerShell build step allows to run PowerShell scripts provided as an inline source code as well as script files. For project specific scripts you should always use script file options. This allows you to keep your script under version control system together with the project source code and make it easier to edit your scripts (any IDE is better than textarea on the build configuration step page). Of course you can keep your 'inline-scripts' versioned when you are using [Versioned settings](https://confluence.jetbrains.com/display/TCD10/Storing+Project+Settings+in+Version+Control) but it's very tedious to edit PowerShell scripts embedded inside the `XML files`.
+
+For project non-specific scripts, when you want to re-use scripts between different projects you can have at least two options:
+
+- put common scripts in separate repository and shared them via git sub-modules
+- use inline script and extract common meta-runner
+
+The second option allows you to create a nice configuration UI for your scripts, however versioning will be not possible anymore (as far as I know). You can find an example how to create meta-runner in my [previous article](/post/integrating-teamcity-with-msteams/).
+
 
 ## Always remember about Clean Code
 - clean code
