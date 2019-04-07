@@ -1,5 +1,6 @@
 ---
 title: "Best practices for using PowerShell with TeamCity"
+description: "How to build your CI/CD with TeamCity and PowerShell and avoid common pitfalls."
 date: 2019-03-22T10:34:18+02:00
 tags : ["PowerShell", "TeamCity", "continuous integration", "VSCode"]
 isBlogpost: true
@@ -71,7 +72,7 @@ After turning on strict mode PowerShell will report all uninitialized variables 
 
 And the last my advice that should help you to avoid dummy mistakes is: 
 
-> Always use a decent IDE to create and edit your powershell scripts. 
+> Always use a decent IDE to create and edit your PowerShell scripts. 
 
 I'm currently working in VSCode with PowerShell plugin which seems to be more powerful than `PowerShell ISE`. It ships with a rich set of snippets, it is able to detect unused variables, allows to track method usages and provides a really nice experience in terms of debugging scripts. It also has integrated `PSScriptAnalyzer` module which helps to detect many issues related to the code correctness and quality. You can read about all features [here](https://code.visualstudio.com/docs/languages/powershell).
 
@@ -90,6 +91,8 @@ The second option allows you to create a nice configuration UI for your scripts,
 
 ## Always remember about Clean Code
 
-You should always treat your CI/CD scripts equally as your project source code. __They should be versioned, reviewed and automatically tested__. It doesn't matter that these scripts are not run on production. They are helping you to properly prepare production artifacts and if they are a poor quality you cannot expect good quality outcomes. Even if the code is written using scripting language - you should always remember about obeying [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM/ref=sr_1_1?keywords=clean+code&qid=1553634559&s=gateway&sr=8-1) rules. For PowerShell, there is a really good [Best Practices and Style Guide](https://github.com/PoshCode/PowerShellPracticeAndStyle) which you can find as an invaluable source of knowledge how to create easy to read, understand and maintain scripts. That may be surprising for some people but CI/CD scripts can be unit-tested. PowerShell has its own unit test framework - [Pester](https://github.com/pester/Pester) which is very well supported by [VSCode](https://code.visualstudio.com/docs/languages/powershell#_pester). Pester helps to very quickly create  tests with `BDD` approach which can also serve as living documentation. By applying these rules you will avoid a lot of problems and you will make your CI/CD more bulletproof.
+You should always treat your CI/CD scripts equally as your project source code in terms of quality. __They should be versioned, reviewed and automatically tested__. It doesn't matter that these scripts are not run on production. They are helping you to properly prepare production artifacts and if they are a poor quality you cannot expect good quality outcomes. Even if the code is written using scripting language - you should always remember about obeying [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM/ref=sr_1_1?keywords=clean+code&qid=1553634559&s=gateway&sr=8-1) rules. For PowerShell, there is a really good [Best Practices and Style Guide](https://github.com/PoshCode/PowerShellPracticeAndStyle) which you can find as an invaluable source of knowledge how to create easy to read, understand and maintain scripts. That may be surprising for some people but CI/CD scripts can be unit-tested. PowerShell has its own unit test framework - [Pester](https://github.com/pester/Pester) which is very well supported by [VSCode](https://code.visualstudio.com/docs/languages/powershell#_pester). Pester helps to very quickly create  tests with `BDD` approach which can also serve as living documentation. By applying these rules you will avoid a lot of problems and you will make your CI/CD more bulletproof.
 
 ## Summary
+
+Together with TeamCity and PowerSHell you can build very powerful and flexible CI/CD system but without understanding basic concepts and mechanisms you can't obtain maximum benefits. Default configuration can be a trap, especially in terms of errors handling and reporting. Besides the proper configuration there are additional tools and guidelines for PowerShell that you can leverage in order to make you process highly maintainable and less error prone. Using decent IDE and applying programming rules and best practices for scripts development can save you a lot of troubles.
