@@ -6,10 +6,19 @@
     <description>Recent content in Vscode on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 Dec 2017 10:34:18 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 07 Apr 2019 10:34:18 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Best practices for using PowerShell with TeamCity</title>
+      <link>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</guid>
+      <description>In the last few projects that I&amp;rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results.</description>
+    </item>
     
     <item>
       <title>Exploring PowerShell with graphical user interface.</title>
