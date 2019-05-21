@@ -79,7 +79,7 @@ public class UserServiceMapper{
 	
 	public UserServiceMapper(AddressServiceMapper addressServiceMapper)
 	{
-		this.addressServiceMapper = this.addressServiceMapper;
+		this.addressServiceMapper = addressServiceMapper;
 	}
 	
 	public UserDTO MapToUserDTO(UserEntity entity)

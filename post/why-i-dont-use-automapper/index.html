@@ -225,7 +225,7 @@ For me, the static analysis plays a really important role in managing the projec
     
     public UserServiceMapper(AddressServiceMapper addressServiceMapper)
     {
-        this.addressServiceMapper = this.addressServiceMapper;
+        this.addressServiceMapper = addressServiceMapper;
     }
     
     public UserDTO MapToUserDTO(UserEntity entity)
