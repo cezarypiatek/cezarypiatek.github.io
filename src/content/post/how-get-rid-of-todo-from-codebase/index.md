@@ -1,7 +1,7 @@
 ---
 title: "Get rid of TODOs from your codebase."
 date: 2017-12-14T22:34:18+02:00
-tags : ["resharper", "cleancode", "TODO", "TODOExplorer"]
+tags : ["resharper", "clean code", "TODO", "TODOExplorer"]
 isBlogpost: true
 image: "splashscreen.jpg"
 ---

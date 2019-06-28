@@ -24,7 +24,7 @@
     
     <meta property="og:tags" content="mapping">
     
-    <meta property="og:tags" content="cleancode">
+    <meta property="og:tags" content="clean code">
     
     <meta property="og:tags" content="static analysis">
     
@@ -38,8 +38,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="My list of AutoMapper disadvantages which you should consider before using it in your project.">
 
-	<meta name="keywords" value="automapper, orm, crud, mapping, cleancode, static analysis, c#, dotnet" />
-    <meta name="generator" content="Hugo 0.44" />
+	<meta name="keywords" value="automapper, orm, crud, mapping, clean code, static analysis, c#, dotnet" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>The reasons behind why I don&#39;t use AutoMapper. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -221,29 +221,29 @@ For me, the static analysis plays a really important role in managing the projec
 
 <pre><code class="language-cs">public class UserServiceMapper{
 
-    private readonly AddressServiceMapper addressServiceMapper;
-    
-    public UserServiceMapper(AddressServiceMapper addressServiceMapper)
-    {
-        this.addressServiceMapper = addressServiceMapper;
-    }
-    
-    public UserDTO MapToUserDTO(UserEntity entity)
-    {
-        return new UserDTO {
-            FirstName = entity.FirstName,
-            LastName = entity.LastName,
-            Address = this.addressServiceMapper.MapToAddressDTO(entity.Address)
-        };
-    }
-    
-    public void UpdateUserEntity(UserEntity entity, UserDTO dto)
-    {
-        entity.FirstName = dto.FirstName;
-        entity.LastName = dto.LastName;
-        entity.Age = dto.Age;
-        this.addressServiceMapper.UpdateAddress(entity.Address, dto.Address);
-    }
+	private readonly AddressServiceMapper addressServiceMapper;
+	
+	public UserServiceMapper(AddressServiceMapper addressServiceMapper)
+	{
+		this.addressServiceMapper = addressServiceMapper;
+	}
+	
+	public UserDTO MapToUserDTO(UserEntity entity)
+	{
+		return new UserDTO {
+			FirstName = entity.FirstName,
+			LastName = entity.LastName,
+			Address = this.addressServiceMapper.MapToAddressDTO(entity.Address)
+		};
+	}
+	
+	public void UpdateUserEntity(UserEntity entity, UserDTO dto)
+	{
+		entity.FirstName = dto.FirstName;
+		entity.LastName = dto.LastName;
+		entity.Age = dto.Age;
+		this.addressServiceMapper.UpdateAddress(entity.Address, dto.Address);
+	}
 }
 </code></pre>
 
@@ -282,11 +282,11 @@ For me, the static analysis plays a really important role in managing the projec
 				
 				
 				<div class="col-xs-4">
-						<a href="../../post/the-art-of-designing-exceptions/" >
+						<a href="../../post/exceptions-usages-analyzer/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/the-art-of-designing-exceptions/splashscreen_hue4546ab00f78e7c845990f7df11dec67_126549_320x240_fill_q75_box_smart1.jpg" alt="The art of designing exceptions">
+								<img class="card-img-top" src="../../post/exceptions-usages-analyzer/splashscreen_hu4726010f8bf92c1a7527d07383ef14cb_94184_320x240_fill_q75_box_smart1.jpg" alt="Exceptions usages analyzer">
 								<div class="card-body">
-									<h5 class="card-title">The art of designing exceptions</h5>											  
+									<h5 class="card-title">Exceptions usages analyzer</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -297,11 +297,11 @@ For me, the static analysis plays a really important role in managing the projec
 				
 				
 				<div class="col-xs-4">
-						<a href="../../post/renovate-your-dot-net-solution/" >
+						<a href="../../post/the-art-of-designing-exceptions/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/renovate-your-dot-net-solution/splashscreen_hu0d8c53dcbc8a208d1870631c6fe44e6a_210085_320x240_fill_q75_box_smart1.jpg" alt="Renovate your .NET solution">
+								<img class="card-img-top" src="../../post/the-art-of-designing-exceptions/splashscreen_hue4546ab00f78e7c845990f7df11dec67_126549_320x240_fill_q75_box_smart1.jpg" alt="The art of designing exceptions">
 								<div class="card-body">
-									<h5 class="card-title">Renovate your .NET solution</h5>											  
+									<h5 class="card-title">The art of designing exceptions</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -318,7 +318,7 @@ For me, the static analysis plays a really important role in managing the projec
   
 	
 	  <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     

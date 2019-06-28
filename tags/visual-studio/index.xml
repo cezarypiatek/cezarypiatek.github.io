@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Visual Studio on Cezary Piątek Blog</title>
+    <title>visual studio on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
-    <description>Recent content in Visual Studio on Cezary Piątek Blog</description>
+    <description>Recent content in visual studio on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Feb 2019 00:20:45 +0200</lastBuildDate>

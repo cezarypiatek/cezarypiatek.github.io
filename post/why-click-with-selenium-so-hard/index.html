@@ -31,7 +31,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="selenium, ui-tests, webdriver, elementnotinteractableexception" />
-    <meta name="generator" content="Hugo 0.44" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Why clicking with Selenium is so hard. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -165,24 +165,24 @@ It seems to be one of the most trivial tasks, but can cause a lot of problems. V
 
 <pre><code class="language-cs">public static Func&lt;IWebDriver, IWebElement&gt; ElementToBeClickable(IWebElement element)
 {
-    return (driver) =&gt;
-    {
-        try
-        {
-            if (element != null &amp;&amp; element.Displayed &amp;&amp; element.Enabled)
-            {
-                return element;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        catch (StaleElementReferenceException)
-        {
-            return null;
-        }
-    };
+	return (driver) =&gt;
+	{
+		try
+		{
+			if (element != null &amp;&amp; element.Displayed &amp;&amp; element.Enabled)
+			{
+				return element;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		catch (StaleElementReferenceException)
+		{
+			return null;
+		}
+	};
 }
 </code></pre>
 
@@ -224,18 +224,18 @@ The method documentation comment explains general rules of testing if element is
 
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
-    return (bool)driver.ExecuteScript(@&quot;
-        return (function(element)
-        {
-            function belongsToElement(subElement)
-            {
-                return element == subElement || element.contains(subElement);
-            }
-            var rec = element.getBoundingClientRect();                        
-            var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-            return belongsToElement(elementAtPosition);
-        })(arguments[0]);                    
-    &quot;, element);
+	return (bool)driver.ExecuteScript(@&quot;
+		return (function(element)
+		{
+			function belongsToElement(subElement)
+			{
+				return element == subElement || element.contains(subElement);
+			}
+			var rec = element.getBoundingClientRect();                        
+			var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+			return belongsToElement(elementAtPosition);
+		})(arguments[0]);                    
+	&quot;, element);
 }
 </code></pre>
 
@@ -243,20 +243,20 @@ The method documentation comment explains general rules of testing if element is
 
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
-    return (bool)driver.ExecuteScript(@&quot;
-        return (function(element)
-        {
-            function belongsToElement(subElement)
-            {
-                return element == subElement || element.contains(subElement);
-            }
-            var rec = element.getBoundingClientRect();  
-            var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
-            var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-            var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
-            return belongsToElement(elementAtPosition1) || belongsToElement(elementAtPosition2) || belongsToElement(elementAtPosition3);
-        })(arguments[0]);                    
-    &quot;, element);
+	return (bool)driver.ExecuteScript(@&quot;
+		return (function(element)
+		{
+			function belongsToElement(subElement)
+			{
+				return element == subElement || element.contains(subElement);
+			}
+			var rec = element.getBoundingClientRect();  
+			var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
+			var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+			var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
+			return belongsToElement(elementAtPosition1) || belongsToElement(elementAtPosition2) || belongsToElement(elementAtPosition3);
+		})(arguments[0]);                    
+	&quot;, element);
 }
 </code></pre>
 
@@ -266,32 +266,32 @@ The method documentation comment explains general rules of testing if element is
 
 <pre><code class="language-cs">static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
-    try
-    {
-        driver.WaitUntil((d) =&gt; ExpectedConditions.ElementToBeClickable(expectedElement));
-        expectedElement.Click();
-    }
-    catch (Exception ex)
-    {
-        if (IsTerminatingException(ex))
-        {
-            throw;
-        }
+	try
+	{
+		driver.WaitUntil((d) =&gt; ExpectedConditions.ElementToBeClickable(expectedElement));
+		expectedElement.Click();
+	}
+	catch (Exception ex)
+	{
+		if (IsTerminatingException(ex))
+		{
+			throw;
+		}
 
-        var originalViewportPosition = driver.ScrollViewportToElement(expectedElement);
-       
-        try
-        {
-            driver.WaitUntil((d) =&gt; driver.IsElementInteractable(expectedElement));
-        }
-        catch (WebDriverTimeoutException)
-        {
-            throw new ElementIsNotClickableException(expectedElement);
-        }
-        
-        expectedElement.Click();
-        originalViewportPosition.Restore();
-    }
+		var originalViewportPosition = driver.ScrollViewportToElement(expectedElement);
+	   
+		try
+		{
+			driver.WaitUntil((d) =&gt; driver.IsElementInteractable(expectedElement));
+		}
+		catch (WebDriverTimeoutException)
+		{
+			throw new ElementIsNotClickableException(expectedElement);
+		}
+		
+		expectedElement.Click();
+		originalViewportPosition.Restore();
+	}
 }
 </code></pre>
 
@@ -300,61 +300,61 @@ The method documentation comment explains general rules of testing if element is
 <pre><code class="language-csharp"> 
 public static TResult WaitUntil&lt;TResult&gt;(this RemoteWebDriver driver, Func&lt;IWebDriver, TResult&gt; waitPredictor, int timeout=SeleniumFinderExtensions.SearchElementDefaultTimeout)
 {
-    var waiter = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-    return waiter.Until(waitPredictor);
+	var waiter = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+	return waiter.Until(waitPredictor);
 }
  
 private static bool IsTerminatingException(Exception ex)
 {
-    return ex is InvalidOperationException == false  &amp;&amp; ex is WebDriverException == false;
+	return ex is InvalidOperationException == false  &amp;&amp; ex is WebDriverException == false;
 }
 
 private static ViewPortPosition ScrollViewportToElement(this RemoteWebDriver driver, IWebElement expectedElement)
 {
-    int? originalScrollPosition = null;
-    if (expectedElement.Location.Y &gt; driver.GetWindowHeight())
-    {
-        originalScrollPosition = driver.GetScrollY();
-        driver.ScrollToY(expectedElement.Location.Y + expectedElement.Size.Height);
-    }
-    return new ViewPortPosition(originalScrollPosition, driver);
+	int? originalScrollPosition = null;
+	if (expectedElement.Location.Y &gt; driver.GetWindowHeight())
+	{
+		originalScrollPosition = driver.GetScrollY();
+		driver.ScrollToY(expectedElement.Location.Y + expectedElement.Size.Height);
+	}
+	return new ViewPortPosition(originalScrollPosition, driver);
 }
 
 private static int GetWindowHeight(this RemoteWebDriver driver)
 {
-    return (int)(long)driver.ExecuteScript(&quot;return window.innerHeight&quot;);
+	return (int)(long)driver.ExecuteScript(&quot;return window.innerHeight&quot;);
 } 
 
 private static int GetScrollY(this RemoteWebDriver driver)
 {
-    return (int)(long)driver.ExecuteScript(@&quot;
-        if(typeof window.scrollY != 'undefined'){
-            return window.scrollY;
-        }else if(typeof document.documentElement.scrollTop != 'undefined'){
-            return document.documentElement.scrollTop;
-        }
-        return 0;
+	return (int)(long)driver.ExecuteScript(@&quot;
+		if(typeof window.scrollY != 'undefined'){
+			return window.scrollY;
+		}else if(typeof document.documentElement.scrollTop != 'undefined'){
+			return document.documentElement.scrollTop;
+		}
+		return 0;
 &quot;);
 }
 
 public class ViewPortPosition
 {
-    private readonly int? scrollPositionY;
-    private readonly RemoteWebDriver webDriver;
+	private readonly int? scrollPositionY;
+	private readonly RemoteWebDriver webDriver;
 
-    public ViewPortPosition(int? scrollPositionY, RemoteWebDriver webDriver)
-    {
-        this.scrollPositionY = scrollPositionY;
-        this.webDriver = webDriver;
-    }
+	public ViewPortPosition(int? scrollPositionY, RemoteWebDriver webDriver)
+	{
+		this.scrollPositionY = scrollPositionY;
+		this.webDriver = webDriver;
+	}
 
-    public void Restore()
-    {
-        if (scrollPositionY != null)
-        {
-            webDriver.ScrollToY(scrollPositionY.Value);
-        }
-    }
+	public void Restore()
+	{
+		if (scrollPositionY != null)
+		{
+			webDriver.ScrollToY(scrollPositionY.Value);
+		}
+	}
 }
 </code></pre>
     
@@ -410,7 +410,7 @@ public class ViewPortPosition
   
 	
 	  <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     

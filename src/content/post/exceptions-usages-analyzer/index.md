@@ -2,7 +2,7 @@
 title: "Exceptions usages analyzer"
 description: "Detect violation of exceptions usages best practices"
 date: 2019-06-26T00:09:00+02:00
-tags : ["dotnet", "c#", "exceptions", "architecture", "cleancode"]
+tags : ["dotnet", "c#", "exceptions", "architecture", "clean code"]
 scripts: ["//cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js"]
 highlight: true
 image: "splashscreen.jpg"
