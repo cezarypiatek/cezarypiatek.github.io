@@ -2,7 +2,7 @@
 title: "What's wrong with default ajax support in ASP.NET MVC and how to fix it."
 description: "Why the javascript library can stop you from releasing to the production and how to prevent it."
 date: 2018-02-18T00:22:00+02:00
-tags : ["Content-Security-Policy", "csp", "ASP.NET MVC", "ajax", "cleancode", “javascript”]
+tags : ["Content-Security-Policy", "csp", "ASP.NET MVC", "ajax", "clean code", "javascript"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true

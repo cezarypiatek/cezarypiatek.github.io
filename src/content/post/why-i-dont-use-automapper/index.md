@@ -2,7 +2,7 @@
 title: "The reasons behind why I don't use AutoMapper."
 description: "My list of AutoMapper disadvantages which you should consider before using it in your project."
 date: 2018-02-05T00:22:00+02:00
-tags : ["AutoMapper", "orm", "crud", "mapping", "cleancode", "static analysis", "C#", "dotnet"]
+tags : ["AutoMapper", "orm", "crud", "mapping", "clean code", "static analysis", "C#", "dotnet"]
 highlight: true
 image: "social_splashscreen.jpg"
 isBlogpost: true

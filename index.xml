@@ -6,10 +6,19 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 07 Apr 2019 10:34:18 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 29 Jun 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Exception usage analyzer</title>
+      <link>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</link>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</guid>
+      <description>Over a year ago I wrote a blog post about designing exceptions. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&amp;rsquo;s almost impossible to expect that, after reading the recommended resource, anybody would start to apply described rules immediately and remember about them all the time. It&amp;rsquo;s a learning process and it takes some time. A while ago I got interested with Roslyn (I even delivered a public presentation about it - polish recording available here) and there is a really cool thing about Roslyn analyzers that can solve this problem - they help to actively introduce best practices into your codebase.</description>
+    </item>
     
     <item>
       <title>Best practices for using PowerShell with TeamCity</title>
@@ -54,8 +63,7 @@ Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania pr
       <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</guid>
-      <description>&lt;p&gt;A few months ago I published &amp;ldquo;&lt;a href=&#34;./post/demystifying-elk-stack/&#34;&gt;Demystifying ELK stack&lt;/a&gt;&amp;rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&amp;rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&amp;rsquo;re worth sharing.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;A few months ago I published &amp;ldquo;&lt;a href=&#34;./post/demystifying-elk-stack/&#34;&gt;Demystifying ELK stack&lt;/a&gt;&amp;rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&amp;rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&amp;rsquo;re worth sharing.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -250,8 +258,7 @@ PowerShell module to draw a graph of c# projects dependencies. It can also spot 
       <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/save-tortoise-history-with-repair-move/</guid>
-      <description>&lt;p&gt;TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.&lt;/p&gt;</description>
     </item>
     
     <item>

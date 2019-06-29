@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Data Model on Cezary Piątek Blog</title>
+    <title>data model on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/tags/data-model/</link>
-    <description>Recent content in Data Model on Cezary Piątek Blog</description>
+    <description>Recent content in data model on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 16 Apr 2018 00:22:53 +0200</lastBuildDate>

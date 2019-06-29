@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Exceptions on Cezary Piątek Blog</title>
+    <title>exceptions on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/tags/exceptions/</link>
-    <description>Recent content in Exceptions on Cezary Piątek Blog</description>
+    <description>Recent content in exceptions on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 Oct 2018 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 29 Jun 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/exceptions/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Exception usage analyzer</title>
+      <link>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</link>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</guid>
+      <description>Over a year ago I wrote a blog post about designing exceptions. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&amp;rsquo;s almost impossible to expect that, after reading the recommended resource, anybody would start to apply described rules immediately and remember about them all the time. It&amp;rsquo;s a learning process and it takes some time. A while ago I got interested with Roslyn (I even delivered a public presentation about it - polish recording available here) and there is a really cool thing about Roslyn analyzers that can solve this problem - they help to actively introduce best practices into your codebase.</description>
+    </item>
     
     <item>
       <title>The art of designing exceptions</title>

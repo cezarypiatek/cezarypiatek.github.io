@@ -6,103 +6,76 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Feb 2018 00:22:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 29 Jun 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Ajax</title>
-      <link>https://cezarypiatek.github.io/tags/ajax/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/ajax/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Architecture</title>
+      <title>architecture</title>
       <link>https://cezarypiatek.github.io/tags/architecture/</link>
-      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/architecture/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Asp.net Mvc</title>
-      <link>https://cezarypiatek.github.io/tags/asp.net-mvc/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/asp.net-mvc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Automapper</title>
-      <link>https://cezarypiatek.github.io/tags/automapper/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/automapper/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Best Practices</title>
-      <link>https://cezarypiatek.github.io/tags/best-practices/</link>
-      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/best-practices/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>C#</title>
+      <title>c#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Cleancode</title>
-      <link>https://cezarypiatek.github.io/tags/cleancode/</link>
-      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      <title>clean code</title>
+      <link>https://cezarypiatek.github.io/tags/clean-code/</link>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/cleancode/</guid>
+      <guid>https://cezarypiatek.github.io/tags/clean-code/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Code Generating</title>
-      <link>https://cezarypiatek.github.io/tags/code-generating/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      <title>dotnet</title>
+      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/code-generating/</guid>
+      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Codeannotation</title>
-      <link>https://cezarypiatek.github.io/tags/codeannotation/</link>
-      <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
+      <title>exceptions</title>
+      <link>https://cezarypiatek.github.io/tags/exceptions/</link>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/codeannotation/</guid>
+      <guid>https://cezarypiatek.github.io/tags/exceptions/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Content Security Policy</title>
-      <link>https://cezarypiatek.github.io/tags/content-security-policy/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      <title>TeamCity</title>
+      <link>https://cezarypiatek.github.io/tags/teamcity/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/content-security-policy/</guid>
+      <guid>https://cezarypiatek.github.io/tags/teamcity/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Continuous Integration</title>
+      <title>VSCode</title>
+      <link>https://cezarypiatek.github.io/tags/vscode/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/vscode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>continuous integration</title>
       <link>https://cezarypiatek.github.io/tags/continuous-integration/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
@@ -111,133 +84,25 @@
     </item>
     
     <item>
-      <title>Coreclr</title>
-      <link>https://cezarypiatek.github.io/tags/coreclr/</link>
-      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      <title>powershell</title>
+      <link>https://cezarypiatek.github.io/tags/powershell/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/coreclr/</guid>
+      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Cqrs</title>
-      <link>https://cezarypiatek.github.io/tags/cqrs/</link>
-      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/cqrs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cqs</title>
-      <link>https://cezarypiatek.github.io/tags/cqs/</link>
-      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/cqs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cron</title>
-      <link>https://cezarypiatek.github.io/tags/cron/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/cron/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Crud</title>
-      <link>https://cezarypiatek.github.io/tags/crud/</link>
-      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/crud/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Csp</title>
-      <link>https://cezarypiatek.github.io/tags/csp/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/csp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Curator</title>
-      <link>https://cezarypiatek.github.io/tags/curator/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/curator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Data Model</title>
-      <link>https://cezarypiatek.github.io/tags/data-model/</link>
-      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/data-model/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Debugging</title>
-      <link>https://cezarypiatek.github.io/tags/debugging/</link>
-      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/debugging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Decompiler</title>
-      <link>https://cezarypiatek.github.io/tags/decompiler/</link>
-      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/decompiler/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Devops</title>
-      <link>https://cezarypiatek.github.io/tags/devops/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/devops/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dotnet</title>
-      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
+      <title>visual studio</title>
+      <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
       <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <guid>https://cezarypiatek.github.io/tags/visual-studio/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Elasticsearch</title>
-      <link>https://cezarypiatek.github.io/tags/elasticsearch/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/elasticsearch/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Elementnotinteractableexception</title>
-      <link>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</link>
-      <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Elk</title>
+      <title>ELK</title>
       <link>https://cezarypiatek.github.io/tags/elk/</link>
       <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
       
@@ -246,11 +111,47 @@
     </item>
     
     <item>
-      <title>Exceptions</title>
-      <link>https://cezarypiatek.github.io/tags/exceptions/</link>
-      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      <title>ElasticSearch</title>
+      <link>https://cezarypiatek.github.io/tags/elasticsearch/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/exceptions/</guid>
+      <guid>https://cezarypiatek.github.io/tags/elasticsearch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cron</title>
+      <link>https://cezarypiatek.github.io/tags/cron/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/cron/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>curator</title>
+      <link>https://cezarypiatek.github.io/tags/curator/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/curator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>devops</title>
+      <link>https://cezarypiatek.github.io/tags/devops/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>logging</title>
+      <link>https://cezarypiatek.github.io/tags/logging/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/logging/</guid>
       <description></description>
     </item>
     
@@ -264,69 +165,6 @@
     </item>
     
     <item>
-      <title>Gitlab</title>
-      <link>https://cezarypiatek.github.io/tags/gitlab/</link>
-      <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/gitlab/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gui</title>
-      <link>https://cezarypiatek.github.io/tags/gui/</link>
-      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/gui/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ise</title>
-      <link>https://cezarypiatek.github.io/tags/ise/</link>
-      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/ise/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Javascript</title>
-      <link>https://cezarypiatek.github.io/tags/javascript/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/javascript/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kibana</title>
-      <link>https://cezarypiatek.github.io/tags/kibana/</link>
-      <pubDate>Thu, 05 Jul 2018 00:21:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/kibana/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Livetemplates</title>
-      <link>https://cezarypiatek.github.io/tags/livetemplates/</link>
-      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/livetemplates/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Logging</title>
-      <link>https://cezarypiatek.github.io/tags/logging/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/logging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Logstash</title>
       <link>https://cezarypiatek.github.io/tags/logstash/</link>
       <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
@@ -336,83 +174,56 @@
     </item>
     
     <item>
-      <title>Mapping</title>
-      <link>https://cezarypiatek.github.io/tags/mapping/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      <title>CoreCLR</title>
+      <link>https://cezarypiatek.github.io/tags/coreclr/</link>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/mapping/</guid>
+      <guid>https://cezarypiatek.github.io/tags/coreclr/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Meta Runner</title>
-      <link>https://cezarypiatek.github.io/tags/meta-runner/</link>
-      <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
+      <title>best practices</title>
+      <link>https://cezarypiatek.github.io/tags/best-practices/</link>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/meta-runner/</guid>
+      <guid>https://cezarypiatek.github.io/tags/best-practices/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Ms Teams</title>
-      <link>https://cezarypiatek.github.io/tags/ms-teams/</link>
-      <pubDate>Wed, 13 Jun 2018 00:21:45 +0200</pubDate>
+      <title>CQRS</title>
+      <link>https://cezarypiatek.github.io/tags/cqrs/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/ms-teams/</guid>
+      <guid>https://cezarypiatek.github.io/tags/cqrs/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Nhibernate</title>
-      <link>https://cezarypiatek.github.io/tags/nhibernate/</link>
-      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
+      <title>CQS</title>
+      <link>https://cezarypiatek.github.io/tags/cqs/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/nhibernate/</guid>
+      <guid>https://cezarypiatek.github.io/tags/cqs/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Orm</title>
-      <link>https://cezarypiatek.github.io/tags/orm/</link>
-      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      <title>livetemplates</title>
+      <link>https://cezarypiatek.github.io/tags/livetemplates/</link>
+      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/orm/</guid>
+      <guid>https://cezarypiatek.github.io/tags/livetemplates/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Powershell</title>
-      <link>https://cezarypiatek.github.io/tags/powershell/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Powershellcookbook</title>
-      <link>https://cezarypiatek.github.io/tags/powershellcookbook/</link>
-      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/powershellcookbook/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Resharper</title>
+      <title>resharper</title>
       <link>https://cezarypiatek.github.io/tags/resharper/</link>
       <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Roslyn</title>
-      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -426,61 +237,7 @@
     </item>
     
     <item>
-      <title>Sql Server</title>
-      <link>https://cezarypiatek.github.io/tags/sql-server/</link>
-      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/sql-server/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Sqlite</title>
-      <link>https://cezarypiatek.github.io/tags/sqlite/</link>
-      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/sqlite/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Static Analysis</title>
-      <link>https://cezarypiatek.github.io/tags/static-analysis/</link>
-      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/static-analysis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Svn</title>
-      <link>https://cezarypiatek.github.io/tags/svn/</link>
-      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/svn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Symbols</title>
-      <link>https://cezarypiatek.github.io/tags/symbols/</link>
-      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/symbols/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Teamcity</title>
-      <link>https://cezarypiatek.github.io/tags/teamcity/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/teamcity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Testing</title>
+      <title>testing</title>
       <link>https://cezarypiatek.github.io/tags/testing/</link>
       <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
       
@@ -489,43 +246,7 @@
     </item>
     
     <item>
-      <title>Todo</title>
-      <link>https://cezarypiatek.github.io/tags/todo/</link>
-      <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/todo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Todoexplorer</title>
-      <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
-      <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/todoexplorer/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tools</title>
-      <link>https://cezarypiatek.github.io/tags/tools/</link>
-      <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/tools/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tortoise</title>
-      <link>https://cezarypiatek.github.io/tags/tortoise/</link>
-      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/tortoise/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ui Tests</title>
+      <title>ui-tests</title>
       <link>https://cezarypiatek.github.io/tags/ui-tests/</link>
       <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
       
@@ -534,25 +255,7 @@
     </item>
     
     <item>
-      <title>Visual Studio</title>
-      <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
-      <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/visual-studio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Vscode</title>
-      <link>https://cezarypiatek.github.io/tags/vscode/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/vscode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Webdriver</title>
+      <title>webdriver</title>
       <link>https://cezarypiatek.github.io/tags/webdriver/</link>
       <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
       
@@ -561,11 +264,308 @@
     </item>
     
     <item>
-      <title>Windirstat</title>
+      <title>Kibana</title>
+      <link>https://cezarypiatek.github.io/tags/kibana/</link>
+      <pubDate>Thu, 05 Jul 2018 00:21:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/kibana/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MS Teams</title>
+      <link>https://cezarypiatek.github.io/tags/ms-teams/</link>
+      <pubDate>Wed, 13 Jun 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/ms-teams/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WinDirStat</title>
       <link>https://cezarypiatek.github.io/tags/windirstat/</link>
       <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/windirstat/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tools</title>
+      <link>https://cezarypiatek.github.io/tags/tools/</link>
+      <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NHibernate</title>
+      <link>https://cezarypiatek.github.io/tags/nhibernate/</link>
+      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/nhibernate/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SQL Server</title>
+      <link>https://cezarypiatek.github.io/tags/sql-server/</link>
+      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/sql-server/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SQLite</title>
+      <link>https://cezarypiatek.github.io/tags/sqlite/</link>
+      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/sqlite/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>data model</title>
+      <link>https://cezarypiatek.github.io/tags/data-model/</link>
+      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/data-model/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AutoMapper</title>
+      <link>https://cezarypiatek.github.io/tags/automapper/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/automapper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Roslyn</title>
+      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code generating</title>
+      <link>https://cezarypiatek.github.io/tags/code-generating/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/code-generating/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mapping</title>
+      <link>https://cezarypiatek.github.io/tags/mapping/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/mapping/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ASP.NET MVC</title>
+      <link>https://cezarypiatek.github.io/tags/asp.net-mvc/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/asp.net-mvc/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Content-Security-Policy</title>
+      <link>https://cezarypiatek.github.io/tags/content-security-policy/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/content-security-policy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ajax</title>
+      <link>https://cezarypiatek.github.io/tags/ajax/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/ajax/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>csp</title>
+      <link>https://cezarypiatek.github.io/tags/csp/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/csp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>javascript</title>
+      <link>https://cezarypiatek.github.io/tags/javascript/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>crud</title>
+      <link>https://cezarypiatek.github.io/tags/crud/</link>
+      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/crud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>orm</title>
+      <link>https://cezarypiatek.github.io/tags/orm/</link>
+      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/orm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>static analysis</title>
+      <link>https://cezarypiatek.github.io/tags/static-analysis/</link>
+      <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/static-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gitlab</title>
+      <link>https://cezarypiatek.github.io/tags/gitlab/</link>
+      <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/gitlab/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>meta runner</title>
+      <link>https://cezarypiatek.github.io/tags/meta-runner/</link>
+      <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/meta-runner/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GUI</title>
+      <link>https://cezarypiatek.github.io/tags/gui/</link>
+      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/gui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PowerShellCookbook</title>
+      <link>https://cezarypiatek.github.io/tags/powershellcookbook/</link>
+      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/powershellcookbook/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ise</title>
+      <link>https://cezarypiatek.github.io/tags/ise/</link>
+      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/ise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TODO</title>
+      <link>https://cezarypiatek.github.io/tags/todo/</link>
+      <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/todo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TodoExplorer</title>
+      <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
+      <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/todoexplorer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debugging</title>
+      <link>https://cezarypiatek.github.io/tags/debugging/</link>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>decompiler</title>
+      <link>https://cezarypiatek.github.io/tags/decompiler/</link>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/decompiler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>symbols</title>
+      <link>https://cezarypiatek.github.io/tags/symbols/</link>
+      <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/symbols/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ElementNotInteractableException</title>
+      <link>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</link>
+      <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>codeannotation</title>
+      <link>https://cezarypiatek.github.io/tags/codeannotation/</link>
+      <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/codeannotation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>svn</title>
+      <link>https://cezarypiatek.github.io/tags/svn/</link>
+      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/svn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tortoise</title>
+      <link>https://cezarypiatek.github.io/tags/tortoise/</link>
+      <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/tortoise/</guid>
       <description></description>
     </item>
     
