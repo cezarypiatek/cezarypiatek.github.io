@@ -6,18 +6,18 @@
     <description>Recent content in clean code on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Jun 2019 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 29 Jun 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/clean-code/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Exceptions usages analyzer</title>
+      <title>Exception usage analyzer</title>
       <link>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</link>
-      <pubDate>Wed, 26 Jun 2019 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</guid>
-      <description>Over a year ago I&amp;rsquo;ve written a blog post about designing exceptions. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&amp;rsquo;s almost impossible to expect that anybody after reading the recommended resource will start to apply described rules immediately and will remember about it all the time - it&amp;rsquo;s a learning process and it will take some time.</description>
+      <description>Over a year ago I wrote a blog post about designing exceptions. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&amp;rsquo;s almost impossible to expect that, after reading the recommended resource, anybody would start to apply described rules immediately and remember about them all the time. It&amp;rsquo;s a learning process and it takes some time. A while ago I got interested with Roslyn (I even delivered a public presentation about it - polish recording available here) and there is a really cool thing about Roslyn analyzers that can solve this problem - they help to actively introduce best practices into your codebase.</description>
     </item>
     
     <item>

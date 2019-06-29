@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Jun 2019 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 29 Jun 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>architecture</title>
       <link>https://cezarypiatek.github.io/tags/architecture/</link>
-      <pubDate>Wed, 26 Jun 2019 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/architecture/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>c#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Wed, 26 Jun 2019 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
       <description></description>
@@ -32,7 +32,7 @@
     <item>
       <title>clean code</title>
       <link>https://cezarypiatek.github.io/tags/clean-code/</link>
-      <pubDate>Wed, 26 Jun 2019 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/clean-code/</guid>
       <description></description>
@@ -41,7 +41,7 @@
     <item>
       <title>dotnet</title>
       <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Wed, 26 Jun 2019 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>exceptions</title>
       <link>https://cezarypiatek.github.io/tags/exceptions/</link>
-      <pubDate>Wed, 26 Jun 2019 00:09:00 +0200</pubDate>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/exceptions/</guid>
       <description></description>
@@ -498,7 +498,7 @@
     </item>
     
     <item>
-      <title>TODOExplorer</title>
+      <title>TodoExplorer</title>
       <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
       
