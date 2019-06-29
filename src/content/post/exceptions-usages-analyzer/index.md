@@ -1,6 +1,6 @@
 ---
 title: "Exception usage analyzer"
-description: "Detect violation of exception usage best practices"
+description: "Detecting violation of best practices in exception usage"
 date: 2019-06-29T00:09:00+02:00
 tags : ["dotnet", "c#", "exceptions", "architecture", "clean code"]
 highlight: true
