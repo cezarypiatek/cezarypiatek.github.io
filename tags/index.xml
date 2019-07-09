@@ -12,20 +12,20 @@
     
     
     <item>
-      <title>C#</title>
-      <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/c#/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>architecture</title>
       <link>https://cezarypiatek.github.io/tags/architecture/</link>
       <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>c#</title>
+      <link>https://cezarypiatek.github.io/tags/c#/</link>
+      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/c#/</guid>
       <description></description>
     </item>
     
@@ -498,7 +498,7 @@
     </item>
     
     <item>
-      <title>TODOExplorer</title>
+      <title>TodoExplorer</title>
       <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
       
