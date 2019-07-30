@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to avoid common mocking issues with the help of Roslyn.">   
+        
+    <meta property="article:published_time" content="2019-07-30">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/effective-mocking/">	
+	<meta property="og:title" content="Effective mocking">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/effective-mocking/splashscreen.jpg">
+    <meta property="og:description" content="How to avoid common mocking issues with the help of Roslyn.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="roslyn">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="productivity">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/effective-mocking/splashscreen.jpg">
+	<meta property="twitter:title" content="Effective mocking">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to avoid common mocking issues with the help of Roslyn.">
+
+	<meta name="keywords" value="roslyn, testing, productivity" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>Effective mocking &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Effective mocking</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>30 July 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>Recently, I&rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with <code>NSubstitute</code>. Of course, my answer was <code>&quot;Yes&quot;</code> but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked <a href="https://nuget.org">nuget.org</a> and <a href="https://marketplace.visualstudio.com">Visual Studio extensions marketplace</a>, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for <code>NSubstitute</code> but for other mocking frameworks, just like <code>Moq</code> or <code>Fake It Easy</code>, too.  In this blog post, I will show you how these tools are helping to avoid common problems with mocking and boost your productivity by saving you a lot of typing. Presented examples will be mostly based on the <code>Moq</code> library because it&rsquo;s my favoring mocking package.</p>
+
+<h2 id="moving-runtime-problems-to-design-time">Moving runtime problems to design time<a href="#moving-runtime-problems-to-design-time" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The idea behind mocking is to create in runtime a type that inherits from the mocked type and behaves in a way that we specify in mock configuration. The most common problem with mocking is that not everything related to mock preparation can be verified in design time, and we need to compile and run our test in order to verify if the mock was constructed correctly. For example, from the semantical and syntactical point of view, it&rsquo;s possible to write a code that creates mock of sealed class or for a non-overridable method (sealed or non-abstract, or non-virtual). However, when we run a test that uses such kind of mock we&rsquo;ve got the exception:</p>
+
+<p><img src="non_overridable_exception.jpg" alt="Exception when non-overridable used in setup" /></p>
+
+<p>With <a href="https://www.nuget.org/packages/Moq.Analyzers/">Moq.Analyzers</a> we can detect these problems in design time, right at the moment when we type the code that violates these rules.</p>
+
+<p><img src="setup_for_overridable_error.jpg" alt="Roslyn error when non-overridable used in setup" /></p>
+
+<p>Another problem with defining expected behavior for the mocked method is that the delegate provided for <code>Returns()</code> should match the signature of the mocked method. There is no way to express such kind of constraint with <code>C#</code> syntax, so this code will compile but won&rsquo;t work:</p>
+
+<p><img src="invalid_return_lambda_signature_without_roslyn.jpg" alt="Example of invalid lambda passed to return method" /></p>
+
+<p>Thanks to Roslyn analyzer, the feedback loop can be shortened by moving this verification from runtime to design time:</p>
+
+<p><img src="invalid_return_lambda_signature_roslyn.jpg" alt="Roslyn error when invalid lambda passed to return method" /></p>
+
+<p>The violations described here always result with runtime exception so it&rsquo;s good to set up the severity level of corresponding verification rules to <code>ERROR</code>:</p>
+
+<p><img src="sonfigure_severity_level.jpg" alt="Configure roslyn rule severity level" /></p>
+
+<p>If the <code>Moq</code> is not your mocking framework of choice don&rsquo;t worry, there&rsquo;s certainly a similar analyzer for your library. I was able to also find analyzers such as <a href="https://www.nuget.org/packages/NSubstitute.Analyzers.CSharp/">NSubstitute.Analyzers.CSharp</a> and <a href="https://www.nuget.org/packages/FakeItEasy.Analyzer/">FakeItEasy.Analyzer</a></p>
+
+<h2 id="less-typing-to-create-a-mock">Less typing to create a mock<a href="#less-typing-to-create-a-mock" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Besides all those traps with mocking rules, preparing mocks involves a lot of typing which is a dummy work. For example, to mock a method with three parameters (without carrying for their values) we need to write a code like this:</p>
+
+<pre><code class="language-csharp">var mock = new Mock&lt;ISampleInterface&gt;();
+mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;int&gt;(), It.IsAny&lt;decimal&gt;(), It.IsAny&lt;string&gt;()))
+    .Returns((p1, p2, p3)=&gt;  EXPECT_VALUE);
+</code></pre>
+
+<p>Typing repeatable <code>It.IsAny&lt;&gt;()</code> and trying to match the method signature in <code>Returns()</code> is quite boring and error-prone. Happily, these issues can be solved with Visual Studio extension - <a href="https://marketplace.visualstudio.com/items?itemName=AndreyLipatkin.moqautocomplete">Moq.Autocomplete</a> that can propose and insert the whole code for us.</p>
+
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/cTZR66mgt8Y?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<p>If the suggestions are not appearing after pressing <code>ctr+space</code> you should try to press <code>ctr+j</code> (yes, I lost a couple of hours before I discovered that). <a href="https://marketplace.visualstudio.com/items?itemName=AndreyLipatkin.moqautocomplete">Moq.Autocomplete</a> works only for <code>Moq</code> and Visual Studio 2019. However, if you are using other mocking frameworks or still working on Visual Studio 2017, you can try <a href="https://marketplace.visualstudio.com/items?itemName=mrluje.mocking-helpers">Mocking.Helpers</a> extension - it works for <code>NSubstitute</code>, <code>FakeItEasy</code> and <code>Moq</code> too but only provides suggestions for mocked method parameters.</p>
+
+<p>If you need to return from the mock a sample object that has many properties that should be initialized with sample values, you can use <a href="https://github.com/cezarypiatek/MappingGenerator">MappingGenerator</a> that can easily scaffold object initialization:</p>
+
+<p><img src="object_scaffolding.gif" alt="Automate object scaffolding with Roslyn extension" /></p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/no-more-staleelementreferenceexception/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/no-more-staleelementreferenceexception/splashscreen_hue4546ab00f78e7c845990f7df11dec67_104070_320x240_fill_q75_box_smart1.jpg" alt="No more StaleElementReferenceException">
+								<div class="card-body">
+									<h5 class="card-title">No more StaleElementReferenceException</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/feature-object-pattern/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/feature-object-pattern/splashscreen_huf3dc9c8db3683aa8f771fd530f144ae0_110973_320x240_fill_q75_box_smart1.jpg" alt="Feature Object Pattern">
+								<div class="card-body">
+									<h5 class="card-title">Feature Object Pattern</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/generate-mapping-code-with-roslyn/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-mapping-code-with-roslyn/splashscreen_hu86b51efa2999f8280c1d243d5a743591_73415_320x240_fill_q75_box_smart1.jpg" alt="Generate mapping code with Roslyn code fix provider.">
+								<div class="card-body">
+									<h5 class="card-title">Generate mapping code with Roslyn code fix provider.</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>
