@@ -6,10 +6,19 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 29 Jun 2019 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jul 2019 00:20:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Effective mocking</title>
+      <link>https://cezarypiatek.github.io/post/effective-mocking/</link>
+      <pubDate>Tue, 30 Jul 2019 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/effective-mocking/</guid>
+      <description>Recently, I&amp;rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with NSubstitute. Of course, my answer was &amp;quot;Yes&amp;quot; but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked nuget.org and Visual Studio extensions marketplace, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for NSubstitute but for other mocking frameworks, just like Moq or Fake It Easy, too.</description>
+    </item>
     
     <item>
       <title>Exception usage analyzer</title>

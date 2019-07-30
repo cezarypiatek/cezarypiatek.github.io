@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Roslyn on Cezary Piątek Blog</title>
-    <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-    <description>Recent content in Roslyn on Cezary Piątek Blog</description>
+    <title>productivity on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/productivity/</link>
+    <description>Recent content in productivity on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 30 Jul 2019 00:20:45 +0200</lastBuildDate>
     
-	<atom:link href="https://cezarypiatek.github.io/tags/roslyn/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cezarypiatek.github.io/tags/productivity/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>https://cezarypiatek.github.io/post/effective-mocking/</guid>
       <description>Recently, I&amp;rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with NSubstitute. Of course, my answer was &amp;quot;Yes&amp;quot; but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked nuget.org and Visual Studio extensions marketplace, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for NSubstitute but for other mocking frameworks, just like Moq or Fake It Easy, too.</description>
-    </item>
-    
-    <item>
-      <title>Generate mapping code with Roslyn code fix provider.</title>
-      <link>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</guid>
-      <description>A few weeks ago I posted about negative aspects of applying AutoMapper. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like T4Scaffoling or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in T4 syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking.</description>
     </item>
     
   </channel>
