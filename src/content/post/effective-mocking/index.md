@@ -33,7 +33,7 @@ The violations described here always result with runtime exception so it's good 
 
 ![Configure roslyn rule severity level](sonfigure_severity_level.jpg)
 
-If the `Moq` is not your mocking framework of choice don't worry, there's certainly a similar analyzer for your library. I was able to also find analyzers such as [NSubstitute.Analyzers.CSharp](https://www.nuget.org/packages/NSubstitute.Analyzers.CSharp/) and [FakeItEasy.Analyzer](https://www.nuget.org/packages/FakeItEasy.Analyzer/)
+If the `Moq` is not your mocking framework of choice don't worry, there's certainly a similar analyzer for your library. I was able to also find analyzers such as [NSubstitute.Analyzers.CSharp](https://www.nuget.org/packages/NSubstitute.Analyzers.CSharp/) and [FakeItEasy.Analyzer.CSharp](https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp/)
 
 ##  Less typing to create a mock
 Besides all those traps with mocking rules, preparing mocks involves a lot of typing which is a dummy work. For example, to mock a method with three parameters (without carrying for their values) we need to write a code like this:
