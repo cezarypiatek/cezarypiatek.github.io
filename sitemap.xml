@@ -20,12 +20,6 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
-    <lastmod>2019-07-30T00:20:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/</loc>
     <lastmod>2019-07-30T00:20:45+02:00</lastmod>
     <priority>0</priority>
@@ -33,6 +27,12 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
+    <lastmod>2019-07-30T00:20:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
     <lastmod>2019-07-30T00:20:45+02:00</lastmod>
     <priority>0</priority>
   </url>

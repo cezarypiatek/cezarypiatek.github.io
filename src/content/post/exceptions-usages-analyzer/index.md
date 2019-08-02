@@ -2,7 +2,7 @@
 title: "Exception usage analyzer"
 description: "Detecting violation of best practices in exception usage"
 date: 2019-06-29T00:09:00+02:00
-tags : ["dotnet", "c#", "exceptions", "architecture", "clean code"]
+tags : ["dotnet", "c#", "exceptions", "architecture", "clean code", "roslyn"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
