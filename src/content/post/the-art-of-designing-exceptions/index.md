@@ -327,7 +327,7 @@ All of my exception factory methods are decorated with `[Pure]` attribute. This 
 
 ![missing throw keyword example](missing_throw.jpg)
 
-You can read more about `Resharper code annotations` in my "[Hunt your bugs in design time](post/hunt-your-bugs-design-time/)" article.
+You can read more about `Resharper code annotations` in my "[Hunt your bugs in design time](/post/hunt-your-bugs-design-time/)" article.
 
 
 ## Summary
