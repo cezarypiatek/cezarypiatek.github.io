@@ -1,62 +1,16 @@
 ---
-title: "Avoid thread synchronization problems with Roslyn"
+title: "Avoid thread synchronization problems with Roslyn: other traps"
 description: "How to avoid common mocking issues with the help of Roslyn."
 date: 2019-08-03T00:20:45+02:00
 tags : ["roslyn", "multithreading", "C#"]
 highlight: true
 image: "splashscreen.jpg"
+draft: true
 isBlogpost: true
 ---
 
-Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanism which can result with the deadlocks or a complete lack of synchronization despise our expectations. The famous deadlocks can be detected in runtime thanks to tools like [Concurrency Visualizer](https://docs.microsoft.com/en-US/visualstudio/profiling/concurrency-visualizer?view=vs-2019), [Parallel Tasks Window](https://docs.microsoft.com/en-us/visualstudio/debugger/walkthrough-debugging-a-parallel-application?view=vs-2019#using-the-parallel-tasks-window-and-the-tasks-view-of-the-parallel-stacks-window) or with [WinDBG !dlk command](https://blogs.msdn.microsoft.com/mohamedg/2010/01/28/how-to-debug-deadlocks-using-windbg/). However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce that feedback loop and detect these issues in design time. In this blog post, I will present what I've recently learned about traps related to the synchronization in `C#` and I will show you my proposition of Roslyn analyzers that possibly helps to avoid them right on the stage of writing code.
+Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms which can result with the deadlocks or a complete lack of synchronization despise our expectations. The famous deadlocks can be detected in runtime thanks to tools like [Concurrency Visualizer](https://docs.microsoft.com/en-US/visualstudio/profiling/concurrency-visualizer?view=vs-2019), [Parallel Tasks Window](https://docs.microsoft.com/en-us/visualstudio/debugger/walkthrough-debugging-a-parallel-application?view=vs-2019#using-the-parallel-tasks-window-and-the-tasks-view-of-the-parallel-stacks-window) or with [WinDBG !dlk command](https://blogs.msdn.microsoft.com/mohamedg/2010/01/28/how-to-debug-deadlocks-using-windbg/). However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce that feedback loop and detect these issues in design time. I decided to create a series of blog posts where I will present what I've recently learned about traps related to the synchronization in `C#` and I will show you my proposition of Roslyn analyzers that possibly helps to avoid them right on the stage of writing code. This part is about choosing a suitable object for locking.
 
-
-## DO NOT lock on publicly accessible members
-Using publicly accessible members for locking can result with deadlock because there's no guarantee that any external code will not use them for synchronizing something else too. The best practice to avoid this problem is to create a private read-only instance of object dedicated for locking purpose:
-
-```csharp
-private readonly object lockObject = new object();
-
-public void DoSomething()
-{
-    lock (lockObject)
-    {
-        //Critical section
-    }
-}
-```
-The `readonly` keyword is very important because, without it, we can't be sure that between invocations of `Monitor.Enter` and `Monitor.Exit` the `lockObject` reference won't be overwritten. This situation is called `abandoned lock` and it ends up with deadlock because the lock acquired on the object originally referenced by `lockObject` will never be released. To detect all that issues in design time I've created the following Roslyn rules:
-
-- `MT1001: Lock on publicly accessible member`
-- `MT1007: Lock on non-readonly member`
-
-## DO NOT lock on this reference
- A particular example of locking on *something that is publicly accessible* is acquiring a lock on the `this` reference which can also end with a deadlock for the same reason. However .... - there is a less common way for synchronizing every invocation of a given method by decorating her with `[MethodImpl(MethodImplOptions.Synchronized)]`. This cause wrapping the whole method body into the lock on `this` reference for instance methods and lock on `typeof()` for a static methods. 
- 
- If your are not convinced that `lock(this)` is a bad idea here's the real-life example: [Azure/amqpnetlite#357](https://github.com/Azure/amqpnetlite/issues/357). 
-
-- `MT1000: Lock on publicly accessible instance`
-- `MT1003: Method level synchronization`
-
-## DO NOT lock on objects with weak identity
-
-Another common mistake related to choosing synchronization object is a locking on `typeof()` expression. This should be avoided because instances of the `Type` are implicitly shared across the application. After reading [Writing High-Performance .NET Code](https://www.amazon.com/gp/product/0990583457/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0990583457&linkCode=as2&tag=asdqweasd-20&linkId=6332aefaaa81e236135f1822be00ecdd) I learned that not only `Type` but also `strings` and instances of types that inherits from `MarshalByRefObject` should be avoided too for locking. I dig a little deeper and I discovered that the list of implicitly shared objects is much longer:
-
-- `System.String`
--  Arrays of value types
-- `System.MarshalByRefObject`
-- `System.ExecutionEngineException`
-- `System.OutOfMemoryException`
-- `System.StackOverflowException`
-- `System.Reflection.MemberInfo`
-- `System.Reflection.ParameterInfo`
-- `System.Threading.Thread`
-
-These types have a weak identity and there is a [FxCop](https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/) rule [CA2002: Do not lock on objects with weak identity](https://github.com/MicrosoftDocs/visualstudio-docs/blob/master/docs/code-quality/ca2002-do-not-lock-on-objects-with-weak-identity.md) that should protect from this issue. However, the current implementations verify only `lock()` statement so if we are using `Monitor.Enter` or `Monitor.TryEnter` to acquire a lock we are still exposed to the risk of deadlock. I'm planning to create a PR with a fix for that [roslyn-analyzers#2744](https://github.com/dotnet/roslyn-analyzers/issues/2744), but in the meantime, I implemented the whole diagnostic as a separated analyzer: `MT1000: Lock on publicly accessible instance`.
-
-## DO NOT lock on value types
-
-The explanation for this is quite straightforward - value types don't have a `object header` where the information about the acquired lock could be stored. If we write lock statement over a value object we get the `CS0185` compiler error. However if we use `Monitor.Enter` or `Monitor.TryEnter` instead of `lock()` statement the code will compile but crush in the runtime with `System.Threading.SynchronizationLockException` when we try to release the lock. This is happened because when we pass a value object to `Monitor.Enter` and `Monitor.Exit` every method get a different instance of this object because of the boxing.
 
 ## Abandoned locks
 
