@@ -6,10 +6,19 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Jul 2019 00:20:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 18 Aug 2019 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Avoid multithreading traps with Roslyn: Lock object selection</title>
+      <link>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</link>
+      <pubDate>Sun, 18 Aug 2019 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</guid>
+      <description>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The infamous deadlocks can be detected in runtime thanks to tools like Concurrency Visualizer, Parallel Tasks Window or with WinDBG !dlk command. However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce the feedback loop and detect these issues in design time.</description>
+    </item>
     
     <item>
       <title>Effective mocking</title>
