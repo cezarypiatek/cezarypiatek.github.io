@@ -3,32 +3,55 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</loc>
-    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/c#/</loc>
-    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/post/csharp-macros/</loc>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/</loc>
-    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
+    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</loc>
+    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
   </url>
   
   <url>
@@ -38,20 +61,8 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
-    <lastmod>2019-08-18T00:11:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/post/effective-mocking/</loc>
     <lastmod>2019-07-30T00:20:45+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
-    <lastmod>2019-07-30T00:20:45+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -222,12 +233,6 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/cqs/</loc>
-    <lastmod>2018-09-23T00:20:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
     <lastmod>2018-09-23T00:20:45+02:00</lastmod>
     <priority>0</priority>
   </url>

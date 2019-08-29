@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
     
     <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
         
@@ -323,11 +324,11 @@
 				
 				
 				<div class="col-xs-4">
-						<a href="../../post/space-eaten-up-by-resharper/" >
+						<a href="../../post/csharp-macros/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/space-eaten-up-by-resharper/splashscreen_hud143dd1da9dd0089b4faa4a81a03d743_111682_320x240_fill_q75_box_smart1.jpg" alt="Space eaten up by Resharper">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
 								<div class="card-body">
-									<h5 class="card-title">Space eaten up by Resharper</h5>											  
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -387,10 +388,19 @@
 	}
   </script>
   
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
   <script src="https://cezarypiatek.github.io//js/App.js"></script>
   
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
