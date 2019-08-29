@@ -20,6 +20,7 @@
 	}
   </script>
   {{ end }}
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   {{ if .Site.Params.showglobe }}
@@ -32,6 +33,14 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/{{.}}.min.js"></script>
 		{{end}}
   {{ end }}
+  <script src="/lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
   <script src="{{ .Site.BaseURL }}/js/App.js"></script>
   {{ range .Params.scripts }}
   <script src="{{ . }}"></script>

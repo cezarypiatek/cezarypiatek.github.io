@@ -9,6 +9,9 @@ draft: true
 isBlogpost: true
 ---
 
+TODO: https://deadlockempire.github.io/
+
+
 Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms which can result with the deadlocks or a complete lack of synchronization despise our expectations. The famous deadlocks can be detected in runtime thanks to tools like [Concurrency Visualizer](https://docs.microsoft.com/en-US/visualstudio/profiling/concurrency-visualizer?view=vs-2019), [Parallel Tasks Window](https://docs.microsoft.com/en-us/visualstudio/debugger/walkthrough-debugging-a-parallel-application?view=vs-2019#using-the-parallel-tasks-window-and-the-tasks-view-of-the-parallel-stacks-window) or with [WinDBG !dlk command](https://blogs.msdn.microsoft.com/mohamedg/2010/01/28/how-to-debug-deadlocks-using-windbg/). However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce that feedback loop and detect these issues in design time. I decided to create a series of blog posts where I will present what I've recently learned about traps related to the synchronization in `C#` and I will show you my proposition of Roslyn analyzers that possibly helps to avoid them right on the stage of writing code. This part is about choosing a suitable object for locking.
 
 
