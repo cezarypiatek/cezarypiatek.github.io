@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How I built very simple macro system for C# that works right in the code editor.">   
+        
+    <meta property="article:published_time" content="2019-09-01">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/csharp-macros/">	
+	<meta property="og:title" content="CSharp Macros - let the Roslyn type for you">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/csharp-macros/splashscreen.jpg">
+    <meta property="og:description" content="How I built very simple macro system for C# that works right in the code editor.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="roslyn">
+    
+    <meta property="og:tags" content="productivity">
+    
+    <meta property="og:tags" content="C#">
+    
+    <meta property="og:tags" content="LiveTemplates">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/csharp-macros/splashscreen.jpg">
+	<meta property="twitter:title" content="CSharp Macros - let the Roslyn type for you">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How I built very simple macro system for C# that works right in the code editor.">
+
+	<meta name="keywords" value="roslyn, productivity, C#, LiveTemplates" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>CSharp Macros - let the Roslyn type for you &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>CSharp Macros - let the Roslyn type for you</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>1 September 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>I&rsquo;m a programmer but I don&rsquo;t like to write code. OK, it&rsquo;s not the whole truth. I don&rsquo;t like to write the code that is repeatable. Whenever I need to do something more than twice, I start thinking about automation. Hopefully, this problem can be addressed with <code>code snippets</code>. Visual Studio provides a predefined set of <a href="https://docs.microsoft.com/en-US/visualstudio/ide/visual-csharp-code-snippets?view=vs-2019">snippets</a> that can be extended, but if you are a Resharper user you should definitely get to know <a href="https://www.jetbrains.com/help/resharper/Templates__Index.html">LiveTemplates</a> because it&rsquo;s more powerful and easier to configure. For an easier start with <code>LiveTemplates</code>, I recommend reading my articles about practical usages of this tool <a href="../../tags/livetemplates/">here</a>. However, sometimes snippets are not enough, especially when you need to insert them many times for repeatable code, or complete placeholders manually when they could be automatically calculated. To solve those issues, I came up with the idea of C# macros that could be executed during the design time right in the code editor. I created a simple POC with Roslyn API and happily confirmed that it was feasible. In this blog post, I will describe what I&rsquo;ve achieved so far and what are the perspectives for the extension.</p>
+
+<h2 id="what-is-the-csharp-macro">What is the CSharp macro?<a href="#what-is-the-csharp-macro" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The idea is very simple. It&rsquo;s a system that allows repeating and completing a given template for all values from a given set. The main advantage over snippets is the ability to repeat the template and define the function that generates the input set. Here&rsquo;s how the macro looks like:</p>
+
+<p><img src="anatomy.jpg" alt="macro anatomy" /></p>
+
+<ol>
+<li>Macro header.</li>
+<li>Macro template - multiline text that will be repeated for every element generated by the macro function.</li>
+<li>Name of the pre-defined function that generates input.</li>
+<li>Parameter for the function.</li>
+<li>Placeholder with the attribute&rsquo;s name of element generated by the function declared in the header.</li>
+</ol>
+
+<p>So far I&rsquo;ve implemented the following functions that generate input for the template:</p>
+
+<ul>
+<li><code>properties</code> - returns list of the properties for a given type</li>
+<li><code>methods</code> - returns list of the methods for a given type</li>
+<li><code>implement</code> - returns all implementations of given interface</li>
+<li><code>derived</code> - returns all class that derive from a given type</li>
+<li><code>values</code> - returns values from the set defined as macro parameters</li>
+</ul>
+
+<p>For detailed descriptions and usage examples please check the <a href="https://github.com/cezarypiatek/CsharpMacros">CsharpMacros</a> project site at Github.</p>
+
+<h2 id="macros-in-action">Macros in action<a href="#macros-in-action" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>C# macro can be used for example to scaffold assertions for all object properties</p>
+
+<p><img src="generate_assertions_animated.png" alt="generate assertions" /></p>
+
+<p>or generate code that reads values from SQL query and maps them to appropriate properties of a given entity:</p>
+
+<p><img src="generate_sqlread_animated.png" alt="generate sql read" /></p>
+
+<p>There is also an option to transform the value of the attributes by applying filters like: <code>lowercase</code>, <code>uppercase</code>, <code>camelcase</code>, and <code>pascalcase</code>. The syntax for the placeholder with filter is the following: <code>${attribute_name | filter_name}</code>. The filters can be combined together by chaining them with <code>|</code> operator.</p>
+
+<h2 id="supported-ide">Supported IDE<a href="#supported-ide" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>CSharp Macros mechanism consists of two parts: Roslyn analyzer and Roslyn codefix; so it should work with any IDE that supports analyzers and codefixes. I&rsquo;ve tested it on <code>Visual Studio</code>, <code>JetBrains Rider</code> and <code>VSCode</code> and everything works in the same way. For Visual Studio the preferred way of usage is Visual Studio extension which can be downloaded and installed from the marketplace; you can also use it as a Nuget package. For <code>Rider</code> and <code>VSCode</code> the only option is to install it as a Nuget package - the downside is that you need to install it to every solution where you want to use it. To use Roslyn analyzers and VSCode, you need to unlock it in the editor settings - there is an option called <code>Enable support for Roslyn analyzers, code fixes and rulesets</code>.</p>
+
+<ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.csharpmacros2">Link to VisualStudio extension</a></li>
+<li><a href="https://www.nuget.org/packages/CsharpMacros">Link to Nuget package</a></li>
+<li><a href="https://github.com/cezarypiatek/CsharpMacros">Link to project site</a></li>
+</ul>
+
+<h2 id="ideas-for-improvement-and-extension">Ideas for improvement and extension<a href="#ideas-for-improvement-and-extension" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<ul>
+<li>Add system for informing about errors in the macro definition.</li>
+<li>Implement some sort of stash or catalog of reusable macros.</li>
+<li>Implement <code>eval</code> macro function that evaluate function from the current solution or given DLL.</li>
+<li>Add intellisense for macro syntax.</li>
+</ul>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I am very curious about your thoughts regarding <code>CSharp Macro</code>. Do you like it? Do you find it useful? Do you have any ideas for improvement/extension?  I&rsquo;ve had a couple of opportunities to use them in an action and they do simplify my work.  By having a tool that generates the code, you can avoid potential mistakes that can occur during <code>copy&amp;paste&amp;modify</code> process and focus on more important things.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/avoid-multithreading-traps-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/avoid-multithreading-traps-p1/splashscreen_hu831a556e644f698f06f7bab476f01bf6_136804_320x240_fill_q75_box_smart1.jpg" alt="Avoid multithreading traps with Roslyn: Lock object selection">
+								<div class="card-body">
+									<h5 class="card-title">Avoid multithreading traps with Roslyn: Lock object selection</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/effective-mocking/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/effective-mocking/splashscreen_hu453ba93201bb41ed948c631bb2cf2a15_95095_320x240_fill_q75_box_smart1.jpg" alt="Effective mocking">
+								<div class="card-body">
+									<h5 class="card-title">Effective mocking</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
+						<a href="../../post/exceptions-usages-analyzer/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/exceptions-usages-analyzer/splashscreen_hu4726010f8bf92c1a7527d07383ef14cb_95165_320x240_fill_q75_box_smart1.jpg" alt="Exception usage analyzer">
+								<div class="card-body">
+									<h5 class="card-title">Exception usage analyzer</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

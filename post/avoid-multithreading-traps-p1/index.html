@@ -20,7 +20,7 @@
     
     <meta property="og:tags" content="multithreading">
     
-    <meta property="og:tags" content="C#">
+    <meta property="og:tags" content="c#">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/splashscreen.jpg">
@@ -28,7 +28,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to avoid thread synchronization problems caused by improperly chosen lock object">
 
-	<meta name="keywords" value="roslyn, multithreading, C#" />
+	<meta name="keywords" value="roslyn, multithreading, c#" />
     <meta name="generator" content="Hugo 0.55.6" />
     <title>Avoid multithreading traps with Roslyn: Lock object selection &middot; Cezary Piątek Blog</title>
     
@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
     
     <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
     
     <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
         
@@ -227,6 +228,21 @@ public void DoSomething()
 				
 				
 				<div class="col-xs-4">
+						<a href="../../post/csharp-macros/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<div class="card-body">
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-xs-4">
 						<a href="../../post/exceptions-usages-analyzer/" >
 						<div class="card">
 								<img class="card-img-top" src="../../post/exceptions-usages-analyzer/splashscreen_hu4726010f8bf92c1a7527d07383ef14cb_95165_320x240_fill_q75_box_smart1.jpg" alt="Exception usage analyzer">
@@ -247,21 +263,6 @@ public void DoSomething()
 								<img class="card-img-top" src="../../post/generate-mapping-code-with-roslyn/splashscreen_hu86b51efa2999f8280c1d243d5a743591_73415_320x240_fill_q75_box_smart1.jpg" alt="Generate mapping code with Roslyn code fix provider.">
 								<div class="card-body">
 									<h5 class="card-title">Generate mapping code with Roslyn code fix provider.</h5>											  
-								</div>
-							</div></a>
-				</div>		
-			
-		
-			
-				
-				
-				
-				<div class="col-xs-4">
-						<a href="../../post/effective-mocking/" >
-						<div class="card">
-								<img class="card-img-top" src="../../post/effective-mocking/splashscreen_hu453ba93201bb41ed948c631bb2cf2a15_95095_320x240_fill_q75_box_smart1.jpg" alt="Effective mocking">
-								<div class="card-body">
-									<h5 class="card-title">Effective mocking</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -321,6 +322,7 @@ public void DoSomething()
 	}
   </script>
   
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
@@ -328,6 +330,14 @@ public void DoSomething()
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 		
   
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
   <script src="https://cezarypiatek.github.io//js/App.js"></script>
   
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
