@@ -50,6 +50,17 @@ ins.play-gif{
 	width: auto!important;
 }
 
+@media (max-width:992px){
+    .card-img-top{
+        max-height:200px!important;
+        object-fit: cover;
+    }
+    .card{
+        margin-top:15px;
+    }
+}
+
+
 .hljs{
     margin:-12px;
 }
