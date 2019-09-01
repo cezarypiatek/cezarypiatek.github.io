@@ -30,7 +30,7 @@
 				{{ $original := .Resources.GetMatch (.Params.Image) }}
 				{{ .Scratch.Set "image" ($original.Fill "320x240") }}
 				{{ $image := .Scratch.Get "image" }}
-				<div class="col-xs-4">
+				<div class="col-md-4 col-sm-12">
 						<a href="{{ .RelPermalink }}" >
 						<div class="card">
 								<img class="card-img-top" src="{{$image.RelPermalink}}" alt="{{ .Title }}">
