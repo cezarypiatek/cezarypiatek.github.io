@@ -63,3 +63,8 @@ CSharp Macros mechanism consists of two parts: Roslyn analyzer and Roslyn codefi
 ## Summary
 
 I am very curious about your thoughts regarding `CSharp Macro`. Do you like it? Do you find it useful? Do you have any ideas for improvement/extension?  I've had a couple of opportunities to use them in an action and they do simplify my work.  By having a tool that generates the code, you can avoid potential mistakes that can occur during `copy&paste&modify` process and focus on more important things.
+
+
+**UPDATE 2019-09-21**: To facilitate usage of CsharpMacros I created a couple of Resharper's LiveTemplates. You can read more about that on the project's [snippets sub-page](https://github.com/cezarypiatek/CsharpMacros/tree/master/snippets).
+
+![Snippet in action](snippet_in_action_animated.png)
