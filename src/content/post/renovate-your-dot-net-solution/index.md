@@ -110,3 +110,10 @@ __UPDATE 2019-02-12:__  The new csproj format still isn't supported with .NET Fr
 __UPDATE 2019-02-21:__   If you want to go even further with the renovation I highly recommend checking the [Sharpen](https://github.com/sharpenrocks/Sharpen) project. `Thanks to that extension  you can easily start introducing new C# features into your codebase.`
 
 ![](https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png)
+
+__UPDATE 2019-09-30:__  `CsprojToVs2017` can be easily installed and used as a dotnet cli global tool:
+
+```shell
+ dotnet tool install --global Project2015To2017.Migrate2019.Tool
+ dotnet-migrate-2019 migrate
+```
