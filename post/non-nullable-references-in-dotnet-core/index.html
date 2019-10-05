@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to catch NullReferenceException in design time">   
+        
+    <meta property="article:published_time" content="2019-10-03">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/">	
+	<meta property="og:title" content="Non-nullable references with C# 8 and DotnetCore 3.0">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/splashscreen.jpg">
+    <meta property="og:description" content="How to catch NullReferenceException in design time">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="dotnetcore">
+    
+    <meta property="og:tags" content="c#">
+    
+    <meta property="og:tags" content="visual studio">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/splashscreen.jpg">
+	<meta property="twitter:title" content="Non-nullable references with C# 8 and DotnetCore 3.0">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to catch NullReferenceException in design time">
+
+	<meta name="keywords" value="dotnetcore, c#, visual studio" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>Non-nullable references with C# 8 and DotnetCore 3.0 &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Non-nullable references with C# 8 and DotnetCore 3.0</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>3 October 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<h2 id="how-to-use-non-nullable-references">How to use Non-nullable references<a href="#how-to-use-non-nullable-references" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<h2 id="the-era-before-c-8">The era before C# 8<a href="#the-era-before-c-8" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Title</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS0458">CS0458</a></td>
+<td>The result of the expression is always &lsquo;null&rsquo;</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS0464">CS0464</a></td>
+<td>Comparing with null of struct type always produces &lsquo;false&rsquo;</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS0472">CS0472</a></td>
+<td>The result of the expression is always the same since a value of this type is never equal to &lsquo;null&rsquo;</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS1720">CS1720</a></td>
+<td>Expression will always cause a System.NullReferenceException because the type&rsquo;s default value is null</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8073">CS8073</a></td>
+<td>The result of the expression is always the same since a value of this type is never equal to &lsquo;null&rsquo;</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8597">CS8597</a></td>
+<td>Thrown value may be null.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8600">CS8600</a></td>
+<td>Converting null literal or possible null value to non-nullable type.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8601">CS8601</a></td>
+<td>Possible null reference assignment.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8602">CS8602</a></td>
+<td>Dereference of a possibly null reference.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8603">CS8603</a></td>
+<td>Possible null reference return.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8604">CS8604</a></td>
+<td>Possible null reference argument.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8605">CS8605</a></td>
+<td>Unboxing a possibly null value.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8606">CS8606</a></td>
+<td>Possible null reference assignment to iteration variable</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8607">CS8607</a></td>
+<td>A possible null value may not be passed to a target marked with the [DisallowNull] attribute</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8608">CS8608</a></td>
+<td>Nullability of reference types in type doesn&rsquo;t match overridden member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8609">CS8609</a></td>
+<td>Nullability of reference types in return type doesn&rsquo;t match overridden member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8610">CS8610</a></td>
+<td>Nullability of reference types in type of parameter doesn&rsquo;t match overridden member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8611">CS8611</a></td>
+<td>Nullability of reference types in type of parameter doesn&rsquo;t match partial method declaration.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8612">CS8612</a></td>
+<td>Nullability of reference types in type doesn&rsquo;t match implicitly implemented member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8613">CS8613</a></td>
+<td>Nullability of reference types in return type doesn&rsquo;t match implicitly implemented member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8614">CS8614</a></td>
+<td>Nullability of reference types in type of parameter doesn&rsquo;t match implicitly implemented member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8615">CS8615</a></td>
+<td>Nullability of reference types in type doesn&rsquo;t match implemented member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8616">CS8616</a></td>
+<td>Nullability of reference types in return type doesn&rsquo;t match implemented member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8617">CS8617</a></td>
+<td>Nullability of reference types in type of parameter doesn&rsquo;t match implemented member.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8618">CS8618</a></td>
+<td>Non-nullable field is uninitialized. Consider declaring as nullable.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8619">CS8619</a></td>
+<td>Nullability of reference types in value doesn&rsquo;t match target type.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8620">CS8620</a></td>
+<td>Argument cannot be used for parameter due to differences in the nullability of reference types.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8621">CS8621</a></td>
+<td>Nullability of reference types in return type doesn&rsquo;t match the target delegate.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8622">CS8622</a></td>
+<td>Nullability of reference types in type of parameter doesn&rsquo;t match the target delegate.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8624">CS8624</a></td>
+<td>Argument cannot be used as an output for parameter due to differences in the nullability of reference types.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8625">CS8625</a></td>
+<td>Cannot convert null literal to non-nullable reference type.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8626">CS8626</a></td>
+<td>The &lsquo;as&rsquo; operator may produce a null value for a type parameter.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8629">CS8629</a></td>
+<td>Nullable value type may be null.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8631">CS8631</a></td>
+<td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match constraint type.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8632">CS8632</a></td>
+<td>The annotation for nullable reference types should only be used in code within a &lsquo;#nullable&rsquo; annotations context.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8633">CS8633</a></td>
+<td>Nullability in constraints for type parameter doesn&rsquo;t match the constraints for type parameter in implicitly implemented interface method&rsquo;.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8634">CS8634</a></td>
+<td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match &lsquo;class&rsquo; constraint.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8638">CS8638</a></td>
+<td>Conditional access may produce a null value for a type parameter.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8643">CS8643</a></td>
+<td>Nullability of reference types in explicit interface specifier doesn&rsquo;t match interface implemented by the type.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8644">CS8644</a></td>
+<td>Type does not implement interface member. Nullability of reference types in interface implemented by the base type doesn&rsquo;t match.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8645">CS8645</a></td>
+<td>Interface is already listed in the interface list with different nullability of reference types.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8653">CS8653</a></td>
+<td>A default expression introduces a null value for a type parameter.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8654">CS8654</a></td>
+<td>A null literal introduces a null value for a type parameter.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8655">CS8655</a></td>
+<td>The switch expression does not handle some null inputs.</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8667">CS8667</a></td>
+<td>Partial method declarations have inconsistent nullability in constraints for type parameter</td>
+</tr>
+
+<tr>
+<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8714">CS8714</a></td>
+<td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match &lsquo;notnull&rsquo; constraint.</td>
+</tr>
+</tbody>
+</table>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/renovate-your-dot-net-solution/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/renovate-your-dot-net-solution/splashscreen_hu0d8c53dcbc8a208d1870631c6fe44e6a_210085_320x240_fill_q75_box_smart1.jpg" alt="Renovate your .NET solution">
+								<div class="card-body">
+									<h5 class="card-title">Renovate your .NET solution</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/avoid-multithreading-traps-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/avoid-multithreading-traps-p2/splashscreen_hu831a556e644f698f06f7bab476f01bf6_170863_320x240_fill_q75_box_smart1.jpg" alt="Avoid thread synchronization problems with Roslyn: Synchronization primitives traps">
+								<div class="card-body">
+									<h5 class="card-title">Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-macros/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<div class="card-body">
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

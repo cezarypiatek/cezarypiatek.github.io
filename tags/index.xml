@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Sep 2019 00:10:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 03 Oct 2019 00:20:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,27 @@
     <item>
       <title>C#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Sun, 15 Sep 2019 00:10:00 +0200</pubDate>
+      <pubDate>Thu, 03 Oct 2019 00:20:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnetcore</title>
+      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
+      <pubDate>Thu, 03 Oct 2019 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>visual studio</title>
+      <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
+      <pubDate>Thu, 03 Oct 2019 00:20:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/visual-studio/</guid>
       <description></description>
     </item>
     
@@ -134,15 +152,6 @@
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>visual studio</title>
-      <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
-      <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/visual-studio/</guid>
       <description></description>
     </item>
     
