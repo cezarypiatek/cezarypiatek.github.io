@@ -4,6 +4,26 @@ article img, article video, article .gifplayer-wrapper {
 	margin: auto;
 	display: block;
 }
+
+article table {
+    margin: 0 0 25px 0;
+}
+
+article table th{
+    font-style:bold;
+}
+
+article table tr {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: lightgray;
+}
+
+article table td, article table th {
+    padding: 2px 5px;
+    vertical-align: top;
+}
+
 ins.play-gif{
     box-sizing: content-box!important;
     left: 0!important;

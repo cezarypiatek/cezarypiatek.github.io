@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Sep 2019 00:10:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 06 Oct 2019 00:16:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Non-nullable references with C# 8 and .NET Core 3.0</title>
+      <link>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</link>
+      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</guid>
+      <description>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available here on the MSDN, but the one that deserves special attention is Nullable reference types. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference nullability on the compilation stage.</description>
+    </item>
     
     <item>
       <title>Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</title>
