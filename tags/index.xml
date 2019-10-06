@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Oct 2019 00:20:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 06 Oct 2019 00:16:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>C#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Thu, 03 Oct 2019 00:20:45 +0200</pubDate>
+      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
       <description></description>
@@ -23,16 +23,25 @@
     <item>
       <title>dotnetcore</title>
       <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
-      <pubDate>Thu, 03 Oct 2019 00:20:45 +0200</pubDate>
+      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>resharper</title>
+      <link>https://cezarypiatek.github.io/tags/resharper/</link>
+      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>visual studio</title>
       <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
-      <pubDate>Thu, 03 Oct 2019 00:20:45 +0200</pubDate>
+      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/visual-studio/</guid>
       <description></description>
@@ -260,15 +269,6 @@
       <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/cqs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>resharper</title>
-      <link>https://cezarypiatek.github.io/tags/resharper/</link>
-      <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
       <description></description>
     </item>
     

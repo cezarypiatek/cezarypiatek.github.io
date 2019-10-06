@@ -4,16 +4,16 @@
 	<meta name="theme-color" content="#ffffff">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta name="description" content="How to catch NullReferenceException in design time">   
+    <meta name="description" content="Catching NullReferenceException in design time using new language features and how to deal with it in previous versions.">   
         
-    <meta property="article:published_time" content="2019-10-03">
+    <meta property="article:published_time" content="2019-10-06">
 	<meta property="og:type" content="article">
     
 	<meta property="og:locale" content="en_US">	
 	<meta property="og:url" content="https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/">	
-	<meta property="og:title" content="Non-nullable references with C# 8 and DotnetCore 3.0">
+	<meta property="og:title" content="Non-nullable references with C# 8 and .NET Core 3.0">
 	<meta property="og:image" content="https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/splashscreen.jpg">
-    <meta property="og:description" content="How to catch NullReferenceException in design time">
+    <meta property="og:description" content="Catching NullReferenceException in design time using new language features and how to deal with it in previous versions.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
     <meta property="og:tags" content="dotnetcore">
@@ -22,15 +22,17 @@
     
     <meta property="og:tags" content="visual studio">
     
+    <meta property="og:tags" content="Resharper">
+    
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/splashscreen.jpg">
-	<meta property="twitter:title" content="Non-nullable references with C# 8 and DotnetCore 3.0">	
+	<meta property="twitter:title" content="Non-nullable references with C# 8 and .NET Core 3.0">	
 	<meta property="twitter:creator" content="@cezary_piatek">
-	<meta property="twitter:description" content="How to catch NullReferenceException in design time">
+	<meta property="twitter:description" content="Catching NullReferenceException in design time using new language features and how to deal with it in previous versions.">
 
-	<meta name="keywords" value="dotnetcore, c#, visual studio" />
+	<meta name="keywords" value="dotnetcore, c#, visual studio, Resharper" />
     <meta name="generator" content="Hugo 0.55.6" />
-    <title>Non-nullable references with C# 8 and DotnetCore 3.0 &middot; Cezary Piątek Blog</title>
+    <title>Non-nullable references with C# 8 and .NET Core 3.0 &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -132,9 +134,9 @@
 <main>
 	<article>
 		<header>
-			<h1>Non-nullable references with C# 8 and DotnetCore 3.0</h1>
+			<h1>Non-nullable references with C# 8 and .NET Core 3.0</h1>
 			  
-			<div><i class="fa fa-calendar"></i> <time>3 October 2019</time></div>
+			<div><i class="fa fa-calendar"></i> <time>6 October 2019</time></div>
 			<hr />
 			
 		</header>
@@ -144,9 +146,28 @@
 		
 		
 
+<p>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8">here</a> on the MSDN, but the one that deserves special attention is <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8#nullable-reference-types">Nullable reference types</a>. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference <code>nullability</code> on the compilation stage. In this blog post, I will show you how to use this new language feature and how to achieve similar benefits if you still cannot use .NET Core 3.0 in your projects.</p>
+
 <h2 id="how-to-use-non-nullable-references">How to use Non-nullable references<a href="#how-to-use-non-nullable-references" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
-<h2 id="the-era-before-c-8">The era before C# 8<a href="#the-era-before-c-8" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<p>If our project is targeting .NET Core 3.0 or higher, we can start using non-nullable references. However, when we add <code>?</code> annotation to the reference type we get the following warning:</p>
+
+<blockquote>
+<p><code>CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.</code></p>
+</blockquote>
+
+<p>Our code will compile but all the rules related to the non-nullable references will be ignored (our code will be interpreted as it was before C# 8). Because this feature is a breaking change in the language, it should be explicitly enabled. To test it in a single file, add <code>#nullable enable</code> directive. In order to enable it for the whole project, add <code>&lt;Nullable&gt;enable&lt;/Nullable&gt;</code> to your <code>csproj</code> definition.  If you are serious about using non-nullable references, I would recommend enabling it for the whole solution by adding <code>Directory.Build.props</code> file in the root directory of your source code with the following content:</p>
+
+<pre><code class="language-xml">&lt;Project&gt;
+ &lt;PropertyGroup&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+    &lt;RunAnalyzersDuringBuild&gt;true&lt;/RunAnalyzersDuringBuild&gt;
+    &lt;RunAnalyzersDuringLiveAnalysis&gt;true&lt;/RunAnalyzersDuringLiveAnalysis&gt;
+ &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+
+<p>Since now all the references to the reference types are treated as <code>non-nullable</code> unless they are explicitly marked as nullable with <code>?</code> annotation. These new rules are verified by the Roslyn analyzers from <code>Microsoft.CodeAnalysis.CSharp</code> package (which is added implicitly to all C# projects). There are over 40 rules related to the <code>nullability</code> and the complete list is presented below:</p>
 
 <table>
 <thead>
@@ -158,236 +179,290 @@
 
 <tbody>
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS0458">CS0458</a></td>
-<td>The result of the expression is always &lsquo;null&rsquo;</td>
-</tr>
-
-<tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS0464">CS0464</a></td>
-<td>Comparing with null of struct type always produces &lsquo;false&rsquo;</td>
-</tr>
-
-<tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS0472">CS0472</a></td>
+<td><code>CS8073</code></td>
 <td>The result of the expression is always the same since a value of this type is never equal to &lsquo;null&rsquo;</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS1720">CS1720</a></td>
-<td>Expression will always cause a System.NullReferenceException because the type&rsquo;s default value is null</td>
-</tr>
-
-<tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8073">CS8073</a></td>
-<td>The result of the expression is always the same since a value of this type is never equal to &lsquo;null&rsquo;</td>
-</tr>
-
-<tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8597">CS8597</a></td>
+<td><code>CS8597</code></td>
 <td>Thrown value may be null.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8600">CS8600</a></td>
+<td><code>CS8600</code></td>
 <td>Converting null literal or possible null value to non-nullable type.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8601">CS8601</a></td>
+<td><code>CS8601</code></td>
 <td>Possible null reference assignment.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8602">CS8602</a></td>
+<td><code>CS8602</code></td>
 <td>Dereference of a possibly null reference.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8603">CS8603</a></td>
+<td><code>CS8603</code></td>
 <td>Possible null reference return.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8604">CS8604</a></td>
+<td><code>CS8604</code></td>
 <td>Possible null reference argument.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8605">CS8605</a></td>
+<td><code>CS8605</code></td>
 <td>Unboxing a possibly null value.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8606">CS8606</a></td>
+<td><code>CS8606</code></td>
 <td>Possible null reference assignment to iteration variable</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8607">CS8607</a></td>
+<td><code>CS8607</code></td>
 <td>A possible null value may not be passed to a target marked with the [DisallowNull] attribute</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8608">CS8608</a></td>
+<td><code>CS8608</code></td>
 <td>Nullability of reference types in type doesn&rsquo;t match overridden member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8609">CS8609</a></td>
+<td><code>CS8609</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match overridden member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8610">CS8610</a></td>
+<td><code>CS8610</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match overridden member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8611">CS8611</a></td>
+<td><code>CS8611</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match partial method declaration.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8612">CS8612</a></td>
+<td><code>CS8612</code></td>
 <td>Nullability of reference types in type doesn&rsquo;t match implicitly implemented member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8613">CS8613</a></td>
+<td><code>CS8613</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match implicitly implemented member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8614">CS8614</a></td>
+<td><code>CS8614</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match implicitly implemented member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8615">CS8615</a></td>
+<td><code>CS8615</code></td>
 <td>Nullability of reference types in type doesn&rsquo;t match implemented member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8616">CS8616</a></td>
+<td><code>CS8616</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match implemented member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8617">CS8617</a></td>
+<td><code>CS8617</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match implemented member.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8618">CS8618</a></td>
+<td><code>CS8618</code></td>
 <td>Non-nullable field is uninitialized. Consider declaring as nullable.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8619">CS8619</a></td>
+<td><code>CS8619</code></td>
 <td>Nullability of reference types in value doesn&rsquo;t match target type.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8620">CS8620</a></td>
+<td><code>CS8620</code></td>
 <td>Argument cannot be used for parameter due to differences in the nullability of reference types.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8621">CS8621</a></td>
+<td><code>CS8621</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match the target delegate.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8622">CS8622</a></td>
+<td><code>CS8622</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match the target delegate.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8624">CS8624</a></td>
+<td><code>CS8624</code></td>
 <td>Argument cannot be used as an output for parameter due to differences in the nullability of reference types.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8625">CS8625</a></td>
+<td><code>CS8625</code></td>
 <td>Cannot convert null literal to non-nullable reference type.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8626">CS8626</a></td>
+<td><code>CS8626</code></td>
 <td>The &lsquo;as&rsquo; operator may produce a null value for a type parameter.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8629">CS8629</a></td>
+<td><code>CS8629</code></td>
 <td>Nullable value type may be null.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8631">CS8631</a></td>
+<td><code>CS8631</code></td>
 <td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match constraint type.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8632">CS8632</a></td>
+<td><code>CS8632</code></td>
 <td>The annotation for nullable reference types should only be used in code within a &lsquo;#nullable&rsquo; annotations context.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8633">CS8633</a></td>
+<td><code>CS8633</code></td>
 <td>Nullability in constraints for type parameter doesn&rsquo;t match the constraints for type parameter in implicitly implemented interface method&rsquo;.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8634">CS8634</a></td>
+<td><code>CS8634</code></td>
 <td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match &lsquo;class&rsquo; constraint.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8638">CS8638</a></td>
+<td><code>CS8638</code></td>
 <td>Conditional access may produce a null value for a type parameter.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8643">CS8643</a></td>
+<td><code>CS8643</code></td>
 <td>Nullability of reference types in explicit interface specifier doesn&rsquo;t match interface implemented by the type.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8644">CS8644</a></td>
+<td><code>CS8644</code></td>
 <td>Type does not implement interface member. Nullability of reference types in interface implemented by the base type doesn&rsquo;t match.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8645">CS8645</a></td>
+<td><code>CS8645</code></td>
 <td>Interface is already listed in the interface list with different nullability of reference types.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8653">CS8653</a></td>
+<td><code>CS8653</code></td>
 <td>A default expression introduces a null value for a type parameter.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8654">CS8654</a></td>
+<td><code>CS8654</code></td>
 <td>A null literal introduces a null value for a type parameter.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8655">CS8655</a></td>
+<td><code>CS8655</code></td>
 <td>The switch expression does not handle some null inputs.</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8667">CS8667</a></td>
+<td><code>CS8667</code></td>
 <td>Partial method declarations have inconsistent nullability in constraints for type parameter</td>
 </tr>
 
 <tr>
-<td><a href="https://docs.microsoft.com/en-US/dotnet/csharp/misc/CS8714">CS8714</a></td>
+<td><code>CS8714</code></td>
 <td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match &lsquo;notnull&rsquo; constraint.</td>
 </tr>
 </tbody>
 </table>
+
+<p>By default, all these rules are reported as <code>WARNING</code>, which means even if they are violated the code will compile and work. My advice is to go through this list carefully and increase the severity to <code>ERROR</code> level for most of them. In order to change the way these rules are treated, you have to at first add <code>*.ruleset</code> file to your project/solution by clicking on the project&rsquo;s (or solution&rsquo;s) context menu <code>Add -&gt; New Item</code> and creating a file from <code>Code Analysis Rule Set</code> template:</p>
+
+<p><img src="2019-10-05-23-42-23.png" alt="" /></p>
+
+<p>In the next step, you have to reference this ruleset file in your <code>*.csproj</code> or <code>Directory.Build.props</code> file with the following entry:</p>
+
+<pre><code class="language-xml"> &lt;CodeAnalysisRuleSet&gt;MyRules.ruleset&lt;/CodeAnalysisRuleSet&gt;
+</code></pre>
+
+<p>Do not forget to add this file to your source control system in order to enforce all these rules across your teammates and CI.</p>
+
+<p>Now you can start configuring severity level for individual rules.  After double clicking on your ruleset file, Visual Studio should open it in <code>Ruleset editor</code>. As I&rsquo;ve mentioned before, entries related to <code>Nullable reference types</code> should be available under <code>Microsoft.CodeAnalysis.CSharp</code> branch. You can find them all by writing a <code>null</code> keyword in the search field.</p>
+
+<p><img src="configure_ruleset.jpg" alt="Ruleset editor" /></p>
+
+<p>If you are using <code>JetBrains Rider</code> you have to configure ruleset by manually editing xml inside <code>*.ruleset</code> file - there is no graphical editor for this. The file&rsquo;s format looks as follows:</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RuleSet Name=&quot;New Rule Set&quot; Description=&quot; &quot; ToolsVersion=&quot;16.0&quot;&gt;
+  &lt;Rules AnalyzerId=&quot;Microsoft.CodeAnalysis.CSharp&quot; RuleNamespace=&quot;Microsoft.CodeAnalysis.CSharp&quot;&gt;
+    &lt;Rule Id=&quot;CS8618&quot; Action=&quot;Error&quot; /&gt;
+  &lt;/Rules&gt;
+&lt;/RuleSet&gt;
+</code></pre>
+
+<p>After increasing the severity level to <code>ERROR</code>, all the violations of a given rule will be reported in a more noticeable manner and will block the compilation.</p>
+
+<p><img src="cs8604_violation.jpg" alt="cs8604 violation" /></p>
+
+<h2 id="the-era-before-c-8">The era before C# 8<a href="#the-era-before-c-8" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Although the <code>Nullable reference types</code> are a very new language feature, I&rsquo;ve been working with this concept for quite some time. To simulate similar behavior in the previous language versions, I&rsquo;ve been using the following attributes from <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> package:</p>
+
+<ul>
+<li><code>[NotNull]</code></li>
+<li><code>[CanBeNull]</code></li>
+<li><code>[ItemNotNull]</code></li>
+<li><code>[ItemCanBeNull]</code></li>
+</ul>
+
+<p>In order to start using these attributes you need to perform the following steps:</p>
+
+<ol>
+<li>Install aforementioned <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> nuget package</li>
+<li>Increase severity level for rules related to these attributes in Resharper&rsquo;s configuration. Go to <code>Resharper -&gt; Options -&gt; Code Inspection -&gt; Inspection Severity</code> and review rules associated with nullability.</li>
+<li>Enable <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__Solution-Wide_Analysis.html">Solution Wide Analysis</a></li>
+</ol>
+
+<p>Since now you can start annotating your code with <code>[*Null]</code> attributes:</p>
+
+<p><img src="resharper_code_annotations.jpg" alt="Resharper annotations in action" /></p>
+
+<p>These inspections work only in Visual Studio and rule violations don&rsquo;t affect the compilation process. However, you can enforce all the checks in your <code>CI</code> pipelines using Resharper&rsquo;s <a href="https://www.jetbrains.com/help/resharper/InspectCode.html">InspectCode Command-Line Tool</a>. If the <code>design time</code> check is not enough for you, you can bring these validations to runtime by using <a href="https://github.com/Fody/Fody">Fody</a> together with <a href="https://github.com/Fody/NullGuard">NullGuard</a> plugin. I tried it once and everything worked as expected but there were some <a href="https://github.com/Fody/NullGuard/issues/83">issues with code coverage</a>.</p>
+
+<p>All the attributes from <code>JetBrains.Annotations</code> package are conditional, which means they are not compiled into output assemblies unless you defined <code>JETBRAINS_ANNOTATIONS</code> build constant. You can read more about usage of these attributes in my blog post <a href="../../post/hunt-your-bugs-design-time/#notnull-and-canbenull-and-implicitnotnull">Hunt your bugs in design time</a> or in the <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__Value_Analysis.html">official documentation</a></p>
+
+<h2 id="there-is-still-room-for-improvement">There is still room for improvement<a href="#there-is-still-room-for-improvement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I&rsquo;ve played a little with <code>Nullable reference types</code> from C# 8.0 to compare it with <code>JetBrains.Annotations</code> and I&rsquo;ve spotted a few missing bits. Let&rsquo;s take the following code with C# 8.0 annotations</p>
+
+<p><img src="missing_rules_roslyn.jpg" alt="" /></p>
+
+<p>My expectations:</p>
+
+<ul>
+<li>Line 7: Reported as ERROR - OK</li>
+<li>Line 12: This condition is always evaluated to <code>false</code> so should be somehow reported</li>
+<li>Line 17: This code is OK but the previous condition mislead the analyses and now is reported as ERROR.</li>
+</ul>
+
+<p>The same code with <code>JetBrains.Annotations</code> is reported according to expectations:</p>
+
+<p><img src="missing_rules_resharper.jpg" alt="" /></p>
     
 		
 		<hr/>  
