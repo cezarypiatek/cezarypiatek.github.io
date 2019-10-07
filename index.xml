@@ -272,8 +272,8 @@ Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania pr
       
       <guid>https://cezarypiatek.github.io/projects/</guid>
       <description>Mapping Generator &amp;ldquo;AutoMapper&amp;rdquo; like, Roslyn based, code fix provider that allows to generate mapping code in design time.
- Article: Generate mapping code with Roslyn code fix provider. Repository:: cezarypiatek/MappingGenerator Nuget:: MappingGenerator Visual Studio Extension:: MappingGenerator   CsharpMacros A simple template base system of macros for C# that can be executed in design time.
- Article: CSharp Macros - let the Roslyn type for you Repository:: cezarypiatek/CsharpMacros Nuget:: CsharpMacros Visual Studio Extension:: CsharpMacros   Tellurium A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.</description>
+ Article: Generate mapping code with Roslyn code fix provider. Repository: cezarypiatek/MappingGenerator Nuget: MappingGenerator Visual Studio Extension: MappingGenerator   CsharpMacros A simple template base system of macros for C# that can be executed in design time.
+ Article: CSharp Macros - let the Roslyn type for you Repository: cezarypiatek/CsharpMacros Nuget: CsharpMacros Visual Studio Extension: CsharpMacros   Tellurium A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.</description>
     </item>
     
     <item>
