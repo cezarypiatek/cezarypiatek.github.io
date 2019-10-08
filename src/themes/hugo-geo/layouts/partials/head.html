@@ -4,7 +4,30 @@
 	<meta name="theme-color" content="#ffffff">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta name="description" content="{{ .Description }}">   
+    <meta name="description" content="{{ .Description }}">   {{ if .Params.isBlogpost  }}
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"{{ .Permalink }}"
+            },
+          "headline" : "{{ .Title }}",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "{{ .Date.Format "2006-01-02" }}",
+          "dateModified" : "{{ .Page.Lastmod.Format "2006-01-02" }}",
+          "image" : "{{ .Permalink | htmlUnescape }}{{ .Params.image }}",
+          "description": "{{ .Description }}"
+        }
+        </script>{{ end }}
     {{ if .IsPage }}    
     <meta property="article:published_time" content="{{ .Date.Format "2006-01-02" }}">
 	<meta property="og:type" content="article">

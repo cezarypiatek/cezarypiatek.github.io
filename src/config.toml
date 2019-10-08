@@ -6,6 +6,7 @@ theme = "hugo-geo"
 disqusShortname= "cezarypiatek-github-io"
 publishDir = "../"
 paginate = 5
+enableGitInfo = true
 [params]
 	profilepic = "images/7759991.jpg"
 	title = "CEZARY PIĄTEK"
