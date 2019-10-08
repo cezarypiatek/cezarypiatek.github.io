@@ -150,3 +150,15 @@ My expectations:
 The same code with `JetBrains.Annotations` is reported according to expectations:
 
 ![](missing_rules_resharper.jpg)
+
+
+__UPDATE 2019-10-08:__ If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without `Null reference types`. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using [Synergy.Contracts](https://www.nuget.org/packages/Synergy.Contracts/) package:
+
+```csharp
+public void DoSomething(UserEntity user)
+{
+    Fail.IfNull(user, nameof(user))
+
+}
+
+```
