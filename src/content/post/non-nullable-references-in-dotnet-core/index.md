@@ -152,7 +152,7 @@ The same code with `JetBrains.Annotations` is reported according to expectations
 ![](missing_rules_resharper.jpg)
 
 
-__UPDATE 2019-10-08:__ If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without `Null reference types`. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using [Synergy.Contracts](https://www.nuget.org/packages/Synergy.Contracts/) package:
+__UPDATE 2019-10-08 (I):__ If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without `Null reference types`. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using [Synergy.Contracts](https://www.nuget.org/packages/Synergy.Contracts/) package:
 
 ```csharp
 public void DoSomething(UserEntity user)
@@ -160,5 +160,15 @@ public void DoSomething(UserEntity user)
     Fail.IfNull(user, nameof(user))
 
 }
-
 ```
+
+__UPDATE 2019-10-08 (II):__ The return value of `ToString()` method was marked as nullable. This is quite surprising because according to [Notes to Inheritors](https://docs.microsoft.com/en-US/dotnet/api/system.object.tostring?view=netframework-4.8#notes-to-inheritors) at MSDN nobody should return null from this method:
+
+> "Your ToString() override should not return Empty or a null string."
+
+Here's a  [PR #23510](https://github.com/dotnet/coreclr/pull/23510) that add this annotation to `ToString()` method in coreclr repository. Right now there is a discrepancy between .NET Core and Resharper annotation for this method which can cause an even more confusion:
+
+![discrepancy  in toString annotations](to_string.jpg)
+
+
+

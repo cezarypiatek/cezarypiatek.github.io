@@ -464,15 +464,24 @@
 
 <p><img src="missing_rules_resharper.jpg" alt="" /></p>
 
-<p><strong>UPDATE 2019-10-08:</strong> If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without <code>Null reference types</code>. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using <a href="https://www.nuget.org/packages/Synergy.Contracts/">Synergy.Contracts</a> package:</p>
+<p><strong>UPDATE 2019-10-08 (I):</strong> If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without <code>Null reference types</code>. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using <a href="https://www.nuget.org/packages/Synergy.Contracts/">Synergy.Contracts</a> package:</p>
 
 <pre><code class="language-csharp">public void DoSomething(UserEntity user)
 {
     Fail.IfNull(user, nameof(user))
 
 }
-
 </code></pre>
+
+<p><strong>UPDATE 2019-10-08 (II):</strong> The return value of <code>ToString()</code> method was marked as nullable. This is quite surprising because according to <a href="https://docs.microsoft.com/en-US/dotnet/api/system.object.tostring?view=netframework-4.8#notes-to-inheritors">Notes to Inheritors</a> at MSDN nobody should return null from this method:</p>
+
+<blockquote>
+<p>&ldquo;Your ToString() override should not return Empty or a null string.&rdquo;</p>
+</blockquote>
+
+<p>Here&rsquo;s a  <a href="https://github.com/dotnet/coreclr/pull/23510">PR #23510</a> that add this annotation to <code>ToString()</code> method in coreclr repository. Right now there is a discrepancy between .NET Core and Resharper annotation for this method which can cause an even more confusion:</p>
+
+<p><img src="to_string.jpg" alt="discrepancy  in toString annotations" /></p>
     
 		
 		<hr/>  
