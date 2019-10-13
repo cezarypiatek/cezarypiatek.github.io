@@ -419,7 +419,7 @@
 
 <p>In the next step, you have to reference this ruleset file in your <code>*.csproj</code> or <code>Directory.Build.props</code> file with the following entry:</p>
 
-<pre><code class="language-xml"> &lt;CodeAnalysisRuleSet&gt;MyRules.ruleset&lt;/CodeAnalysisRuleSet&gt;
+<pre><code class="language-xml"> &lt;CodeAnalysisRuleSet&gt;$(MSBuildThisFileDirectory)MyRules.ruleset&lt;/CodeAnalysisRuleSet&gt;
 </code></pre>
 
 <p>Do not forget to add this file to your source control system in order to enforce all these rules across your teammates and CI.</p>

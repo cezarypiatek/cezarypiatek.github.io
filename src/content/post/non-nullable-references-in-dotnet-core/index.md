@@ -85,7 +85,7 @@ By default, all these rules are reported as `WARNING`, which means even if they 
 In the next step, you have to reference this ruleset file in your `*.csproj` or `Directory.Build.props` file with the following entry:
 
 ```xml
- <CodeAnalysisRuleSet>MyRules.ruleset</CodeAnalysisRuleSet>
+ <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)MyRules.ruleset</CodeAnalysisRuleSet>
 ```
 
 Do not forget to add this file to your source control system in order to enforce all these rules across your teammates and CI.
