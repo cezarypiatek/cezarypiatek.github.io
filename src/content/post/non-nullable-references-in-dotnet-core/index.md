@@ -171,4 +171,4 @@ Here's a  [PR #23510](https://github.com/dotnet/coreclr/pull/23510) that add thi
 ![discrepancy  in toString annotations](to_string.jpg)
 
 
-
+__UPDATE 2019-10-17:__  I found an interesting article about the possibilities of usage of non-nullable references in projects targeting `netstandard2.0`: [C# 8.0 and .NET Standard 2.0 - Doing Unsupported Things](https://stu.dev/csharp8-doing-unsupported-things/)
