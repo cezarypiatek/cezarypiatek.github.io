@@ -49,7 +49,7 @@ enableGitInfo = true
 	url = "projects/"
 
 	[[params.navlinks]]
-	name = "Speaking"
+	name = "Public speaking"
 	url = "public-speaking/"
 
 	[[params.navlinks]]
