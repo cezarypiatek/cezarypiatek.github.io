@@ -171,7 +171,7 @@
 
 <h2 id="abandoned-locks">Abandoned locks<a href="#abandoned-locks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
-<p>The <code>lock()</code> statement allows acquiring a lock on the given object with a guarantee of releasing it at the end of the scope. However, sometimes you have to manually manage the scope of locking by directly calling methods responsible for acquiring and releasing, and the burden of ensuring that the release is always executed is on you. The most common trap is the assumption that there is no code between lock acquire and release that could throw an exception. Even if it looks like this at first, it can be misleading. There is a class of exceptions called <code>out-of-band-exceptions</code> which can be thrown from random places. One of those situations we can meet in multithreading applications is when the current thread is aborted by the external code and the <code>ThreadAbortException</code> can be thrown from a place where we don&rsquo;t expect it. You can read more about <code>Out-of-band-exceptions</code> in <a href="https://www.amazon.com/gp/product/B07RQ4ZCJR/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=B07RQ4ZCJR&amp;linkCode=as2&amp;tag=asdqweasd-20&amp;linkId=8f918c80678565ef8e1dbb78ae167ac3">.NET Internals Cookbook</a>.
+<p>The <code>lock()</code> statement allows acquiring a lock on the given object with a guarantee of releasing it at the end of the scope. However, sometimes you have to manually manage the scope of locking by directly calling methods responsible for acquiring and releasing, and the burden of ensuring that the release is always executed is on you. The most common trap is the assumption that there is no code between lock acquire and release that could throw an exception. Even if it looks like this at first, it can be misleading. There is a class of exceptions called <code>out-of-band-exceptions</code> which can be thrown from random places. One of those situations we can meet in multithreading applications is when the current thread is aborted by the external code and the <code>ThreadAbortException</code> can be thrown from a place where we don&rsquo;t expect it. You can read more about <code>Out-of-band-exceptions</code> in <a href="https://www.amazon.com/gp/product/B07RQ4ZCJR">.NET Internals Cookbook</a>.
 If you don&rsquo;t have a 100% confidence that the code responsible for the release will be always invoked, you can end up with the <code>abandoned lock</code> which simply causes a deadlock. To avoid that, you should always apply a pattern like that:</p>
 
 <pre><code class="language-csharp">try{
@@ -223,7 +223,7 @@ finally{
 
 <ul>
 <li>[FREE EBOOK] <a href="https://www.microsoft.com/en-us/download/details.aspx?id=19222">Patterns for Parallel Programming: Understanding and Applying Parallel Patterns with the .NET Framework 4</a> by Stephen Toub</li>
-<li><a href="https://www.amazon.com/gp/product/1430229675/ref=as_li_tl?ie=UTF8&amp;tag=asdqweasd-20&amp;camp=1789&amp;creative=9325&amp;linkCode=as2&amp;creativeASIN=1430229675&amp;linkId=641bf019467347fd65bc13e232eff4d8">Pro .NET 4 Parallel Programming in C# </a> by Adam Freeman</li>
+<li><a href="https://www.amazon.com/gp/product/1430229675">Pro .NET 4 Parallel Programming in C# </a> by Adam Freeman</li>
 <li><a href="http://www.albahari.com/threading/">Threading in C#</a> by Joseph Albahari</li>
 </ul>
 

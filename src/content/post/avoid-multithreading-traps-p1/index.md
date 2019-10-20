@@ -22,7 +22,7 @@ Multithreading is one of the most difficult aspects of programming and can cause
 
 ## DO NOT lock on objects with weak identity
 
-Another common mistake related to choosing synchronization object is locking on `typeof()` expression. This should be avoided because instances of the `Type` are implicitly shared across the application. After reading [Writing High-Performance .NET Code](https://www.amazon.com/gp/product/0990583457/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0990583457&linkCode=as2&tag=asdqweasd-20&linkId=6332aefaaa81e236135f1822be00ecdd) I learned that not only `Type` but also `strings` and instances of types that inherit from `MarshalByRefObject` should be avoided for locking. I dug a little deeper and I discovered that those types belong to a group called `types with a weak identity` and the complete list of them is much longer:
+Another common mistake related to choosing synchronization object is locking on `typeof()` expression. This should be avoided because instances of the `Type` are implicitly shared across the application. After reading [Writing High-Performance .NET Code](https://www.amazon.com/gp/product/0990583457) I learned that not only `Type` but also `strings` and instances of types that inherit from `MarshalByRefObject` should be avoided for locking. I dug a little deeper and I discovered that those types belong to a group called `types with a weak identity` and the complete list of them is much longer:
 
 - `System.String`
 -  Arrays of value types
@@ -65,7 +65,7 @@ public void DoSomething()
 All my propositions of Roslyn analyzers are available on Github [MultithreadingAnalyzer](https://github.com/smartanalyzers/MultithreadingAnalyzer) and can be added to your projects with NuGet package [SmartAnalyzers.MultithreadingAnalyzer](https://www.nuget.org/packages/SmartAnalyzers.MultithreadingAnalyzer/). I would appreciate if you could try it out and let me know if it was able to spot real problems in your codebase or all those reported diagnostics were wrong. A lot of stuff presented here I leaned from the following resources:
 
 - [FREE EBOOK] [Patterns for Parallel Programming: Understanding and Applying Parallel Patterns with the .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=19222) by Stephen Toub
-- [Pro .NET 4 Parallel Programming in C# ](https://www.amazon.com/gp/product/1430229675/ref=as_li_tl?ie=UTF8&tag=asdqweasd-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=1430229675&linkId=641bf019467347fd65bc13e232eff4d8) by Adam Freeman 
+- [Pro .NET 4 Parallel Programming in C# ](https://www.amazon.com/gp/product/1430229675) by Adam Freeman 
 - [Threading in C#](http://www.albahari.com/threading/) by Joseph Albahari 
 
 For those who want to gain knowledge of parallel programming in C#, I highly recommend reading them.

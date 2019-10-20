@@ -184,7 +184,7 @@
 
 <h2 id="do-not-lock-on-objects-with-weak-identity">DO NOT lock on objects with weak identity<a href="#do-not-lock-on-objects-with-weak-identity" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
-<p>Another common mistake related to choosing synchronization object is locking on <code>typeof()</code> expression. This should be avoided because instances of the <code>Type</code> are implicitly shared across the application. After reading <a href="https://www.amazon.com/gp/product/0990583457/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0990583457&amp;linkCode=as2&amp;tag=asdqweasd-20&amp;linkId=6332aefaaa81e236135f1822be00ecdd">Writing High-Performance .NET Code</a> I learned that not only <code>Type</code> but also <code>strings</code> and instances of types that inherit from <code>MarshalByRefObject</code> should be avoided for locking. I dug a little deeper and I discovered that those types belong to a group called <code>types with a weak identity</code> and the complete list of them is much longer:</p>
+<p>Another common mistake related to choosing synchronization object is locking on <code>typeof()</code> expression. This should be avoided because instances of the <code>Type</code> are implicitly shared across the application. After reading <a href="https://www.amazon.com/gp/product/0990583457">Writing High-Performance .NET Code</a> I learned that not only <code>Type</code> but also <code>strings</code> and instances of types that inherit from <code>MarshalByRefObject</code> should be avoided for locking. I dug a little deeper and I discovered that those types belong to a group called <code>types with a weak identity</code> and the complete list of them is much longer:</p>
 
 <ul>
 <li><code>System.String</code></li>
@@ -229,7 +229,7 @@ public void DoSomething()
 
 <ul>
 <li>[FREE EBOOK] <a href="https://www.microsoft.com/en-us/download/details.aspx?id=19222">Patterns for Parallel Programming: Understanding and Applying Parallel Patterns with the .NET Framework 4</a> by Stephen Toub</li>
-<li><a href="https://www.amazon.com/gp/product/1430229675/ref=as_li_tl?ie=UTF8&amp;tag=asdqweasd-20&amp;camp=1789&amp;creative=9325&amp;linkCode=as2&amp;creativeASIN=1430229675&amp;linkId=641bf019467347fd65bc13e232eff4d8">Pro .NET 4 Parallel Programming in C# </a> by Adam Freeman</li>
+<li><a href="https://www.amazon.com/gp/product/1430229675">Pro .NET 4 Parallel Programming in C# </a> by Adam Freeman</li>
 <li><a href="http://www.albahari.com/threading/">Threading in C#</a> by Joseph Albahari</li>
 </ul>
 
