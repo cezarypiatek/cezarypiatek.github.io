@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Walkthrough of the different settings in project file responsible for content in the output dir.">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/managing-output-in-sdk-projects\/"
+            },
+          "headline" : "Managing output in the .NET SDK projects",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2019-11-03",
+          "dateModified" : "2019-11-03",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/managing-output-in-sdk-projects\/splashscreen.jpg",
+          "description": "Walkthrough of the different settings in project file responsible for content in the output dir."
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2019-11-03">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/">	
+	<meta property="og:title" content="Managing output in the .NET SDK projects">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/splashscreen.jpg">
+    <meta property="og:description" content="Walkthrough of the different settings in project file responsible for content in the output dir.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="nuget">
+    
+    <meta property="og:tags" content="dotnetcore">
+    
+    <meta property="og:tags" content="C#">
+    
+    <meta property="og:tags" content="msbuild">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/splashscreen.jpg">
+	<meta property="twitter:title" content="Managing output in the .NET SDK projects">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Walkthrough of the different settings in project file responsible for content in the output dir.">
+
+	<meta name="keywords" value="nuget, dotnetcore, C#, msbuild" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>Managing output in the .NET SDK projects &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Managing output in the .NET SDK projects</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>3 November 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>With the new SDK format for .NET projects, it&rsquo;s much easier to manage with the project&rsquo;s dependencies.
+In most scenarios references added with standard mechanism (Visual Studio or <code>dotnet cli</code>) result in sufficient content in the output directory. However, sometimes we want to do something non-standard that requires a slightly different set of components in the output dir - simply speaking we expect to see there either more or fewer files. The content of the output directory can be controlled with different properties inside the project file. Documentation for new <code>csproj</code> format, as well as for <code>Nuget</code> related properties, is scattered across different MSDN documents, so I decided to create this blog post as a reference to what I&rsquo;ve recently learned and discovered about the project&rsquo;s options that affect the content of the output directory.</p>
+
+<h2 id="an-example-solution">An example solution<a href="#an-example-solution" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Let&rsquo;s take a sample solution with the following projects and references structure:</p>
+
+<p><img src="sample_project_structure.jpg" alt="sample solution" /></p>
+
+<h2 id="the-default-setup">The default setup<a href="#the-default-setup" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>By default, references to other projects are added with the following entry in the <code>csproj</code> file:</p>
+
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;ProjectReference Include=&quot;..\ProjectB\ProjectB.csproj&quot; /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+
+<p>After we compile our solution, the <code>*.dll</code> and <code>*.pdb</code> files of the referenced projects are copied to the output directory - by default <code>bin\$(Configuration)\$(TargetFramework)</code>. The output location can be changed by defining <code>OutputPath</code> parameter or, if you only need to skip the <code>$(TargetFramework)</code> part, just set <code>AppendTargetFrameworkToOutputPath=false</code>.  We can see the output for the default settings on the following screenshot:</p>
+
+<p><img src="default_output_content.jpg" alt="default output" /></p>
+
+<p>As you probably notice, the library files from referenced NuGet packages are not copied to the output dir. If our project was a program (not a library) with the following configuration:</p>
+
+<pre><code class="language-xml">  &lt;PropertyGroup&gt;
+    &lt;OutputType&gt;Exe&lt;/OutputType&gt;
+    &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;
+  &lt;/PropertyGroup&gt;
+</code></pre>
+
+<p>the output should contain libraries from the all NuGet packages (referenced directly and non-directly) as well:</p>
+
+<p><img src="app_output.jpg" alt="output of the application project" /></p>
+
+<h2 id="enriching-the-output-dir">Enriching the output dir<a href="#enriching-the-output-dir" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Sometimes you might notice that, despite what I told you in the previous paragraph, some libraries form NuGet package are copied to the output directory. This can be caused by custom build scripts that are shipped together with given NuGet package - you can find them in <code>build</code> directory inside the NuGet package (they must obey naming convention <code>PackageId.props</code> or <code>PackageId.target</code>). An example could be <a href="https://www.nuget.org/packages/NUnit3TestAdapter/">NUnit3TestAdapter</a> package:</p>
+
+<p><img src="nunit3TestAdapterContent.jpg" alt="Content of NUnit3TestAdapter package" /></p>
+
+<p>You can also verify what you are getting extra from all your NuGet dependencies in a single place using <a href="https://github.com/KirillOsenkov/MSBuildStructuredLog">MSBuildStructuredLog Viewer</a></p>
+
+<p><img src="extra_targets.jpg" alt="extra targets" /></p>
+
+<p>This tool is very helpful for investigating issues when you are experiencing unexpected behaviors during the build process. You can, of course, control what IS and what IS NOT consumed from the NuGet package with <code>IncludeAssets</code> and <code>ExcludeAssets</code> properties - please check <a href="https://docs.microsoft.com/en-US/nuget/consume-packages/package-references-in-project-files#controlling-dependency-assets">Controlling dependency assets</a> for more details. To prevent loading build scripts (<code>props</code> and <code>targets</code>) from the dependent packages just set <code>ExcludeAssets=build</code> on the <code>PackageReference</code>.</p>
+
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;PackageReference Include=&quot;Microsoft.Build.Locator&quot; Version=&quot;1.2.6&quot;&gt;
+    &lt;ExcludeAssets&gt;build&lt;/ExcludeAssets&gt;
+  &lt;/PackageReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+
+<p>If we want to enforce copying NuGet dependencies to the output directory for the library projects, we can do that by setting <code>CopyLocalLockFileAssemblies=true</code>:</p>
+
+<pre><code class="language-xml">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt;
+    &lt;CopyLocalLockFileAssemblies&gt;true&lt;/CopyLocalLockFileAssemblies&gt;    
+  &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+
+<p>After rebuild, the output directory should look as follows:</p>
+
+<p><img src="lib_with_enforced_dependencies.jpg" alt="library with dependencies in output dir" /></p>
+
+<p>To our surprise, <code>msbuild</code> copied also a couple of <code>System.*.dll</code> files into the output. These libraries come (directly and indirectly) from <code>NETStandard.Library</code> and <code>Microsoft.NETCore.App</code> (depends on the selected <code>TargetFramework</code>) packages which are referenced implicitly.</p>
+
+<p>If you want to copy all framework and runtime dependencies as well, you have to set <code>SelfContained</code> and <code>RuntimeIdentifier</code> properties:</p>
+
+<pre><code class="language-xml">&lt;PropertyGroup&gt;    
+    &lt;OutputType&gt;Exe&lt;/OutputType&gt;
+    &lt;SelfContained&gt;true&lt;/SelfContained&gt;
+    &lt;RuntimeIdentifier&gt;win-x64&lt;/RuntimeIdentifier&gt;
+    &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;    
+  &lt;/PropertyGroup&gt;
+</code></pre>
+
+<p>You can read more about <code>Self-contained deployments (SCD)</code> in the <a href="https://docs.microsoft.com/en-us/dotnet/core/deploying/index">.NET Core application deployment</a> article.</p>
+
+<h2 id="putting-the-output-dir-on-the-diet">Putting the output dir on the diet<a href="#putting-the-output-dir-on-the-diet" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>As you saw in the paragraph about the default setup, the <code>*.dll</code> files of the referenced projects are copied to the output dir. This default behavior can be changed by setting <code>Private=False</code> property on the <code>ProjectReference</code>.</p>
+
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;ProjectReference Include=&quot;..\ProjectB\ProjectB.csproj&quot; &gt;
+      &lt;Private&gt;False&lt;/Private&gt;
+  &lt;/ProjectReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+
+<p><code>Private</code> metadata is responsible for controlling well known <code>Copy Local</code> property for the dependent project assembly file. Here&rsquo;s an excerpt of comment from <a href="https://referencesource.microsoft.com/#MSBuildFiles/C/ProgramFiles(x86)/MSBuild/14.0/bin_/amd64/Microsoft.Common.CurrentVersion.targets,1742">Microsoft.Common.CurrentVersion.targets</a> definition:</p>
+
+<pre><code>The 'Private' attribute on the reference corresponds to the Copy Local flag in IDE.
+The 'Private' flag can have three possible values:
+    - 'True' means the reference should be Copied Local
+    - 'False' means the reference should not be Copied Local
+    - [Missing] means this task will decide whether to treat this reference as CopyLocal or not.
+</code></pre>
+
+<p>This option can be used to optimize build performance. Switching it to <code>False</code> should reduce the amount of <code>IO</code> during the build. If we would like to apply this behavior to all library projects in the solution, it can be achieved by adding the following code into <code>Directory.Build.targets</code>:</p>
+
+<pre><code class="language-xml">&lt;Target Name=&quot;SetAllProjectReferenceAsPublic&quot;
+        AfterTargets=&quot;AssignProjectConfiguration&quot; 
+        BeforeTargets=&quot;ResolveProjectReferences&quot; 
+        Condition=&quot;'$(OutputType)' == 'Library' and '$(CopyLocalLockFileAssemblies)' != 'true' and $(AssemblyName.EndsWith('Tests')) == 'false' &quot;&gt;
+  &lt;ItemGroup&gt;
+    &lt;ProjectReferenceWithConfiguration Update=&quot;@(ProjectReferenceWithConfiguration)&quot; &gt;
+      &lt;Private&gt;false&lt;/Private&gt;
+    &lt;/ProjectReferenceWithConfiguration&gt;
+    &lt;ProjectReference Update=&quot;@(ProjectReference)&quot; &gt;
+      &lt;Private&gt;false&lt;/Private&gt;
+    &lt;/ProjectReference&gt;
+  &lt;/ItemGroup&gt;
+&lt;/Target&gt;
+</code></pre>
+
+<p>This custom target has to be run after <code>AssignProjectConfiguration</code> because before that the <code>ProjectReference</code> item group contains only direct project references - updating <code>ProjectReference</code> earlier will result with some dependencies still being copied to the output. Besides the <code>ProjectReference</code> group, it also updates <code>ProjectReferenceWithConfiguration</code>, because this one is used later by <code>GetCopyToOutputDirectoryItems</code> to determine which files should be copied to the output directory (actually this collection goes through the following conversions <code>ProjectReferenceWithConfiguration -&gt; _MSBuildProjectReference -&gt; _MSBuildProjectReferenceExistent</code> in the meantime). For our purpose, updating <code>ProjectReferenceWithConfiguration</code> should be enough but I wanted to preserve the consistency. It took me two evenings to come up with this working solution ;) If you are going to use it, please pay attention to the <code>Condition</code> attribute - maybe this should be adjusted to your needs.</p>
+
+<p>Although the library B is not copied to the output, it&rsquo;s still a dependency for library A. If it is, for example, a design-time dependency and we what to get rid of it from runtime dependencies, we can achieve it by setting <code>ReferenceOutputAssembly</code> property to <code>false</code>:</p>
+
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;ProjectReference Include=&quot;..\ProjectB\ProjectA.csproj&quot; &gt;
+      &lt;ReferenceOutputAssembly&gt;false&lt;/ReferenceOutputAssembly&gt;
+  &lt;/ProjectReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>As you saw, there are multiple mechanisms that allow controlling what is in the output directory. It&rsquo;s good to be aware of their existence to avoid surprises and losing hours for fighting with something that appears in our output dir in spite of our expectations.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/non-nullable-references-in-dotnet-core/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/non-nullable-references-in-dotnet-core/splashscreen_hu4726010f8bf92c1a7527d07383ef14cb_39250_320x240_fill_q75_box_smart1.jpg" alt="Non-nullable references with C# 8 and .NET Core 3.0">
+								<div class="card-body">
+									<h5 class="card-title">Non-nullable references with C# 8 and .NET Core 3.0</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/avoid-multithreading-traps-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/avoid-multithreading-traps-p2/splashscreen_hu831a556e644f698f06f7bab476f01bf6_170863_320x240_fill_q75_box_smart1.jpg" alt="Avoid thread synchronization problems with Roslyn: Synchronization primitives traps">
+								<div class="card-body">
+									<h5 class="card-title">Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-macros/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<div class="card-body">
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

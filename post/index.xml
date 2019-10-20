@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Oct 2019 00:16:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 03 Nov 2019 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Managing output in the .NET SDK projects</title>
+      <link>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</link>
+      <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</guid>
+      <description>With the new SDK format for .NET projects, it&amp;rsquo;s much easier to manage with the project&amp;rsquo;s dependencies. In most scenarios references added with standard mechanism (Visual Studio or dotnet cli) result in sufficient content in the output directory. However, sometimes we want to do something non-standard that requires a slightly different set of components in the output dir - simply speaking we expect to see there either more or fewer files.</description>
+    </item>
     
     <item>
       <title>Non-nullable references with C# 8 and .NET Core 3.0</title>
