@@ -84,3 +84,23 @@ ins.play-gif{
 .hljs{
     margin:-12px;
 }
+
+#menu{
+    border-top: 0px!important;
+    background-image: webkit-linear-gradient(to bottom, #368ec1, #00141f)!important;    
+    background-image: linear-gradient(to bottom, #368ec1, #00141f)!important;    
+}
+
+#menu h1 a{
+    color: white!important;
+}
+#content{
+    border-top: 0px!important;    
+}
+#links a{
+    color: white;
+}
+
+#profile-pic {
+    margin-bottom: 100px;
+}
