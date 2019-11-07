@@ -65,6 +65,8 @@ This tool is very helpful for investigating issues when you are experiencing une
 </ItemGroup>
 ```
 
+__UPDATE 2019-11-07:__ You can globally block loading *.props and *.targets files from nuget packages by setting `ImportProjectExtensionProps=false`. You can read more about that [here](https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#msbuildprojectextensionspath)
+
 If we want to enforce copying NuGet dependencies to the output directory for the library projects, we can do that by setting `CopyLocalLockFileAssemblies=true`:
 
 ```xml
