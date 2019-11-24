@@ -172,3 +172,5 @@ Here's a  [PR #23510](https://github.com/dotnet/coreclr/pull/23510) that add thi
 
 
 __UPDATE 2019-10-17:__  I found an interesting article about the possibilities of usage of non-nullable references in projects targeting `netstandard2.0`: [C# 8.0 and .NET Standard 2.0 - Doing Unsupported Things](https://stu.dev/csharp8-doing-unsupported-things/)
+
+__UPDATE 2019-11-24:__ Just discovered, that together with dotnet core 3.0 a couple of other things supporting nullability have been introduced, such as [! (null-forgiving) operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-forgiving) and extra [System.Diagnostics.CodeAnalysis attributes](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis?view=netcore-3.0).
