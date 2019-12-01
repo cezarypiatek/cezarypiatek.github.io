@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Generate mapping code on build with Roslyn">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/generate-mappings-on-build\/"
+            },
+          "headline" : "How to simulate AutoMapper that works during the build time",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2019-12-01",
+          "dateModified" : "2019-11-27",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/generate-mappings-on-build\/splashscreen.jpg",
+          "description": "Generate mapping code on build with Roslyn"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2019-12-01">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/generate-mappings-on-build/">	
+	<meta property="og:title" content="How to simulate AutoMapper that works during the build time">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/generate-mappings-on-build/splashscreen.jpg">
+    <meta property="og:description" content="Generate mapping code on build with Roslyn">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="C#">
+    
+    <meta property="og:tags" content="roslyn">
+    
+    <meta property="og:tags" content="AutoMapper">
+    
+    <meta property="og:tags" content="code generation">
+    
+    <meta property="og:tags" content="mapping">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/generate-mappings-on-build/splashscreen.jpg">
+	<meta property="twitter:title" content="How to simulate AutoMapper that works during the build time">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Generate mapping code on build with Roslyn">
+
+	<meta name="keywords" value="dotnet, C#, roslyn, AutoMapper, code generation, mapping" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>How to simulate AutoMapper that works during the build time &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>How to simulate AutoMapper that works during the build time</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>1 December 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>Almost two years ago I created the very first version of <a href="https://github.com/cezarypiatek/MappingGenerator">MappingGenerator</a>. Since then, I&rsquo;ve put a lot of work in this project, adding new functions and improving the mapping generation algorithm with <strong>14 releases</strong> (<strong>43 issues/feature requests</strong> closed) in the meantime. With over <strong>5.5k downloads</strong> from the marketplace and <strong>380 stars</strong> on Github, it looks like there is quite a market demand for this kind of tool (even though my <a href="https://www.buymeacoffee.com/tmAJLYvWy">coffee button</a> statistics indicate something different). In the meantime, I got a couple of feature requests to implement some kind of mechanism that allows tracking changes of mapped classes and synchronize the mapping code in response to these changes. I was resisting for some time because it seemed to be a quite complicated problem but after a while, I decided to give it a try and make something that will somehow satisfy all those requirements. In this blog post I&rsquo;m going to describe how to create a tool for generating code during the build process and how I used it to create auto-synchronizing mapping classes.</p>
+
+<h2 id="how-to-generate-code-on-build">How to generate code on build<a href="#how-to-generate-code-on-build" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Implementing a mechanism that tracks code changes and applies amendments to mapping code (especially when the modifications are allowed) seems to be very challenging, so the easiest option was to generate the whole mapping code during the build. This solves the problem of change tracking but confines the ability to apply custom code modifications. Anyway, the problem of generating code during the build stage seems to be very compelling, so besides the tradeoffs, I started working on it.</p>
+
+<p>There is a concept of <a href="https://github.com/dotnet/roslyn/blob/master/docs/features/generators.md">Source Generators</a> described in <code>Roslyn</code> documentation. Unfortunately, the implementation of this compiler feature has not been finish so far. There are a couple of open-source projects such as
+<a href="https://github.com/unoplatform/Uno.SourceGeneration">Uno.SourceGeneration</a> and <a href="https://github.com/AArnott/CodeGeneration.Roslyn">CodeGeneration.Roslyn</a> which are trying to simulate such functionality. They basically work in similar way by triggering external program from the MsBuild target, which is invoked before the actual compilation, and including files generated by this external program into <code>Compile</code> item group. I tried to use <code>CodeGeneration.Roslyn</code> in the first approach but I came across a problem with loading plugins that contain external dependencies. I even tried to propose a solution with PR but the response time from the maintainer was too long. After reviewing the whole project, I&rsquo;ve decided to completely rewrite it making the following changes:</p>
+
+<ul>
+<li>Use <code>Microsoft.CodeAnalysis.MSBuild</code> to load the C# project instead of building compilation unit manually</li>
+<li>Use .NET Core 3.0 features for loading generator plugins (<a href="https://docs.microsoft.com/en-us/dotnet/core/tutorials/creating-app-with-plugin-support">link</a>)</li>
+<li>Remove caching mechanism which in my opinion was built based on the wrong assumptions (<code>CodeGeneration.Roslyn</code> is only using files that trigger generator as cache dependency, rather than tracking source of all symbols used in generated code)</li>
+<li>Simplify the plugins API</li>
+<li>Add parallelism for documents processing</li>
+<li>Create SDK that simplify the process of plugins development</li>
+</ul>
+
+<p>The source code of the new solution is available on Github as <a href="https://github.com/cezarypiatek/SmartCodeGenerator">SmartCodeGenerator</a> project. Developing plugins for <code>SmartCodeGenerator</code> is quite straightforward - you can find a short and concise instruction how to create and consume custom plugins in the project&rsquo;s readme.</p>
+
+<h2 id="generate-mapping-code-on-build">Generate mapping code on build<a href="#generate-mapping-code-on-build" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>I used my <code>SmartCodeGenerator</code> engine to build a plugin that generates mapping code during the build - I called it <code>MappingGenerator.OnBuildGenerator</code>. Here&rsquo;s a quick instruction how to use it:</p>
+
+<ol>
+<li>Install <code>SmartCodeGenerator.Engine</code> nuget package</li>
+<li>Install <code>MappingGenerator.OnBuildGenerator</code> nuget package</li>
+<li>Add the following snippet into your codebase:</li>
+</ol>
+
+<pre><code class="language-csharp">using System;
+using System.Diagnostics;
+
+namespace MappingGenerator.OnBuildGenerator
+{
+    [AttributeUsage(AttributeTargets.Interface)]
+    [Conditional(&quot;CodeGeneration&quot;)]
+    public class MappingInterface : Attribute
+    {
+    }
+}
+</code></pre>
+
+<p>Since now, for every interface marked with <code>[MappingInterface]</code>, <code>MappingGenerator.OnBuildGenerator</code> will generate an implementation during the build. Sample usage can look as follows:</p>
+
+<pre><code class="language-csharp">namespace TestGenerator
+{
+    [MappingInterface]
+    public interface IUserMapper
+    {
+        UserDTO Map(UserEntity entity);
+        UserEntity Map(UserDTO entity);
+    }
+}
+
+</code></pre>
+
+<p>After rebuilding the project, you should be able to use in the codebase <code>UserMapper</code> class which implements <code>IUserMapper</code> interface (sometimes there is a need for solution reload to make the intellisense and syntax highlighting work correctly). You should be able to easily navigate to the source code of the generated class which should be located under <code>IntermediateOutputPath</code> (by default the <code>obj</code> directory). You can watch <code>MappingGenerator.OnBuildGenerator</code> in action on the following video:</p>
+
+<div class="video-container">
+<iframe width="853" height="480" src="https://www.youtube.com/embed/43tRxSEa11Y?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<p>All the generated methods are virtual, so if you need to make some adjustments to the mapping logic, you can achieve it by inheriting from the generated class and overriding given method by adding extra mapping logic:</p>
+
+<pre><code class="language-csharp">public class CustomUserMapper: UserMapper
+{
+    public override UserDTO MapFrom(UserEntity user)
+    {
+        var dto = base.MapFrom(user);
+        //TODO: Make some adjustment to dto here
+        return dto;
+    }
+}
+</code></pre>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/generate-mapping-code-with-roslyn/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-mapping-code-with-roslyn/splashscreen_hu86b51efa2999f8280c1d243d5a743591_73415_320x240_fill_q75_box_smart1.jpg" alt="Generate mapping code with Roslyn code fix provider.">
+								<div class="card-body">
+									<h5 class="card-title">Generate mapping code with Roslyn code fix provider.</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/why-i-dont-use-automapper/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/why-i-dont-use-automapper/social_splashscreen_hu3795b174da3073e92a87eaa41b63620e_50068_320x240_fill_q75_box_smart1.jpg" alt="The reasons behind why I don&#39;t use AutoMapper.">
+								<div class="card-body">
+									<h5 class="card-title">The reasons behind why I don&#39;t use AutoMapper.</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-macros/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<div class="card-body">
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

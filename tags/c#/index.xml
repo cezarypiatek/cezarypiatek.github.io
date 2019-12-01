@@ -6,10 +6,19 @@
     <description>Recent content in C# on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Nov 2019 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/c#/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to simulate AutoMapper that works during the build time</title>
+      <link>https://cezarypiatek.github.io/post/generate-mappings-on-build/</link>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/generate-mappings-on-build/</guid>
+      <description>Almost two years ago I created the very first version of MappingGenerator. Since then, I&amp;rsquo;ve put a lot of work in this project, adding new functions and improving the mapping generation algorithm with 14 releases (43 issues/feature requests closed) in the meantime. With over 5.5k downloads from the marketplace and 380 stars on Github, it looks like there is quite a market demand for this kind of tool (even though my coffee button statistics indicate something different).</description>
+    </item>
     
     <item>
       <title>Managing output in the .NET SDK projects</title>

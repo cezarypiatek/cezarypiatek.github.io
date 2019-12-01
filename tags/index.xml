@@ -6,17 +6,62 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Nov 2019 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>AutoMapper</title>
+      <link>https://cezarypiatek.github.io/tags/automapper/</link>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/automapper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>C#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Roslyn</title>
+      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code generation</title>
+      <link>https://cezarypiatek.github.io/tags/code-generation/</link>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/code-generation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnet</title>
+      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mapping</title>
+      <link>https://cezarypiatek.github.io/tags/mapping/</link>
+      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/mapping/</guid>
       <description></description>
     </item>
     
@@ -62,15 +107,6 @@
       <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/visual-studio/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Roslyn</title>
-      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-      <pubDate>Sun, 15 Sep 2019 00:10:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -125,15 +161,6 @@
       <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/clean-code/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnet</title>
-      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
       <description></description>
     </item>
     
@@ -390,29 +417,11 @@
     </item>
     
     <item>
-      <title>AutoMapper</title>
-      <link>https://cezarypiatek.github.io/tags/automapper/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/automapper/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>code generating</title>
       <link>https://cezarypiatek.github.io/tags/code-generating/</link>
       <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/code-generating/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mapping</title>
-      <link>https://cezarypiatek.github.io/tags/mapping/</link>
-      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/mapping/</guid>
       <description></description>
     </item>
     
@@ -543,7 +552,7 @@
     </item>
     
     <item>
-      <title>TODOExplorer</title>
+      <title>TodoExplorer</title>
       <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
       
