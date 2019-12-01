@@ -3,14 +3,61 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/automapper/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/c#/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/generate-mappings-on-build/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/code-generation/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/mapping/</loc>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -20,20 +67,8 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
+    <lastmod>2019-11-24T21:48:36+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -51,30 +86,24 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</loc>
-    <lastmod>2019-10-17T20:38:41+02:00</lastmod>
+    <lastmod>2019-11-24T21:48:36+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
-    <lastmod>2019-10-17T20:38:41+02:00</lastmod>
+    <lastmod>2019-11-24T21:48:36+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/visual-studio/</loc>
-    <lastmod>2019-10-17T20:38:41+02:00</lastmod>
+    <lastmod>2019-11-24T21:48:36+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
-    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -85,18 +114,18 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/csharp-macros/</loc>
-    <lastmod>2019-09-21T11:41:20+02:00</lastmod>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
-    <lastmod>2019-09-21T11:41:20+02:00</lastmod>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
-    <lastmod>2019-09-21T11:41:20+02:00</lastmod>
+    <lastmod>2019-11-27T23:24:43+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -129,12 +158,6 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/clean-code/</loc>
-    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -373,12 +396,6 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/automapper/</loc>
-    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</loc>
     <lastmod>2019-02-11T23:13:54+01:00</lastmod>
   </url>
@@ -386,12 +403,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/code-generating/</loc>
     <lastmod>2019-02-11T23:13:54+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/mapping/</loc>
-    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
     <priority>0</priority>
   </url>
   
