@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2019-12-01",
-          "dateModified" : "2019-11-27",
+          "dateModified" : "2019-12-01",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/generate-mappings-on-build\/splashscreen.jpg",
           "description": "Generate mapping code on build with Roslyn"
         }
@@ -224,7 +224,7 @@ namespace MappingGenerator.OnBuildGenerator
     public interface IUserMapper
     {
         UserDTO Map(UserEntity entity);
-        UserEntity Map(UserDTO entity);
+        UserEntity Map(UserDTO dto);
     }
 }
 

@@ -56,7 +56,7 @@ namespace TestGenerator
     public interface IUserMapper
     {
         UserDTO Map(UserEntity entity);
-        UserEntity Map(UserDTO entity);
+        UserEntity Map(UserDTO dto);
     }
 }
 
