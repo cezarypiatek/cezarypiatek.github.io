@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to properly manage artifacts metadata in SDK projects">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/setting-assembly-and-package-metadata\/"
+            },
+          "headline" : "Setting assembly and nuget package metadata in .NET Core",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2019-12-09",
+          "dateModified" : "2019-12-09",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/setting-assembly-and-package-metadata\/splashscreen.jpg",
+          "description": "How to properly manage artifacts metadata in SDK projects"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2019-12-09">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/">	
+	<meta property="og:title" content="Setting assembly and nuget package metadata in .NET Core">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/splashscreen.jpg">
+    <meta property="og:description" content="How to properly manage artifacts metadata in SDK projects">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="dotnetcore">
+    
+    <meta property="og:tags" content="nuget">
+    
+    <meta property="og:tags" content="msbuild">
+    
+    <meta property="og:tags" content="TeamCity">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/splashscreen.jpg">
+	<meta property="twitter:title" content="Setting assembly and nuget package metadata in .NET Core">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to properly manage artifacts metadata in SDK projects">
+
+	<meta name="keywords" value="dotnetcore, nuget, msbuild, TeamCity" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>Setting assembly and nuget package metadata in .NET Core &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Setting assembly and nuget package metadata in .NET Core</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>9 December 2019</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>The new <code>csproj</code> format introduces two major changes that are important from the artifact metadata management perspective. First of all, a NuGet package definition was moved into the project file which allows sharing common attributes between NuGet package manifest and assembly info. Secondly, a new mechanism for generating source code of assembly metadata attributes was added, which shares some benefits from the first feature as well as simplify how these values can be overridden during the build process. However, it&rsquo;s still a common thing that tools like <code>regex</code> and <code>string replace</code> are used for this purpose, which is definitely against the original intentions. In this blog post, I will show you what project&rsquo;s metadata should we set, how they relate to each other and how they affect the build&rsquo;s artifacts, and - the most important thing - how to set them correctly during the CI build.</p>
+
+<h2 id="version-versionprefix-and-versionsuffix">Version, VersionPrefix and VersionSuffix<a href="#version-versionprefix-and-versionsuffix" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The
+<a href="https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.DefaultAssemblyInfo.targets">Microsoft.NET.DefaultAssemblyInfo.targets</a>, which is by default included in the <code>SDK</code> projects, provides a mechanism for setting assembly related metadata. Thanks to that we can set the assembly version without using string manipulation over <code>AssemblyInfo.cs</code> file. For this purpose, we have <code>Version</code>, <code>VersionPrefix</code> and <code>VersionSuffix</code> properties on our disposal and the relation between them is defined by the following excerpt from the aforementioned targets file:</p>
+
+<pre><code class="language-xml">&lt;PropertyGroup Condition=&quot; '$(Version)' == '' &quot;&gt;
+    &lt;VersionPrefix Condition=&quot; '$(VersionPrefix)' == '' &quot;&gt;1.0.0&lt;/VersionPrefix&gt;
+    &lt;Version Condition=&quot; '$(VersionSuffix)' != '' &quot;&gt;$(VersionPrefix)-$(VersionSuffix)&lt;/Version&gt;
+    &lt;Version Condition=&quot; '$(Version)' == '' &quot;&gt;$(VersionPrefix)&lt;/Version&gt;
+  &lt;/PropertyGroup&gt;
+</code></pre>
+
+<p>which can be expressed in pseudo-code as follows:</p>
+
+<pre><code class="language-plaintext">if(Version == '')
+{
+    if(VersionPrefix == '')
+    {
+        VersionPrefix = '1.0.0'
+    }
+    
+    if(VersionSuffix != '')
+    {
+        Version = VersionPrefix + '-' + VersionSuffix
+    }
+    else
+    {
+        Version = VersionPrefix
+    }
+}
+</code></pre>
+
+<p>If the <code>Version</code> property is hardcoded in the project&rsquo;s file, then passing <code>VersionPrefix</code> and <code>VersionSuffix</code> from the outside has no effect.</p>
+
+<p>The <code>Version</code> attribute is used for the NuGet package too. If the version contains <code>VersionSuffix</code> then the package is treated as <code>pre-release</code> package. <code>Version</code> property is also used in <a href="https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.GenerateAssemblyInfo.targets">Microsoft.NET.GenerateAssemblyInfo.targets</a> to generate <code>AssemblyVersion</code> attribute if it&rsquo;s not defined before (take a look at <a href="https://github.com/dotnet/sdk/blob/dfbc78147ef297ec8e5fd1f4ab5e085f27b6a94c/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.GenerateAssemblyInfo.targets#L159">GetAssemblyVersion</a> target).</p>
+
+<p>Later on, in <a href="https://github.com/dotnet/sdk/blob/dfbc78147ef297ec8e5fd1f4ab5e085f27b6a94c/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.GenerateAssemblyInfo.targets#L105">CreateGeneratedAssemblyInfoInputsCacheFile</a> target, <code>AssemblyVersion</code> and a couple of other properties are used to generate <code>cs</code> file that contains assembly related attributes (this file can be find under <code>$(IntermediateOutputPath)$(MSBuildProjectName).AssemblyInfoInputs.cache</code> path - by default in <code>obj</code> directory). The definitions of generated attributes are defined in <a href="https://github.com/dotnet/sdk/blob/dfbc78147ef297ec8e5fd1f4ab5e085f27b6a94c/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.GenerateAssemblyInfo.targets#L64">GetAssemblyAttributes</a> target. Here&rsquo;s the complete list of <code>Msbuild</code> properties and affected assembly attributes:</p>
+
+<table>
+<thead>
+<tr>
+<th>MsBuild property</th>
+<th>Assembly attribute</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Company</td>
+<td>System.Reflection.AssemblyCompanyAttribute</td>
+</tr>
+
+<tr>
+<td>Configuration</td>
+<td>System.Reflection.AssemblyConfigurationAttribute</td>
+</tr>
+
+<tr>
+<td>Copyright</td>
+<td>System.Reflection.AssemblyCopyrightAttribute</td>
+</tr>
+
+<tr>
+<td>Description</td>
+<td>System.Reflection.AssemblyDescriptionAttribute</td>
+</tr>
+
+<tr>
+<td>FileVersion</td>
+<td>System.Reflection.AssemblyFileVersionAttribute</td>
+</tr>
+
+<tr>
+<td>InformationalVersion</td>
+<td>System.Reflection.AssemblyInformationalVersionAttribute</td>
+</tr>
+
+<tr>
+<td>Product</td>
+<td>System.Reflection.AssemblyProductAttribute</td>
+</tr>
+
+<tr>
+<td>AssemblyTitle</td>
+<td>System.Reflection.AssemblyTitleAttribute</td>
+</tr>
+
+<tr>
+<td>AssemblyVersion</td>
+<td>System.Reflection.AssemblyVersionAttribute</td>
+</tr>
+
+<tr>
+<td>NeutralLanguage</td>
+<td>System.Resources.NeutralResourcesLanguageAttribute</td>
+</tr>
+</tbody>
+</table>
+
+<p><code>VersionPrefix</code>, <code>VersionSuffix</code> and <code>SourceRevisionId</code> are combined into a single string with the following format <code>&quot;{VersionPrefix}-{VersionSuffix}+{SourceRevisionId}&quot;</code> and set as <code>InformationalVersion</code> property. This value is presented as <code>Product version</code> in the file properties window:</p>
+
+<p><img src="ProductVersion.jpg" alt="Product version" /></p>
+
+<p>You can disable generating code of specific assembly attribute by defining corresponding  <code>GenerateAssembly*Attribute</code> MSBuild property. For example, if you want to use explicitly <code>GenerateAssemblyVersionAttribute</code> in your codebase, you have to add the following entry in the project file:</p>
+
+<pre><code class="language-xml">&lt;PropertyGroup&gt;
+    &lt;GenerateAssemblyVersionAttribute&gt;false&lt;/GenerateAssemblyVersionAttribute&gt;
+&lt;/PropertyGroup&gt;
+</code></pre>
+
+<h2 id="repository-info">Repository info<a href="#repository-info" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>A question that we come across very often is how we can correlate dotnet assembly with the specific commit, that was used to produce given assembly. When I was working with the <code>SVN</code> repositories, I met with the practice of embedding commit sequence number into the <code>Version</code> attribute. This works very well, however with <code>git</code> repositories it&rsquo;s not possible anymore - commits are identified by unique hash rather than by sequence number. I also saw a couple of desperate attempts of calculating some sort of <code>pseudo-sequence-number</code> for git revision base on the commit timestamp and some other factors with very fancy algorithms. Happily, there is no need for something like that because <code>MSBuild</code> contains properties that are intended for marking Nuget package and assembly with repository information. <code>AddSourceRevisionToInformationalVersion</code> target from[Microsoft.NET.GenerateAssemblyInfo.targets]() allows us to add commit number (whatever format it has) into <code>System.Reflection.AssemblyInformationalVersionAttribute</code> by defining <code>SourceRevisionId</code> property. As I&rsquo;ve mentioned before in this blog post, this information can be found in the file&rsquo;s properties as a segment of <code>Product version</code> (after <code>+</code> sign):</p>
+
+<p><img src="CommitInProductVersion.jpg" alt="Commit in product version" /></p>
+
+<p><code>SourceRevisionId</code> is also used in <a href="https://github.com/NuGet/NuGet.Client/blob/dev/src/NuGet.Core/NuGet.Build.Tasks.Pack/NuGet.Build.Tasks.Pack.targets">NuGet.Build.Tasks.Pack.targets</a> to set <code>RepositoryCommit</code> property if not defined before. Besides the revision number, we also have an option to set properties like: <code>RepositoryUrl</code>, <code>RepositoryType</code> and <code>RepositoryBranch</code> which are self-described. These properties are used to prepare the <code>nuspec</code> file. After building the Nuget package, all the information should be available under <code>/package/metadata/repository</code> node of the package manifest:</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;package xmlns=&quot;http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd&quot;&gt;
+  &lt;metadata&gt;
+    &lt;id&gt;SmartCodeGenerator.Engine&lt;/id&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;authors&gt;Cezary Piątek&lt;/authors&gt;
+    &lt;owners&gt;Cezary Piątek&lt;/owners&gt;
+    &lt;requireLicenseAcceptance&gt;false&lt;/requireLicenseAcceptance&gt;
+    &lt;projectUrl&gt;https://github.com/cezarypiatek/SmartCodeGenerator&lt;/projectUrl&gt;
+    &lt;description&gt;On build code generation engine&lt;/description&gt;
+    &lt;repository type=&quot;git&quot; url=&quot;https://github.com/cezarypiatek/SmartCodeGenerator&quot; branch=&quot;master&quot; commit=&quot;7aab58c9171921460aa495a335e1474f4861649c&quot; /&gt;
+    &lt;dependencies&gt;
+      &lt;group targetFramework=&quot;.NETCoreApp3.0&quot; /&gt;
+    &lt;/dependencies&gt;
+  &lt;/metadata&gt;
+&lt;/package&gt;
+</code></pre>
+
+<p>Besides setting all those repository-related metadata for assemblies and NuGet packages, it&rsquo;s also a good practice to always push a tag with version number after every successful release build.</p>
+
+<h2 id="how-to-set-it-up-properly">How to set it up properly<a href="#how-to-set-it-up-properly" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Before .NET Core SDK-projects era, the only way of setting assembly attributes dynamically during the CI build was to do some string-base manipulations on <code>AssemblyInfo.cs</code> file which contains assembly-related attributes. Now the things are simpler because the source code responsible for adding assembly attributes is automatically generated during the build by <code>CreateGeneratedAssemblyInfoInputsCacheFile</code> target using MSBuild properties. Dotnet CLI has dedicated parameter only for setting <code>VersionSuffix</code> property via <code>--version-suffix</code> parameter but there is an option for setting any MSBuild attribute with <code>-p</code> option. For example, we can set up <code>VersionPrefix</code> and <code>VersionSuffix</code> separately, as well as repository info in the following way:</p>
+
+<pre><code class="language-shell">dotnet build SmartCodeGenerator.sln -p:VersionPrefix=1.0.3 -p:VersionSuffix=beta -p:SourceRevisionId=7aab58c9171921460aa495a335e1474f4861649c -p:RepositoryUrl=https://github.com/cezarypiatek/SmartCodeGenerator -p:RepositoryType=git -p:RepositoryBranch=develop
+</code></pre>
+
+<p>There&rsquo;s also an option to set MSBuild properties by defining environment variables with the same name as corresponding properties. This works really well with <code>TeamCity</code> and hierarchical projects. By defining environment variables on the root project with the following values you can make sure that all project in the hierarchy will always have embedded repository metadata in the build artifacts:</p>
+
+<p><img src="teamcity_root.jpg" alt="Teamcity environmental variables" /></p>
+
+<p>You can also set up <code>Copyright</code>, <code>Authors</code>, <code>Company</code>, <code>IconUrl</code> here - all the values that you need to repeat for every project in your organization.
+<strong>One more important thing:</strong> if any of the MSBuild properties are hardcoded inside the project file (either <code>Directory.Build.props</code> or <code>Directory.Build.targets</code>) it can&rsquo;t be overridden by passing it as a command-line parameter or environment variable unless it&rsquo;s defined conditionally. If you want to provide a default value of given parameter inside the project file, and still have an ability to override it from the outside, you have to define the property in the following way:</p>
+
+<pre><code class="language-xml">&lt;PropertyGroup&gt;
+    &lt;SampleProperty Condition=&quot;'$(SampleProperty)' == ''&quot;&gt;DefaultValue&lt;/SampleProperty&gt;
+&lt;/PropertyGroup&gt;
+</code></pre>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/managing-output-in-sdk-projects/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/managing-output-in-sdk-projects/splashscreen_hu8ba5cf098defee21005db52bdb8626f7_121704_320x240_fill_q75_box_smart1.jpg" alt="Managing output in the .NET SDK projects">
+								<div class="card-body">
+									<h5 class="card-title">Managing output in the .NET SDK projects</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/non-nullable-references-in-dotnet-core/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/non-nullable-references-in-dotnet-core/splashscreen_hu4726010f8bf92c1a7527d07383ef14cb_39250_320x240_fill_q75_box_smart1.jpg" alt="Non-nullable references with C# 8 and .NET Core 3.0">
+								<div class="card-body">
+									<h5 class="card-title">Non-nullable references with C# 8 and .NET Core 3.0</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/best-practices-for-using-powershell-with-teamcity/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/best-practices-for-using-powershell-with-teamcity/splashscreen_hu831a556e644f698f06f7bab476f01bf6_172716_320x240_fill_q75_box_smart1.jpg" alt="Best practices for using PowerShell with TeamCity">
+								<div class="card-body">
+									<h5 class="card-title">Best practices for using PowerShell with TeamCity</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/xml.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/shell.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

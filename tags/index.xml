@@ -6,10 +6,46 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Dec 2019 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>TeamCity</title>
+      <link>https://cezarypiatek.github.io/tags/teamcity/</link>
+      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/teamcity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnetcore</title>
+      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
+      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>msbuild</title>
+      <link>https://cezarypiatek.github.io/tags/msbuild/</link>
+      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/msbuild/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nuget</title>
+      <link>https://cezarypiatek.github.io/tags/nuget/</link>
+      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/nuget/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>AutoMapper</title>
@@ -62,33 +98,6 @@
       <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnetcore</title>
-      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
-      <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>msbuild</title>
-      <link>https://cezarypiatek.github.io/tags/msbuild/</link>
-      <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/msbuild/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>nuget</title>
-      <link>https://cezarypiatek.github.io/tags/nuget/</link>
-      <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/nuget/</guid>
       <description></description>
     </item>
     
@@ -174,11 +183,11 @@
     </item>
     
     <item>
-      <title>TeamCity</title>
-      <link>https://cezarypiatek.github.io/tags/teamcity/</link>
+      <title>PowerShell</title>
+      <link>https://cezarypiatek.github.io/tags/powershell/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/teamcity/</guid>
+      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
       <description></description>
     </item>
     
@@ -197,15 +206,6 @@
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/continuous-integration/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>powershell</title>
-      <link>https://cezarypiatek.github.io/tags/powershell/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
       <description></description>
     </item>
     

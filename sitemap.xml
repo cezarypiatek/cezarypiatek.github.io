@@ -3,85 +3,96 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/teamcity/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/msbuild/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/nuget/</loc>
+    <lastmod>2019-12-09T19:56:50+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/automapper/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/c#/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/generate-mappings-on-build/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/code-generation/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/mapping/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
-    <lastmod>2019-12-01T19:59:08+01:00</lastmod>
+    <lastmod>2019-12-02T17:40:24+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</loc>
     <lastmod>2019-11-07T22:01:11+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
-    <lastmod>2019-11-24T21:48:36+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/msbuild/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/nuget/</loc>
-    <lastmod>2019-11-07T22:01:11+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -174,7 +185,7 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/teamcity/</loc>
+    <loc>https://cezarypiatek.github.io/tags/powershell/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -187,12 +198,6 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/continuous-integration/</loc>
-    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/powershell/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
     <priority>0</priority>
   </url>

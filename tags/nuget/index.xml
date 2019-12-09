@@ -6,10 +6,19 @@
     <description>Recent content in nuget on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Nov 2019 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/nuget/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Setting assembly and nuget package metadata in .NET Core</title>
+      <link>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</link>
+      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</guid>
+      <description>The new csproj format introduces two major changes that are important from the artifact metadata management perspective. First of all, a NuGet package definition was moved into the project file which allows sharing common attributes between NuGet package manifest and assembly info. Secondly, a new mechanism for generating source code of assembly metadata attributes was added, which shares some benefits from the first feature as well as simplify how these values can be overridden during the build process.</description>
+    </item>
     
     <item>
       <title>Managing output in the .NET SDK projects</title>
