@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2019-10-06",
-          "dateModified" : "2019-11-24",
+          "dateModified" : "2020-02-23",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/non-nullable-references-in-dotnet-core\/splashscreen.jpg",
           "description": "Catching NullReferenceException in design time using new language features and how to deal with it in previous versions."
         }
@@ -482,6 +482,8 @@
 <li>Line 12: This condition is always evaluated to <code>false</code> so should be somehow reported</li>
 <li>Line 17: This code is OK but the previous condition mislead the analyses and now is reported as ERROR.</li>
 </ul>
+
+<p><strong>UPDATE 2020-02-27:</strong> What we observe in <code>Line 17</code> it&rsquo;s the compiler&rsquo;s intentional behavior. <strong>Bill Wagner</strong> explained it in his presentation <a href="https://www.youtube.com/watch?v=aUbXGs7YTGo&amp;list=PL03Lrmd9CiGeteXRzmn27mnlHKgOEACi2&amp;">Change your habits: Modern techniques for modern C#</a> (Similar example is discussed from <a href="https://youtu.be/aUbXGs7YTGo?list=PL03Lrmd9CiGeteXRzmn27mnlHKgOEACi2&amp;t=1740">29:00</a>)</p>
 
 <p>The same code with <code>JetBrains.Annotations</code> is reported according to expectations:</p>
 

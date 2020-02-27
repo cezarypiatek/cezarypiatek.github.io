@@ -146,6 +146,7 @@ My expectations:
 - Line 12: This condition is always evaluated to `false` so should be somehow reported
 - Line 17: This code is OK but the previous condition mislead the analyses and now is reported as ERROR.
 
+__UPDATE 2020-02-27:__ What we observe in `Line 17` it's the compiler's intentional behavior. **Bill Wagner** explained it in his presentation [Change your habits: Modern techniques for modern C#](https://www.youtube.com/watch?v=aUbXGs7YTGo&list=PL03Lrmd9CiGeteXRzmn27mnlHKgOEACi2&) (Similar example is discussed from [29:00](https://youtu.be/aUbXGs7YTGo?list=PL03Lrmd9CiGeteXRzmn27mnlHKgOEACi2&t=1740))
 
 The same code with `JetBrains.Annotations` is reported according to expectations:
 
