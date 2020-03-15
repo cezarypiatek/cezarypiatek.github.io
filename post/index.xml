@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 15 Mar 2020 00:08:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Immutable types in C# with Roslyn</title>
+      <link>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</link>
+      <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</guid>
+      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;rdquo; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
+    </item>
     
     <item>
       <title>Setting assembly and nuget package metadata in .NET Core</title>

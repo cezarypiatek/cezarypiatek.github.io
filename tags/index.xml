@@ -6,10 +6,37 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 15 Mar 2020 00:08:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>C#</title>
+      <link>https://cezarypiatek.github.io/tags/c#/</link>
+      <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>design patterns</title>
+      <link>https://cezarypiatek.github.io/tags/design-patterns/</link>
+      <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/design-patterns/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>roslyn</title>
+      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
+      <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>TeamCity</title>
@@ -57,15 +84,6 @@
     </item>
     
     <item>
-      <title>C#</title>
-      <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/c#/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>code generation</title>
       <link>https://cezarypiatek.github.io/tags/code-generation/</link>
       <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
@@ -89,15 +107,6 @@
       <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/mapping/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>roslyn</title>
-      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -183,15 +192,6 @@
     </item>
     
     <item>
-      <title>PowerShell</title>
-      <link>https://cezarypiatek.github.io/tags/powershell/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>VSCode</title>
       <link>https://cezarypiatek.github.io/tags/vscode/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
@@ -206,6 +206,15 @@
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/continuous-integration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>powershell</title>
+      <link>https://cezarypiatek.github.io/tags/powershell/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
       <description></description>
     </item>
     

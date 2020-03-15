@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to create immutable types without writing large amount of boilerplate code.">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/immutable-types-with-roslyn\/"
+            },
+          "headline" : "Immutable types in C# with Roslyn",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2020-03-15",
+          "dateModified" : "2020-03-08",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/immutable-types-with-roslyn\/splashscreen.jpg",
+          "description": "How to create immutable types without writing large amount of boilerplate code."
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2020-03-15">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/">	
+	<meta property="og:title" content="Immutable types in C# with Roslyn">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/splashscreen.jpg">
+    <meta property="og:description" content="How to create immutable types without writing large amount of boilerplate code.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="roslyn">
+    
+    <meta property="og:tags" content="c#">
+    
+    <meta property="og:tags" content="design patterns">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/splashscreen.jpg">
+	<meta property="twitter:title" content="Immutable types in C# with Roslyn">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to create immutable types without writing large amount of boilerplate code.">
+
+	<meta name="keywords" value="roslyn, c#, design patterns" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>Immutable types in C# with Roslyn &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Immutable types in C# with Roslyn</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>15 March 2020</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>Some time ago I came across Jimmy Bogard&rsquo;s article <a href="https://jimmybogard.com/immutability-in-dtos/">&ldquo;Immutability in DTOs?&rdquo;</a> about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding <code>readonly</code> keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition. This results in a large amount of boilerplate code, causes problems with ORMs and serializers which require a default constructor, and makes the object instantiation cumbersome (or at least less readable). I&rsquo;m a huge fan of <code>Roslyn</code> so I&rsquo;ve started thinking about how to utilize Roslyn&rsquo;s API to avoid all those problems with immutable types and improve coding experience while working with them. In this article, I&rsquo;m going to present the results of my experiments with Roslyn analyzers that simulate types immutability.</p>
+
+<h2 id="convenient-initialization">Convenient initialization<a href="#convenient-initialization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>As I&rsquo;ve mentioned before, in order to make a class immutable we need to remove setters, add a dedicated constructor for initializing those properties and then always use this constructor to instantiate our immutable class. A sample code snippet just to remind you how cumbersome it is:</p>
+
+<pre><code class="language-csharp">public class UserDTO
+{
+    public string FirstName { get;}
+    public string LastName { get;}
+    public int Age { get; }
+
+    public UserDTO(string firstName, string lastName, int age)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Age = age;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new UserDTO(&quot;John&quot;, &quot;Doe&quot;, 20);
+    }
+}
+</code></pre>
+
+<p>It would be more convenient if we didn&rsquo;t need to define a constructor and initialize members using the initialization block. However, there&rsquo;s no mechanism that allows enforcing mandatory initialization in the init block. So, let&rsquo;s introduce <code>[InitRequired]</code> attribute inspired by <code>initonly</code> keyword from <a href="https://github.com/dotnet/csharplang/blob/master/proposals/recordsv2.md#mutability">C# records proposal</a>:</p>
+
+<p><img src="init_required.jpg" alt="" /></p>
+
+<p>If we want to enforce mandatory initialization via initialization block for all members, we can mark our type with <code>[InitRequired]</code> attribute.</p>
+
+<p><img src="full_init_required.jpg" alt="" /></p>
+
+<p>Of course, the property to be able to initialize via init block it must meet certain conditions:</p>
+
+<ul>
+<li>must have a setter</li>
+<li>the setter needs to be available in a given context (accessibility)</li>
+<li>cannot be a part of explicit interface implementation.</li>
+</ul>
+
+<p>In order to avoid missing initialization caused by the conditions mentioned above, I would recommend always keeping those properties on the same accessibility level as the containing type.</p>
+
+<blockquote>
+<p><strong>Pro Tip:</strong> You can use <a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">MappingGenerator</a> to complete initialization block with local accessible values
+<img src="emptyInitialization_animated.png" alt="" />
+or to scaffold this initialization with sample values
+<img src="object_scaffolding_animated.png" alt="" /></p>
+</blockquote>
+
+<p>If you don&rsquo;t have access to the source code or you want to enforce full initialization only for given instance, you can do that by adding <code>/*FullInitRequired*/</code> comment marker:</p>
+
+<p><img src="full_init_comment.jpg" alt="" /></p>
+
+<p>To ensure that full object graph is initialized, use <code>/*FullInitRequired:recursive*/</code> comment marker. I think this may be especially useful for methods performing mapping or deep clone. I got the idea of those comment markers from a discussion about <a href="https://github.com/dotnet/csharplang/issues/2796#issuecomment-530525044">String Hints
+#2796</a>. This kind of annotation is already used for marking string literals with regex pattern:</p>
+
+<p><img src="regex_hint.jpg" alt="" /></p>
+
+<h2 id="full-immutability">Full immutability<a href="#full-immutability" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p><code>[InitRequired]</code> attribute enforces only mandatory initialization via initialization block. To achieve immutability, we need to forbid modification outside the init block. For that purpose, I&rsquo;ve introduced <code>[InitOnly]</code> attribute. Basically, it works in the same way as <code>[InitRequired]</code> but additionally it verifies if members decorated with it are not modified after initialization.</p>
+
+<p><img src="init_only.jpg" alt="" /></p>
+
+<p>You can enforce immutability for all members by putting <code>[InitOnly]</code> attribute on the type level.</p>
+
+<p><img src="full_init_only.jpg" alt="" /></p>
+
+<p>Thanks to <code>[InitOnly]</code> attribute and corresponding analyzer we can achieve full immutability without writing redundant boilerplate code.</p>
+
+<blockquote>
+<p><strong>Important:</strong> If you like the idea of <code>[InitRequire]</code> and <code>[InitOnly]</code> attributes and you are going to use them in your project, please make sure that all your teammates know about it.</p>
+</blockquote>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>All attributes and analyzers described here are available as a single Nuget package <a href="https://www.nuget.org/packages/SmartAnalyzers.CSharpExtensions.Annotations/">SmartAnalyzers.CSharpExtensions.Annotations</a>. The source code is published on <code>Github</code> under <a href="https://github.com/cezarypiatek/CSharpExtensions">CSharpExtensions</a> project. Please let me know what you think about those extensions to C# language and if you encounter any problems with using it, feel free to report an issue on Github page.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/generate-mappings-on-build/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-mappings-on-build/splashscreen_hu831a556e644f698f06f7bab476f01bf6_99100_320x240_fill_q75_box_smart1.jpg" alt="How to simulate AutoMapper that works during the build time">
+								<div class="card-body">
+									<h5 class="card-title">How to simulate AutoMapper that works during the build time</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/avoid-multithreading-traps-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/avoid-multithreading-traps-p2/splashscreen_hu831a556e644f698f06f7bab476f01bf6_170863_320x240_fill_q75_box_smart1.jpg" alt="Avoid thread synchronization problems with Roslyn: Synchronization primitives traps">
+								<div class="card-body">
+									<h5 class="card-title">Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-macros/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<div class="card-body">
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>
