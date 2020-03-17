@@ -91,3 +91,7 @@ Thanks to `[InitOnly]` attribute and corresponding analyzer we can achieve full 
 ## Summary
 
 All attributes and analyzers described here are available as a single Nuget package [SmartAnalyzers.CSharpExtensions.Annotations](https://www.nuget.org/packages/SmartAnalyzers.CSharpExtensions.Annotations/). The source code is published on `Github` under [CSharpExtensions](https://github.com/cezarypiatek/CSharpExtensions) project. Please let me know what you think about those extensions to C# language and if you encounter any problems with using it, feel free to report an issue on Github page.
+
+
+__UPDATE 2020-03-17:__ I added support for non-nullable references. Since now, the compiler should stop reporting `"CS8618: Non-nullable property ‘PropertyName’ is uninitialized"` diagnostic for all members affected by `[InitRequired]` and `[InitOnly]` attributes.
+![](non_nullable_suppression.jpg)
