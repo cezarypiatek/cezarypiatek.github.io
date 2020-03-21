@@ -2,7 +2,7 @@
 title: "Immutable types in C# with Roslyn"
 description: "How to create immutable types without writing large amount of boilerplate code."
 date: 2020-03-15T00:08:00+02:00
-tags : ["roslyn", "c#", "design patterns"]
+tags : ["roslyn", "c#", "non-nullable", "design patterns"]
 highlight: true
 
 image: "splashscreen.jpg"
