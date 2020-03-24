@@ -1,7 +1,7 @@
 ---
 title: "Improving non-nullable reference types handling"
-description: "How to improve developer experience while working with non-nullable references"
-date: 2020-03-21T00:08:00+02:00
+description: "How to improve developer's experience while working with non-nullable references"
+date: 2020-03-24T20:00:00+02:00
 tags : ["roslyn", "c#", "non-nullable"]
 highlight: true
 
