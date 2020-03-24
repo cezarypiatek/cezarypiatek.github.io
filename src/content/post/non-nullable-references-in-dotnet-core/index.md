@@ -2,7 +2,7 @@
 title: "Non-nullable references with C# 8 and .NET Core 3.0"
 description: "Catching NullReferenceException in design time using new language features and how to deal with it in previous versions."
 date: 2019-10-06T00:16:45+02:00
-tags : ["dotnetcore", "c#", "visual studio", "Resharper"]
+tags : ["dotnetcore", "c#", "visual studio", "Resharper", "non-nullable"]
 highlight: true
 
 image: "splashscreen.jpg"

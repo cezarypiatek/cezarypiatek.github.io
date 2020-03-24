@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Mar 2020 00:08:00 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 24 Mar 2020 20:00:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Improving non-nullable reference types handling</title>
+      <link>https://cezarypiatek.github.io/post/better-non-nullable-handling/</link>
+      <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/better-non-nullable-handling/</guid>
+      <description>A few weeks ago I started using non-nullable reference types - a new C# language feature which was shipped with version 8.0. It wasn&amp;rsquo;t a completely new experience for me, because I was working before on projects that were heavily utilizing [NotNull] and [CanBeNull] Resharper annotations. The way how non-nullable types are handled by Roslyn seems to be a little more complex in comparison to Resharper - there are around 40 different diagnostics related to this area.</description>
+    </item>
     
     <item>
       <title>Immutable types in C# with Roslyn</title>
