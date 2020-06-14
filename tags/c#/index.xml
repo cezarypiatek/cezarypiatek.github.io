@@ -6,10 +6,20 @@
     <description>Recent content in C# on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Mar 2020 20:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 14 Jun 2020 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/c#/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Twin types - properties synchronization without inheritance</title>
+      <link>https://cezarypiatek.github.io/post/csharp-twin-types/</link>
+      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
+      <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
+The Problem One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
+    </item>
     
     <item>
       <title>Improving non-nullable reference types handling</title>
