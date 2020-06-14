@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Mar 2020 20:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 14 Jun 2020 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,36 @@
     <item>
       <title>C#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
+      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code generation</title>
+      <link>https://cezarypiatek.github.io/tags/code-generation/</link>
+      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/code-generation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>productivity</title>
+      <link>https://cezarypiatek.github.io/tags/productivity/</link>
+      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/productivity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>roslyn</title>
+      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
+      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -26,15 +53,6 @@
       <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/non-nullable/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>roslyn</title>
-      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-      <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -93,15 +111,6 @@
     </item>
     
     <item>
-      <title>code generation</title>
-      <link>https://cezarypiatek.github.io/tags/code-generation/</link>
-      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/code-generation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>dotnet</title>
       <link>https://cezarypiatek.github.io/tags/dotnet/</link>
       <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
@@ -152,15 +161,6 @@
       <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/livetemplates/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>productivity</title>
-      <link>https://cezarypiatek.github.io/tags/productivity/</link>
-      <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/productivity/</guid>
       <description></description>
     </item>
     
