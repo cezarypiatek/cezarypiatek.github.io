@@ -95,3 +95,21 @@ All attributes and analyzers described here are available as a single Nuget pack
 
 __UPDATE 2020-03-17:__ I added support for non-nullable references. Since now, the compiler should stop reporting `"CS8618: Non-nullable property ‘PropertyName’ is uninitialized"` diagnostic for all members affected by `[InitRequired]` and `[InitOnly]` attributes.
 ![](non_nullable_suppression.jpg)
+
+__UPDATE 2020-06-20:__ After the [feature request #9](https://github.com/cezarypiatek/CSharpExtensions/issues/9) from [Avi Levin (@Arithmomaniac)](https://github.com/Arithmomaniac) I decided to add ` [InitOnlyOptional]` attribute which works in similar way like `[InitOnly]` but allows to make given field optional in initialization block. Analyzers for this new attribute verify if:
+
+- property/field declaration provides a default value
+- property/field is not modified outside the initialization block
+
+Example usage:
+
+```cs
+public class Finance
+{
+    //default value is required
+    //default value can be overridden only via the initialization block
+    [InitOnlyOptional]
+    public int Profit { get; set; } = 45; 
+}
+```
+__UPDATE 2020-06-20:__ There's a hope that `init-only` concept will get a language-level support in C# 9. You can read more about that in the article [Welcome to C# 9.0](https://devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#init-only-properties)

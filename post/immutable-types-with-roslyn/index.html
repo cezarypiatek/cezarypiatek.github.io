@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-03-15",
-          "dateModified" : "2020-03-24",
+          "dateModified" : "2020-06-20",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/immutable-types-with-roslyn\/splashscreen.jpg",
           "description": "How to create immutable types without writing large amount of boilerplate code."
         }
@@ -254,6 +254,26 @@ or to scaffold this initialization with sample values
 
 <p><strong>UPDATE 2020-03-17:</strong> I added support for non-nullable references. Since now, the compiler should stop reporting <code>&quot;CS8618: Non-nullable property ‘PropertyName’ is uninitialized&quot;</code> diagnostic for all members affected by <code>[InitRequired]</code> and <code>[InitOnly]</code> attributes.
 <img src="non_nullable_suppression.jpg" alt="" /></p>
+
+<p><strong>UPDATE 2020-06-20:</strong> After the <a href="https://github.com/cezarypiatek/CSharpExtensions/issues/9">feature request #9</a> from <a href="https://github.com/Arithmomaniac">Avi Levin (@Arithmomaniac)</a> I decided to add <code>[InitOnlyOptional]</code> attribute which works in similar way like <code>[InitOnly]</code> but allows to make given field optional in initialization block. Analyzers for this new attribute verify if:</p>
+
+<ul>
+<li>property/field declaration provides a default value</li>
+<li>property/field is not modified outside the initialization block</li>
+</ul>
+
+<p>Example usage:</p>
+
+<pre><code class="language-cs">public class Finance
+{
+    //default value is required
+    //default value can be overridden only via the initialization block
+    [InitOnlyOptional]
+    public int Profit { get; set; } = 45; 
+}
+</code></pre>
+
+<p><strong>UPDATE 2020-06-20:</strong> There&rsquo;s a hope that <code>init-only</code> concept will get a language-level support in C# 9. You can read more about that in the article <a href="https://devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#init-only-properties">Welcome to C# 9.0</a></p>
     
 		
 		<hr/>  
