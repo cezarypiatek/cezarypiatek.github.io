@@ -1,19 +1,19 @@
 ---
-title: "The Magical methods in C#"
-description: "A methods with specific signature which have a special support in C#"
-date: 2020-06-21T00:08:00+02:00
-tags : ["roslyn", "c#", "non-nullable", "design patterns"]
+title: "The Magical Methods in C#"
+description: "Methods with specific signature which have a special support in C#"
+date: 2020-06-30T00:08:00+02:00
+tags : ["roslyn", "c#", "protobuf", "linq"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-There's a certain set of special method's signatures in C# which have a particular support on the language level.
-Methods with those signatures allow for using special syntax which has a several benefits. We can simplify our code or create `DSL` to express in much cleaner way a solution of our domain-specific problem. I came across on those methods in different places so I decided to create a blog post to summarize all my discoveries on this subject.
+There's a certain set of special method signatures in C# which have particular support on the language level.
+Methods with those signatures allow for using a special syntax which has several benefits. For example, we can use them to simplify our code or create `DSL` to express a solution to our domain-specific problem in a much cleaner way. I came across those methods in different places, so I decided to create a blog post to summarize all my discoveries on this subject.
 
 ## Collection initialization syntax
 
-[Collection initializer](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers#collection-initializers) is a quite old feature cos exists in the language since version 3 (released in late 2007). Just as a reminder, `Collection initializer` allows for pre-populating a list by providing elements inside the block statement:
+[Collection initializer](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers#collection-initializers) is a quite old feature, as it exists in the language since version 3 (released in late 2007). Just as a reminder, `Collection initializer` allows for pre-populating a list by providing elements inside the block statement:
 
 ```csharp
 var list = new List<int> { 1, 2, 3};
@@ -28,10 +28,10 @@ list.Add(2);
 list.Add(3);
 ```
 
-`Collection initializer` is not characteristic only for arrays and collection types from `BCL` but can be used with any type which meets the following conditions:
+`Collection initializer` is not characteristic only for arrays and collection types from `BCL` but can be used with any type meeting the following conditions:
 
 - Implements `IEnumerable` interface
-- Declare method with `void Add(T item)` signature
+- Declares method with `void Add(T item)` signature
 
 
 ```csharp
@@ -42,7 +42,7 @@ public class CustomList<T>: IEnumerable
 }
 ```
 
-We can add support for `Collection initializer` to existing types by defining `Add` method as a extension method:
+We can add support for `Collection initializer` to existing types by defining the `Add` method as an extension method:
 
 ```cs
 public static class ExistingTypeExtensions
@@ -51,7 +51,7 @@ public static class ExistingTypeExtensions
 }
 ```
 
-This syntax can be also used to insert elements into collection field without accessible setter in initialization block:
+This syntax can be also used to insert elements into the collection field without accessible setter in initialization block:
 
 ```cs
 class CustomType
@@ -76,8 +76,7 @@ class Program
 
 ```
 
-
-`Collection initializer` is quite helpful when we want to initialize collection with well know number of items, but what if we want to setup collection with a dynamic number of elements? There is less know syntax which allows for that which looks as follows:
+`Collection initializer` is quite helpful when we want to initialize collection with a well known number of items, but what if we want to set up collection with a dynamic number of elements? There is a less known syntax which allows for that, and it looks as follows:
 
 ```cs
 var obj = new CustomType
@@ -91,7 +90,7 @@ var obj = new CustomType
 This is possible for types which meet the following conditions:
 
 - Implements `IEnumerable` interface
-- Declare method with `void Add(IEnumerable<T> items)` signature
+- Declares method with `void Add(IEnumerable<T> items)` signature
 
 ```csharp
 public class CustomList<T>: IEnumerable
@@ -137,10 +136,10 @@ var obj = new CustomType
     }
 };
 ```
-Without this syntax it would be very hard to achieve similar result inside the initialization block.
+Without this syntax, it would be very hard to achieve a similar result inside the initialization block.
 
 
-I've discovered this language feature by accident while working with mappings for types with collection's fields generated from `protobuf` contracts. For those of you who are not familiar with `protobuf`, if you are using [grpctools](https://developers.google.com/protocol-buffers/docs/reference/csharp-generated) to generate dotnet types from `proto` files all collection fields are generated as follows:
+I've discovered this language feature by accident while working with mappings for types with collection fields generated from `protobuf` contracts. For those of you who are not familiar with `protobuf`, if you are using [grpctools](https://developers.google.com/protocol-buffers/docs/reference/csharp-generated) to generate dotnet types from `proto` files, all collection fields are generated as follows:
 
 ```cs
 [DebuggerNonUserCode]
@@ -153,7 +152,7 @@ public RepeatableField<ItemType> SomeCollectionField
 }
 ```
 
-As you can see, collection's fields in generated code don't have a setter, but blessing in disguise, [RepeatableField<T>](https://developers.google.com/protocol-buffers/docs/reference/csharp/class/google/protobuf/collections/repeated-field-t-) implements [void Add(IEnumerable<T> items)](https://developers.google.com/protocol-buffers/docs/reference/csharp/class/google/protobuf/collections/repeated-field-t-#class_google_1_1_protobuf_1_1_collections_1_1_repeated_field_3_01_t_01_4_1a6d0e9efbac818182068afae48b8d4599) so we can still initialized them inside the initialization block:
+As you can see, collection fields in generated code don't have a setter, but a blessing in disguise, [RepeatableField<T>](https://developers.google.com/protocol-buffers/docs/reference/csharp/class/google/protobuf/collections/repeated-field-t-) implements [void Add(IEnumerable<T> items)](https://developers.google.com/protocol-buffers/docs/reference/csharp/class/google/protobuf/collections/repeated-field-t-#class_google_1_1_protobuf_1_1_collections_1_1_repeated_field_3_01_t_01_4_1a6d0e9efbac818182068afae48b8d4599) so we can still initialize them inside the initialization block:
 
 ```cs
 /// <summary>
@@ -170,7 +169,8 @@ public void Add(IEnumerable<T> values)
 ```
 
 ## Dictionary initialization syntax
-One of the cool features introduced in C# 6 was [Index initializers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6#initialize-associative-collections-using-indexers) which simplified syntax for dictionary initialization. Thanks to that we can write dictionary intit code in much more readable way:
+
+One of the cool features introduced in C# 6 was [Index initializers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6#initialize-associative-collections-using-indexers) which simplified syntax for dictionary initialization. Thanks to that we can write dictionary init code in a much more readable way:
 
 ```cs
 var errorCodes = new Dictionary<int, string>
@@ -189,9 +189,10 @@ errorCodes[302] = "Page moved, but left a forwarding address.";
 errorCodes[500] = "The web server can't come out to play today.";    
 ```
 
-It's not much but it definitely results with better experience for writing and reading the code.
+It's not much but it definitely results with a better experience for writing and reading the code.
 
 The best thing about `Index initializer` is that it is not limited only to `Dictionary<>` class, it can be used with any type which defines an `indexer`:
+
 
 ```cs
 class HttpHeaders
@@ -219,7 +220,7 @@ class Program
 
 ## Deconstructors
 
-In C# 7.0, together with tuples a deconstructors mechanism has been introduced. Deconstructors allow for "decomposing" a tuple into a set of individual variables as follows:
+In C# 7.0, together with tuples, a deconstructor mechanism has been introduced. Deconstructors allow for "decomposing" a tuple into a set of individual variables as follows:
 
 ```cs
 var point = (5, 7);
@@ -235,7 +236,7 @@ int x = point.Item1;
 int y = point.Item2;
 ```
 
-This syntax allows also for switching values of two variables without the need for explicit declaration of third variable:
+This syntax allows also for switching values of two variables without the need for an explicit declaration of the third variable:
 
 ```cs
 int x = 5, y = 7;
@@ -243,7 +244,7 @@ int x = 5, y = 7;
 (x, y) = (y,x);
 ```
 
-... or for more succinct way of member initialization:
+... or for a more succinct way of member initialization:
 
 ```cs
 class Point
@@ -255,7 +256,7 @@ class Point
 }
 ```
 
-Deconstructors can be used not only with tuples but with custom types too. To allow for deconstructing custom type it needs to implement method that obey the following rules:
+Deconstructors can be used not only with tuples but with custom types too. To allow for deconstructing custom type, it needs to implement a method that obeys the following rules:
 
 - It's named `Deconstruct`
 - Returns void
@@ -275,7 +276,7 @@ class Point
 }
 ```
 
-and sample usage can looks as follows:
+and sample usage can look as follows:
 
 
 ```cs
@@ -291,7 +292,7 @@ int y;
 new Point(2, 4).Deconstruct(out x, out y);
 ```
 
-Deconstructors can be added to types declared outside the source code by defining them as a extension method:
+Deconstructors can be added to types declared outside the source code by defining them as an extension method:
 
 ```cs
 public static class PointExtensions
@@ -300,7 +301,7 @@ public static class PointExtensions
 }
 ```
 
-One of the most useful examples of deconstructors is the one for `KeyValuePair<TKey,TValue>`, which allows for easy access of key and value while iterating over a dictionary:
+One of the most useful examples of deconstructors is the one for `KeyValuePair<TKey,TValue>`, which allows for easy access to key and value while iterating over a dictionary:
 
 ```cs
 foreach(var (key, value) in new Dictionary<int, string> { [1] = "val1", [2] = "val2" })
@@ -309,13 +310,13 @@ foreach(var (key, value) in new Dictionary<int, string> { [1] = "val1", [2] = "v
 }
 ```
 
-`KeyValuePair<TKey,TValue>.Deconstruct(TKey, TValue) ` is available only from `netstandard2.1`. For previous `netstandard` versions we need to add it manually using the approach with extension method.
+`KeyValuePair<TKey,TValue>.Deconstruct(TKey, TValue) ` is available only from `netstandard2.1`. For previous `netstandard` versions we need to add it manually using the approach with the extension method.
 
 
 
 ## Custom awaitable types
 
-C# 5 (released together with Visual Studio 2012) introduced a `async/await` mechanism which was a real game changer in the area of asynchronous programming. Before that, handling invocation of asynchronous methods resulted very often in a quite messy code, especially when there were more than one asynchronous invocation:
+C# 5 (released together with Visual Studio 2012) introduced an `async/await` mechanism which was a real game-changer in the area of asynchronous programming. Before that, handling invocation of asynchronous methods resulted very often in quite a messy code, especially when there was more than one asynchronous invocation:
 
 ```cs
 void DoSomething()
@@ -350,19 +351,35 @@ async Task DoSomething()
     await DoSomethingElse2Async(res2);
 }
 ```
-This might be surprising, but `await` keyword is not reserved to work only with `Task` type. It can be used with any type which contains a method called `GetAwaiter` and  returning type that meets the following requirement:
+This might be surprising, but the `await` keyword is not reserved to work only with the `Task` type. It can be used with any type which contains a method called `GetAwaiter` and  returns type that meets the following requirement:
 
 - Implements the `System.Runtime.CompilerServices.INotifyCompletion` interface with `void OnCompleted(Action continuation)` method.
 - Contains the `IsCompleted` boolean property.
 - Contains the  parameter-less `GetResult` method .
 
-To add support of `await` keyword to our custom type we need to defined `GetAwaiter` method that returns an instance of `TaskAwaiter<TResult>` or a custom type that meets aforementioned conditions. A plenty of interesting examples of using `await` with other types that `Task` can be found in the article [await anything](https://devblogs.microsoft.com/pfxteam/await-anything/) by [Stephen Toub](https://devblogs.microsoft.com/pfxteam/author/toub/)
+To add support of `await` keyword to the custom type we need to define `GetAwaiter` method that returns an instance of `TaskAwaiter<TResult>` or a custom type that meets aforementioned conditions:
+
+```cs
+class CustomAwaitable
+{
+    public CustomAwaiter GetAwaiter() => throw new NotImplementedException();
+}
+
+class CustomAwaiter: INotifyCompletion
+{
+    public void OnCompleted(Action continuation) => throw new NotImplementedException();
+
+    public bool IsCompleted => => throw new NotImplementedException();
+
+    public void GetResult() => throw new NotImplementedException();
+}
+```
+
+You may wonder what could be a possible scenario of using `await` syntax with custom awaitable type. If that's the case, I highly recommend reading the article from [Stephen Toub](https://devblogs.microsoft.com/pfxteam/author/toub/) entitled "[await anything](https://devblogs.microsoft.com/pfxteam/await-anything/)" which provides plenty of interesting examples.
 
 ## The query expression pattern
 
-https://github.com/dotnet/csharplang/blob/master/spec/expressions.md#the-query-expression-pattern
-
-An interesting usage of the query expression pattern can be found in the article [Understand monads with LINQ](https://codewithstyle.info/understand-monads-linq/) by [Miłosz Piechocki](http://miloszpiechocki.com/)
+The best invention of C# 3.0 was definitely `Language-Integrated Query`, known as `LINQ`, which allows for collection manipulation using SQL-like syntax.`LINQ` comes in two variations: SQL-like syntax and Extension method syntax. I prefer the second one because in my opinion it is more readable, but it's probably because I'm accustomed to it. An interesting fact about the SQL-like syntax is that it is translated into the Extension method syntax during the compilation because it's a C#, not `CLR` feature. `LINQ` was invented in the first place to work with `IEnumerable`, `IEnumerable<T>` and `IQueryable<T>` types but it's not limited to them, we can use it with any type that meets requirements of [query expression pattern](https://github.com/dotnet/csharplang/blob/master/spec/expressions.md#the-query-expression-pattern). The complete set of method signatures used by `LINQ` looks as follows:
 
 ```csharp
 class C
@@ -404,7 +421,11 @@ class G<K,T> : C<T>
 }
 ```
 
+Of course, we don't need to implement all of those methods to use `LINQ` syntax with our custom type. The list of `LINQ` operators and methods required for them can be found [here](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/query-expression-syntax-for-standard-query-operators). `LINQ` syntax with custom types is very often used to implement monads. A really good explanation how to do it can be found in the article [Understand monads with LINQ](https://codewithstyle.info/understand-monads-linq/) by [Miłosz Piechocki](http://miloszpiechocki.com/)
+
+
 
 ## Summary
 
-The purpose of this article was not to encourage you to abuse those syntax tricks but rather demystify it and make it less mysterious. On the other hand, they should not be completely avoided, they were invented to be used and sometimes they can make your code much cleaner. If you afraid that the resulting code might be not so obvious to your teammates, you should find a way to share you knowledge or at least link to this article ;)
+The purpose of this article was not to encourage you to abuse those syntax tricks but rather to demystify them. On the other hand, they should not be completely avoided. They were invented to be used, and sometimes they can make your code much cleaner. If you are afraid that the resulting code might not be so obvious to your teammates, you should find a way to share your knowledge or at least link to this article ;)
+I'm not sure if it's a complete set of those "magical methods" - if you know any others, I would appreciate you sharing that in the comment section below.
