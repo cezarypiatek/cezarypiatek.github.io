@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>c# on Cezary Piątek Blog</title>
+    <title>C# on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/tags/c#/</link>
-    <description>Recent content in c# on Cezary Piątek Blog</description>
+    <description>Recent content in C# on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Jun 2020 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2020 00:08:00 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/c#/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Magical Methods in C#</title>
+      <link>https://cezarypiatek.github.io/post/methods-with-special-signature/</link>
+      <pubDate>Tue, 30 Jun 2020 00:08:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/methods-with-special-signature/</guid>
+      <description>There&amp;rsquo;s a certain set of special method signatures in C# which have particular support on the language level. Methods with those signatures allow for using a special syntax which has several benefits. For example, we can use them to simplify our code or create DSL to express a solution to our domain-specific problem in a much cleaner way. I came across those methods in different places, so I decided to create a blog post to summarize all my discoveries on this subject.</description>
+    </item>
     
     <item>
       <title>Twin types - properties synchronization without inheritance</title>

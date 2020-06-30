@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Methods with specific signature which have a special support in C#">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/methods-with-special-signature\/"
+            },
+          "headline" : "The Magical Methods in C#",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2020-06-30",
+          "dateModified" : "2020-06-29",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/methods-with-special-signature\/splashscreen.jpg",
+          "description": "Methods with specific signature which have a special support in C#"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2020-06-30">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/methods-with-special-signature/">	
+	<meta property="og:title" content="The Magical Methods in C#">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/methods-with-special-signature/splashscreen.jpg">
+    <meta property="og:description" content="Methods with specific signature which have a special support in C#">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="c#">
+    
+    <meta property="og:tags" content="protobuf">
+    
+    <meta property="og:tags" content="linq">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/methods-with-special-signature/splashscreen.jpg">
+	<meta property="twitter:title" content="The Magical Methods in C#">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Methods with specific signature which have a special support in C#">
+
+	<meta name="keywords" value="c#, protobuf, linq" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>The Magical Methods in C# &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>The Magical Methods in C#</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>30 June 2020</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>There&rsquo;s a certain set of special method signatures in C# which have particular support on the language level.
+Methods with those signatures allow for using a special syntax which has several benefits. For example, we can use them to simplify our code or create <code>DSL</code> to express a solution to our domain-specific problem in a much cleaner way. I came across those methods in different places, so I decided to create a blog post to summarize all my discoveries on this subject.</p>
+
+<h2 id="collection-initialization-syntax">Collection initialization syntax<a href="#collection-initialization-syntax" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers#collection-initializers">Collection initializer</a> is a quite old feature, as it exists in the language since version 3 (released in late 2007). Just as a reminder, <code>Collection initializer</code> allows for pre-populating a list by providing elements inside the block statement:</p>
+
+<pre><code class="language-csharp">var list = new List&lt;int&gt; { 1, 2, 3};
+</code></pre>
+
+<p>This translates simply to the following list of statements:</p>
+
+<pre><code class="language-csharp">var list = new List&lt;int&gt;();
+list.Add(1);
+list.Add(2);
+list.Add(3);
+</code></pre>
+
+<p><code>Collection initializer</code> is not characteristic only for arrays and collection types from <code>BCL</code> but can be used with any type meeting the following conditions:</p>
+
+<ul>
+<li>Implements <code>IEnumerable</code> interface</li>
+<li>Declares method with <code>void Add(T item)</code> signature</li>
+</ul>
+
+<pre><code class="language-csharp">public class CustomList&lt;T&gt;: IEnumerable
+{
+    public IEnumerator GetEnumerator() =&gt; throw new NotImplementedException();
+    public void Add(T item) =&gt; throw new NotImplementedException();
+}
+</code></pre>
+
+<p>We can add support for <code>Collection initializer</code> to existing types by defining the <code>Add</code> method as an extension method:</p>
+
+<pre><code class="language-cs">public static class ExistingTypeExtensions
+{
+    public static void Add&lt;T&gt;(ExistingType @this, T item) =&gt; throw new NotImplementedException();
+}
+</code></pre>
+
+<p>This syntax can be also used to insert elements into the collection field without accessible setter in initialization block:</p>
+
+<pre><code class="language-cs">class CustomType
+{
+    public List&lt;string&gt; CollectionField { get; private set; }  = new List&lt;string&gt;();
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var obj = new CustomType
+        {
+            CollectionField = 
+            {
+                &quot;item1&quot;,
+                &quot;item2&quot;
+            }
+        };
+    }
+}
+
+</code></pre>
+
+<p><code>Collection initializer</code> is quite helpful when we want to initialize collection with a well known number of items, but what if we want to set up collection with a dynamic number of elements? There is a less known syntax which allows for that, and it looks as follows:</p>
+
+<pre><code class="language-cs">var obj = new CustomType
+{
+    CollectionField = 
+    {
+        { existingItems }
+    }
+};
+</code></pre>
+
+<p>This is possible for types which meet the following conditions:</p>
+
+<ul>
+<li>Implements <code>IEnumerable</code> interface</li>
+<li>Declares method with <code>void Add(IEnumerable&lt;T&gt; items)</code> signature</li>
+</ul>
+
+<pre><code class="language-csharp">public class CustomList&lt;T&gt;: IEnumerable
+{
+    public IEnumerator GetEnumerator() =&gt; throw new NotImplementedException();
+    public void Add(IEnumerable&lt;T&gt; items) =&gt; throw new NotImplementedException();
+}
+</code></pre>
+
+<p>Unfortunately, array type and collections from <code>BCL</code> don&rsquo;t implement <code>void Add(IEnumerable&lt;T&gt; items)</code> method, but we could easily change that by defining an extension method for the existing collection types:</p>
+
+<pre><code class="language-cs">public static class ListExtensions
+{
+    public static void Add&lt;T&gt;(this List&lt;T&gt; @this, IEnumerable&lt;T&gt; items) =&gt; @this.AddRange(items);
+}
+
+</code></pre>
+
+<p>Thanks to this extension method it&rsquo;s now possible to write code which looks as follows:</p>
+
+<pre><code class="language-cs">var obj = new CustomType
+{
+    CollectionField = 
+    {
+        { existingItems.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) }
+    }
+};
+</code></pre>
+
+<p>or even compose the resulting collection from the mix of individual elements and results of multiple <code>enumerables</code>:</p>
+
+<pre><code class="language-cs">var obj = new CustomType
+{
+    CollectionField = 
+    {
+        individualElement1,
+        individualElement2,
+        { list1.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) },
+        { list2.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) },
+    }
+};
+</code></pre>
+
+<p>Without this syntax, it would be very hard to achieve a similar result inside the initialization block.</p>
+
+<p>I&rsquo;ve discovered this language feature by accident while working with mappings for types with collection fields generated from <code>protobuf</code> contracts. For those of you who are not familiar with <code>protobuf</code>, if you are using <a href="https://developers.google.com/protocol-buffers/docs/reference/csharp-generated">grpctools</a> to generate dotnet types from <code>proto</code> files, all collection fields are generated as follows:</p>
+
+<pre><code class="language-cs">[DebuggerNonUserCode]
+public RepeatableField&lt;ItemType&gt; SomeCollectionField
+{
+    get
+    {
+        return this.someCollectionField_;
+    }
+}
+</code></pre>
+
+<p>As you can see, collection fields in generated code don&rsquo;t have a setter, but a blessing in disguise, <a href="https://developers.google.com/protocol-buffers/docs/reference/csharp/class/google/protobuf/collections/repeated-field-t-">RepeatableField<T></a> implements <a href="https://developers.google.com/protocol-buffers/docs/reference/csharp/class/google/protobuf/collections/repeated-field-t-#class_google_1_1_protobuf_1_1_collections_1_1_repeated_field_3_01_t_01_4_1a6d0e9efbac818182068afae48b8d4599">void Add(IEnumerable<T> items)</a> so we can still initialize them inside the initialization block:</p>
+
+<pre><code class="language-cs">/// &lt;summary&gt;
+/// Adds all of the specified values into this collection. This method is present to
+/// allow repeated fields to be constructed from queries within collection initializers.
+/// Within non-collection-initializer code, consider using the equivalent &lt;see cref=&quot;AddRange&quot;/&gt;
+/// method instead for clarity.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;values&quot;&gt;The values to add to this collection.&lt;/param&gt;
+public void Add(IEnumerable&lt;T&gt; values)
+{
+    AddRange(values);
+}
+</code></pre>
+
+<h2 id="dictionary-initialization-syntax">Dictionary initialization syntax<a href="#dictionary-initialization-syntax" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>One of the cool features introduced in C# 6 was <a href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6#initialize-associative-collections-using-indexers">Index initializers</a> which simplified syntax for dictionary initialization. Thanks to that we can write dictionary init code in a much more readable way:</p>
+
+<pre><code class="language-cs">var errorCodes = new Dictionary&lt;int, string&gt;
+{
+    [404] = &quot;Page not Found&quot;,
+    [302] = &quot;Page moved, but left a forwarding address.&quot;,
+    [500] = &quot;The web server can't come out to play today.&quot;
+};
+</code></pre>
+
+<p>This code is translated to:</p>
+
+<pre><code class="language-cs">var errorCodes = new Dictionary&lt;int, string&gt;();
+errorCodes[404] = &quot;Page not Found&quot;;    
+errorCodes[302] = &quot;Page moved, but left a forwarding address.&quot;;    
+errorCodes[500] = &quot;The web server can't come out to play today.&quot;;    
+</code></pre>
+
+<p>It&rsquo;s not much but it definitely results with a better experience for writing and reading the code.</p>
+
+<p>The best thing about <code>Index initializer</code> is that it is not limited only to <code>Dictionary&lt;&gt;</code> class, it can be used with any type which defines an <code>indexer</code>:</p>
+
+<pre><code class="language-cs">class HttpHeaders
+{
+    public string this[string key]
+    {
+        get =&gt; throw new NotImplementedException();
+        set =&gt; throw new NotImplementedException();
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var headers = new HttpHeaders
+        {
+            [&quot;access-control-allow-origin&quot;] = &quot;*&quot;,
+            [&quot;cache-control&quot;] = &quot;max-age=315360000, public, immutable&quot;
+        };
+    }
+}
+</code></pre>
+
+<h2 id="deconstructors">Deconstructors<a href="#deconstructors" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>In C# 7.0, together with tuples, a deconstructor mechanism has been introduced. Deconstructors allow for &ldquo;decomposing&rdquo; a tuple into a set of individual variables as follows:</p>
+
+<pre><code class="language-cs">var point = (5, 7);
+// decomposing tuple into separated variables
+var (x, y) = point;
+</code></pre>
+
+<p>which is equivalent to:</p>
+
+<pre><code class="language-cs">ValueTuple&lt;int, int&gt; point = new ValueTuple&lt;int, int&gt;(1, 4);
+int x = point.Item1;
+int y = point.Item2;
+</code></pre>
+
+<p>This syntax allows also for switching values of two variables without the need for an explicit declaration of the third variable:</p>
+
+<pre><code class="language-cs">int x = 5, y = 7;
+//switch
+(x, y) = (y,x);
+</code></pre>
+
+<p>&hellip; or for a more succinct way of member initialization:</p>
+
+<pre><code class="language-cs">class Point
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Point(int x, int y)  =&gt; (X, Y) = (x, y);
+}
+</code></pre>
+
+<p>Deconstructors can be used not only with tuples but with custom types too. To allow for deconstructing custom type, it needs to implement a method that obeys the following rules:</p>
+
+<ul>
+<li>It&rsquo;s named <code>Deconstruct</code></li>
+<li>Returns void</li>
+<li>Every parameter has to be defined with <code>out</code> modifier</li>
+</ul>
+
+<p>For our type <code>Point</code> we can define deconstructor in the following way:</p>
+
+<pre><code class="language-cs">class Point
+{
+    public int X {get;}
+    public int Y {get;}
+
+    public Point(int x, int y) =&gt; (X, Y) = (x, y);
+    
+    public void Deconstruct(out int x, out int y) =&gt; (x, y) = (X, Y);
+}
+</code></pre>
+
+<p>and sample usage can look as follows:</p>
+
+<pre><code class="language-cs">var point = new Point(2,4);
+var (x, y)= point;        
+</code></pre>
+
+<p>which under the hood is translated to:</p>
+
+<pre><code class="language-cs">int x;
+int y;
+new Point(2, 4).Deconstruct(out x, out y);
+</code></pre>
+
+<p>Deconstructors can be added to types declared outside the source code by defining them as an extension method:</p>
+
+<pre><code class="language-cs">public static class PointExtensions
+{
+     public static void Deconstruct(this Point @this, out int x, out int y) =&gt; (x, y) = (@this.X, @this.Y);
+}
+</code></pre>
+
+<p>One of the most useful examples of deconstructors is the one for <code>KeyValuePair&lt;TKey,TValue&gt;</code>, which allows for easy access to key and value while iterating over a dictionary:</p>
+
+<pre><code class="language-cs">foreach(var (key, value) in new Dictionary&lt;int, string&gt; { [1] = &quot;val1&quot;, [2] = &quot;val2&quot; })
+{
+    //TODO: Do something
+}
+</code></pre>
+
+<p><code>KeyValuePair&lt;TKey,TValue&gt;.Deconstruct(TKey, TValue)</code> is available only from <code>netstandard2.1</code>. For previous <code>netstandard</code> versions we need to add it manually using the approach with the extension method.</p>
+
+<h2 id="custom-awaitable-types">Custom awaitable types<a href="#custom-awaitable-types" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>C# 5 (released together with Visual Studio 2012) introduced an <code>async/await</code> mechanism which was a real game-changer in the area of asynchronous programming. Before that, handling invocation of asynchronous methods resulted very often in quite a messy code, especially when there was more than one asynchronous invocation:</p>
+
+<pre><code class="language-cs">void DoSomething()
+{
+    DoSomethingAsync().ContinueWith((task1) =&gt; {
+        if (task1.IsCompletedSuccessfully)
+        {
+            DoSomethingElse1Async(task1.Result).ContinueWith((task2) =&gt; {
+                if (task2.IsCompletedSuccessfully)
+                {
+                    DoSomethingElse2Async(task2.Result).ContinueWith((task3) =&gt; {
+                        //TODO: Do something
+                    });
+                }
+            });
+        }
+    });
+}
+
+private Task&lt;int&gt; DoSomethingAsync() =&gt; throw new NotImplementedException();
+private Task&lt;int&gt; DoSomethingElse1Async(int i) =&gt; throw new NotImplementedException();
+private Task&lt;int&gt; DoSomethingElse2Async(int i) =&gt; throw new NotImplementedException();
+</code></pre>
+
+<p>With <code>async/await</code> syntax this can be written in a much cleaner way:</p>
+
+<pre><code class="language-cs">async Task DoSomething()
+{
+    var res1 = await DoSomethingAsync();
+    var res2 = await DoSomethingElse1Async(res1);
+    await DoSomethingElse2Async(res2);
+}
+</code></pre>
+
+<p>This might be surprising, but the <code>await</code> keyword is not reserved to work only with the <code>Task</code> type. It can be used with any type which contains a method called <code>GetAwaiter</code> and  returns type that meets the following requirement:</p>
+
+<ul>
+<li>Implements the <code>System.Runtime.CompilerServices.INotifyCompletion</code> interface with <code>void OnCompleted(Action continuation)</code> method.</li>
+<li>Contains the <code>IsCompleted</code> boolean property.</li>
+<li>Contains the  parameter-less <code>GetResult</code> method .</li>
+</ul>
+
+<p>To add support of <code>await</code> keyword to the custom type we need to define <code>GetAwaiter</code> method that returns an instance of <code>TaskAwaiter&lt;TResult&gt;</code> or a custom type that meets aforementioned conditions:</p>
+
+<pre><code class="language-cs">class CustomAwaitable
+{
+    public CustomAwaiter GetAwaiter() =&gt; throw new NotImplementedException();
+}
+
+class CustomAwaiter: INotifyCompletion
+{
+    public void OnCompleted(Action continuation) =&gt; throw new NotImplementedException();
+
+    public bool IsCompleted =&gt; =&gt; throw new NotImplementedException();
+
+    public void GetResult() =&gt; throw new NotImplementedException();
+}
+</code></pre>
+
+<p>You may wonder what could be a possible scenario of using <code>await</code> syntax with custom awaitable type. If that&rsquo;s the case, I highly recommend reading the article from <a href="https://devblogs.microsoft.com/pfxteam/author/toub/">Stephen Toub</a> entitled &ldquo;<a href="https://devblogs.microsoft.com/pfxteam/await-anything/">await anything</a>&rdquo; which provides plenty of interesting examples.</p>
+
+<h2 id="the-query-expression-pattern">The query expression pattern<a href="#the-query-expression-pattern" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The best invention of C# 3.0 was definitely <code>Language-Integrated Query</code>, known as <code>LINQ</code>, which allows for collection manipulation using SQL-like syntax.<code>LINQ</code> comes in two variations: SQL-like syntax and Extension method syntax. I prefer the second one because in my opinion it is more readable, but it&rsquo;s probably because I&rsquo;m accustomed to it. An interesting fact about the SQL-like syntax is that it is translated into the Extension method syntax during the compilation because it&rsquo;s a C#, not <code>CLR</code> feature. <code>LINQ</code> was invented in the first place to work with <code>IEnumerable</code>, <code>IEnumerable&lt;T&gt;</code> and <code>IQueryable&lt;T&gt;</code> types but it&rsquo;s not limited to them, we can use it with any type that meets requirements of <a href="https://github.com/dotnet/csharplang/blob/master/spec/expressions.md#the-query-expression-pattern">query expression pattern</a>. The complete set of method signatures used by <code>LINQ</code> looks as follows:</p>
+
+<pre><code class="language-csharp">class C
+{
+    public C&lt;T&gt; Cast&lt;T&gt;();
+}
+
+class C&lt;T&gt; : C
+{
+    public C&lt;T&gt; Where(Func&lt;T,bool&gt; predicate);
+
+    public C&lt;U&gt; Select&lt;U&gt;(Func&lt;T,U&gt; selector);
+
+    public C&lt;V&gt; SelectMany&lt;U,V&gt;(Func&lt;T,C&lt;U&gt;&gt; selector, Func&lt;T,U,V&gt; resultSelector);
+
+    public C&lt;V&gt; Join&lt;U,K,V&gt;(C&lt;U&gt; inner, Func&lt;T,K&gt; outerKeySelector, Func&lt;U,K&gt; innerKeySelector, Func&lt;T,U,V&gt; resultSelector);
+
+    public C&lt;V&gt; GroupJoin&lt;U,K,V&gt;(C&lt;U&gt; inner, Func&lt;T,K&gt; outerKeySelector, Func&lt;U,K&gt; innerKeySelector, Func&lt;T,C&lt;U&gt;,V&gt; resultSelector);
+
+    public O&lt;T&gt; OrderBy&lt;K&gt;(Func&lt;T,K&gt; keySelector);
+
+    public O&lt;T&gt; OrderByDescending&lt;K&gt;(Func&lt;T,K&gt; keySelector);
+
+    public C&lt;G&lt;K,T&gt;&gt; GroupBy&lt;K&gt;(Func&lt;T,K&gt; keySelector);
+
+    public C&lt;G&lt;K,E&gt;&gt; GroupBy&lt;K,E&gt;(Func&lt;T,K&gt; keySelector, Func&lt;T,E&gt; elementSelector);
+}
+
+class O&lt;T&gt; : C&lt;T&gt;
+{
+    public O&lt;T&gt; ThenBy&lt;K&gt;(Func&lt;T,K&gt; keySelector);
+
+    public O&lt;T&gt; ThenByDescending&lt;K&gt;(Func&lt;T,K&gt; keySelector);
+}
+
+class G&lt;K,T&gt; : C&lt;T&gt;
+{
+    public K Key { get; }
+}
+</code></pre>
+
+<p>Of course, we don&rsquo;t need to implement all of those methods to use <code>LINQ</code> syntax with our custom type. The list of <code>LINQ</code> operators and methods required for them can be found <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/query-expression-syntax-for-standard-query-operators">here</a>. <code>LINQ</code> syntax with custom types is very often used to implement monads. A really good explanation how to do it can be found in the article <a href="https://codewithstyle.info/understand-monads-linq/">Understand monads with LINQ</a> by <a href="http://miloszpiechocki.com/">Miłosz Piechocki</a></p>
+
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>The purpose of this article was not to encourage you to abuse those syntax tricks but rather to demystify them. On the other hand, they should not be completely avoided. They were invented to be used, and sometimes they can make your code much cleaner. If you are afraid that the resulting code might not be so obvious to your teammates, you should find a way to share your knowledge or at least link to this article ;)
+I&rsquo;m not sure if it&rsquo;s a complete set of those &ldquo;magical methods&rdquo; - if you know any others, I would appreciate you sharing that in the comment section below.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-twin-types/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
+								<div class="card-body">
+									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/better-non-nullable-handling/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/better-non-nullable-handling/splashscreen_hua2a5c0e1b25e36f0314c2d7b21c3fd45_140846_320x240_fill_q75_box_smart1.jpg" alt="Improving non-nullable reference types handling">
+								<div class="card-body">
+									<h5 class="card-title">Improving non-nullable reference types handling</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/immutable-types-with-roslyn/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/immutable-types-with-roslyn/splashscreen_huaa82303c0a77d2d4d144cbc984e30c6a_133252_320x240_fill_q75_box_smart1.jpg" alt="Immutable types in C# with Roslyn">
+								<div class="card-body">
+									<h5 class="card-title">Immutable types in C# with Roslyn</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>
