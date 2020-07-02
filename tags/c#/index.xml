@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>C# on Cezary Piątek Blog</title>
+    <title>c# on Cezary Piątek Blog</title>
     <link>https://cezarypiatek.github.io/tags/c#/</link>
-    <description>Recent content in C# on Cezary Piątek Blog</description>
+    <description>Recent content in c# on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 30 Jun 2020 00:08:00 +0200</lastBuildDate>

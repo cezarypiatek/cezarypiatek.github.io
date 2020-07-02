@@ -76,14 +76,37 @@ class Program
 
 ```
 
-`Collection initializer` is quite helpful when we want to initialize collection with a well known number of items, but what if we want to set up collection with a dynamic number of elements? There is a less known syntax which allows for that, and it looks as follows:
+`Add` method can have more than one parameter:
+
+```csharp
+public class CustomList<T>: IEnumerable
+{
+    public IEnumerator GetEnumerator() => throw new NotImplementedException();
+    public void Add(T item, string extraParam1, int extraParam1) => throw new NotImplementedException();
+}
+```
+
+To use this overload inside the initialization block we need to wrap all parameters in extra pair of curly braces:
 
 ```cs
 var obj = new CustomType
 {
     CollectionField = 
     {
-        { existingItems }
+        {"item1", "extraParamVal1", 2 },
+        {"item2", "extraParamVal2", 3 }
+    }
+};
+```
+
+`Collection initializer` is quite often used to initialize collection with a well known number of items, but we can utilize it to set up collection with a dynamic number of elements. In both cases the syntax is identical:
+
+```cs
+var obj = new CustomType
+{
+    CollectionField = 
+    {
+       existingItems
     }
 };
 ```
@@ -117,7 +140,7 @@ var obj = new CustomType
 {
     CollectionField = 
     {
-        { existingItems.Where(x => /*Filter items*/) .Select(x => /*Map items*/) }
+        existingItems.Where(x => /*Filter items*/) .Select(x => /*Map items*/) 
     }
 };
 ```
@@ -131,8 +154,8 @@ var obj = new CustomType
     {
         individualElement1,
         individualElement2,
-        { list1.Where(x => /*Filter items*/) .Select(x => /*Map items*/) },
-        { list2.Where(x => /*Filter items*/) .Select(x => /*Map items*/) },
+        list1.Where(x => /*Filter items*/) .Select(x => /*Map items*/),
+        list2.Where(x => /*Filter items*/) .Select(x => /*Map items*/)
     }
 };
 ```

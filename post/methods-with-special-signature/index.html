@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-06-30",
-          "dateModified" : "2020-06-29",
+          "dateModified" : "2020-06-30",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/methods-with-special-signature\/splashscreen.jpg",
           "description": "Methods with specific signature which have a special support in C#"
         }
@@ -231,13 +231,34 @@ class Program
 
 </code></pre>
 
-<p><code>Collection initializer</code> is quite helpful when we want to initialize collection with a well known number of items, but what if we want to set up collection with a dynamic number of elements? There is a less known syntax which allows for that, and it looks as follows:</p>
+<p><code>Add</code> method can have more than one parameter:</p>
+
+<pre><code class="language-csharp">public class CustomList&lt;T&gt;: IEnumerable
+{
+    public IEnumerator GetEnumerator() =&gt; throw new NotImplementedException();
+    public void Add(T item, string extraParam1, int extraParam1) =&gt; throw new NotImplementedException();
+}
+</code></pre>
+
+<p>To use this overload inside the initialization block we need to wrap all parameters in extra pair of curly braces:</p>
 
 <pre><code class="language-cs">var obj = new CustomType
 {
     CollectionField = 
     {
-        { existingItems }
+        {&quot;item1&quot;, &quot;extraParamVal1&quot;, 2 },
+        {&quot;item2&quot;, &quot;extraParamVal2&quot;, 3 }
+    }
+};
+</code></pre>
+
+<p><code>Collection initializer</code> is quite often used to initialize collection with a well known number of items, but we can utilize it to set up collection with a dynamic number of elements. In both cases the syntax is identical:</p>
+
+<pre><code class="language-cs">var obj = new CustomType
+{
+    CollectionField = 
+    {
+       existingItems
     }
 };
 </code></pre>
@@ -271,7 +292,7 @@ class Program
 {
     CollectionField = 
     {
-        { existingItems.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) }
+        existingItems.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) 
     }
 };
 </code></pre>
@@ -284,8 +305,8 @@ class Program
     {
         individualElement1,
         individualElement2,
-        { list1.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) },
-        { list2.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/) },
+        list1.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/),
+        list2.Where(x =&gt; /*Filter items*/) .Select(x =&gt; /*Map items*/),
     }
 };
 </code></pre>
