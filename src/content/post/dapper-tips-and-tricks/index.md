@@ -95,9 +95,9 @@ data.
 ```cs
 public class User
 {
-    public override int Id {get; set;}
-    public string FirstName { get;  }
-    public string LastName { get; private set; }
+    public int Id {get; set;}
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public Address MainAddress { get; set; }
 }
 
@@ -113,55 +113,213 @@ public class Address
 
 In order to fetch complete user data we can use one of the following approaches:
 
-We can fetch direct attributes (Id, FirstName, LastName) with one query, fetch address data with another one and merge user with address in memory:
+We can introduce some sort of intermediate type for fetching result of the SQL query and then map it to the destination type in the memory. I call those intermediate types `DBO - DataBase Object`:
+
 
 ```cs
-public class UserRepository
+public class UserDBO
 {
-    public static readonly string GetUserBasicDataSqlQuery = ""; /*TODO: Here comes query for fetching user basic data*/
-    public static readonly string GetAddressDataSqlQuery = ""; /*TODO: Here comes query for fetching address data*/
-
-    public async Task<User> GetUser(IDbConnection connection, int id, CancellationToken cancellationToken)
-    {
-        var user = await connection.QueryFirstOrDefaultAsync<User>(GetUserBasicDataSqlQuery, new {UserId = id}, cancellationToken);
-        if(user == null)
-        {
-            return null
-        }
-        user.MainAddress = await connection.QueryFirstOrDefaultAsync<Address>(GetAddressDataSqlQuery, new {UserId = id}, cancellationToken);
-        return user;
-    }
+    public int Id {get; set;}
+    public string FirstName { get;  }
+    public string LastName { get; private set; }
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+    public string Street { get; set; }
+    public string FlatNo { get; set; }
+    public string BuildingNo { get; set; }
 }
-```
-We can reduce the number of roundtrips to database by merging those two queries and executing then with `SqlMapper.GridReader`:
 
-```cs
 public class UserRepository
 {
-    public static readonly string GetUserCompleteDataSqlQuery = @"
-        -- Fetch user basic data
-        -- Fetch address data
-    ";
+    static readonly string GetAllUserDataSqlQuery = ""; /*TODO: Here comes query for fetching user basic data*/
     
-
-    public async Task<User> GetUser(IDbConnection connection, int id, CancellationToken cancellationToken)
+    public async Task<User> GetUser(IDbConnection connection, int id)
     {
-        using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery,  new {UserId = id});
-        var user = await gridReader.ReadFirstOrDefault<Address>();
+        var userDBO = await connection.QueryFirstOrDefaultAsync<UserDBO>(GetAllUserDataSqlQuery, new {UserId = id});
+        if(userDBO == null)
+        {
+            return null;
+        }
+        return new User
+        {
+            Id = userDBO.Id,
+            FirstName = userDBO.FirstName,
+            LastName = userDBO.LastName,
+            //TODO: If the address is optional then we should check if all attributes are not empty before creating an instance of Address
+            MainAddress = new Address
+            {
+                City = userDBO.City,
+                ZipCode = userDBO.ZipCode,
+                Street = userDBO.Street,
+                FlatNo = userDBO.FlatNo,
+                BuildingNo = userDBO.BuildingNo
+            }
+        };
+    }
+}
+```
+
+This solution has several disadvantages: 
+- It requires intermediate DBO type.
+- It requires additional mapping code to adjust fetched data to the desired structure
+- If we change the relation between User and Address from one-to-one to one-to-many it will result w data duplication.
+
+Another option is to fetch direct attributes (Id, FirstName, LastName) with one query, fetch address data with another one and merge user with address in memory:
+
+```cs
+public class UserRepository
+{
+    static readonly string GetUserBasicDataSqlQuery = ""; /*TODO: Here comes query for fetching user basic data*/
+    static readonly string GetAddressDataSqlQuery = ""; /*TODO: Here comes query for fetching address data*/
+
+    public async Task<User> GetUser(IDbConnection connection, int id)
+    {
+        var user = await connection.QueryFirstOrDefaultAsync<User>(GetUserBasicDataSqlQuery, new {UserId = id});
         if(user == null)
         {
-            return null
+            return null;
         }
-
-        user.MainAddress = await gridReader.ReadFirstOrDefault<User>();
+        user.MainAddress = await connection.QueryFirstOrDefaultAsync<Address>(GetAddressDataSqlQuery, new {UserId = id});
         return user;
     }
 }
 ```
 
-Things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:
+This approach require two calls to database but it can be reduce by merging those two queries into a single string and executing it with `SqlMapper.GridReader`:
 
 ```cs
-Here comes complicated example
+public class UserRepository
+{
+    static readonly string GetUserBasicDataSqlQuery = ""; /*TODO: Here comes query for fetching user basic data*/
+    static readonly string GetAddressDataSqlQuery = ""; /*TODO: Here comes query for fetching address data*/
+
+     static readonly string GetUserCompleteDataSqlQuery = @$"
+        -- Fetch user basic data
+        {GetUserBasicDataSqlQuery};
+        -- Fetch address data
+        {GetAddressDataSqlQuery};
+    ";    
+
+    public async Task<User> GetUser(IDbConnection connection, int id)
+    {
+        using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery, new { UserId = id });
+        var user = await gridReader.ReadFirstOrDefaultAsync<User>();
+        if (user == null)
+        {
+            return null;
+        }
+
+        user.MainAddress = await gridReader.ReadFirstOrDefaultAsync<Address>();
+        return user;
+    }
+}
+```
+Looks like this solution is much cleaner and requires less code than the option with the intermediate DBO object but things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:
+
+```cs
+public async Task<IReadOnlyCollection<User>> GetAllUsers(IDbConnection connection)
+{
+    using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery);
+    var users = (await gridReader.ReadAsync<User>()).ToList();
+    var addresses =  await gridReader.ReadAsync<Address>();
+    //INFO: Address entity needs to be extended with UserId in order to merge the data correctly
+    var addressesByUserId = addresses.GroupBy(x => x.UserId).ToDictionary(x => x.Key, x => x);
+    foreach (var user in users)
+    {
+        if (addressesByUserId.TryGetValue(user.Id, out var userAddresses))
+        {
+            user.Addresses = userAddresses.ToList();
+        }
+    }
+    return users;
+}
 ```
 
+
+We can simplify it by taking leverage of JSON support in SQL Server. For the relation 1-1 between the `User` and `Address` our sql query can look as follows:
+
+```sql
+SELECT
+    u.UserId AS [UserId],
+    u.FirstName AS [FirstName],
+    u.LastName AS [LastName]
+    a.City AS [MainAddress.City],
+    a.ZipCode AS [MainAddress.ZipCode],
+    a.Street AS [MainAddress.Street],
+    a.FlatNo AS [MainAddress.FlatNo],
+    a.BuildingNo AS [MainAddress.BuildingNo],
+FROM
+    Users u 
+    LEFT JOIN Addresses a ON a.UserId = u.UserID
+FOR JSON PATH
+```
+
+Are we can rewrite it to handle one-to-many relation using sub-query:
+
+```sql
+SELECT
+    u.UserId as [UserId],
+    u.FirstName as [FirstName],
+    u.LastName as [LastName]
+    (
+        SELECT
+            a.City AS [City],
+            a.ZipCode AS [ZipCode],
+            a.Street AS [Street],
+            a.FlatNo AS [FlatNo],
+            a.BuildingNo AS [BuildingNo]
+        FROM 
+            Addresses a
+        WHERE
+            a.UserId = u.UserID
+        FOR JSON PATH
+    )  AS [Addresses]
+FROM
+    Users u 
+```
+
+But how can we fetch this JSON sql query result using Dapper? The most common solution that we can come across in the internet is to create a custom type handler for our sql query result:
+
+```cs
+public class JsonTypeHandler<TResult>: SqlMapper.TypeHandler<TResult>
+{
+    public override void SetValue(IDbDataParameter parameter, TResult value) => 
+        throw new NotSupportedException($"Sending '{typeof(TResult).FullName}' type to database is not supported");
+
+    public override TResult Parse(object value)
+    {
+        var jsonPayload = value?.ToString();
+        if (string.IsNullOrWhiteSpace(jsonPayload))
+        {
+            return default;
+        }
+        return JsonConvert.DeserializeObject<TResult>(jsonPayload);
+    }
+}
+```
+
+After registering type handler with:
+
+```cs
+SqlMapper.AddTypeHandler(new JsonTypeHandler<User>());
+```
+we can query our data with `Query<>()` method as usual. However this approach with custom type handler has two disadvantages:
+
+- We need to register `JsonTypeHandler<>` for every most outer type which we are querying
+- This won't work for larger objects because SQL server will split long JSON string across multiple rows. You can read more about that on MSDN in the section [Output of the FOR JSON clause](https://docs.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server?view=sql-server-ver15#output-of-the-for-json-clause)
+
+
+
+We can solve both problem by executing sql queries with the following extension method:
+
+```cs
+public static class SqlQueryExtensions
+{
+    public static async Task<TResult> QueryFromJson<TResult>(this IDbConnection connection, string sqlQuery, object param)
+    {
+        var chunks = await connection.QueryAsync<string>(sqlQuery, param);
+        var completeJsonPayload = string.Concat(chunks);
+        return JsonConvert.DeserializeObject<TResult>(completeJsonPayload);
+    }
+}
+```
