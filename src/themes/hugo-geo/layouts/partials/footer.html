@@ -45,6 +45,17 @@
   {{ range .Params.scripts }}
   <script src="{{ . }}"></script>
   {{ end }}
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "{{$s:=""}}{{ range $tag := .Params.tags }}{{$s = print $s (replace (replace $tag " " "") "#" "sharp" ) ","}}{{end}}{{strings.TrimSuffix "," $s}}"
+			}
+		}
+	}
+	</script> 
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid={{- .Site.Params.addThis -}}" async></script>
   {{ if .Params.hasVideo }}
 	<script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.min.js"></script>  
