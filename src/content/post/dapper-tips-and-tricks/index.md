@@ -2,7 +2,7 @@
 title: "Working efficiently with legacy database using Dapper"
 description: "A couple of tricks which simplify database access code while using Dapper library"
 date: 2020-07-25T00:11:45+02:00
-tags : ["Dapper", "SqlServer", "C#", "clean code"]
+tags : ["Dapper", "SqlServer", "C#", "clean code", "dotnet"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
@@ -65,7 +65,7 @@ WHERE
 }
 ```
 
-This is a classical example of well know code smell called `magic numbers`. We can solved this problem again with string interpolation. __It's tempting to introduce an enum that represents a set of available values but unfortunately using enum as a parameter for interpolated string will prevent compiler from evaluating expression during the compilation. Evaluation will occur in the runtime and will result creating a new string in the memory every time when the code is executed which can have negative impact on the application performance.__ You can check it on this [Sharplab.io example](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6ag+rQe0IuOGaYsEAFQCe6BC8egIAggDGMKIAbpYAvPQUBACsADSh0rhQUbEJSQQAbC60tAYMAEoQ6AD2yKIwNQj+8qHoCLGwliQUhfRIUDI1uAA2LT0ADPQA4irMOMgAMqLIMACKcDgtiSQkACQARLQAygCii6cAwr7OjoLzCFKsabdOD6YWtABiFZwAsq97j5kLQAOoACVOFVOmQeASC9ESPDhgQgADpItE4g4DqoXEA) In order to avoid it, it's better to defined those magic values as const (and it must be a string even if they are numeric values):
+This is a classical example of well know code smell called `magic numbers`. We can solved this problem again with string interpolation. __It's tempting to introduce an enum that represents a set of available values but unfortunately using enum as a parameter for interpolated string will prevent compiler from evaluating expression during the compilation. Evaluation will occur in the runtime and will result creating a new string in the memory every time when the code is executed.__ This can have negative impact on the application performance especially when you define sql queries as local variables. You can check it on this [Sharplab.io example](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6ag+rQe0IuOGaYsEAFQCe6BC8egIAggDGMKIAbpYAvPQUBACsADSh0rhQUbEJSQQAbC60tAYMAEoQ6AD2yKIwNQj+8qHoCLGwliQUhfRIUDI1uAA2LT0ADPQA4irMOMgAMqLIMACKcDgtiSQkACQARLQAygCii6cAwr7OjoLzCFKsabdOD6YWtABiFZwAsq97j5kLQAOoACVOFVOmQeASC9ESPDhgQgADpItE4g4DqoXEA) In order to avoid it, it's better to defined those magic values as const and they must be a string even if they are numeric values, otherwise compiler generates invocation of `System.String.Format()` instead of creating single string:
 
 ```cs
 public class Repository {
@@ -88,8 +88,80 @@ WHERE
 }
 ```
 
-
-
-## Multiple queries in a single run
-
 ## Bridge the gap between relational and object-oriented models 
+Very often posts advertising micro ORMs presents fairly simple examples where database data structures match almost 1-1 the C# structures. However, the reality is quite different and the discrepancy between relational and object-oriented model might be expensive and results with large amount of code responsible for fetching and transforming 
+data.
+
+```cs
+public class User
+{
+    public override int Id {get; set;}
+    public string FirstName { get;  }
+    public string LastName { get; private set; }
+    public Address MainAddress { get; set; }
+}
+
+public class Address
+{
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+    public string Street { get; set; }
+    public string FlatNo { get; set; }
+    public string BuildingNo { get; set; }
+}
+```
+
+In order to fetch complete user data we can use one of the following approaches:
+
+We can fetch direct attributes (Id, FirstName, LastName) with one query, fetch address data with another one and merge user with address in memory:
+
+```cs
+public class UserRepository
+{
+    public static readonly string GetUserBasicDataSqlQuery = ""; /*TODO: Here comes query for fetching user basic data*/
+    public static readonly string GetAddressDataSqlQuery = ""; /*TODO: Here comes query for fetching address data*/
+
+    public async Task<User> GetUser(IDbConnection connection, int id, CancellationToken cancellationToken)
+    {
+        var user = await connection.QueryFirstOrDefaultAsync<User>(GetUserBasicDataSqlQuery, new {UserId = id}, cancellationToken);
+        if(user == null)
+        {
+            return null
+        }
+        user.MainAddress = await connection.QueryFirstOrDefaultAsync<Address>(GetAddressDataSqlQuery, new {UserId = id}, cancellationToken);
+        return user;
+    }
+}
+```
+We can reduce the number of roundtrips to database by merging those two queries and executing then with `SqlMapper.GridReader`:
+
+```cs
+public class UserRepository
+{
+    public static readonly string GetUserCompleteDataSqlQuery = @"
+        -- Fetch user basic data
+        -- Fetch address data
+    ";
+    
+
+    public async Task<User> GetUser(IDbConnection connection, int id, CancellationToken cancellationToken)
+    {
+        using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery,  new {UserId = id});
+        var user = await gridReader.ReadFirstOrDefault<Address>();
+        if(user == null)
+        {
+            return null
+        }
+
+        user.MainAddress = await gridReader.ReadFirstOrDefault<User>();
+        return user;
+    }
+}
+```
+
+Things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:
+
+```cs
+Here comes complicated example
+```
+
