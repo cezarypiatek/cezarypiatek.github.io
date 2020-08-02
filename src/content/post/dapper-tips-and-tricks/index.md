@@ -7,17 +7,17 @@ highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
-A year ago I started working on a set of projects which requires accessing data from the huge legacy database. There was a decision to use [Dapper](https://github.com/StackExchange/Dapper) to facilitate database access code. For those of you who are not familiar with Dapper, it's a set of extension methods to [IDbConnection](https://docs.microsoft.com/en-us/dotnet/api/system.data.idbconnection?view=netcore-3.1) which allows to easily map C# object to SQL query parameters as well as SQL query result to C# objects. I was quite skeptical to use library which requires writing `SQL queries` directly in the C# code because I got used to relying always on ORMs (especially `NHibernate`). Over the year, `Dapper` turned to be the right tool for the job. In the meantime, I also discovered a couple of features and tricks which allow me to write quite concise and easy to maintain database access code and I think it's worth sharing them here.
+A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use [Dapper](https://github.com/StackExchange/Dapper) to facilitate database access code. For those of you who are not familiar with Dapper, it's a set of extension methods to [IDbConnection](https://docs.microsoft.com/en-us/dotnet/api/system.data.idbconnection?view=netcore-3.1), which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing `SQL queries` directly in the C# code, because I got used to relying always on ORMs (`NHibernate` in particular). Throughout the year, `Dapper` has proven to be the right tool for the job. In the meantime, I also discovered a couple of features and tricks that allow me to write quite concise and easy to maintain database access code, and I think it's worth sharing them here.
 
 >  Key Takeaways:
 >   
-   - Always defined aliases in SQL queries using `nameof()` operator
+   - Always define aliases in SQL queries using `nameof()` operator
    - Use C# consts and enums in SQL queries instead of magic numbers
-   - Use `FOR JSON PATH` to simplify fetching complex objects from databse
+   - Use `FOR JSON PATH` to simplify fetching complex objects from database
 
 ## Resilient to refactoring
 
-Dapper allows easily map SQL query results to C# objects base on the naming convention. There's no problem if the database table columns' names match object fields' name - if there's a discrepancy you can deal with it by adding aliases:
+Dapper allows to easily map SQL query results to C# objects based on the naming convention. There's no problem if the database table columns' names match object fields' name - if there's a discrepancy, you can deal with it by adding aliases:
 
 ```sql
 SELECT 
@@ -39,9 +39,9 @@ FROM
 "
 ```
 
-This not only takes away the threat of breaking the code while renaming `DBO` fields but also gives better discoverability and navigability in the code. Using `find usage` option, we can also find where a given field is used in the SQL queries too. And there's no performance penalty because the compilator can evaluate this string interpolation during the compilation because all of the parameters are const. You can verify it by yourself with this [Sharplab.io example](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6aD2gYYAlCOgD2yUTE8IAT3k9enQEUQA3WEsSCgA2eiQoGU9cABsg2IAGegBxFWYcZAAZUWQYAEU4HCCAXiESABIAIloAZQBRYo6AYQAVehCmFgQpVnoAQTb6AG0eXHMITzAACkKEDk4AOlkASm0AXQAaQZpBYZxTC0npuYWLZbWRza2riH2D2gAxV04AWVO53WyFozVUtG0QA)
+This not only takes away the threat of breaking the code while renaming `DBO` fields but also gives better discoverability and navigability in the code. Using `find usage` option, we can also find where a given field is used in the SQL queries. And there's no performance penalty because the compiler can evaluate this string interpolation during the compilation, because all of the parameters are const. You can verify it by yourself with this [Sharplab.io example](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6aD2gYYAlCOgD2yUTE8IAT3k9enQEUQA3WEsSCgA2eiQoGU9cABsg2IAGegBxFWYcZAAZUWQYAEU4HCCAXiESABIAIloAZQBRYo6AYQAVehCmFgQpVnoAQTb6AG0eXHMITzAACkKEDk4AOlkASm0AXQAaQZpBYZxTC0npuYWLZbWRza2riH2D2gAxV04AWVO53WyFozVUtG0QA)
 
-But what if we want to get the result of the string interpolation without the need to run the whole program in debug mode? This is often needed when there's a bug in the query and we want to copy it and test in the `Management Studio`. This can be easily archived with `Immediate window` - yes, that's right, you can use `Immediate window` to evaluate the code in the design time. To evaluate the string just enter fully qualified field name that holds the query into the `Immediate window`:
+But what if we want to get the result of the string interpolation without the need to run the whole program in debug mode? This is often needed when there's a bug in the query and we want to copy it and test in the `Management Studio`. This can be easily archived with `Immediate window` - yes, that's right, you can use `Immediate window` to evaluate the code in the design time. To evaluate the string, just enter fully qualified field name that holds the query into the `Immediate window`:
 
 ![](evaluated_string_interpolation.jpg)
 
@@ -49,13 +49,13 @@ Unfortunately, the output is not well-formatted and contains additional characte
 
 ![](evaluated_string_interpolation_with_nq.jpg)
 
-If you are using `Resharper` then you can avoid typing long `FQN` and copy it with a special option for that purpose:
+If you are using `Resharper` then you can avoid typing long `FQN` and copy it with a special option for this purpose:
 
 ![](resharper_copy_FQN.jpg)
 
 ## No magic numbers
 
-Sometimes there is a need to use some sort of constant values in the SQL query (especially in the conditions). Queries with those cryptic values are very hard to review or even can cause a problem with understanding for the author when she/he gets back after a while to them:
+Sometimes there is a need to use some sort of constant values in the SQL query (especially in the conditions). Queries with those cryptic values are very hard to review or even can cause a problem with understanding for the author himself after a while:
 
 ```cs
 public class Repository {
@@ -71,7 +71,7 @@ WHERE
 }
 ```
 
-This is a classical example of well know code smell called `magic numbers`. We can solve this problem again with string interpolation. __It's tempting to introduce an enum that represents a set of available values but unfortunately using an enum as a parameter for the interpolated string will prevent the compiler from evaluating expression during the compilation. The evaluation will occur in the runtime and will result in creating a new string in the memory whenever the code is executed.__ This can hurt the application performance especially when you define SQL queries as local variables. You can check it on this [Sharplab.io example](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6ag+rQe0IuOGaYsEAFQCe6BC8egIAggDGMKIAbpYAvPQUBACsADSh0rhQUbEJSQQAbC60tAYMAEoQ6AD2yKIwNQj+8qHoCLGwliQUhfRIUDI1uAA2LT0ADPQA4irMOMgAMqLIMACKcDgtiSQkACQARLQAygCii6cAwr7OjoLzCFKsabdOD6YWtABiFZwAsq97j5kLQAOoACVOFVOmQeASC9ESPDhgQgADpItE4g4DqoXEA) If you need to keep strings with SQL queries as local variables then it's better to define those magic values as const: 
+This is a classical example of well known code smell called `magic numbers`. We can solve this problem again with string interpolation. __It's tempting to introduce an enum that represents a set of available values but unfortunately using an enum as a parameter for the interpolated string will prevent the compiler from evaluating expression during the compilation. The evaluation will occur in the runtime and will result in creating a new string in the memory whenever the code is executed.__ This can hurt the application performance especially when you define SQL queries as local variables. You can check it on this [Sharplab.io example](https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6ag+rQe0IuOGaYsEAFQCe6BC8egIAggDGMKIAbpYAvPQUBACsADSh0rhQUbEJSQQAbC60tAYMAEoQ6AD2yKIwNQj+8qHoCLGwliQUhfRIUDI1uAA2LT0ADPQA4irMOMgAMqLIMACKcDgtiSQkACQARLQAygCii6cAwr7OjoLzCFKsabdOD6YWtABiFZwAsq97j5kLQAOoACVOFVOmQeASC9ESPDhgQgADpItE4g4DqoXEA) If you need to keep strings with SQL queries as local variables then it's better to define those magic values as const: 
 
 ```cs
 public class Repository {
@@ -93,12 +93,11 @@ WHERE
 ";
 }
 ```
-Those constants must be a string type even if they are numeric values, otherwise, the compiler generates invocation of `System.String.Format()` instead of creating a single string.
+Those constants must be a string type even if they are numeric values, otherwise the compiler generates invocation of `System.String.Format()` instead of creating a single string.
 
 
 ## Bridge the gap between relational and object-oriented models 
-Very often posts advertising micro ORMs presents fairly simple examples where database data structures match almost 1-1 the C# structures. However, the reality is quite different and the discrepancy between relational and object-oriented model might be expensive and results with a large amount of code responsible for fetching and transforming 
-data.
+Very often posts advertising micro ORMs present fairly simple examples where database data structures match almost 1-1 the C# structures. However, the reality is quite different and the discrepancy between relational and object-oriented model might be expensive and result with a large amount of code responsible for fetching and transforming data.
 
 ```cs
 public class User
@@ -167,9 +166,10 @@ public class UserRepository
 ```
 
 This solution has several disadvantages: 
+
 - It requires an intermediate DBO type.
 - It requires additional mapping code to adjust fetched data to the desired structure
-- If we change the relation between User and Address from one-to-one to one-to-many it will result in data duplication.
+- If we change the relation between User and Address from one-to-one to one-to-many, it will result in data duplication.
 
 Another option is to fetch direct attributes (Id, FirstName, LastName) with one query, fetch address data with another one and merge user with address in memory:
 
@@ -192,7 +192,7 @@ public class UserRepository
 }
 ```
 
-This approach requires two calls to a database but it can be reduced by merging those two queries into a single string and executing it with `SqlMapper.GridReader`:
+This approach requires two calls to a database, but it can be reduced by merging those two queries into a single string and executing it with `SqlMapper.GridReader`:
 
 ```cs
 public class UserRepository
@@ -221,7 +221,7 @@ public class UserRepository
     }
 }
 ```
-Looks like this solution is much cleaner and requires less code than the option with the intermediate DBO object but things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:
+Looks like this solution is much cleaner and requires less code than the option with the intermediate DBO object, but things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:
 
 ```cs
 public async Task<IReadOnlyCollection<User>> GetAllUsers(IDbConnection connection)
@@ -328,10 +328,10 @@ public static class SqlQueryExtensions
 }
 ```
 
-With this JSON SQL query approach I was able to very easily fetch quite complex object from the database. The only limitation, that I came across, was the lack of ability to fetch a properties which are a list of primitive times. SQL Server always wraps sub-queries result in the object even if they are based on the single column.
+With this JSON SQL query approach I was able to very easily fetch quite complex object from the database. The only limitation I came across was lack of ability to fetch properties which are a list of primitive times. SQL Server always wraps sub-queries result in the object, even if they are based on a single column.
 
 
-As you might notice - in SQL queries formatted as a JSON it's possible to defined aliases with a dot notation like `[MainAddress.City]`. Unfortunately there's no operator in C# like `nameof` which could return full member path but we can simulate that with the following method that accepts expression tree:
+As you might notice - in SQL queries formatted as a JSON it's possible to define aliases with a dot notation like `[MainAddress.City]`. Unfortunately, there's no operator in C# like `nameof` which could return full member path, but we can simulate that with the following method that accepts expression tree:
 
 ```cs
 public static class TypeExtensions<TType>
@@ -343,7 +343,7 @@ public static class TypeExtensions<TType>
     }
 }
 ```
-With this helper method we can rewrite our query to be resilient to rafactoring in the following way:
+With this helper method we can rewrite our query to be resilient to refactoring in the following way:
 
 ```cs
 public class UserRepository
@@ -367,4 +367,4 @@ FOR JSON PATH
 }
 ```
 
-The necessity to provide `TypeExtensions<User>` for every `MemberPath` invocation can make our query a little noisy. This can be simplify with `using static` or by defining short alias for generic type. We also have to keep in mind that the invocation of `MemberPath` function is evaluated in the runtime.
+The necessity to provide `TypeExtensions<User>` for every `MemberPath` invocation can make our query a little noisy. This can be simplified with `using static` or by defining short alias for generic type. We also have to keep in mind that the invocation of `MemberPath` function is evaluated in the runtime.

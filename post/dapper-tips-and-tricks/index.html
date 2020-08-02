@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="A couple of tricks which simplify database access code while using Dapper library">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/dapper-tips-and-tricks\/"
+            },
+          "headline" : "Working efficiently with legacy database using Dapper",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2020-08-02",
+          "dateModified" : "2020-08-02",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/dapper-tips-and-tricks\/splashscreen.jpg",
+          "description": "A couple of tricks which simplify database access code while using Dapper library"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2020-08-02">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/dapper-tips-and-tricks/">	
+	<meta property="og:title" content="Working efficiently with legacy database using Dapper">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/dapper-tips-and-tricks/splashscreen.jpg">
+    <meta property="og:description" content="A couple of tricks which simplify database access code while using Dapper library">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="Dapper">
+    
+    <meta property="og:tags" content="SqlServer">
+    
+    <meta property="og:tags" content="C#">
+    
+    <meta property="og:tags" content="dotnet">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/dapper-tips-and-tricks/splashscreen.jpg">
+	<meta property="twitter:title" content="Working efficiently with legacy database using Dapper">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="A couple of tricks which simplify database access code while using Dapper library">
+
+	<meta name="keywords" value="Dapper, SqlServer, C#, dotnet" />
+    <meta name="generator" content="Hugo 0.55.6" />
+    <title>Working efficiently with legacy database using Dapper &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+
+<main>
+	<article>
+		<header>
+			<h1>Working efficiently with legacy database using Dapper</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>2 August 2020</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		
+
+<p>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use <a href="https://github.com/StackExchange/Dapper">Dapper</a> to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to <a href="https://docs.microsoft.com/en-us/dotnet/api/system.data.idbconnection?view=netcore-3.1">IDbConnection</a>, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing <code>SQL queries</code> directly in the C# code, because I got used to relying always on ORMs (<code>NHibernate</code> in particular). Throughout the year, <code>Dapper</code> has proven to be the right tool for the job. In the meantime, I also discovered a couple of features and tricks that allow me to write quite concise and easy to maintain database access code, and I think it&rsquo;s worth sharing them here.</p>
+
+<blockquote>
+<p>Key Takeaways:</p>
+
+<ul>
+<li>Always define aliases in SQL queries using <code>nameof()</code> operator</li>
+<li>Use C# consts and enums in SQL queries instead of magic numbers</li>
+<li>Use <code>FOR JSON PATH</code> to simplify fetching complex objects from database</li>
+</ul>
+</blockquote>
+
+<h2 id="resilient-to-refactoring">Resilient to refactoring<a href="#resilient-to-refactoring" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns&rsquo; names match object fields&rsquo; name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
+
+<pre><code class="language-sql">SELECT 
+    UserID AS [Id], 
+    UserName AS [Name]
+FROM 
+    Users
+</code></pre>
+
+<p>However, the naming convention approach is fragile to rename refactoring. Changing the object field&rsquo;s name will break your code and it can be hard to detect without an appropriate test suite. Fortunately, there&rsquo;s a way to shorten this feedback loop and solve this issue in the design time. We can make our code more resilient by defining aliases using <code>string interpolation</code> and <code>nameof()</code> operator:</p>
+
+<pre><code class="language-cs">private static readonly string GetUsersListQuery = @$&quot;
+SELECT 
+    UserID AS [{nameof(UserDBO.Id)}], 
+    UserName AS [{nameof(UserDBO.Name)}]
+FROM 
+    Users
+&quot;
+</code></pre>
+
+<p>This not only takes away the threat of breaking the code while renaming <code>DBO</code> fields but also gives better discoverability and navigability in the code. Using <code>find usage</code> option, we can also find where a given field is used in the SQL queries. And there&rsquo;s no performance penalty because the compiler can evaluate this string interpolation during the compilation, because all of the parameters are const. You can verify it by yourself with this <a href="https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6aD2gYYAlCOgD2yUTE8IAT3k9enQEUQA3WEsSCgA2eiQoGU9cABsg2IAGegBxFWYcZAAZUWQYAEU4HCCAXiESABIAIloAZQBRYo6AYQAVehCmFgQpVnoAQTb6AG0eXHMITzAACkKEDk4AOlkASm0AXQAaQZpBYZxTC0npuYWLZbWRza2riH2D2gAxV04AWVO53WyFozVUtG0QA">Sharplab.io example</a></p>
+
+<p>But what if we want to get the result of the string interpolation without the need to run the whole program in debug mode? This is often needed when there&rsquo;s a bug in the query and we want to copy it and test in the <code>Management Studio</code>. This can be easily archived with <code>Immediate window</code> - yes, that&rsquo;s right, you can use <code>Immediate window</code> to evaluate the code in the design time. To evaluate the string, just enter fully qualified field name that holds the query into the <code>Immediate window</code>:</p>
+
+<p><img src="evaluated_string_interpolation.jpg" alt="" /></p>
+
+<p>Unfortunately, the output is not well-formatted and contains additional characters for line endings. We can fix it by adding <code>nq</code> (no quote) suffix:</p>
+
+<p><img src="evaluated_string_interpolation_with_nq.jpg" alt="" /></p>
+
+<p>If you are using <code>Resharper</code> then you can avoid typing long <code>FQN</code> and copy it with a special option for this purpose:</p>
+
+<p><img src="resharper_copy_FQN.jpg" alt="" /></p>
+
+<h2 id="no-magic-numbers">No magic numbers<a href="#no-magic-numbers" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Sometimes there is a need to use some sort of constant values in the SQL query (especially in the conditions). Queries with those cryptic values are very hard to review or even can cause a problem with understanding for the author himself after a while:</p>
+
+<pre><code class="language-cs">public class Repository {
+   private static readonly string GetActiveUsersListQuery = @$&quot;
+SELECT 
+    UserID, 
+    UserName
+FROM 
+    Users
+WHERE
+    UserType = 135
+&quot;;
+}
+</code></pre>
+
+<p>This is a classical example of well known code smell called <code>magic numbers</code>. We can solve this problem again with string interpolation. <strong>It&rsquo;s tempting to introduce an enum that represents a set of available values but unfortunately using an enum as a parameter for the interpolated string will prevent the compiler from evaluating expression during the compilation. The evaluation will occur in the runtime and will result in creating a new string in the memory whenever the code is executed.</strong> This can hurt the application performance especially when you define SQL queries as local variables. You can check it on this <a href="https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6ag+rQe0IuOGaYsEAFQCe6BC8egIAggDGMKIAbpYAvPQUBACsADSh0rhQUbEJSQQAbC60tAYMAEoQ6AD2yKIwNQj+8qHoCLGwliQUhfRIUDI1uAA2LT0ADPQA4irMOMgAMqLIMACKcDgtiSQkACQARLQAygCii6cAwr7OjoLzCFKsabdOD6YWtABiFZwAsq97j5kLQAOoACVOFVOmQeASC9ESPDhgQgADpItE4g4DqoXEA">Sharplab.io example</a> If you need to keep strings with SQL queries as local variables then it&rsquo;s better to define those magic values as const:</p>
+
+<pre><code class="language-cs">public class Repository {
+    
+    static class UserType
+    {
+        public const string Active = &quot;135&quot;;
+        public const string Inactive = &quot;136&quot;;
+    }
+    
+   private static readonly string GetActiveUsersListQuery = @$&quot;
+SELECT 
+    UserID, 
+    UserName
+FROM 
+    Users
+WHERE
+    UserType = {UserType.Active}
+&quot;;
+}
+</code></pre>
+
+<p>Those constants must be a string type even if they are numeric values, otherwise the compiler generates invocation of <code>System.String.Format()</code> instead of creating a single string.</p>
+
+<h2 id="bridge-the-gap-between-relational-and-object-oriented-models">Bridge the gap between relational and object-oriented models<a href="#bridge-the-gap-between-relational-and-object-oriented-models" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Very often posts advertising micro ORMs present fairly simple examples where database data structures match almost 1-1 the C# structures. However, the reality is quite different and the discrepancy between relational and object-oriented model might be expensive and result with a large amount of code responsible for fetching and transforming data.</p>
+
+<pre><code class="language-cs">public class User
+{
+    public int Id {get; set;}
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public Address MainAddress { get; set; }
+}
+
+public class Address
+{
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+    public string Street { get; set; }
+    public string FlatNo { get; set; }
+    public string BuildingNo { get; set; }
+}
+</code></pre>
+
+<p>In order to fetch complete user data we can use one of the following approaches:</p>
+
+<p>We can introduce some sort of intermediate type for fetching a result of the SQL query and then map it to the destination type in the memory. I call those intermediate types <code>DBO - DataBase Object</code>:</p>
+
+<pre><code class="language-cs">public class UserDBO
+{
+    public int Id {get; set;}
+    public string FirstName { get;  }
+    public string LastName { get; private set; }
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+    public string Street { get; set; }
+    public string FlatNo { get; set; }
+    public string BuildingNo { get; set; }
+}
+
+public class UserRepository
+{
+    static readonly string GetAllUserDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching user basic data*/
+    
+    public async Task&lt;User&gt; GetUser(IDbConnection connection, int id)
+    {
+        var userDBO = await connection.QueryFirstOrDefaultAsync&lt;UserDBO&gt;(GetAllUserDataSqlQuery, new {UserId = id});
+        if(userDBO == null)
+        {
+            return null;
+        }
+        return new User
+        {
+            Id = userDBO.Id,
+            FirstName = userDBO.FirstName,
+            LastName = userDBO.LastName,
+            //TODO: If the address is optional then we should check if all attributes are not empty before creating an instance of Address
+            MainAddress = new Address
+            {
+                City = userDBO.City,
+                ZipCode = userDBO.ZipCode,
+                Street = userDBO.Street,
+                FlatNo = userDBO.FlatNo,
+                BuildingNo = userDBO.BuildingNo
+            }
+        };
+    }
+}
+</code></pre>
+
+<p>This solution has several disadvantages:</p>
+
+<ul>
+<li>It requires an intermediate DBO type.</li>
+<li>It requires additional mapping code to adjust fetched data to the desired structure</li>
+<li>If we change the relation between User and Address from one-to-one to one-to-many, it will result in data duplication.</li>
+</ul>
+
+<p>Another option is to fetch direct attributes (Id, FirstName, LastName) with one query, fetch address data with another one and merge user with address in memory:</p>
+
+<pre><code class="language-cs">public class UserRepository
+{
+    static readonly string GetUserBasicDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching user basic data*/
+    static readonly string GetAddressDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching address data*/
+
+    public async Task&lt;User&gt; GetUser(IDbConnection connection, int id)
+    {
+        var user = await connection.QueryFirstOrDefaultAsync&lt;User&gt;(GetUserBasicDataSqlQuery, new {UserId = id});
+        if(user == null)
+        {
+            return null;
+        }
+        user.MainAddress = await connection.QueryFirstOrDefaultAsync&lt;Address&gt;(GetAddressDataSqlQuery, new {UserId = id});
+        return user;
+    }
+}
+</code></pre>
+
+<p>This approach requires two calls to a database, but it can be reduced by merging those two queries into a single string and executing it with <code>SqlMapper.GridReader</code>:</p>
+
+<pre><code class="language-cs">public class UserRepository
+{
+    static readonly string GetUserBasicDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching user basic data*/
+    static readonly string GetAddressDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching address data*/
+
+     static readonly string GetUserCompleteDataSqlQuery = @$&quot;
+        -- Fetch user basic data
+        {GetUserBasicDataSqlQuery};
+        -- Fetch address data
+        {GetAddressDataSqlQuery};
+    &quot;;    
+
+    public async Task&lt;User&gt; GetUser(IDbConnection connection, int id)
+    {
+        using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery, new { UserId = id });
+        var user = await gridReader.ReadFirstOrDefaultAsync&lt;User&gt;();
+        if (user == null)
+        {
+            return null;
+        }
+
+        user.MainAddress = await gridReader.ReadFirstOrDefaultAsync&lt;Address&gt;();
+        return user;
+    }
+}
+</code></pre>
+
+<p>Looks like this solution is much cleaner and requires less code than the option with the intermediate DBO object, but things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:</p>
+
+<pre><code class="language-cs">public async Task&lt;IReadOnlyCollection&lt;User&gt;&gt; GetAllUsers(IDbConnection connection)
+{
+    using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery);
+    var users = (await gridReader.ReadAsync&lt;User&gt;()).ToList();
+    var addresses =  await gridReader.ReadAsync&lt;Address&gt;();
+    //INFO: Address entity needs to be extended with UserId in order to merge the data correctly
+    var addressesByUserId = addresses.GroupBy(x =&gt; x.UserId).ToDictionary(x =&gt; x.Key, x =&gt; x);
+    foreach (var user in users)
+    {
+        if (addressesByUserId.TryGetValue(user.Id, out var userAddresses))
+        {
+            user.Addresses = userAddresses.ToList();
+        }
+    }
+    return users;
+}
+</code></pre>
+
+<p>We can simplify it by taking leverage of JSON support in SQL Server. For the relation 1-1 between the <code>User</code> and <code>Address</code> our SQL query can look as follows:</p>
+
+<pre><code class="language-sql">SELECT
+    u.UserId AS [Id],
+    u.FirstName AS [FirstName],
+    u.LastName AS [LastName]
+    a.City AS [MainAddress.City],
+    a.ZipCode AS [MainAddress.ZipCode],
+    a.Street AS [MainAddress.Street],
+    a.FlatNo AS [MainAddress.FlatNo],
+    a.BuildingNo AS [MainAddress.BuildingNo],
+FROM
+    Users u 
+    LEFT JOIN Addresses a ON a.UserId = u.UserID
+FOR JSON PATH
+</code></pre>
+
+<p>or we can rewrite it to handle one-to-many relation using sub-query:</p>
+
+<pre><code class="language-sql">SELECT
+    u.UserId as [Id],
+    u.FirstName as [FirstName],
+    u.LastName as [LastName]
+    (
+        SELECT
+            a.City AS [City],
+            a.ZipCode AS [ZipCode],
+            a.Street AS [Street],
+            a.FlatNo AS [FlatNo],
+            a.BuildingNo AS [BuildingNo]
+        FROM 
+            Addresses a
+        WHERE
+            a.UserId = u.UserID
+        FOR JSON PATH
+    )  AS [Addresses]
+FROM
+    Users u 
+</code></pre>
+
+<p>But how can we fetch this JSON SQL query result using Dapper? The most common solution that we can come across on the internet is to create a custom type handler for our SQL query result:</p>
+
+<pre><code class="language-cs">public class JsonTypeHandler&lt;TResult&gt;: SqlMapper.TypeHandler&lt;TResult&gt;
+{
+    public override void SetValue(IDbDataParameter parameter, TResult value) =&gt; 
+        throw new NotSupportedException($&quot;Sending '{typeof(TResult).FullName}' type to database is not supported&quot;);
+
+    public override TResult Parse(object value)
+    {
+        var jsonPayload = value?.ToString();
+        if (string.IsNullOrWhiteSpace(jsonPayload))
+        {
+            return default;
+        }
+        return JsonConvert.DeserializeObject&lt;TResult&gt;(jsonPayload);
+    }
+}
+</code></pre>
+
+<p>After registering type handler with:</p>
+
+<pre><code class="language-cs">SqlMapper.AddTypeHandler(new JsonTypeHandler&lt;User&gt;());
+</code></pre>
+
+<p>we can query our data with <code>Dapper</code> query extension methods as usual. However, this approach with custom type handler has two disadvantages:</p>
+
+<ul>
+<li>We need to register <code>JsonTypeHandler&lt;&gt;</code> for every most outer type which we are querying</li>
+<li><strong>This won&rsquo;t work for larger objects</strong> because the SQL Server will split long JSON string across multiple rows. You can read more about that on MSDN in the section <a href="https://docs.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server?view=sql-server-ver15#output-of-the-for-json-clause">Output of the FOR JSON clause</a></li>
+</ul>
+
+<p>We can solve both problems by executing SQL queries with the following extension method:</p>
+
+<pre><code class="language-cs">public static class SqlQueryExtensions
+{
+    public static async Task&lt;TResult&gt; QueryFromJson&lt;TResult&gt;(this IDbConnection connection, string sqlQuery, object param)
+    {
+        var chunks = await connection.QueryAsync&lt;string&gt;(sqlQuery, param);
+        var completeJsonPayload = string.Concat(chunks);
+        return JsonConvert.DeserializeObject&lt;TResult&gt;(completeJsonPayload);
+    }
+}
+</code></pre>
+
+<p>With this JSON SQL query approach I was able to very easily fetch quite complex object from the database. The only limitation I came across was lack of ability to fetch properties which are a list of primitive times. SQL Server always wraps sub-queries result in the object, even if they are based on a single column.</p>
+
+<p>As you might notice - in SQL queries formatted as a JSON it&rsquo;s possible to define aliases with a dot notation like <code>[MainAddress.City]</code>. Unfortunately, there&rsquo;s no operator in C# like <code>nameof</code> which could return full member path, but we can simulate that with the following method that accepts expression tree:</p>
+
+<pre><code class="language-cs">public static class TypeExtensions&lt;TType&gt;
+{
+    public static string MemberPath&lt;TMember&gt;(Expression&lt;Func&lt;TType, TMember&gt;&gt; member)
+    {
+        var expressionText = member.Body.ToString();
+        return expressionText.Substring(expressionText.IndexOf('.')+1);
+    }
+}
+</code></pre>
+
+<p>With this helper method we can rewrite our query to be resilient to refactoring in the following way:</p>
+
+<pre><code class="language-cs">public class UserRepository
+{
+        public static readonly string Query = @$&quot;
+SELECT
+    u.UserId AS [{nameof(User.Id)}],
+    u.FirstName AS [{nameof(User.FirstName)}],
+    u.LastName AS [{nameof(User.Id)}]
+    a.City AS [{TypeExtensions&lt;User&gt;.MemberPath(x=&gt;x.MainAddress.City)}],
+    a.ZipCode AS [{TypeExtensions&lt;User&gt;.MemberPath(x =&gt; x.MainAddress.ZipCode)}],
+    a.Street AS [{TypeExtensions&lt;User&gt;.MemberPath(x =&gt; x.MainAddress.Street)}],
+    a.FlatNo AS [{TypeExtensions&lt;User&gt;.MemberPath(x =&gt; x.MainAddress.FlatNo)}],
+    a.BuildingNo AS [{TypeExtensions&lt;User&gt;.MemberPath(x =&gt; x.MainAddress.BuildingNo)}],
+FROM
+    Users u 
+    LEFT JOIN Addresses a ON a.UserId = u.UserID
+    WHERE  u.UserID = @UserId
+FOR JSON PATH
+&quot;;
+}
+</code></pre>
+
+<p>The necessity to provide <code>TypeExtensions&lt;User&gt;</code> for every <code>MemberPath</code> invocation can make our query a little noisy. This can be simplified with <code>using static</code> or by defining short alias for generic type. We also have to keep in mind that the invocation of <code>MemberPath</code> function is evaluated in the runtime.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/generate-mappings-on-build/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-mappings-on-build/splashscreen_hu831a556e644f698f06f7bab476f01bf6_99100_320x240_fill_q75_box_smart1.jpg" alt="How to simulate AutoMapper that works during the build time">
+								<div class="card-body">
+									<h5 class="card-title">How to simulate AutoMapper that works during the build time</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/exceptions-usages-analyzer/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/exceptions-usages-analyzer/splashscreen_hu4726010f8bf92c1a7527d07383ef14cb_95165_320x240_fill_q75_box_smart1.jpg" alt="Exception usage analyzer">
+								<div class="card-body">
+									<h5 class="card-title">Exception usage analyzer</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/renovate-your-dot-net-solution/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/renovate-your-dot-net-solution/splashscreen_hu0d8c53dcbc8a208d1870631c6fe44e6a_210085_320x240_fill_q75_box_smart1.jpg" alt="Renovate your .NET solution">
+								<div class="card-body">
+									<h5 class="card-title">Renovate your .NET solution</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "dapper,sqlserver,csharp,dotnet"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>

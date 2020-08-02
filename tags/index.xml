@@ -6,17 +6,44 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Jun 2020 00:08:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 02 Aug 2020 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>c#</title>
+      <title>C#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Tue, 30 Jun 2020 00:08:00 +0200</pubDate>
+      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dapper</title>
+      <link>https://cezarypiatek.github.io/tags/dapper/</link>
+      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dapper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SqlServer</title>
+      <link>https://cezarypiatek.github.io/tags/sqlserver/</link>
+      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/sqlserver/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnet</title>
+      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
+      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
       <description></description>
     </item>
     
@@ -129,15 +156,6 @@
     </item>
     
     <item>
-      <title>dotnet</title>
-      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>mapping</title>
       <link>https://cezarypiatek.github.io/tags/mapping/</link>
       <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
@@ -219,6 +237,15 @@
     </item>
     
     <item>
+      <title>PowerShell</title>
+      <link>https://cezarypiatek.github.io/tags/powershell/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>VSCode</title>
       <link>https://cezarypiatek.github.io/tags/vscode/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
@@ -233,15 +260,6 @@
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/continuous-integration/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>powershell</title>
-      <link>https://cezarypiatek.github.io/tags/powershell/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/powershell/</guid>
       <description></description>
     </item>
     
@@ -588,7 +606,7 @@
     </item>
     
     <item>
-      <title>TODOExplorer</title>
+      <title>TodoExplorer</title>
       <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
       
