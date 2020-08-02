@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dapper on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/dapper/</link>
+    <description>Recent content in Dapper on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 02 Aug 2020 00:11:45 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/dapper/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Working efficiently with legacy database using Dapper</title>
+      <link>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</link>
+      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</guid>
+      <description>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&amp;rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects.</description>
+    </item>
+    
+  </channel>
+</rss>
