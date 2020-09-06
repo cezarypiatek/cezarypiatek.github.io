@@ -54,7 +54,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="debugging, resharper, symbols, decompiler" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>The fastest way do debug .net code without sources. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -68,7 +68,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -150,7 +151,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <main>
 	<article>
@@ -166,34 +167,34 @@
 			<br />
 		
 		<p>Some people used to say that a good programmer doesn&rsquo;t need to debug his own code.  However, sometimes we have a problem with third party libraries usage, for example: there is insufficient documentation or the module contains some bugs. Visual Studio has excellent debugging toolset but this is totally useless without symbols and sources (and this is often the case with third party libraries).  Thanks to Reshaper decompiler this shouldn’t be a problem anymore.</p>
-
 <p>Before we start debugging we should make some changes in Debugging options (<em>Tools -&gt; Options -&gt; Debugging -&gt; General</em>). Make sure that <strong>&ldquo;Enable Just My Code&rdquo;</strong> and <strong>&ldquo;Use manage Compatibility Mode&rdquo;</strong> options are unchecked. I&rsquo;m not sure if this set is enough  so this is my complete working configuration:</p>
-
-<p><img src="debugging_options.jpg" alt="debugging options" /></p>
-
+<p>
+<a href="debugging_options.jpg"><img  src="debugging_options.jpg" alt="debugging options"></a>
+</p>
 <p>Unchecking <strong>&ldquo;Enable Just My Code&rdquo;</strong> option could slow down debugging process because Visual Studio will try to load symbols for all modules. You can mitigate that by constraining the list of modules for which you need to load symbols. Go to <em>Debugging -&gt; Symbols</em> tab in <strong>Options</strong> window, select <strong>Load only specified modules</strong> option and click <strong>Specify included modules</strong>  link to provide a list of libraries we are interested in.</p>
-
-<p><img src="symbols_to_load_automatically.jpg" alt="breakpoint" /></p>
-
+<p>
+<a href="symbols_to_load_automatically.jpg"><img  src="symbols_to_load_automatically.jpg" alt="breakpoint"></a>
+</p>
 <p>Now we can set the breakpoint in our code and start program in debug mode.</p>
-
-<p><img src="breakpoint.jpg" alt="breakpoint" /></p>
-
+<p>
+<a href="breakpoint.jpg"><img  src="breakpoint.jpg" alt="breakpoint"></a>
+</p>
 <p>When the execution breaks we should open <strong>Modules</strong> window (<em>Debug -&gt; Windows -&gt; Modules</em>) and find on the list library which we want to debug (in our case Newtonsoft.Json.dll). We see that our module is in <strong>&ldquo;Cannot find or open this PDB file&rdquo;</strong> status.</p>
-
-<p><img src="modules_symbol_not_loaded.jpg" alt="symbols not loaded" /></p>
-
+<p>
+<a href="modules_symbol_not_loaded.jpg"><img  src="modules_symbol_not_loaded.jpg" alt="symbols not loaded"></a>
+</p>
 <p>Use the right click on our module and from the context menu select <strong>&ldquo;Load Symbols with Resharper Decompiler&rdquo;</strong></p>
-
-<p><img src="modules_symbol_not_loaded_menu.jpg" alt="symbols not loaded" /></p>
-
+<p>
+<a href="modules_symbol_not_loaded_menu.jpg"><img  src="modules_symbol_not_loaded_menu.jpg" alt="symbols not loaded"></a>
+</p>
 <p>A new Resharper window will be opened and we can observe the progress of generating PDB file for our library (it could take a minute). When the process is completed, status should be changed to <strong>&ldquo;Done&rdquo;</strong>.</p>
-
-<p><img src="resharper_pdb_generated.jpg" alt="symbols not loaded" /></p>
-
+<p>
+<a href="resharper_pdb_generated.jpg"><img  src="resharper_pdb_generated.jpg" alt="symbols not loaded"></a>
+</p>
 <p>Close this window and from the context menu in <strong>&ldquo;Modules&rdquo;</strong> window select <strong>&ldquo;Load symbol&rdquo;</strong> option. Module status should change to <strong>&ldquo;Symbols loaded&rdquo;</strong>. Now we can go back to our code and step into method from third party library (simply press F11). If everything went fine we should be moved to file with decompiled code and all debug tools should work as normal.</p>
-
-<p><img src="decompiled_code.jpg" alt="decompiled code" /></p>
+<p>
+<a href="decompiled_code.jpg"><img  src="decompiled_code.jpg" alt="decompiled code"></a>
+</p>
     
 		
 		<hr/>  
@@ -307,6 +308,7 @@
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   

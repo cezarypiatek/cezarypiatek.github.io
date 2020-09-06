@@ -41,9 +41,9 @@
     
     <meta property="og:tags" content="tools">
     
-    <meta property="og:tags" content="resharper">
+    <meta property="og:tags" content="Resharper">
     
-    <meta property="og:tags" content="windirstat">
+    <meta property="og:tags" content="WinDirStat">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/splashscreen.jpg">
@@ -51,8 +51,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to easily regain free space by deleting old Resharper cache.">
 
-	<meta name="keywords" value="tools, resharper, windirstat" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="tools, Resharper, WinDirStat" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Space eaten up by Resharper &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -66,7 +66,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -148,7 +149,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <main>
 	<article>
@@ -164,18 +165,15 @@
 			<br />
 		
 		<p>My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&rsquo;m running out of free space. When there is a need I&rsquo;m starting clearing-up by emptying <code>c:\Users\user_name\AppData\Local\Temp\</code> and <code>c:\Users\user_name\Downloads\</code> directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use <a href="https://windirstat.net/">WinDirStart</a> to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.; so you can easily drill down the tree looking for elements eating up your free space. There is also a colorful tree map that allows you to immediately spot large files.</p>
-
 <p>One of my interesting discoveries were Resharper cache files which can weigh even over few GB. Those files can be found inside the appropriate directory under <code>C:\Users\user_name\AppData\Local\JetBrains\Transient\</code> path (there are also cache files for other JetBrains products). From my observation those files tend to survive the Resharper updates, so there is a very high possibility that you have cache files for old version which are totally useless now. Besides old versions there are cache files for <strong>all solutions that have been opened</strong> by Visual Studio with enabled Resharper - and again - some of them are probably not necessary anymore. After deleting those files Resharper can slow down for a moment until it rebuilds cache for currently opened solution but we will have cached data for only what is truly necessary and we should regain some free space on the hard drive.</p>
-
-<p><img src="resharper_cache_size_statistics.jpg" alt="resharper cache size statistics" /></p>
-
+<p>
+<a href="resharper_cache_size_statistics.jpg"><img  src="resharper_cache_size_statistics.jpg" alt="resharper cache size statistics"></a>
+</p>
 <p>If you are interested in using <code>WinDirStat</code> you can download it using links from the official website <a href="https://windirstat.net/download.html">https://windirstat.net/download.html</a> or install it using Powershell package manger (<a href="https://chocolatey.org/">Chocolatey</a> provider is required) with command:</p>
-
-<pre><code class="language-powershell">Install-Package -Name WinDirStat -Source Chocolatey
-</code></pre>
-
-<p><img src="install_win_dir_stat.jpg" alt="installing WinDirStat with powershell" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Install-Package -Name WinDirStat -Source Chocolatey
+</code></pre></div><p>
+<a href="install_win_dir_stat.jpg"><img  src="install_win_dir_stat.jpg" alt="installing WinDirStat with powershell"></a>
+</p>
 <p>If you find <code>WindDirStat</code> useful you can support this project financialy using the <code>Support this project</code> button on the project&rsquo;s website footer <a href="https://windirstat.net/">https://windirstat.net/</a></p>
     
 		
@@ -290,6 +288,7 @@
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
@@ -309,7 +308,7 @@
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "tools,resharper,windirstat"
+				hashtags: "tools,Resharper,WinDirStat"
 			}
 		}
 	}

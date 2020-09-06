@@ -54,7 +54,7 @@
 	<meta property="twitter:description" content="How to create immutable types without writing large amount of boilerplate code.">
 
 	<meta name="keywords" value="roslyn, c#, non-nullable, design patterns" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Immutable types in C# with Roslyn &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -70,7 +70,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -152,7 +153,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <main>
 	<article>
@@ -167,21 +168,16 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>Some time ago I came across Jimmy Bogard&rsquo;s article <a href="https://jimmybogard.com/immutability-in-dtos/">&ldquo;Immutability in DTOs?&rdquo;</a> about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding <code>readonly</code> keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition. This results in a large amount of boilerplate code, causes problems with ORMs and serializers which require a default constructor, and makes the object instantiation cumbersome (or at least less readable). I&rsquo;m a huge fan of <code>Roslyn</code> so I&rsquo;ve started thinking about how to utilize Roslyn&rsquo;s API to avoid all those problems with immutable types and improve coding experience while working with them. In this article, I&rsquo;m going to present the results of my experiments with Roslyn analyzers that simulate types immutability.</p>
-
+		<p>Some time ago I came across Jimmy Bogard&rsquo;s article <a href="https://jimmybogard.com/immutability-in-dtos/">&ldquo;Immutability in DTOs?&quot;</a> about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding <code>readonly</code> keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition. This results in a large amount of boilerplate code, causes problems with ORMs and serializers which require a default constructor, and makes the object instantiation cumbersome (or at least less readable). I&rsquo;m a huge fan of <code>Roslyn</code> so I&rsquo;ve started thinking about how to utilize Roslyn&rsquo;s API to avoid all those problems with immutable types and improve coding experience while working with them. In this article, I&rsquo;m going to present the results of my experiments with Roslyn analyzers that simulate types immutability.</p>
 <h2 id="convenient-initialization">Convenient initialization<a href="#convenient-initialization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>As I&rsquo;ve mentioned before, in order to make a class immutable we need to remove setters, add a dedicated constructor for initializing those properties and then always use this constructor to instantiate our immutable class. A sample code snippet just to remind you how cumbersome it is:</p>
-
-<pre><code class="language-csharp">public class UserDTO
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserDTO</span>
 {
-    public string FirstName { get;}
-    public string LastName { get;}
-    public int Age { get; }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> FirstName { <span style="color:#66d9ef">get</span>;}
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> LastName { <span style="color:#66d9ef">get</span>;}
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Age { <span style="color:#66d9ef">get</span>; }
 
-    public UserDTO(string firstName, string lastName, int age)
+    <span style="color:#66d9ef">public</span> UserDTO(<span style="color:#66d9ef">string</span> firstName, <span style="color:#66d9ef">string</span> lastName, <span style="color:#66d9ef">int</span> age)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -189,91 +185,80 @@
     }
 }
 
-class Program
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Program</span>
 {
-    static void Main(string[] args)
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(<span style="color:#66d9ef">string</span>[] args)
     {
-        var user = new UserDTO(&quot;John&quot;, &quot;Doe&quot;, 20);
+        <span style="color:#66d9ef">var</span> user = <span style="color:#66d9ef">new</span> UserDTO(<span style="color:#e6db74">&#34;John&#34;</span>, <span style="color:#e6db74">&#34;Doe&#34;</span>, <span style="color:#ae81ff">20</span>);
     }
 }
-</code></pre>
-
-<p>It would be more convenient if we didn&rsquo;t need to define a constructor and initialize members using the initialization block. However, there&rsquo;s no mechanism that allows enforcing mandatory initialization in the init block. So, let&rsquo;s introduce <code>[InitRequired]</code> attribute inspired by <code>initonly</code> keyword from <a href="https://github.com/dotnet/csharplang/blob/master/proposals/recordsv2.md#mutability">C# records proposal</a>:</p>
-
-<p><img src="init_required.jpg" alt="" /></p>
-
+</code></pre></div><p>It would be more convenient if we didn&rsquo;t need to define a constructor and initialize members using the initialization block. However, there&rsquo;s no mechanism that allows enforcing mandatory initialization in the init block. So, let&rsquo;s introduce <code>[InitRequired]</code> attribute inspired by <code>initonly</code> keyword from <a href="https://github.com/dotnet/csharplang/blob/master/proposals/recordsv2.md#mutability">C# records proposal</a>:</p>
+<p>
+<a href="init_required.jpg"><img  src="init_required.jpg" alt=""></a>
+</p>
 <p>If we want to enforce mandatory initialization via initialization block for all members, we can mark our type with <code>[InitRequired]</code> attribute.</p>
-
-<p><img src="full_init_required.jpg" alt="" /></p>
-
+<p>
+<a href="full_init_required.jpg"><img  src="full_init_required.jpg" alt=""></a>
+</p>
 <p>Of course, the property to be able to initialize via init block it must meet certain conditions:</p>
-
 <ul>
 <li>must have a setter</li>
 <li>the setter needs to be available in a given context (accessibility)</li>
 <li>cannot be a part of explicit interface implementation.</li>
 </ul>
-
 <p>In order to avoid missing initialization caused by the conditions mentioned above, I would recommend always keeping those properties on the same accessibility level as the containing type.</p>
-
 <blockquote>
 <p><strong>Pro Tip:</strong> You can use <a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">MappingGenerator</a> to complete initialization block with local accessible values
-<img src="emptyInitialization_animated.png" alt="" />
+
+<a href="emptyInitialization_animated.png"><img  src="emptyInitialization_animated.png" alt=""></a>
+
 or to scaffold this initialization with sample values
-<img src="object_scaffolding_animated.png" alt="" /></p>
+
+<a href="object_scaffolding_animated.png"><img  src="object_scaffolding_animated.png" alt=""></a>
+</p>
 </blockquote>
-
 <p>If you don&rsquo;t have access to the source code or you want to enforce full initialization only for given instance, you can do that by adding <code>/*FullInitRequired*/</code> comment marker:</p>
-
-<p><img src="full_init_comment.jpg" alt="" /></p>
-
+<p>
+<a href="full_init_comment.jpg"><img  src="full_init_comment.jpg" alt=""></a>
+</p>
 <p>To ensure that full object graph is initialized, use <code>/*FullInitRequired:recursive*/</code> comment marker. I think this may be especially useful for methods performing mapping or deep clone. I got the idea of those comment markers from a discussion about <a href="https://github.com/dotnet/csharplang/issues/2796#issuecomment-530525044">String Hints
 #2796</a>. This kind of annotation is already used for marking string literals with regex pattern:</p>
-
-<p><img src="regex_hint.jpg" alt="" /></p>
-
+<p>
+<a href="regex_hint.jpg"><img  src="regex_hint.jpg" alt=""></a>
+</p>
 <h2 id="full-immutability">Full immutability<a href="#full-immutability" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p><code>[InitRequired]</code> attribute enforces only mandatory initialization via initialization block. To achieve immutability, we need to forbid modification outside the init block. For that purpose, I&rsquo;ve introduced <code>[InitOnly]</code> attribute. Basically, it works in the same way as <code>[InitRequired]</code> but additionally it verifies if members decorated with it are not modified after initialization.</p>
-
-<p><img src="init_only.jpg" alt="" /></p>
-
+<p>
+<a href="init_only.jpg"><img  src="init_only.jpg" alt=""></a>
+</p>
 <p>You can enforce immutability for all members by putting <code>[InitOnly]</code> attribute on the type level.</p>
-
-<p><img src="full_init_only.jpg" alt="" /></p>
-
+<p>
+<a href="full_init_only.jpg"><img  src="full_init_only.jpg" alt=""></a>
+</p>
 <p>Thanks to <code>[InitOnly]</code> attribute and corresponding analyzer we can achieve full immutability without writing redundant boilerplate code.</p>
-
 <blockquote>
 <p><strong>Important:</strong> If you like the idea of <code>[InitRequire]</code> and <code>[InitOnly]</code> attributes and you are going to use them in your project, please make sure that all your teammates know about it.</p>
 </blockquote>
-
 <h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>All attributes and analyzers described here are available as a single Nuget package <a href="https://www.nuget.org/packages/SmartAnalyzers.CSharpExtensions.Annotations/">SmartAnalyzers.CSharpExtensions.Annotations</a>. The source code is published on <code>Github</code> under <a href="https://github.com/cezarypiatek/CSharpExtensions">CSharpExtensions</a> project. Please let me know what you think about those extensions to C# language and if you encounter any problems with using it, feel free to report an issue on Github page.</p>
-
 <p><strong>UPDATE 2020-03-17:</strong> I added support for non-nullable references. Since now, the compiler should stop reporting <code>&quot;CS8618: Non-nullable property ‘PropertyName’ is uninitialized&quot;</code> diagnostic for all members affected by <code>[InitRequired]</code> and <code>[InitOnly]</code> attributes.
-<img src="non_nullable_suppression.jpg" alt="" /></p>
 
-<p><strong>UPDATE 2020-06-20:</strong> After the <a href="https://github.com/cezarypiatek/CSharpExtensions/issues/9">feature request #9</a> from <a href="https://github.com/Arithmomaniac">Avi Levin (@Arithmomaniac)</a> I decided to add <code>[InitOnlyOptional]</code> attribute which works in similar way like <code>[InitOnly]</code> but allows to make given field optional in initialization block. Analyzers for this new attribute verify if:</p>
-
+<a href="non_nullable_suppression.jpg"><img  src="non_nullable_suppression.jpg" alt=""></a>
+</p>
+<p><strong>UPDATE 2020-06-20:</strong> After the <a href="https://github.com/cezarypiatek/CSharpExtensions/issues/9">feature request #9</a> from <a href="https://github.com/Arithmomaniac">Avi Levin (@Arithmomaniac)</a> I decided to add <code> [InitOnlyOptional]</code> attribute which works in similar way like <code>[InitOnly]</code> but allows to make given field optional in initialization block. Analyzers for this new attribute verify if:</p>
 <ul>
 <li>property/field declaration provides a default value</li>
 <li>property/field is not modified outside the initialization block</li>
 </ul>
-
 <p>Example usage:</p>
-
-<pre><code class="language-cs">public class Finance
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Finance</span>
 {
-    //default value is required
-    //default value can be overridden only via the initialization block
-    [InitOnlyOptional]
-    public int Profit { get; set; } = 45; 
+    <span style="color:#75715e">//default value is required
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//default value can be overridden only via the initialization block
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">    [InitOnlyOptional]</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> Profit { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>; } = <span style="color:#ae81ff">45</span>; 
 }
-</code></pre>
-
-<p><strong>UPDATE 2020-06-20:</strong> There&rsquo;s a hope that <code>init-only</code> concept will get a language-level support in C# 9. You can read more about that in the article <a href="https://devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#init-only-properties">Welcome to C# 9.0</a></p>
+</code></pre></div><p><strong>UPDATE 2020-06-20:</strong> There&rsquo;s a hope that <code>init-only</code> concept will get a language-level support in C# 9. You can read more about that in the article <a href="https://devblogs.microsoft.com/dotnet/welcome-to-c-9-0/#init-only-properties">Welcome to C# 9.0</a></p>
     
 		
 		<hr/>  
@@ -387,6 +372,7 @@ or to scaffold this initialization with sample values
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   

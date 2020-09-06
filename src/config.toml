@@ -71,3 +71,6 @@ enableGitInfo = true
 	name  = "tags"
 	weight = 100
 	toLower = true
+
+[markup.goldmark.renderer]
+unsafe= true

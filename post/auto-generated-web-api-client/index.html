@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to configure dotnet core solutions to automatically generate client packages for WebAPI projects">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/auto-generated-web-api-client\/"
+            },
+          "headline" : "Auto generated WebAPI client library with NSwag",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2020-09-06",
+          "dateModified" : "2020-09-06",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/auto-generated-web-api-client\/splashscreen.jpg",
+          "description": "How to configure dotnet core solutions to automatically generate client packages for WebAPI projects"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2020-09-06">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/auto-generated-web-api-client/">	
+	<meta property="og:title" content="Auto generated WebAPI client library with NSwag">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/auto-generated-web-api-client/splashscreen.jpg">
+    <meta property="og:description" content="How to configure dotnet core solutions to automatically generate client packages for WebAPI projects">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="NSwag">
+    
+    <meta property="og:tags" content="AspCore">
+    
+    <meta property="og:tags" content="C#">
+    
+    <meta property="og:tags" content="WebAPI">
+    
+    <meta property="og:tags" content="Rest">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/auto-generated-web-api-client/splashscreen.jpg">
+	<meta property="twitter:title" content="Auto generated WebAPI client library with NSwag">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to configure dotnet core solutions to automatically generate client packages for WebAPI projects">
+
+	<meta name="keywords" value="NSwag, AspCore, C#, WebAPI, Rest" />
+    <meta name="generator" content="Hugo 0.74.3" />
+    <title>Auto generated WebAPI client library with NSwag &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Auto generated WebAPI client library with NSwag</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>6 September 2020</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>In the era of microservices and distributed systems, web browser applications written in <code>JavaScript</code> are not the only consumers of the <code>REST API</code>. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price. At the end of the day, we always need to write some set of classes that act as a client proxy, and if there is more than one consumer of a given service, we need to repeat that work in every one of them. Another problem is with propagating information about changes in the API and adjusting all clients to those changes. Taking into account those disadvantages, it&rsquo;s worth considering publishing a client proxy alongside the service itself, especially if it&rsquo;s possible to generate it automatically. There&rsquo;s a couple of existing projects on the market that allow generating C# client from <code>OpenAPI</code> (<code>Swagger</code>) specification like:</p>
+<ul>
+<li><a href="https://swagger.io/tools/swagger-codegen/">swagger-codegen</a></li>
+<li><a href="https://github.com/OpenAPITools/openapi-generator">openapi-generator</a></li>
+<li><a href="https://github.com/RicoSuter/NSwag">NSwag</a>.</li>
+</ul>
+<p><code>swagger-codegen</code> and <code>openapi-generator</code> are Java based CLI tools, so they require <code>JVM</code> to run but they allow to generate Rest API clients in a verity of programming languages. <code>NSwag</code> is built with dotnet but supports only <code>C#</code> and <code>TypeScript</code> clients generation. Anyway, I decided to use <code>NSwag</code> because it was the easiest one to integrate with <code>MsBuild</code> and allows for generating clients directly from WebAPI server assembly. Although there&rsquo;s plenty of articles about generating C# client using NSwag, it took me a whole day to put all the necessary pieces together, so I decided to write my own description for future reference.</p>
+<h2 id="project-organization">Project organization<a href="#project-organization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<ul>
+<li><code>SampleService</code> - this is AspCore WebAPI project providing REST endpoints</li>
+<li><code>SampleService.ApiClient</code> - responsible for producing <code>dll</code> as well as <code>nuget package</code> with REST client based on the SampleService project&rsquo;s output assembly</li>
+<li><code>SampleService.ComponentTest</code> - contains components test for SampleService using <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.testhost.testserver?view=aspnetcore-3.0">in-memory test server</a>. Tested API is always called via client generated by <code>SampleService.ApiClient</code> project</li>
+</ul>
+<p>
+<a href="architecture.jpg"><img  src="architecture.jpg" alt="Project dependency diagram"></a>
+</p>
+<h2 id="steps-to-configure-automated-client-generation">Steps to configure automated client generation<a href="#steps-to-configure-automated-client-generation" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h3 id="prepare-nswagjson-manifest">Prepare <code>nswag.json</code> manifest<a href="#prepare-nswagjson-manifest" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<p><code>nswag.json</code> defines a set of parameters required by NSwag for generating client code like input assembly and output file path, as well as other different options allowing to adjust the shape of output code to our needs. The easiest way to generate the manifest file is to use Windows UI application called <a href="https://github.com/RicoSuter/NSwag/wiki/NSwagStudio">NSwag Studio</a>.
+Here&rsquo;s the minimal configuration required to correctly generate C# client:</p>
+<p>
+<a href="nswag_studio.jpg"><img  src="nswag_studio.jpg" alt="Nswag Studio sample configuration"></a>
+</p>
+<p><code>Generate Outputs</code> button allows us to preview the generated client source code. After achieving the desired output, we should save the current configuration as <code>nswag.json</code> file directly in <code>SampleService.ApiClient</code> project&rsquo;s directory - <code>NSwag</code> should automatically convert all paths (assembly and references) to the relative form.</p>
+<p>In addition to options selected on the screenshot I also use the following settings to customize client proxy code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;codeGenerators&#34;</span>: {
+    <span style="color:#f92672">&#34;openApiToCSharpClient&#34;</span>: {      
+      <span style="color:#f92672">&#34;generateClientInterfaces&#34;</span>: <span style="color:#66d9ef">true</span>,
+      <span style="color:#f92672">&#34;useBaseUrl&#34;</span>: <span style="color:#66d9ef">false</span>,
+      <span style="color:#f92672">&#34;generateBaseUrlProperty&#34;</span>: <span style="color:#66d9ef">false</span>,
+      <span style="color:#f92672">&#34;generateOptionalParameters&#34;</span>: <span style="color:#66d9ef">true</span>,
+      <span style="color:#f92672">&#34;parameterArrayType&#34;</span>: <span style="color:#e6db74">&#34;System.Collections.Generic.IReadOnlyList&#34;</span>,
+      <span style="color:#f92672">&#34;responseArrayType&#34;</span>: <span style="color:#e6db74">&#34;System.Collections.Generic.IReadOnlyList&#34;</span>,      
+      <span style="color:#f92672">&#34;generateOptionalPropertiesAsNullable&#34;</span>: <span style="color:#66d9ef">true</span>,
+      <span style="color:#f92672">&#34;generateNullableReferenceTypes&#34;</span>: <span style="color:#66d9ef">true</span>,
+      <span style="color:#f92672">&#34;output&#34;</span>: <span style="color:#e6db74">&#34;$(Output)&#34;</span>,
+    }
+  }
+}
+</code></pre></div><h3 id="configure-build-of-apiclient-project">Configure build of ApiClient project<a href="#configure-build-of-apiclient-project" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<p>Having <code>nswag.json</code> manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with <a href="https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild">NSwag.MSBuild</a> package and a little bit of <code>MsBuild</code> scripting. Here&rsquo;s a content of <code>SampleService.ApiClient.csproj</code> file:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Project</span> <span style="color:#a6e22e">Sdk=</span><span style="color:#e6db74">&#34;Microsoft.NET.Sdk&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;PropertyGroup&gt;</span>
+    <span style="color:#f92672">&lt;TargetFramework&gt;</span>netcoreapp3.1<span style="color:#f92672">&lt;/TargetFramework&gt;</span>
+    <span style="color:#75715e">&lt;!--Automatically generate nuget package with client library--&gt;</span>
+    <span style="color:#f92672">&lt;GeneratePackageOnBuild&gt;</span>true<span style="color:#f92672">&lt;/GeneratePackageOnBuild&gt;</span>
+  <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
+  <span style="color:#f92672">&lt;ItemGroup&gt;</span>
+    <span style="color:#75715e">&lt;!--Add required nuget packages necessary for ApiClient build--&gt;</span>
+    <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;System.ComponentModel.Annotations&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;4.7.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;Newtonsoft.Json&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;12.0.3&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;NSwag.MSBuild&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;13.7.0&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;PrivateAssets&gt;</span>all<span style="color:#f92672">&lt;/PrivateAssets&gt;</span>
+      <span style="color:#f92672">&lt;IncludeAssets&gt;</span>runtime; build; native; contentfiles; analyzers; buildtransitive<span style="color:#f92672">&lt;/IncludeAssets&gt;</span>
+    <span style="color:#f92672">&lt;/PackageReference&gt;</span>
+  <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
+  <span style="color:#f92672">&lt;ItemGroup&gt;</span>
+    <span style="color:#75715e">&lt;!--Add build time reference to SampleService project--&gt;</span>
+    <span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\SampleService\SampleService.csproj&#34;</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Private&gt;</span>False<span style="color:#f92672">&lt;/Private&gt;</span>
+      <span style="color:#f92672">&lt;ReferenceOutputAssembly&gt;</span>False<span style="color:#f92672">&lt;/ReferenceOutputAssembly&gt;</span>
+    <span style="color:#f92672">&lt;/ProjectReference&gt;</span>
+  <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
+  <span style="color:#75715e">&lt;!--Add build step responsible for generating the source code of client api and including it to compilation--&gt;</span>
+  <span style="color:#f92672">&lt;Target</span> <span style="color:#a6e22e">Name=</span><span style="color:#e6db74">&#34;GenerateApiClientSourceCode&#34;</span> <span style="color:#a6e22e">BeforeTargets=</span><span style="color:#e6db74">&#34;CoreCompile;PrepareResource&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;Exec</span> <span style="color:#a6e22e">Command=</span><span style="color:#e6db74">&#34;$(NSwagExe_Core31) run nswag.json /variables:Configuration=$(Configuration),Output=$(IntermediateOutputPath)\ApiClient.generated.cs&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;ItemGroup&gt;</span>
+      <span style="color:#f92672">&lt;Compile</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;$(IntermediateOutputPath)\ApiClient.generated.cs&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
+  <span style="color:#f92672">&lt;/Target&gt;</span>
+<span style="color:#f92672">&lt;/Project&gt;</span>
+</code></pre></div><p>In the <code>GenerateApiClientSourceCode</code> build target we are passing additional values with <code>/variables</code> parameter to NSwag CLI. Those values can be accessed in <code>nswag.json</code> manifest using <code>$()</code> notation, as shown on the following excerpt:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;runtime&#34;</span>: <span style="color:#e6db74">&#34;NetCore31&#34;</span>,
+  <span style="color:#f92672">&#34;defaultVariables&#34;</span>: <span style="color:#e6db74">&#34;Configuration=Debug,Output=./ApiClient.generated.cs&#34;</span>,
+  <span style="color:#f92672">&#34;documentGenerator&#34;</span>: {
+    <span style="color:#f92672">&#34;webApiToOpenApi&#34;</span>: {
+      <span style="color:#f92672">&#34;assemblyPaths&#34;</span>: [
+        <span style="color:#e6db74">&#34;../SampleService/bin/$(Configuration)/netcoreapp3.1/SampleService.dll&#34;</span>
+      ],
+      <span style="color:#f92672">&#34;referencePaths&#34;</span>: [
+        <span style="color:#e6db74">&#34;../SampleService/bin/$(Configuration)/netcoreapp3.1/&#34;</span>
+      ],
+    }
+  },
+  <span style="color:#f92672">&#34;codeGenerators&#34;</span>: {
+    <span style="color:#f92672">&#34;openApiToCSharpClient&#34;</span>: {
+      <span style="color:#f92672">&#34;output&#34;</span>: <span style="color:#e6db74">&#34;$(Output)&#34;</span>
+    }
+  }
+}
+</code></pre></div><p>Defaults can be defined with <code>&quot;defaultVariables&quot;</code> - this is very useful if we are going to edit this file in <code>NSwag Studio</code> in the future.</p>
+<p>Since now, on every build, NSwag should generate automatically the source code of API client which is later compiled into <code>SampleService.ClientApi.dll</code> library and packed as a nuget.</p>
+<p>Here are the benefits of configuring automatic client generation in this way:</p>
+<ul>
+<li>The client code is continuously synchronized with the API.</li>
+<li>We can easily examine client source code because it&rsquo;s saved in <code>IntermediateOutputPath</code> (in most cases it&rsquo;s just <code>obj</code> directory).</li>
+<li>We can add an additional code which is using generated client api directly in the <code>SampleService.ApiClient</code> project.</li>
+</ul>
+<p>The last fact can be used for providing an implementation of partial methods defined in generated client class like: <code>UpdateJsonSerializerSettings</code>, <code>PrepareRequest</code>, and <code>ProcessResponse</code>.
+We can also extend generated client by inheritance or with extension methods:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WeatherForecastClientExtensions</span>
+{
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForTodayAsync(<span style="color:#66d9ef">this</span> IWeatherForecastClient client, CancellationToken cancellationToken = <span style="color:#66d9ef">default</span>) 
+        =&gt; client.GetAsync(<span style="color:#ae81ff">1</span>, cancellationToken);
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForNextWeekAsync(<span style="color:#66d9ef">this</span> IWeatherForecastClient client, CancellationToken cancellationToken = <span style="color:#66d9ef">default</span>) 
+        =&gt; client.GetAsync(<span style="color:#ae81ff">7</span>, cancellationToken);
+}
+</code></pre></div><h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<p>Thanks to <code>NSwag</code> tooling we can very easily configure automatic WebAPI client generation. A basic setup presented in this blog post is available as a <a href="https://github.com/cezarypiatek/SampleWebApiClientGeneration">Sample Project</a> on my Github.</p>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/dapper-tips-and-tricks/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/dapper-tips-and-tricks/splashscreen_hu934097d2f008fa5010efd29b702bfdce_90880_320x240_fill_q75_box_smart1.jpg" alt="Working efficiently with legacy database using Dapper">
+								<div class="card-body">
+									<h5 class="card-title">Working efficiently with legacy database using Dapper</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/methods-with-special-signature/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/methods-with-special-signature/splashscreen_huad0994e5edc03298d344367c5114e98c_58460_320x240_fill_q75_box_smart1.jpg" alt="The Magical Methods in C#">
+								<div class="card-body">
+									<h5 class="card-title">The Magical Methods in C#</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-twin-types/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
+								<div class="card-body">
+									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "NSwag,AspCore,Csharp,WebAPI,Rest"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+    custom: true
+  });
+		});
+	</script>
+
+</body>
+</html>
