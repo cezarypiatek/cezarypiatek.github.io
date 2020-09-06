@@ -13,7 +13,7 @@
             "@type":"WebPage",
             "@id":"https:\/\/cezarypiatek.github.io\/post\/whats-wrong-with-unobtrusive-ajax\/"
             },
-          "headline" : "What\x27s wrong with default ajax support in ASP.NET MVC and how to fix it.",
+          "headline" : "What\u0027s wrong with default ajax support in ASP.NET MVC and how to fix it.",
           "author" : {
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
@@ -39,11 +39,11 @@
     <meta property="og:description" content="Why the javascript library can stop you from releasing to the production and how to prevent it.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="content-security-policy">
+    <meta property="og:tags" content="Content-Security-Policy">
     
     <meta property="og:tags" content="csp">
     
-    <meta property="og:tags" content="asp.net mvc">
+    <meta property="og:tags" content="ASP.NET MVC">
     
     <meta property="og:tags" content="ajax">
     
@@ -57,8 +57,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="Why the javascript library can stop you from releasing to the production and how to prevent it.">
 
-	<meta name="keywords" value="content-security-policy, csp, asp.net mvc, ajax, clean code, javascript" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="Content-Security-Policy, csp, ASP.NET MVC, ajax, clean code, javascript" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>What&#39;s wrong with default ajax support in ASP.NET MVC and how to fix it. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -74,7 +74,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -156,7 +157,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <main>
 	<article>
@@ -171,190 +172,146 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&rsquo;s shipped with MVC bootstrapping template and it&rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.NET MVC frontend developer, and how to fix them.</p>
-
+		<p>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&rsquo;s shipped with MVC bootstrapping template and it&rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.NET MVC frontend developer, and how to fix them.</p>
 <h2 id="how-it-works">How it works.<a href="#how-it-works" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>Before we start, let me briefly remind you how jquery.unobtrusive-ajax.js works. As I&rsquo;ve mentioned in the introduction, this library adds ajax support for forms and hyperlinks. In order to use it you have to provide a set of appropriate data-ajax-* attributes which will be &ldquo;interpreted&rdquo; by the javascript library. You don&rsquo;t need to type these attributes directly - you can use AjaxOptions object accepted by razor helpers and translated into given html attributes. These attributes are responsible for configuring ajax connection, selecting the predefined behavior for handling ajax response and providing custom callbacks for given ajax events. The latter can be entered in the form of javascript method name, but nothing prevents us from typing full javascript expression. A sample usage of AjaxOptions with conjunction of Ajax.BeginForm can look as follows.</p>
-
-<pre><code class="language-razor">@using (Ajax.BeginForm(&quot;SaveData&quot;, new AjaxOptions { OnSuccess = &quot;alert(\&quot;Data successfuly saved!\&quot;);&quot; }))
+<pre><code class="language-razor" data-lang="razor">@using (Ajax.BeginForm(&quot;SaveData&quot;, new AjaxOptions { OnSuccess = &quot;alert(\&quot;Data successfuly saved!\&quot;);&quot; }))
 {
     &lt;h1&gt;This is sample form&lt;/h1&gt;
     @*Sample form content*@
     &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
 }
-</code></pre>
-
-<p>When you have in web.config <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> flag set to true, this razor code is translated into the following html markup :</p>
-
-<pre><code class="language-html">&lt;form action=&quot;/Home/SaveData&quot; data-ajax=&quot;true&quot; data-ajax-success=&quot;alert(&amp;quot;Data successfuly saved!&amp;quot;);&quot; id=&quot;form0&quot; method=&quot;post&quot;&gt;
-    &lt;h1&gt;This is sample form&lt;/h1&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
-&lt;/form&gt;
-</code></pre>
-
-<p>If you switch <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> to false you get the code as below which is some kind of fallback in case you don&rsquo;t have jquery (it requires another Microsoft JavaScript library).</p>
-
-<pre><code class="language-html">&lt;form action=&quot;/Home/SaveData&quot; id=&quot;form0&quot; method=&quot;post&quot; onclick=&quot;Sys.Mvc.AsyncForm.handleClick(this, new Sys.UI.DomEvent(event));&quot; onsubmit=&quot;Sys.Mvc.AsyncForm.handleSubmit(this, new Sys.UI.DomEvent(event), { insertionMode: Sys.Mvc.InsertionMode.replace, onSuccess: Function.createDelegate(this, alert(&amp;quot;Data successfuly saved!&amp;quot;);) });&quot;&gt;    
-    &lt;h1&gt;This is sample form&lt;/h1&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
-&lt;/form&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-//&lt;![CDATA[
-if (!window.mvcClientValidationMetadata) { window.mvcClientValidationMetadata = []; }
-window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot;:&quot;form0&quot;,&quot;ReplaceValidationSummary&quot;:false});
-//]]&gt;
-&lt;/script&gt;
-</code></pre>
-
-<p>After analyzing this &ldquo;non-obtrusive&rdquo; version I very much doubt if this works with ajax callbacks provided as a javascript expression (probably the javascript literals are the only valid value).</p>
-
+</code></pre><p>When you have in web.config <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> flag set to true, this razor code is translated into the following html markup :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/Home/SaveData&#34;</span> <span style="color:#a6e22e">data-ajax</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">data-ajax-success</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;alert(&amp;quot;Data successfuly saved!&amp;quot;);&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form0&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+    &lt;<span style="color:#f92672">h1</span>&gt;This is sample form&lt;/<span style="color:#f92672">h1</span>&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+</code></pre></div><p>If you switch <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> to false you get the code as below which is some kind of fallback in case you don&rsquo;t have jquery (it requires another Microsoft JavaScript library).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/Home/SaveData&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form0&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">onclick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Sys.Mvc.AsyncForm.handleClick(this, new Sys.UI.DomEvent(event));&#34;</span> <span style="color:#a6e22e">onsubmit</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Sys.Mvc.AsyncForm.handleSubmit(this, new Sys.UI.DomEvent(event), { insertionMode: Sys.Mvc.InsertionMode.replace, onSuccess: Function.createDelegate(this, alert(&amp;quot;Data successfuly saved!&amp;quot;);) });&#34;</span>&gt;    
+    &lt;<span style="color:#f92672">h1</span>&gt;This is sample form&lt;/<span style="color:#f92672">h1</span>&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>/&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span>&gt;
+<span style="color:#75715e">//&lt;![CDATA[
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>window.<span style="color:#a6e22e">mvcClientValidationMetadata</span>) { window.<span style="color:#a6e22e">mvcClientValidationMetadata</span> <span style="color:#f92672">=</span> []; }
+window.<span style="color:#a6e22e">mvcClientValidationMetadata</span>.<span style="color:#a6e22e">push</span>({<span style="color:#e6db74">&#34;Fields&#34;</span><span style="color:#f92672">:</span>[],<span style="color:#e6db74">&#34;FormId&#34;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;form0&#34;</span>,<span style="color:#e6db74">&#34;ReplaceValidationSummary&#34;</span><span style="color:#f92672">:</span><span style="color:#66d9ef">false</span>});
+<span style="color:#75715e">//]]&gt;
+</span><span style="color:#75715e"></span>&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>After analyzing this &ldquo;non-obtrusive&rdquo; version I very much doubt if this works with ajax callbacks provided as a javascript expression (probably the javascript literals are the only valid value).</p>
 <p>In ASP Core there is no longer AjaxHelper and AjaxOptions but you can still use jquery.unobtrusive-ajax.js functionality by providing data-ajax-* attributes manually.</p>
-
 <h2 id="is-it-truly-unobtrusive">Is it truly unobtrusive?<a href="#is-it-truly-unobtrusive" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>I think the root of all problems lays in the (miss)understanding of &ldquo;unobtrusive javascript&rdquo; term. According to <a href="https://en.wikipedia.org/wiki/Unobtrusive_JavaScript">Wikipedia</a> the concept of unobtrusive javascript appeared for the very first time in Stuart Langridge&rsquo;s article <a href="https://kryogenix.org/code/browser/aqlists/">Unobtrusive DHTML, and the power of unordered lists</a> from 2002. A better explanation we can find in David Flanagan&rsquo;s book &ldquo;JavaScript: The Definitive Guide&rdquo; which looks as follows:</p>
-
 <blockquote>
 <p>A programming philosophy known as unobtrusive JavaScript argues that content (HTML) and behavior (JavaScript code) should as much as possible be kept separate. According to this programming philosophy, JavaScript is best embedded in HTML documents using &lt;script&gt; elements with src attributes.</p>
 </blockquote>
-
 <p>There are few other postulates of this paradigm (such as Graceful degradation) but this one is especially important from the clean code and maintainability perspective.</p>
-
-<p><img src="is_it_truly_unobtrusive.jpg" alt="mem" /></p>
-
+<p>
+<a href="is_it_truly_unobtrusive.jpg"><img  src="is_it_truly_unobtrusive.jpg" alt="mem"></a>
+</p>
 <p>According to this definition jquery.unobtrusive-ajax.js is not even close to unobtrusive approach compliance because it requires providing javascript callbacks inside the html attributes. I think the author(s) of this library was mainly focused on the aspect of Graceful degradation - which nowadays has marginal meaning - and totally forgot about separation of concerns between Javascript and HTML code.</p>
-
 <h2 id="implications">Implications<a href="#implications" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>The main issue is not the compliance with the definition but the fact that this programming style (I mean messing javascript code with html markup) has some serious ramification. First of all, this code is really hard to maintain. If you put javascript code inside html atttributes you won&rsquo;t be able to refactor it with automatic refactoring tools, debug or verify syntax correctness. This is also  abused sometimes to build javascript dynamically (by concatenating strings) which could result with the potential XSS attack.</p>
-
 <p>Another disavantage is that when you need to invoke function inside this &ldquo;inline&rdquo; code it requires global accessibility of this function. This means you can&rsquo;t put your function definition inside private context (for example wrapping with immediate invocation of anonymous function). Exposing function globally can have negative effects such as name collisions (which cause method overriding) and it makes it harder to keep contexts separated.</p>
-
 <p>And the most serious drawback, which can even prevent from releasing our software to the production due to security reasons, is lack of Content-Security-Policy compliance. I&rsquo;ve been developing software for financial sector for the last few years and before we release application to the production server we have to go through the mandatory security audit. Since the CSP became widely supported by the modern browsers it also became one of the checkpoints during those security audits. I&rsquo;ve also met CSP as one of the requirements in RFP documents. For those who don&rsquo;t know, CSP is another security mechanism which prevents against XSS attacks. This is pretty easy to implement - you have to only add &ldquo;Content-Security-Policy&rdquo; header to http response. However, enabling CSP has impact onto how javascript and css are interpreted. Since now you can&rsquo;t use inline scripts and styles and can&rsquo;t evaluate javascript dynamically (expressions such as &ldquo;eval()&rdquo; and &ldquo;new Function()&rdquo; are forbidden). When you add CSP header all your javascript code which is wired by jquery.unobtrusive-ajax stop working.</p>
-
-<p><img src="csp_error.jpg" alt="CSP Error" /></p>
-
+<p>
+<a href="csp_error.jpg"><img  src="csp_error.jpg" alt="CSP Error"></a>
+</p>
 <h2 id="how-to-fix-it">How to fix it?<a href="#how-to-fix-it" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>Now we know that the broken part of jquery.unobtrusive-ajax.js is about providing callback for ajax events, so we have to find a different way for creating these subscriptions.
 Unfortunately, I wasn&rsquo;t able to find any solution that wouldn&rsquo;t imply modification of jquery.unobtrusive-ajax.js source code. I&rsquo;m not a huge fan of modifying third party libraries for given project purpose because this has a lot of negative implications (for example you have to manually apply all updates and there is much more). I&rsquo;ve even decided to send PR with fix proposal but it was rejected with not entirely clear reasons, so I&rsquo;ve stucked with private modification of this library.</p>
-
 <p>After quick analysis of jquery.unobtrusive-ajax.js source code we can easily spot the places where ajax callbacks are invoked (I marked these places with red arrows as you can see below)</p>
-
-<p><img src="callbacks_invocation_places.jpg" alt="" /></p>
-
+<p>
+<a href="callbacks_invocation_places.jpg"><img  src="callbacks_invocation_places.jpg" alt=""></a>
+</p>
 <p>One of the possible solutions is to replace these lines with code that triggers custom events on related DOM element. Instead of calling callback function directly we shift into event oriented direction which gives us a really nice point of extensibility. A sample implementation can look as follows:</p>
-
-<p><img src="dom_event_solution.jpg" alt="" /></p>
-
+<p>
+<a href="dom_event_solution.jpg"><img  src="dom_event_solution.jpg" alt=""></a>
+</p>
 <p>Now we can subscribe for those ajax events in a more elegant way directly from js code:</p>
-
-<pre><code class="language-js">$(function(){
-    $(&quot;#SampleForm&quot;).on(&quot;ajax:begin&quot;, function (event, ajaxData) {
-        console.log(&quot;Begin&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span>(){
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:begin&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Begin&#34;</span>);
     });
 
-    $(&quot;#SampleForm&quot;).on(&quot;ajax:complete&quot;, function (event, ajaxData) {
-        console.log(&quot;Complete&quot;);
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:complete&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Complete&#34;</span>);
     });
 
-    $(&quot;#SampleForm&quot;).on(&quot;ajax:success&quot;, function (event, ajaxData) {
-        console.log(&quot;Success&quot;);
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:success&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Success&#34;</span>);
     });
 
-    $(&quot;#SampleForm&quot;).on(&quot;ajax:failure&quot;, function (event, ajaxData) {
-        console.log(&quot;Failure&quot;);
-    });
-});
-</code></pre>
-
-<p>The id attributes are not required for this solution, you can locate interesting element in any way you want, but this is good practice to assign unique id to every form (if you don&rsquo;t do that BeginForm helper assigns a &ldquo;default&rdquo; value). If you are working with element that occurs multiple times (for example delete button on every list item) you can use a class selector to locate element for subscription as follows:</p>
-
-<pre><code class="language-js">$(function(){
-    $(&quot;.button-delete&quot;).on(&quot;ajax:begin&quot;, function (event, ajaxData) {
-        console.log(&quot;Begin&quot;);
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:failure&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Failure&#34;</span>);
     });
 });
-</code></pre>
-
-<p>&hellip; or in more efficient way:</p>
-
-<pre><code class="language-js">$(function(){
-    $(&quot;#ProductList&quot;).on(&quot;ajax:begin&quot;, &quot;.button-delete&quot;, function (event, ajaxData) {
-        console.log(&quot;Begin&quot;);
+</code></pre></div><p>The id attributes are not required for this solution, you can locate interesting element in any way you want, but this is good practice to assign unique id to every form (if you don&rsquo;t do that BeginForm helper assigns a &ldquo;default&rdquo; value). If you are working with element that occurs multiple times (for example delete button on every list item) you can use a class selector to locate element for subscription as follows:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span>(){
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;.button-delete&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:begin&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Begin&#34;</span>);
     });
 });
-</code></pre>
-
-<p>Unfortunately, this solution has few drawbacks which can materialize in certain use cases. Namely, this fix is based on DOM events, so when the element with subscription is deleted in the meantime from the DOM, certain callbacks will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or its parent element) - the complete subscription will be ignored. Another disadvantage can be the necessity to wait with creating subscription until given element appears in the DOM (which could be an issue with dynamically loaded elements) but this is a more versatile problem related to DOM events and dynamic content.</p>
-
+</code></pre></div><p>&hellip; or in more efficient way:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span>(){
+    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#ProductList&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:begin&#34;</span>, <span style="color:#e6db74">&#34;.button-delete&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Begin&#34;</span>);
+    });
+});
+</code></pre></div><p>Unfortunately, this solution has few drawbacks which can materialize in certain use cases. Namely, this fix is based on DOM events, so when the element with subscription is deleted in the meantime from the DOM, certain callbacks will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or its parent element) - the complete subscription will be ignored. Another disadvantage can be the necessity to wait with creating subscription until given element appears in the DOM (which could be an issue with dynamically loaded elements) but this is a more versatile problem related to DOM events and dynamic content.</p>
 <p>Another possible solution that could address all formerly mentioned issues, as well as drawback of the previous solution, is to publish events through custom event aggregator instead of triggering it on DOM tree. You can declare this event aggregator globally or inject with some kind of DI container (I&rsquo;ll never understand why there is a need for DI container in a dynamic language like javascript). You can put the code responsible for triggering events in the same places as in the previous solution or organize it in separated unit without the need to modify jquery.unobtrusive-ajax.js thanks to <a href="https://api.jquery.com/category/ajax/global-ajax-event-handlers/">global ajax event handlers</a>. Unfortunately, this is not entirely true because in global handlers we have no information about the DOM element corelated with ajax events. We can smuggle the element responsible for context through the ajax options with a small modification to jquery.unobtrusive-ajax.js:</p>
-
-<p><img src="context_element.jpg" alt="" /></p>
-
+<p>
+<a href="context_element.jpg"><img  src="context_element.jpg" alt=""></a>
+</p>
 <p>Now we are able to utilize global ajax event handlers to publish our custom events:</p>
-
-<pre><code class="language-javascript">$(function () {
-    var $document = $(document);
-    $document.ajaxSend(function (event, xhr, settings) {
-        AjaxEventAggregator.publish(&quot;send&quot;, settings.contextElement, arguments);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span> () {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$document</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(document);
+    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxSend</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>) {
+        <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;send&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
      });
 
-    $document.ajaxComplete(function (event, xhr, settings) {
-       AjaxEventAggregator.publish(&quot;complete&quot;, settings.contextElement, arguments);
+    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxComplete</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>) {
+       <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;complete&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
     });
     
-    $document.ajaxError(function (event, xhr, settings, error) {
-        AjaxEventAggregator.publish(&quot;error&quot;, settings.contextElement, arguments);
+    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxError</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>, <span style="color:#a6e22e">error</span>) {
+        <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;error&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
     });
 
-    $document.ajaxSuccess(function (event, xhr, settings, data) {       
-        AjaxEventAggregator.publish(&quot;success&quot;, settings.contextElement, arguments);
+    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxSuccess</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>, <span style="color:#a6e22e">data</span>) {       
+        <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;success&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
     });
 });
-</code></pre>
-
-<p>Inside the AjaxEventAggregator implementation you should somehow determine channel name based on the parameter which receives the value of settings.contextElement (you can use the id or value of other custom attribute, for example data-ajax-channel) and publish the event only to subscriptions for given event on given channel.</p>
-
-<pre><code class="language-javascript">var AjaxEventAggregator = AjaxEventAggregator || {};
-$.extend(AjaxEventAggregator, (function () {
-    return {       
-        subscribe: function (ajaxEventName, channel, callback) {
-            //subscribe for given ajax event on channell
-        },       
-        publish: function (ajaxEventName, $contextElement, args) {
-            //determine the channel name base on the $contextElement and publish given event on this channel
-        }
+</code></pre></div><p>Inside the AjaxEventAggregator implementation you should somehow determine channel name based on the parameter which receives the value of settings.contextElement (you can use the id or value of other custom attribute, for example data-ajax-channel) and publish the event only to subscriptions for given event on given channel.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">AjaxEventAggregator</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">AjaxEventAggregator</span> <span style="color:#f92672">||</span> {};
+<span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">extend</span>(<span style="color:#a6e22e">AjaxEventAggregator</span>, (<span style="color:#66d9ef">function</span> () {
+    <span style="color:#66d9ef">return</span> {       
+        <span style="color:#a6e22e">subscribe</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">ajaxEventName</span>, <span style="color:#a6e22e">channel</span>, <span style="color:#a6e22e">callback</span>) {
+            <span style="color:#75715e">//subscribe for given ajax event on channell
+</span><span style="color:#75715e"></span>        },       
+        <span style="color:#a6e22e">publish</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">ajaxEventName</span>, <span style="color:#a6e22e">$contextElement</span>, <span style="color:#a6e22e">args</span>) {
+            <span style="color:#75715e">//determine the channel name base on the $contextElement and publish given event on this channel
+</span><span style="color:#75715e"></span>        }
     }
 })());
-</code></pre>
-
-<p>Now we can subscribe for the given ajax events in the following way (I&rsquo;m using form id for channel name)</p>
-
-<pre><code class="language-javascript">(function(){
-    AjaxEventAggregator.subscribe(&quot;send&quot;, &quot;SampleForm&quot;, function (response) {
-        console.log(&quot;send&quot;);
+</code></pre></div><p>Now we can subscribe for the given ajax events in the following way (I&rsquo;m using form id for channel name)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">(<span style="color:#66d9ef">function</span>(){
+    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;send&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;send&#34;</span>);
     });
 
-    AjaxEventAggregator.subscribe(&quot;complete&quot;, &quot;SampleForm&quot;, function (response) {
-        console.log(&quot;complete&quot;);
+    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;complete&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;complete&#34;</span>);
     });
 
-    AjaxEventAggregator.subscribe(&quot;error&quot;, &quot;SampleForm&quot;, function (response) {
-        console.log(&quot;error&quot;);
+    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;error&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;error&#34;</span>);
     });
 
-    AjaxEventAggregator.subscribe(&quot;success&quot;, &quot;SampleForm&quot;, function (response) {
-        console.log(&quot;success&quot;);
+    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;success&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;success&#34;</span>);
     });
 })();
-</code></pre>
-
-<p>Here come some benefits from this approach:</p>
-
+</code></pre></div><p>Here come some benefits from this approach:</p>
 <ol>
 <li>You don&rsquo;t need to mix your javascript code with html markup anymore.</li>
 <li>You can subscribe for ajax events in a very elegant way directly from javascript.</li>
@@ -363,9 +320,7 @@ $.extend(AjaxEventAggregator, (function () {
 <li>You don&rsquo;t need to wait until all elements are loaded into DOM in order to subscribe for ajax events.</li>
 <li>You improve the maintainability of your code responsible for handling ajax events.</li>
 </ol>
-
 <h2 id="final-thought">Final thought<a href="#final-thought" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>This fake &ldquo;unobtrusive&rdquo; sense is not only jquery.unobtrusive-ajax.js related problem. You should always check CSP compliance of your javascript library/framework of choice before you start any development. Postponing this verification can generate additional costs and even result with system rewriting.</p>
     
 		
@@ -480,6 +435,7 @@ $.extend(AjaxEventAggregator, (function () {
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
@@ -502,7 +458,7 @@ $.extend(AjaxEventAggregator, (function () {
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "content-security-policy,csp,asp.netmvc,ajax,cleancode,javascript"
+				hashtags: "Content-Security-Policy,csp,ASP.NETMVC,ajax,cleancode,javascript"
 			}
 		}
 	}

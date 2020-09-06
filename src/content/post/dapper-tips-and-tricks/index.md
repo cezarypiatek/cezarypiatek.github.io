@@ -11,9 +11,9 @@ A year ago I started working on a set of projects that requires accessing data f
 
 >  Key Takeaways:
 >   
-   - Always define aliases in SQL queries using `nameof()` operator
-   - Use C# consts and enums in SQL queries instead of magic numbers
-   - Use `FOR JSON PATH` to simplify fetching complex objects from database
+>   - Always define aliases in SQL queries using `nameof()` operator
+>   - Use C# consts and enums in SQL queries instead of magic numbers
+>   - Use `FOR JSON PATH` to simplify fetching complex objects from database
 
 ## Resilient to refactoring
 

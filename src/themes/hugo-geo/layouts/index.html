@@ -9,7 +9,6 @@
 		<h1>{{ .Site.Params.header }}</h1>
 	{{ end }}
 </header>
-This is the main page
 {{ $paginator := .Paginate (where .Site.RegularPages "Section" "post") }}
 {{ range $paginator.Pages }}
 	{{ .Render "summary"}}

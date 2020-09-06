@@ -8,13 +8,13 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-In the era of microservices and distributed systems, not only web browser applications written in `JavaScript` are the consumers of the `REST API`. Today, more and more often this type of communication is used to connect backend services too. Integrating two services using REST protocol doesn't require any form of sharable contract which makes the process extremely easy when both sides are developed in different technologies but it comes with its price. At the end of the day, we always need to write some set of classes that act as a client proxy, and if there is more than one consumer of a given service we need to repeat that work in every one of them. Another problem is with propagating information about changes in the API and adjusting all clients to those changes. Taking account those disadvantages it's worth considering publishing a client proxy alongside the service itself, especially if it's possible to generate it automatically. There's a couple of existing projects on the market that allow generating C# client from `OpenAPI` (`Swagger`) specification like:
+In the era of microservices and distributed systems, web browser applications written in `JavaScript` are not the only consumers of the `REST API`. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn't require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price. At the end of the day, we always need to write some set of classes that act as a client proxy, and if there is more than one consumer of a given service, we need to repeat that work in every one of them. Another problem is with propagating information about changes in the API and adjusting all clients to those changes. Taking into account those disadvantages, it's worth considering publishing a client proxy alongside the service itself, especially if it's possible to generate it automatically. There's a couple of existing projects on the market that allow generating C# client from `OpenAPI` (`Swagger`) specification like:
 
 - [swagger-codegen](https://swagger.io/tools/swagger-codegen/)
 - [openapi-generator](https://github.com/OpenAPITools/openapi-generator)
 - [NSwag](https://github.com/RicoSuter/NSwag). 
 
-`swagger-codegen` and `openapi-generator` are Java based CLI tools, so they require `JVM` to run but they allow to generate Rest API clients in a verity of programming languages. `NSwag` is built with dotnet but supports only `C#` and `TypeScript` clients generation. Anyway, I decided to use `NSwag` because it was the easiest one to integrated with `MsBuild` and allows for generating clients directly from WebAPI server assembly. Although there's plenty of article about generating C# client using NSwag, it took me a whole day to put all necessary pieces together so I decided to write my own description for future reference.
+`swagger-codegen` and `openapi-generator` are Java based CLI tools, so they require `JVM` to run but they allow to generate Rest API clients in a verity of programming languages. `NSwag` is built with dotnet but supports only `C#` and `TypeScript` clients generation. Anyway, I decided to use `NSwag` because it was the easiest one to integrate with `MsBuild` and allows for generating clients directly from WebAPI server assembly. Although there's plenty of articles about generating C# client using NSwag, it took me a whole day to put all the necessary pieces together, so I decided to write my own description for future reference.
 
 ## Project organization
 
@@ -28,7 +28,7 @@ In the era of microservices and distributed systems, not only web browser applic
 
 ### Prepare `nswag.json` manifest
 
-`nswag.json` defines a set of parameters required by NSwag for generating client code like input assembly and output file path as well as other different options allowing to adjust the shape of output code to our needs. The easiest way to generate this manifest file is to use Windows UI application called [NSwag Studio](https://github.com/RicoSuter/NSwag/wiki/NSwagStudio).
+`nswag.json` defines a set of parameters required by NSwag for generating client code like input assembly and output file path, as well as other different options allowing to adjust the shape of output code to our needs. The easiest way to generate the manifest file is to use Windows UI application called [NSwag Studio](https://github.com/RicoSuter/NSwag/wiki/NSwagStudio).
 Here's the minimal configuration required to correctly generate C# client:
 
 ![Nswag Studio sample configuration](nswag_studio.jpg)
@@ -58,7 +58,7 @@ In addition to options selected on the screenshot I also use the following setti
 
 ### Configure build of ApiClient project
 
-Having `nswag.json` manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with [NSwag.MSBuild](https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild) package and a little bit of of `MsBuild` scripting. Here's a content of `SampleService.ApiClient.csproj` file:
+Having `nswag.json` manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with [NSwag.MSBuild](https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild) package and a little bit of `MsBuild` scripting. Here's a content of `SampleService.ApiClient.csproj` file:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -93,7 +93,7 @@ Having `nswag.json` manifest adjusted to our requirement we can configure automa
 </Project>
 ```
 
-In the `GenerateApiClientSourceCode` build target we are passing additional values with `/variables` parameter to NSwag CLI. Those values can be accessed in `nswag.json` manifest using `$()` notation as shown on the following excerpt:
+In the `GenerateApiClientSourceCode` build target we are passing additional values with `/variables` parameter to NSwag CLI. Those values can be accessed in `nswag.json` manifest using `$()` notation, as shown on the following excerpt:
 
 ```json
 {
@@ -124,7 +124,7 @@ Since now, on every build, NSwag should generate automatically the source code o
 Here are the benefits of configuring automatic client generation in this way:
 
 - The client code is continuously synchronized with the API.
-- We can easily examine client source code because it's saved in `IntermediateOutputPath` (in most cases it's just `obj` directory)
+- We can easily examine client source code because it's saved in `IntermediateOutputPath` (in most cases it's just `obj` directory).
 - We can add an additional code which is using generated client api directly in the `SampleService.ApiClient` project. 
 
 The last fact can be used for providing an implementation of partial methods defined in generated client class like: `UpdateJsonSerializerSettings`, `PrepareRequest`, and `ProcessResponse`.

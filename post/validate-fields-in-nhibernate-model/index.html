@@ -41,11 +41,11 @@
     
     <meta property="og:tags" content="data model">
     
-    <meta property="og:tags" content="nhibernate">
+    <meta property="og:tags" content="NHibernate">
     
-    <meta property="og:tags" content="sqlite">
+    <meta property="og:tags" content="SQLite">
     
-    <meta property="og:tags" content="sql server">
+    <meta property="og:tags" content="SQL Server">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/splashscreen.jpg">
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to demystify NHibernate exception by detecting invalid fields before committing changes to database">
 
-	<meta name="keywords" value="data model, nhibernate, sqlite, sql server" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="data model, NHibernate, SQLite, SQL Server" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Validating fields of NHibernate model &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -70,7 +70,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -152,7 +153,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <main>
 	<article>
@@ -167,200 +168,170 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<h2 id="the-challenge">The challenge<a href="#the-challenge" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
+		<h2 id="the-challenge">The challenge<a href="#the-challenge" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Recently I&rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:</p>
-
-<pre><code class="language-plaintext">NHibernate.Exceptions.GenericADOException: could not execute batch command.[SQL: SQL not available] ---&gt; System.Data.SqlClient.SqlException: String or binary data would be truncated.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">NHibernate.Exceptions.GenericADOException: could not execute batch command.[SQL: SQL not available] ---&gt; System.Data.SqlClient.SqlException: String or binary data would be truncated.
 The statement has been terminated.
-</code></pre>
-
-<p>Investigating this kind of error is very hard because the message is quite cryptic. It only says that some data exceeded given length constraints. We have no clue which field or even entity is the source of the problem (especially that the exception occurs only after calling <code>Flush()</code> method). I tried to search for some debugging advices in google but the only suggestion I found was to use <a href="https://github.com/darioquintana/NHibernate-Validator">NHibernate Validator</a> or implement <a href="http://nhibernate.info/doc/nhibernate-reference/events.html">Nhibernate listeners</a> that performs appropriate validation. NHibernate Validator seems to be overwhelming for my requirement (and I don&rsquo;t want to pollute my data model with additional validation attributes) so I&rsquo;ve decided to implement <code>IPreUpdateEventListener</code> and <code>IPreInsertEventListener</code> listeners which will be checking if values used in SQL query don&rsquo;t exceed the maximum length declared in NHibernate mappings.</p>
-
+</code></pre></div><p>Investigating this kind of error is very hard because the message is quite cryptic. It only says that some data exceeded given length constraints. We have no clue which field or even entity is the source of the problem (especially that the exception occurs only after calling <code>Flush()</code> method). I tried to search for some debugging advices in google but the only suggestion I found was to use <a href="https://github.com/darioquintana/NHibernate-Validator">NHibernate Validator</a> or implement <a href="http://nhibernate.info/doc/nhibernate-reference/events.html">Nhibernate listeners</a> that performs appropriate validation. NHibernate Validator seems to be overwhelming for my requirement (and I don&rsquo;t want to pollute my data model with additional validation attributes) so I&rsquo;ve decided to implement <code>IPreUpdateEventListener</code> and <code>IPreInsertEventListener</code> listeners which will be checking if values used in SQL query don&rsquo;t exceed the maximum length declared in NHibernate mappings.</p>
 <h2 id="implementation">Implementation<a href="#implementation" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>The problem concerns only string and binary fields so there are only two cases that should be handled (if I&rsquo;m missing something please correct me). In order to implement validation I needed to figure out the following things:</p>
-
 <ol>
 <li>How to extract fields which will be used in SQL query</li>
 <li>How to access the length limits from NHibernate model definition</li>
 </ol>
-
 <p>Having this information, I need to check if the field value doesn&rsquo;t exceed the limit and the limit is not infinitive.</p>
-
 <p>Checking if value exceeds the limit which is infinitive seems to be redundant but it makes sense when we know how the infinitive length constrains are defined in NHibernate. Default NHibernate string length limit is 4000 characters. If we need to create a column that holds &lsquo;infinitive&rsquo; string we have to set the length to 4001.</p>
-
-<pre><code class="language-csharp">public static class MappingExtensions
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MappingExtensions</span>
 {
-    internal const int MaxNhibernateStringLength = 4001;
+    <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> MaxNhibernateStringLength = <span style="color:#ae81ff">4001</span>;
 
-    public static PropertyPart InfinitiveString([NotNull] this PropertyPart property)
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> PropertyPart InfinitiveString([NotNull] <span style="color:#66d9ef">this</span> PropertyPart property)
     {
-        return property.Length(MaxNhibernateStringLength);
+        <span style="color:#66d9ef">return</span> property.Length(MaxNhibernateStringLength);
     }
 }
-</code></pre>
-
-<p>This results in creating a column of type <code>nvarchar(max)</code> (in SQL Server).
+</code></pre></div><p>This results in creating a column of type <code>nvarchar(max)</code> (in SQL Server).
 For binary fields, in order to create a column that holds any size of data, we simply need to set the length to <code>int.MaxValue</code> which results with <code>varbinary(max)</code> column type.
 When we try to retrieve field length information from NHibernated metadata, we get exactly the same values as we set, so these costs should be consulted during field length validation.</p>
-
 <p>My final implementation looks as follows:</p>
-
-<pre><code class="language-csharp">public class LengthValidatorListener: IPreUpdateEventListener, IPreInsertEventListener
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LengthValidatorListener</span>: IPreUpdateEventListener, IPreInsertEventListener
 {
-  private const int InfinityBinaryLength = int.MaxValue;
-  private const int InfinityStringLength = MappingExtensions.MaxNhibernateStringLength;
-
-  [NotNull] 
-  public Task&lt;bool&gt; OnPreUpdateAsync([NotNull] PreUpdateEvent @event, CancellationToken cancellationToken)
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> InfinityBinaryLength = <span style="color:#66d9ef">int</span>.MaxValue;
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> InfinityStringLength = MappingExtensions.MaxNhibernateStringLength;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">  [NotNull]</span> 
+  <span style="color:#66d9ef">public</span> Task&lt;<span style="color:#66d9ef">bool</span>&gt; OnPreUpdateAsync([NotNull] PreUpdateEvent @event, CancellationToken cancellationToken)
   {
       cancellationToken.ThrowIfCancellationRequested();
-      var result = OnPreUpdate(@event);
-      return Task.FromResult(result);
+      <span style="color:#66d9ef">var</span> result = OnPreUpdate(@event);
+      <span style="color:#66d9ef">return</span> Task.FromResult(result);
   }
 
-  public bool OnPreUpdate([NotNull] PreUpdateEvent @event)
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> OnPreUpdate([NotNull] PreUpdateEvent @event)
   {
       ValidateLength(@event.Session, @event.Entity, @event.Persister, @event.State);
-      return false;
+      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
   }
-
-  [NotNull] 
-  public Task&lt;bool&gt; OnPreInsertAsync([NotNull] PreInsertEvent @event, CancellationToken cancellationToken)
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">  [NotNull]</span> 
+  <span style="color:#66d9ef">public</span> Task&lt;<span style="color:#66d9ef">bool</span>&gt; OnPreInsertAsync([NotNull] PreInsertEvent @event, CancellationToken cancellationToken)
   {
       cancellationToken.ThrowIfCancellationRequested();
-      var result = OnPreInsert(@event);
-      return Task.FromResult(result);
+      <span style="color:#66d9ef">var</span> result = OnPreInsert(@event);
+      <span style="color:#66d9ef">return</span> Task.FromResult(result);
   }
 
-  public bool OnPreInsert([NotNull] PreInsertEvent @event)
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> OnPreInsert([NotNull] PreInsertEvent @event)
   {
       ValidateLength(@event.Session, @event.Entity, @event.Persister, @event.State);
-      return false;
+      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
   }
 
-  private static void ValidateLength([NotNull] ISession session,  [NotNull] object entity, [NotNull] IEntityPersister eventPersister, [NotNull] object[] state)
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> ValidateLength([NotNull] ISession session,  [NotNull] <span style="color:#66d9ef">object</span> entity, [NotNull] IEntityPersister eventPersister, [NotNull] <span style="color:#66d9ef">object</span>[] state)
   {
-      var entityName = entity.GetType().Name;
-      var entityMetadata = GetMetadataForEntity(session, entity);
+      <span style="color:#66d9ef">var</span> entityName = entity.GetType().Name;
+      <span style="color:#66d9ef">var</span> entityMetadata = GetMetadataForEntity(session, entity);
 
-      for (int porpertyIndex = 0; porpertyIndex &lt; eventPersister.PropertyNames.Length; porpertyIndex++)
+      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> porpertyIndex = <span style="color:#ae81ff">0</span>; porpertyIndex &lt; eventPersister.PropertyNames.Length; porpertyIndex++)
       {
-          var propertyValue = state[porpertyIndex];
-          if (propertyValue == null)
+          <span style="color:#66d9ef">var</span> propertyValue = state[porpertyIndex];
+          <span style="color:#66d9ef">if</span> (propertyValue == <span style="color:#66d9ef">null</span>)
           {
-              continue;
+              <span style="color:#66d9ef">continue</span>;
           }
-          var propertyName = eventPersister.PropertyNames[porpertyIndex];
-          var propertyType = entityMetadata.GetPropertyType(propertyName);
-          if (propertyType is StringType stringPropertyType)
+          <span style="color:#66d9ef">var</span> propertyName = eventPersister.PropertyNames[porpertyIndex];
+          <span style="color:#66d9ef">var</span> propertyType = entityMetadata.GetPropertyType(propertyName);
+          <span style="color:#66d9ef">if</span> (propertyType <span style="color:#66d9ef">is</span> StringType stringPropertyType)
           {
-              if (stringPropertyType.SqlType.Length != InfinityStringLength)
+              <span style="color:#66d9ef">if</span> (stringPropertyType.SqlType.Length != InfinityStringLength)
               {
-                  if (propertyValue is string value)
+                  <span style="color:#66d9ef">if</span> (propertyValue <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">string</span> <span style="color:#66d9ef">value</span>)
                   {
-                      if (value.Length &gt; stringPropertyType.SqlType.Length)
+                      <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">value</span>.Length &gt; stringPropertyType.SqlType.Length)
                       {
-                          throw DataModelValidationException.StringFieldLengthExceeded(propertyName, entityName, value, stringPropertyType);
+                          <span style="color:#66d9ef">throw</span> DataModelValidationException.StringFieldLengthExceeded(propertyName, entityName, <span style="color:#66d9ef">value</span>, stringPropertyType);
                       }
                   }
               }
           }
-          else if (propertyType is BinaryType binaryPropertyType)
+          <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (propertyType <span style="color:#66d9ef">is</span> BinaryType binaryPropertyType)
           {
-              if (binaryPropertyType.SqlType.Length != InfinityBinaryLength)
+              <span style="color:#66d9ef">if</span> (binaryPropertyType.SqlType.Length != InfinityBinaryLength)
               {
-                  if (propertyValue is byte[] value)
+                  <span style="color:#66d9ef">if</span> (propertyValue <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">byte</span>[] <span style="color:#66d9ef">value</span>)
                   {
-                      if (value.Length &gt; binaryPropertyType.SqlType.Length)
+                      <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">value</span>.Length &gt; binaryPropertyType.SqlType.Length)
                       {
-                          throw DataModelValidationException.BinaryFieldLengthExceeded(propertyName, entityName, value, binaryPropertyType);
+                          <span style="color:#66d9ef">throw</span> DataModelValidationException.BinaryFieldLengthExceeded(propertyName, entityName, <span style="color:#66d9ef">value</span>, binaryPropertyType);
                       }
                   }
               }
           }
       }
   }
-
-  [NotNull] 
-  private static IClassMetadata GetMetadataForEntity([NotNull] ISession session, [NotNull] object entity)
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">  [NotNull]</span> 
+  <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> IClassMetadata GetMetadataForEntity([NotNull] ISession session, [NotNull] <span style="color:#66d9ef">object</span> entity)
   {
-      var entityType = entity.GetType();
-      return session.SessionFactory.GetAllClassMetadata()
+      <span style="color:#66d9ef">var</span> entityType = entity.GetType();
+      <span style="color:#66d9ef">return</span> session.SessionFactory.GetAllClassMetadata()
                       .First(x =&gt; x.Value.MappedClass == entityType)
                       .Value;
   }
 }
-</code></pre>
-
-<h3 id="exception-design">Exception design<a href="#exception-design" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
+</code></pre></div><h3 id="exception-design">Exception design<a href="#exception-design" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>After detecting invalid situation I need to throw exception that contains as much information as is required to efficiently spot the issue source. For this problem class we need the following information</p>
-
 <ol>
 <li>What is the name of the class and the field that contains value exceeding the limit</li>
 <li>What is the value that exceeded the limit</li>
 <li>What is the length of the value that exceeded the limit</li>
 <li>What is the limit</li>
 </ol>
-
 <p>The string that exceeded the limit can be very long and could make the error message hard to analyze, so instead of merging it into error message I decided to put it in Exception field for the debugging purpose (for binary data it&rsquo;s the only reasonable solution). I&rsquo;ve also added two factory methods that create exceptions for issues with string and binary data.</p>
-
-<pre><code class="language-csharp">public class DataModelValidationException:Exception
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DataModelValidationException</span>:Exception
 {
-    [NotNull, Pure]
-    public static DataModelValidationException BinaryFieldLengthExceeded(
-        [NotNull] string propertyName,
-        [NotNull] string entityName,
-        [NotNull] byte[] value,
-        [NotNull] BinaryType propertyType)
+<span style="color:#a6e22e">    [NotNull, Pure]</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> DataModelValidationException BinaryFieldLengthExceeded(
+<span style="color:#a6e22e">        [NotNull]</span> <span style="color:#66d9ef">string</span> propertyName,
+<span style="color:#a6e22e">        [NotNull]</span> <span style="color:#66d9ef">string</span> entityName,
+<span style="color:#a6e22e">        [NotNull]</span> <span style="color:#66d9ef">byte</span>[] <span style="color:#66d9ef">value</span>,
+<span style="color:#a6e22e">        [NotNull]</span> BinaryType propertyType)
     {
-        var message = $&quot;Binary field '{propertyName}' of '{entityName}' entity with [length={value.Length}] exceeded the limitation of {propertyType.SqlType.Length} length&quot;;
-        return new DataModelValidationException(message, value);
+        <span style="color:#66d9ef">var</span> message = <span style="color:#e6db74">$&#34;Binary field &#39;{propertyName}&#39; of &#39;{entityName}&#39; entity with [length={value.Length}] exceeded the limitation of {propertyType.SqlType.Length} length&#34;</span>;
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DataModelValidationException(message, <span style="color:#66d9ef">value</span>);
+    }
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">    [NotNull, Pure]</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> DataModelValidationException StringFieldLengthExceeded(
+<span style="color:#a6e22e">        [NotNull]</span> <span style="color:#66d9ef">string</span> propertyName,
+<span style="color:#a6e22e">        [NotNull]</span> <span style="color:#66d9ef">string</span> entityName,
+<span style="color:#a6e22e">        [NotNull]</span> <span style="color:#66d9ef">string</span> <span style="color:#66d9ef">value</span>,
+<span style="color:#a6e22e">        [NotNull]</span> StringType propertyType)
+    {
+        <span style="color:#66d9ef">var</span> message = <span style="color:#e6db74">$&#34;String field &#39;{propertyName}&#39; of &#39;{entityName}&#39; entity with [length={value.Length}] exceeded the limitation of {propertyType.SqlType.Length} characters.&#34;</span>;
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DataModelValidationException(message, <span style="color:#66d9ef">value</span>);
     }
 
-    [NotNull, Pure]
-    public static DataModelValidationException StringFieldLengthExceeded(
-        [NotNull] string propertyName,
-        [NotNull] string entityName,
-        [NotNull] string value,
-        [NotNull] StringType propertyType)
-    {
-        var message = $&quot;String field '{propertyName}' of '{entityName}' entity with [length={value.Length}] exceeded the limitation of {propertyType.SqlType.Length} characters.&quot;;
-        return new DataModelValidationException(message, value);
-    }
-
-    private DataModelValidationException(string message, object propertyValue) 
-    : base(message)
+    <span style="color:#66d9ef">private</span> DataModelValidationException(<span style="color:#66d9ef">string</span> message, <span style="color:#66d9ef">object</span> propertyValue) 
+    : <span style="color:#66d9ef">base</span>(message)
     {
         PropertyValue = propertyValue;
     }
 
-    public object PropertyValue { get; }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">object</span> PropertyValue { <span style="color:#66d9ef">get</span>; }
 }
-</code></pre>
-
-<p>I&rsquo;m using Resharper code annotation to enrich static code analysis. The <code>[Pure]</code> attribute saves us from the situation when somebody invokes exception factory method and by mistake forgets to add <code>throw</code> keyword (believe me, this happens).</p>
-
+</code></pre></div><p>I&rsquo;m using Resharper code annotation to enrich static code analysis. The <code>[Pure]</code> attribute saves us from the situation when somebody invokes exception factory method and by mistake forgets to add <code>throw</code> keyword (believe me, this happens).</p>
 <h3 id="listener-registration">Listener registration<a href="#listener-registration" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <p>The last thing we need is to register our <code>LengthValidatorListener</code> in Nhibernate configuration.</p>
-
-<pre><code class="language-csharp">protected override Configuration GetConfiguration()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">override</span> Configuration GetConfiguration()
 {
-    var configuration = new NHibernate.Cfg.Configuration().Configure();
-    var lengthValidatorListener = new LengthValidatorListener();
+    <span style="color:#66d9ef">var</span> configuration = <span style="color:#66d9ef">new</span> NHibernate.Cfg.Configuration().Configure();
+    <span style="color:#66d9ef">var</span> lengthValidatorListener = <span style="color:#66d9ef">new</span> LengthValidatorListener();
     configuration.SetListener(ListenerType.PreUpdate, lengthValidatorListener);
     configuration.SetListener(ListenerType.PreInsert, lengthValidatorListener);
-    return configuration;
+    <span style="color:#66d9ef">return</span> configuration;
 }
-</code></pre>
-
-<h2 id="profits">Profits<a href="#profits" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
+</code></pre></div><h2 id="profits">Profits<a href="#profits" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Since now every time some field value exceeds the length limitation we get a very descriptive exception that allows us to immediately locate the culprit. And there is one additional positive side effect of this solution - it works independently of database provider. Even if we run our test on SQLite (which doesn&rsquo;t obey the length constraints from NHibernate mappings) we should be able to detect length limit violation.</p>
     
 		
@@ -424,6 +395,7 @@ When we try to retrieve field length information from NHibernated metadata, we g
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
@@ -446,7 +418,7 @@ When we try to retrieve field length information from NHibernated metadata, we g
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "datamodel,nhibernate,sqlite,sqlserver"
+				hashtags: "datamodel,NHibernate,SQLite,SQLServer"
 			}
 		}
 	}

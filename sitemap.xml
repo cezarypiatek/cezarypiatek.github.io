@@ -1,52 +1,80 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/aspcore/</loc>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</loc>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/c#/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/dapper/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cezarypiatek.github.io/tags/nswag/</loc>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/sqlserver/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cezarypiatek.github.io/tags/rest/</loc>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
+    <loc>https://cezarypiatek.github.io/tags/webapi/</loc>
+    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/dapper/</loc>
+    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
-    <lastmod>2020-08-02T20:36:12+02:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/sqlserver/</loc>
+    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</loc>
+    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/linq/</loc>
+    <lastmod>2020-07-02T08:22:08+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/protobuf/</loc>
+    <lastmod>2020-07-02T08:22:08+02:00</lastmod>
   </url>
   
   <url>
@@ -55,38 +83,23 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/linq/</loc>
-    <lastmod>2020-07-02T08:22:08+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/protobuf/</loc>
-    <lastmod>2020-07-02T08:22:08+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/post/csharp-twin-types/</loc>
-    <lastmod>2020-06-14T19:07:15+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/code-generation/</loc>
     <lastmod>2020-06-14T19:07:15+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
     <lastmod>2020-06-14T19:07:15+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
     <lastmod>2020-06-20T17:29:44+02:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/csharp-twin-types/</loc>
+    <lastmod>2020-06-14T19:07:15+02:00</lastmod>
   </url>
   
   <url>
@@ -97,7 +110,11 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/non-nullable/</loc>
     <lastmod>2020-06-20T17:29:44+02:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/design-patterns/</loc>
+    <lastmod>2020-06-20T17:29:44+02:00</lastmod>
   </url>
   
   <url>
@@ -106,9 +123,18 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/design-patterns/</loc>
-    <lastmod>2020-06-20T17:29:44+02:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
+    <lastmod>2020-03-24T21:55:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/msbuild/</loc>
+    <lastmod>2019-12-09T19:59:14+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/nuget/</loc>
+    <lastmod>2019-12-09T19:59:14+01:00</lastmod>
   </url>
   
   <url>
@@ -119,31 +145,11 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/teamcity/</loc>
     <lastmod>2019-12-09T19:59:14+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
-    <lastmod>2020-03-24T21:55:00+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/msbuild/</loc>
-    <lastmod>2019-12-09T19:59:14+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/nuget/</loc>
-    <lastmod>2019-12-09T19:59:14+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/automapper/</loc>
     <lastmod>2019-12-02T17:40:24+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -154,7 +160,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/mapping/</loc>
     <lastmod>2019-12-02T17:40:24+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -170,13 +175,11 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
     <lastmod>2020-03-24T21:55:00+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/visual-studio/</loc>
     <lastmod>2020-03-24T21:55:00+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -187,7 +190,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/multithreading/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -198,7 +200,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
     <lastmod>2019-12-01T19:59:08+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -214,7 +215,16 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/testing/</loc>
     <lastmod>2019-07-31T23:44:16+02:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/architecture/</loc>
+    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/clean-code/</loc>
+    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
   </url>
   
   <url>
@@ -223,21 +233,8 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/architecture/</loc>
-    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/clean-code/</loc>
-    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/exceptions/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -246,21 +243,18 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/continuous-integration/</loc>
+    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/powershell/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/vscode/</loc>
     <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/continuous-integration/</loc>
-    <lastmod>2019-10-20T13:46:45+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -274,15 +268,33 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/elk/</loc>
+    <loc>https://cezarypiatek.github.io/tags/cron/</loc>
     <lastmod>2019-02-12T21:43:27+01:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/curator/</loc>
+    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/devops/</loc>
+    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/elasticsearch/</loc>
     <lastmod>2019-02-12T21:43:27+01:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/elk/</loc>
+    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/logging/</loc>
+    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
   </url>
   
   <url>
@@ -291,39 +303,13 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/cron/</loc>
-    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/curator/</loc>
-    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/devops/</loc>
-    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/logging/</loc>
-    <lastmod>2019-02-12T21:43:27+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/filebeat/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/logstash/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -332,9 +318,13 @@
   </url>
   
   <url>
+    <loc>https://cezarypiatek.github.io/tags/best-practices/</loc>
+    <lastmod>2019-08-04T20:51:52+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cezarypiatek.github.io/tags/coreclr/</loc>
     <lastmod>2019-08-04T20:51:52+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -343,15 +333,8 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/best-practices/</loc>
-    <lastmod>2019-08-04T20:51:52+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/cqrs/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -362,7 +345,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/cqs/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -373,19 +355,16 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/selenium/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/ui-tests/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/webdriver/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -401,7 +380,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/kibana/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -412,7 +390,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/ms-teams/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -421,33 +398,33 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/windirstat/</loc>
+    <loc>https://cezarypiatek.github.io/tags/tools/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/tools/</loc>
+    <loc>https://cezarypiatek.github.io/tags/windirstat/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/data-model/</loc>
+    <lastmod>2018-11-13T22:28:44+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/nhibernate/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/sql-server/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/sqlite/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -456,9 +433,8 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/data-model/</loc>
-    <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cezarypiatek.github.io/tags/code-generating/</loc>
+    <lastmod>2019-02-11T23:13:54+01:00</lastmod>
   </url>
   
   <url>
@@ -467,21 +443,28 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/code-generating/</loc>
-    <lastmod>2019-02-11T23:13:54+01:00</lastmod>
-    <priority>0</priority>
+    <loc>https://cezarypiatek.github.io/tags/ajax/</loc>
+    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/asp.net-mvc/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/content-security-policy/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/csp/</loc>
+    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/javascript/</loc>
+    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
   </url>
   
   <url>
@@ -490,21 +473,18 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/ajax/</loc>
+    <loc>https://cezarypiatek.github.io/tags/crud/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/csp/</loc>
+    <loc>https://cezarypiatek.github.io/tags/orm/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/javascript/</loc>
+    <loc>https://cezarypiatek.github.io/tags/static-analysis/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -513,27 +493,8 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/crud/</loc>
-    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/orm/</loc>
-    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/static-analysis/</loc>
-    <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://cezarypiatek.github.io/tags/gitlab/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -544,7 +505,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/meta-runner/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -555,19 +515,16 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/gui/</loc>
     <lastmod>2019-02-12T21:59:40+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/powershellcookbook/</loc>
-    <lastmod>2019-02-12T21:59:40+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/ise/</loc>
     <lastmod>2019-02-12T21:59:40+01:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/powershellcookbook/</loc>
+    <lastmod>2019-02-12T21:59:40+01:00</lastmod>
   </url>
   
   <url>
@@ -578,36 +535,31 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/todo/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/todoexplorer/</loc>
     <lastmod>2019-06-29T12:39:43+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</loc>
-    <lastmod>2018-08-12T21:43:21+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/debugging/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/decompiler/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/symbols/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</loc>
+    <lastmod>2018-08-12T21:43:21+02:00</lastmod>
   </url>
   
   <url>
@@ -618,7 +570,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/elementnotinteractableexception/</loc>
     <lastmod>2018-11-13T22:28:44+01:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -637,14 +588,13 @@
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</loc>
+    <loc>https://cezarypiatek.github.io/tags/codeannotation/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/codeannotation/</loc>
+    <loc>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -655,13 +605,11 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/svn/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/tortoise/</loc>
     <lastmod>2018-08-12T21:43:21+02:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -671,7 +619,6 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/categories/</loc>
-    <priority>0</priority>
   </url>
   
 </urlset>

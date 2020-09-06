@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Cezary Piątek Blog</title>
@@ -6,17 +6,53 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 02 Aug 2020 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 06 Sep 2020 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>AspCore</title>
+      <link>https://cezarypiatek.github.io/tags/aspcore/</link>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/aspcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>C#</title>
       <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NSwag</title>
+      <link>https://cezarypiatek.github.io/tags/nswag/</link>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/nswag/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rest</title>
+      <link>https://cezarypiatek.github.io/tags/rest/</link>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/rest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WebAPI</title>
+      <link>https://cezarypiatek.github.io/tags/webapi/</link>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/webapi/</guid>
       <description></description>
     </item>
     
@@ -30,20 +66,20 @@
     </item>
     
     <item>
-      <title>SqlServer</title>
-      <link>https://cezarypiatek.github.io/tags/sqlserver/</link>
-      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/sqlserver/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>dotnet</title>
       <link>https://cezarypiatek.github.io/tags/dotnet/</link>
       <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SqlServer</title>
+      <link>https://cezarypiatek.github.io/tags/sqlserver/</link>
+      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/sqlserver/</guid>
       <description></description>
     </item>
     
@@ -111,15 +147,6 @@
     </item>
     
     <item>
-      <title>TeamCity</title>
-      <link>https://cezarypiatek.github.io/tags/teamcity/</link>
-      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/teamcity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>dotnetcore</title>
       <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
       <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
@@ -143,6 +170,15 @@
       <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/nuget/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>TeamCity</title>
+      <link>https://cezarypiatek.github.io/tags/teamcity/</link>
+      <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/teamcity/</guid>
       <description></description>
     </item>
     
@@ -192,7 +228,7 @@
     </item>
     
     <item>
-      <title>livetemplates</title>
+      <title>LiveTemplates</title>
       <link>https://cezarypiatek.github.io/tags/livetemplates/</link>
       <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
       
@@ -237,6 +273,15 @@
     </item>
     
     <item>
+      <title>continuous integration</title>
+      <link>https://cezarypiatek.github.io/tags/continuous-integration/</link>
+      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/continuous-integration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>PowerShell</title>
       <link>https://cezarypiatek.github.io/tags/powershell/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
@@ -251,33 +296,6 @@
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/vscode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>continuous integration</title>
-      <link>https://cezarypiatek.github.io/tags/continuous-integration/</link>
-      <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/continuous-integration/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ELK</title>
-      <link>https://cezarypiatek.github.io/tags/elk/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/elk/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ElasticSearch</title>
-      <link>https://cezarypiatek.github.io/tags/elasticsearch/</link>
-      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/elasticsearch/</guid>
       <description></description>
     </item>
     
@@ -309,6 +327,24 @@
     </item>
     
     <item>
+      <title>ElasticSearch</title>
+      <link>https://cezarypiatek.github.io/tags/elasticsearch/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/elasticsearch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ELK</title>
+      <link>https://cezarypiatek.github.io/tags/elk/</link>
+      <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/elk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>logging</title>
       <link>https://cezarypiatek.github.io/tags/logging/</link>
       <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
@@ -336,20 +372,20 @@
     </item>
     
     <item>
-      <title>CoreCLR</title>
-      <link>https://cezarypiatek.github.io/tags/coreclr/</link>
-      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/coreclr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>best practices</title>
       <link>https://cezarypiatek.github.io/tags/best-practices/</link>
       <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/best-practices/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CoreCLR</title>
+      <link>https://cezarypiatek.github.io/tags/coreclr/</link>
+      <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/coreclr/</guid>
       <description></description>
     </item>
     
@@ -417,6 +453,15 @@
     </item>
     
     <item>
+      <title>tools</title>
+      <link>https://cezarypiatek.github.io/tags/tools/</link>
+      <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>WinDirStat</title>
       <link>https://cezarypiatek.github.io/tags/windirstat/</link>
       <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
@@ -426,11 +471,11 @@
     </item>
     
     <item>
-      <title>tools</title>
-      <link>https://cezarypiatek.github.io/tags/tools/</link>
-      <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
+      <title>data model</title>
+      <link>https://cezarypiatek.github.io/tags/data-model/</link>
+      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/tools/</guid>
+      <guid>https://cezarypiatek.github.io/tags/data-model/</guid>
       <description></description>
     </item>
     
@@ -462,20 +507,20 @@
     </item>
     
     <item>
-      <title>data model</title>
-      <link>https://cezarypiatek.github.io/tags/data-model/</link>
-      <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/data-model/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>code generating</title>
       <link>https://cezarypiatek.github.io/tags/code-generating/</link>
       <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/code-generating/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ajax</title>
+      <link>https://cezarypiatek.github.io/tags/ajax/</link>
+      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/ajax/</guid>
       <description></description>
     </item>
     
@@ -494,15 +539,6 @@
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/content-security-policy/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ajax</title>
-      <link>https://cezarypiatek.github.io/tags/ajax/</link>
-      <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/ajax/</guid>
       <description></description>
     </item>
     
@@ -579,20 +615,20 @@
     </item>
     
     <item>
-      <title>PowerShellCookbook</title>
-      <link>https://cezarypiatek.github.io/tags/powershellcookbook/</link>
-      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/powershellcookbook/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>ise</title>
       <link>https://cezarypiatek.github.io/tags/ise/</link>
       <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/ise/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PowerShellCookbook</title>
+      <link>https://cezarypiatek.github.io/tags/powershellcookbook/</link>
+      <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/powershellcookbook/</guid>
       <description></description>
     </item>
     
@@ -606,7 +642,7 @@
     </item>
     
     <item>
-      <title>TodoExplorer</title>
+      <title>TODOExplorer</title>
       <link>https://cezarypiatek.github.io/tags/todoexplorer/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
       

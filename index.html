@@ -22,7 +22,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Cezary Piątek Blog &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -36,7 +36,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
 	<link rel="manifest" href="./manifest.json">
-	<link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -118,7 +119,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <header>
 	
@@ -126,6 +127,48 @@
 		<h1>Resolve all using mine</h1>
 	
 </header>
+
+
+	<div class="panel panel-default">
+	<div class="panel-header">
+		<h3>
+			<a href="https://cezarypiatek.github.io/post/auto-generated-web-api-client/">Auto generated WebAPI client library with NSwag</a>
+			<br>
+			<small>
+				<time>6 September 2020</time>
+			</small>
+		</h3>
+	</div>
+	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/auto-generated-web-api-client//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
+		In the era of microservices and distributed systems, web browser applications written in JavaScript are not the only consumers of the REST API. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price.
+		
+			... <a href="https://cezarypiatek.github.io/post/auto-generated-web-api-client/">Read More</a>
+		
+	</div>
+	<div class="panel-footer">
+		
+		<small class="text-muted">
+			
+			
+				<a href="https://cezarypiatek.github.io/tags/nswag"><span class="label label-success">NSwag</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/aspcore"><span class="label label-success">AspCore</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/webapi"><span class="label label-success">WebAPI</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/rest"><span class="label label-success">Rest</span></a>
+			
+		</small>
+		
+	</div>
+</div>
 
 
 	<div class="panel panel-default">
@@ -144,7 +187,7 @@
 			<img src="https://cezarypiatek.github.io/post/dapper-tips-and-tricks//splashscreen.jpg" width="100%" /><br/><br/>
 		</div>
 		
-		A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects.
+		A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing SQL queries directly in the C# code, because I got used to relying always on ORMs (NHibernate in particular).
 		
 			... <a href="https://cezarypiatek.github.io/post/dapper-tips-and-tricks/">Read More</a>
 		
@@ -285,153 +328,39 @@ The Problem One of the first problems that I came across was that I had a lot of
 </div>
 
 
-	<div class="panel panel-default">
-	<div class="panel-header">
-		<h3>
-			<a href="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/">Immutable types in C# with Roslyn</a>
-			<br>
-			<small>
-				<time>15 March 2020</time>
-			</small>
-		</h3>
-	</div>
-	<div class="panel-body">
-		
-		<div class="splash-box">
-			<img src="https://cezarypiatek.github.io/post/immutable-types-with-roslyn//splashscreen.jpg" width="100%" /><br/><br/>
-		</div>
-		
-		Some time ago I came across Jimmy Bogard&rsquo;s article &ldquo;Immutability in DTOs?&rdquo; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition.
-		
-			... <a href="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/">Read More</a>
-		
-	</div>
-	<div class="panel-footer">
-		
-		<small class="text-muted">
-			
-			
-				<a href="https://cezarypiatek.github.io/tags/roslyn"><span class="label label-success">roslyn</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/non-nullable"><span class="label label-success">non-nullable</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/design-patterns"><span class="label label-success">design patterns</span></a>
-			
-		</small>
-		
-	</div>
-</div>
-
-
 
 <div class="text-center center-block">
 	
-
 <ul class="pagination">
-    
-    <li class="page-item">
-        <a href="./" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li class="page-item disabled">
-    <a href="" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item active"><a class="page-link" href="./">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="./page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="./page/3/">3</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="./page/8/">8</a></li>
-    
-    
-    <li class="page-item">
+  <li class="page-item">
+    <a href="./" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item disabled">
+    <a  class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="./">1</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="./page/2/">2</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="./page/3/">3</a>
+  </li>
+  <li class="page-item disabled">
+    <span aria-hidden="true">&nbsp;&hellip;&nbsp;</span>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="./page/8/">8</a>
+  </li>
+  <li class="page-item">
     <a href="./page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-        <a href="./page/8/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
+  </li>
+  <li class="page-item">
+    <a href="./page/8/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
 </ul>
+
 
 </div>
 
@@ -459,6 +388,7 @@ The Problem One of the first problems that I came across was that I had a lot of
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   

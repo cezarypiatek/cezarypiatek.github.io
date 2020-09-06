@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Cezary Piątek Blog</title>
@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 02 Aug 2020 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 06 Sep 2020 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Auto generated WebAPI client library with NSwag</title>
+      <link>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</link>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</guid>
+      <description>In the era of microservices and distributed systems, web browser applications written in JavaScript are not the only consumers of the REST API. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&amp;rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price.</description>
+    </item>
     
     <item>
       <title>Working efficiently with legacy database using Dapper</title>
@@ -17,7 +26,7 @@
       <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</guid>
-      <description>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&amp;rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects.</description>
+      <description>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&amp;rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing SQL queries directly in the C# code, because I got used to relying always on ORMs (NHibernate in particular).</description>
     </item>
     
     <item>
@@ -54,7 +63,7 @@ The Problem One of the first problems that I came across was that I had a lot of
       <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</guid>
-      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;rdquo; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
+      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;quot; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
     </item>
     
     <item>
@@ -244,7 +253,7 @@ The Problem One of the first problems that I came across was that I had a lot of
       <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</guid>
-      <description>The challenge Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
+      <description>The challenge Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:</description>
     </item>
     
     <item>

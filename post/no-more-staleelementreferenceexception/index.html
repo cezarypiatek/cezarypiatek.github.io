@@ -39,7 +39,7 @@
     <meta property="og:description" content="How to globally handle the problem of StaleElementReferenceException in UI tests">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="selenium">
+    <meta property="og:tags" content="Selenium">
     
     <meta property="og:tags" content="testing">
     
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to globally handle the problem of StaleElementReferenceException in UI tests">
 
-	<meta name="keywords" value="selenium, testing, ui-tests, webdriver" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="Selenium, testing, ui-tests, webdriver" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>No more StaleElementReferenceException &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -70,7 +70,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -152,7 +153,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <main>
 	<article>
@@ -167,200 +168,161 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p><code>StaleElementReferenceException</code> can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:</p>
-
+		<p><code>StaleElementReferenceException</code> can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:</p>
 <ul>
 <li>an element was removed in the meantime</li>
 <li>an element was replaced with newer content (for example by <code>Ajax</code>)</li>
 <li>an element was re-rendered by JavaScript view/template framework</li>
 </ul>
-
 <p>In the first case, <code>StaleElementReferenceException</code> indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&rsquo;t affect our UI test. All of the solutions that I&rsquo;ve found in the network are based on applying try-catch-retry pattern around the places where the problem occurs. However, this could degrade readability and maintainability. So how to get rid of <code>StaleElementReferenceException</code> without introducing technical debt and changing the way we interact with web elements?</p>
-
 <h2 id="stablewebelement-to-the-rescue">StableWebElement to the rescue!<a href="#stablewebelement-to-the-rescue" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>I got the idea of <code>StableWebElement</code> – a wrapper for <code>IWebElement</code> which could detect the situation of stale reference and try to find a new reference to the original element (all this happening behind the scenes). The key element of this wrapper is memoization of searching context (parent element) and locator.  Let&rsquo;s see how it works on example. We have a user list which is a collection of list elements and each list element contains a button to deactivate the user. In order to perform user deactivation, we have to find user list, next find list element that represents given user and at the end, locate deactivation button inside the list element. The code for automating it with <code>Selenium</code> can look as follows:</p>
-
-<pre><code class="language-csharp">[Test]
-publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#a6e22e">[Test]</span>
+publicv <span style="color:#66d9ef">void</span> should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
 {
-    var userList = webDriver.FindElement(By.Id(&quot;UserList&quot;));
-    var userListElement = userList.FindElement(By.XPath(&quot;*[2]&quot;));
-    var deactivationButton = userListElement.FindElement(By.CssSelector(&quot;.deactivate-button&quot;));
+    <span style="color:#66d9ef">var</span> userList = webDriver.FindElement(By.Id(<span style="color:#e6db74">&#34;UserList&#34;</span>));
+    <span style="color:#66d9ef">var</span> userListElement = userList.FindElement(By.XPath(<span style="color:#e6db74">&#34;*[2]&#34;</span>));
+    <span style="color:#66d9ef">var</span> deactivationButton = userListElement.FindElement(By.CssSelector(<span style="color:#e6db74">&#34;.deactivate-button&#34;</span>));
     deactivationButton.Click();
 }
-</code></pre>
-
-<p>The mapping between UI elements and objects which represent them is showed in the diagram below:</p>
-
-<p><img src="stable_element_diagram.jpg" alt="stable element relation diagram" /></p>
-
+</code></pre></div><p>The mapping between UI elements and objects which represent them is showed in the diagram below:</p>
+<p>
+<a href="stable_element_diagram.jpg"><img  src="stable_element_diagram.jpg" alt="stable element relation diagram"></a>
+</p>
 <p>The problem of stale reference can occur at any level of object hierarchy: our deactivate button can be re-rendered or either list element or the whole user list can be replaced with the newer version of HTML. No matter which element was refreshed, StableObjectElement should be able to restore all references necessary to perform intended action.</p>
-
 <h3 id="implementing-stablewebelement">Implementing StableWebElement<a href="#implementing-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <p>I started with defining <code>IStableWebElement</code> that enriches <code>IWebElement</code> with two additional methods: <code>IsStale</code> which detects if the element is affected by stale reference and  <code>RegenerateElement</code> which restores the reference to the original element.</p>
-
-<pre><code class="language-csharp">public interface IStableWebElement : IWebElement, ILocatable, ITakesScreenshot, IWrapsElement, IWrapsDriver
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> IStableWebElement : IWebElement, ILocatable, ITakesScreenshot, IWrapsElement, IWrapsDriver
 {
-    bool IsStale();
-    void RegenerateElement();
+    <span style="color:#66d9ef">bool</span> IsStale();
+    <span style="color:#66d9ef">void</span> RegenerateElement();
 }
-</code></pre>
-
-<p>At first, I thought that extending <code>IWebElement</code> would be enough, but after running my test suit I encountered a few methods from Selenium that accept <code>IWebElement</code> and perform casting to different interfaces that are not in the IWebElement inheritance hierarchy.</p>
-
+</code></pre></div><p>At first, I thought that extending <code>IWebElement</code> would be enough, but after running my test suit I encountered a few methods from Selenium that accept <code>IWebElement</code> and perform casting to different interfaces that are not in the IWebElement inheritance hierarchy.</p>
 <p>Now we can create an implementation of our <code>IStableWebElement</code> interface:</p>
-
-<pre><code class="language-csharp">public class StableWebElement: IStableWebElement
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StableWebElement</span>: IStableWebElement
 {
-    private readonly ISearchContext parent;
-    private IWebElement element;
-    private readonly By locator;
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> ISearchContext parent;
+    <span style="color:#66d9ef">private</span> IWebElement element;
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> By locator;
 
-    public StableWebElement(IWebElement elemen, ISearchContext parent, By locator)
+    <span style="color:#66d9ef">public</span> StableWebElement(IWebElement elemen, ISearchContext parent, By locator)
     {
-        this.parent = parent;
-        this.element = element;
-        this.locator = locator;
+        <span style="color:#66d9ef">this</span>.parent = parent;
+        <span style="color:#66d9ef">this</span>.element = element;
+        <span style="color:#66d9ef">this</span>.locator = locator;
     }
 }
-</code></pre>
-
-<p>All the methods and properties from the interfaces extended by <code>IStableWebElement</code> should be implemented as a proxy for original methods on the <code>element</code> object in the following manner:</p>
-
-<pre><code class="language-csharp">public void SendKeys(string text)
+</code></pre></div><p>All the methods and properties from the interfaces extended by <code>IStableWebElement</code> should be implemented as a proxy for original methods on the <code>element</code> object in the following manner:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SendKeys(<span style="color:#66d9ef">string</span> text)
 {
     Execute(() =&gt; element.SendKeys(text));
 }
 
-public void Click()
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Click()
 {
     Execute(() =&gt; element.Click());
 }
 
-public bool Displayed 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> Displayed 
 { 
-    get 
+    <span style="color:#66d9ef">get</span> 
     { 
-        return Execute(() =&gt; element.Displayed); 
+        <span style="color:#66d9ef">return</span> Execute(() =&gt; element.Displayed); 
     } 
 }
-</code></pre>
-
-<p>All original methods were wrapped in the <code>Execute</code> method which is responsible for detecting of <code>StaleElementReferenceException</code> during original method invocation. When the exception occurs, we try to restore element reference by invoking <code>RegenerateElement</code> and retry the operation. There are two <code>Execute</code> methods because we have to wrap methods and functions with them (notice that one returns generic element and the second one returns void):</p>
-
-<pre><code class="language-cs">private T Execute&lt;T&gt;(Func&lt;T&gt; function)
+</code></pre></div><p>All original methods were wrapped in the <code>Execute</code> method which is responsible for detecting of <code>StaleElementReferenceException</code> during original method invocation. When the exception occurs, we try to restore element reference by invoking <code>RegenerateElement</code> and retry the operation. There are two <code>Execute</code> methods because we have to wrap methods and functions with them (notice that one returns generic element and the second one returns void):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">private</span> T Execute&lt;T&gt;(Func&lt;T&gt; function)
 {
-    T result = default (T);
+    T result = <span style="color:#66d9ef">default</span> (T);
     Execute(() =&gt; { result = function(); });
-    return result;
+    <span style="color:#66d9ef">return</span> result;
 }
 
-private void Execute(Action action)
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Execute(Action action)
 {
-    var success = RetryHelper.Retry(3, () =&gt;
+    <span style="color:#66d9ef">var</span> success = RetryHelper.Retry(<span style="color:#ae81ff">3</span>, () =&gt;
     {
-        try
+        <span style="color:#66d9ef">try</span>
         {
             action();
-            return true;
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
         }
-        catch (StaleElementReferenceException)
+        <span style="color:#66d9ef">catch</span> (StaleElementReferenceException)
         {
             RegenerateElement();
-            return false;
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
         }
     });
-    if (success == false)
+    <span style="color:#66d9ef">if</span> (success == <span style="color:#66d9ef">false</span>)
     {
-        throw new WebElementNotFoundException(&quot;Element is no longer accessible&quot;);
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> WebElementNotFoundException(<span style="color:#e6db74">&#34;Element is no longer accessible&#34;</span>);
     }
 }
-</code></pre>
-
-<p>And the most interesting part is the <code>RegenerateElement</code> method:</p>
-
-<pre><code class="language-csharp">public void RegenerateElement()
+</code></pre></div><p>And the most interesting part is the <code>RegenerateElement</code> method:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> RegenerateElement()
 {
-    var stableParent = parent as IStableWebElement;
-    if (stableParent != null &amp;&amp; stableParent.IsStale())
+    <span style="color:#66d9ef">var</span> stableParent = parent <span style="color:#66d9ef">as</span> IStableWebElement;
+    <span style="color:#66d9ef">if</span> (stableParent != <span style="color:#66d9ef">null</span> &amp;&amp; stableParent.IsStale())
     {
         stableParent.RegenerateElement();
     }
-    try
+    <span style="color:#66d9ef">try</span>
     {
-        this.element = this.parent.FindElement(locator);
+        <span style="color:#66d9ef">this</span>.element = <span style="color:#66d9ef">this</span>.parent.FindElement(locator);
     }
-    catch(Exception ex)
+    <span style="color:#66d9ef">catch</span>(Exception ex)
     {
-        throw new CannotFindElementByException(locator, parent, ex);  
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> CannotFindElementByException(locator, parent, ex);  
     }
 }
-</code></pre>
-
-<p>At first, we check if our parent (which is our search context) is also affected by stale reference. If this is the case, we perform <code>RegenerateElement</code> method on the parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the dependency chain). After we retrieve the reference to the parent, we also need to find a fresh version of the current element using new parent and memorized locator. If any exception occurs during searching for the current element, that means the element truly disappeared and the StaleReferenceException was an indicator of the true problem. The last missing part is the method that detects if the element has a stale reference.</p>
-
-<pre><code class="language-cs">public bool IsStale()
+</code></pre></div><p>At first, we check if our parent (which is our search context) is also affected by stale reference. If this is the case, we perform <code>RegenerateElement</code> method on the parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the dependency chain). After we retrieve the reference to the parent, we also need to find a fresh version of the current element using new parent and memorized locator. If any exception occurs during searching for the current element, that means the element truly disappeared and the StaleReferenceException was an indicator of the true problem. The last missing part is the method that detects if the element has a stale reference.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> IsStale()
 {
-    try
+    <span style="color:#66d9ef">try</span>
     {
-        //INFO: If element is stale accessing any property should throw exception        
-        var tagName = this.element.TagName;
-        return false;
+        <span style="color:#75715e">//INFO: If element is stale accessing any property should throw exception        
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">var</span> tagName = <span style="color:#66d9ef">this</span>.element.TagName;
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
     }
-    catch (StaleElementReferenceException )
+    <span style="color:#66d9ef">catch</span> (StaleElementReferenceException )
     {
-        return true;
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
     }
 }
-</code></pre>
-
-<h3 id="applying-stablewebelement">Applying StableWebElement<a href="#applying-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
+</code></pre></div><h3 id="applying-stablewebelement">Applying StableWebElement<a href="#applying-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>In order to use StableWebElement we need to add extension method for <code>ISearchContex</code> that searches for given element and wraps it into our StableWebElement proxy:</p>
-
-<pre><code class="language-csharp">static class StableElementExtensions
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StableElementExtensions</span>
 {
-    public static IStableWebElement FindStableElement(this ISearchContext context, By locator)
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> IStableWebElement FindStableElement(<span style="color:#66d9ef">this</span> ISearchContext context, By locator)
     {
-        var element = context.FindElement(locator);
-        return new StableWebElement(context, element, locator);
+        <span style="color:#66d9ef">var</span> element = context.FindElement(locator);
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StableWebElement(context, element, locator);
     }    
 
-    public static ReadOnlyCollection&lt;IStableWebElement&gt; FindStableElements(this ISearchContext context, By locator)
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ReadOnlyCollection&lt;IStableWebElement&gt; FindStableElements(<span style="color:#66d9ef">this</span> ISearchContext context, By locator)
     {        
-        return  context.FindElements(locator
-                .Select(x=&gt; new StableWebElement(context, x, locator))
+        <span style="color:#66d9ef">return</span>  context.FindElements(locator
+                .Select(x=&gt; <span style="color:#66d9ef">new</span> StableWebElement(context, x, locator))
                 .ToList()
                 .AsReadOnly();
     }    
 }
-</code></pre>
-
-<p>Now we have to replace all invocation of <code>FindElement</code> with our new extension method. If we don&rsquo;t need to be explicit about using this new approach, we can tweak <code>FindElement</code> and <code>FindElements</code> methods from our <code>StableWebElement</code> wrapper to intercept the real result and wrap it into StableWebElement:</p>
-
-<pre><code class="language-cs">public IWebElement FindElement(By locator)
+</code></pre></div><p>Now we have to replace all invocation of <code>FindElement</code> with our new extension method. If we don&rsquo;t need to be explicit about using this new approach, we can tweak <code>FindElement</code> and <code>FindElements</code> methods from our <code>StableWebElement</code> wrapper to intercept the real result and wrap it into StableWebElement:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> IWebElement FindElement(By locator)
 {
-    var foundElement = Execute(() =&gt; element.FindElement(locator));
-    return new StableWebElement(this.parent, foundElement, locator);
+    <span style="color:#66d9ef">var</span> foundElement = Execute(() =&gt; element.FindElement(locator));
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> StableWebElement(<span style="color:#66d9ef">this</span>.parent, foundElement, locator);
 }
 
-public ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
+<span style="color:#66d9ef">public</span> ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
 {
-    return Execute(() =&gt; element.FindElements(locator))
-        .Select(x=&gt; new StableWebElement(this.parent, x, locator))
+    <span style="color:#66d9ef">return</span> Execute(() =&gt; element.FindElements(locator))
+        .Select(x=&gt; <span style="color:#66d9ef">new</span> StableWebElement(<span style="color:#66d9ef">this</span>.parent, x, locator))
         .ToList()
         .AsReadOnly();
 }
-</code></pre>
-
-<p>This little trick allows us to introduce <code>StableWebElement</code> almost transparently into existing codebase with minimal effort. I said &ldquo;almost&rdquo; because we still  need to use <code>FindStableElement</code> extension method on search context which is <code>WebDriver</code> (alternatively, we can create a wrapper for <code>WebDriver</code> that uses the same trick as StableWebElement).</p>
-
+</code></pre></div><p>This little trick allows us to introduce <code>StableWebElement</code> almost transparently into existing codebase with minimal effort. I said &ldquo;almost&rdquo; because we still  need to use <code>FindStableElement</code> extension method on search context which is <code>WebDriver</code> (alternatively, we can create a wrapper for <code>WebDriver</code> that uses the same trick as StableWebElement).</p>
 <h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>After applying <code>StableWebElement</code> in my UI Test the problem of <code>StaleObjectReferenceException</code> was completely eliminated. Utilizing the proxy pattern allowed me to introduce the <code>StableWebElement</code> with minimal effort, preserving standard Selenium API and keeping the readability of my test code. An attempt of implementation of <code>StableWebElement</code> can be found in <code>Tellurium</code> project <a href="https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs">here</a>.</p>
     
 		
@@ -475,6 +437,7 @@ public ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
@@ -497,7 +460,7 @@ public ReadOnlyCollection&lt;IWebElement&gt; FindElements(By locator)
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "selenium,testing,ui-tests,webdriver"
+				hashtags: "Selenium,testing,ui-tests,webdriver"
 			}
 		}
 	}

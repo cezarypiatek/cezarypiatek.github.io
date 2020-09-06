@@ -22,7 +22,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Cezary Piątek Blog &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -36,7 +36,8 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 	<link rel="manifest" href="../../manifest.json">
-	<link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
 </head>
@@ -118,7 +119,7 @@
 
 		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
 			<div class="row">
-				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
 
 <header>
 	
@@ -126,6 +127,46 @@
 		<h1>Resolve all using mine</h1>
 	
 </header>
+
+
+	<div class="panel panel-default">
+	<div class="panel-header">
+		<h3>
+			<a href="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/">Immutable types in C# with Roslyn</a>
+			<br>
+			<small>
+				<time>15 March 2020</time>
+			</small>
+		</h3>
+	</div>
+	<div class="panel-body">
+		
+		<div class="splash-box">
+			<img src="https://cezarypiatek.github.io/post/immutable-types-with-roslyn//splashscreen.jpg" width="100%" /><br/><br/>
+		</div>
+		
+		Some time ago I came across Jimmy Bogard&rsquo;s article &ldquo;Immutability in DTOs?&quot; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition.
+		
+			... <a href="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/">Read More</a>
+		
+	</div>
+	<div class="panel-footer">
+		
+		<small class="text-muted">
+			
+			
+				<a href="https://cezarypiatek.github.io/tags/roslyn"><span class="label label-success">roslyn</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/non-nullable"><span class="label label-success">non-nullable</span></a>
+			
+				<a href="https://cezarypiatek.github.io/tags/design-patterns"><span class="label label-success">design patterns</span></a>
+			
+		</small>
+		
+	</div>
+</div>
 
 
 	<div class="panel panel-default">
@@ -294,151 +335,39 @@
 </div>
 
 
-	<div class="panel panel-default">
-	<div class="panel-header">
-		<h3>
-			<a href="https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/">Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</a>
-			<br>
-			<small>
-				<time>15 September 2019</time>
-			</small>
-		</h3>
-	</div>
-	<div class="panel-body">
-		
-		<div class="splash-box">
-			<img src="https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2//splashscreen.jpg" width="100%" /><br/><br/>
-		</div>
-		
-		Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often the improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The effect of the broken synchronization can be analyzed with various runtime tools, but it would be nice to have an asset that is able to report all those issues in the design time right on the stage of writing code.
-		
-			... <a href="https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/">Read More</a>
-		
-	</div>
-	<div class="panel-footer">
-		
-		<small class="text-muted">
-			
-			
-				<a href="https://cezarypiatek.github.io/tags/roslyn"><span class="label label-success">roslyn</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/multithreading"><span class="label label-success">multithreading</span></a>
-			
-				<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
-			
-		</small>
-		
-	</div>
-</div>
-
-
 
 <div class="text-center center-block">
 	
-
 <ul class="pagination">
-    
-    <li class="page-item">
-        <a href="../../" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li class="page-item">
+  <li class="page-item">
+    <a href="../../" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item">
     <a href="../../" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="../../">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item active"><a class="page-link" href="../../page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="../../page/3/">3</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="../../page/8/">8</a></li>
-    
-    
-    <li class="page-item">
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="../../">1</a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="../../page/2/">2</a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="../../page/3/">3</a>
+  </li>
+  <li class="page-item disabled">
+    <span aria-hidden="true">&nbsp;&hellip;&nbsp;</span>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="../../page/8/">8</a>
+  </li>
+  <li class="page-item">
     <a href="../../page/3/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-        <a href="../../page/8/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
+  </li>
+  <li class="page-item">
+    <a href="../../page/8/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
 </ul>
+
 
 </div>
 
@@ -466,6 +395,7 @@
   
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
   
   
