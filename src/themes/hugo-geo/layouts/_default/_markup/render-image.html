@@ -1,0 +1,5 @@
+{{ if hasPrefix "_animated.png" .Destination}}
+<img  src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
+{{ else }}
+<a href="{{ .Destination | safeURL }}"><img  src="{{ .Destination | safeURL }}" alt="{{ .Text }}"></a>
+{{ end }}
