@@ -1,5 +1,5 @@
 ---
-title: "Async analyzers"
+title: "Most common async code smells and how to track them down with analyzers"
 description: "How to configure dotnet core solutions to automatically generate client packages for WebAPI projects"
 date: 2020-09-13T00:11:45+02:00
 tags : ["NSwag", "AspCore", "C#", "WebAPI", "Rest"]
@@ -106,6 +106,161 @@ https://github.com/hvanbakel/Asyncify-CSharp
 https://www.nuget.org/packages/Asyncify/
 
 
+## Async Code Smells
+
+### Redundant async/await
+
+In some cases `async/await` keyword might be redundant. 
+
+❌ Wrong
+```cs
+async Task DoSomethingElseAsync()
+{
+    await DoSomethingAsync();
+}
+```
+
+✔ Correct
+```cs
+Task DoSomethingElseAsync()
+{
+    return DoSomethingAsync();
+}
+```
+
+
+
+```
+# ASYNC0004: Use ConfigureAwait(false) on await expression
+dotnet_diagnostic.AsyncFixer01.severity = error
+
+# RCS1174: Remove redundant async/await.
+dotnet_diagnostic.RCS1174.severity = error
+```
+
+There's a couple of concerns around this rule and event Stephen Cleary wrote and excellent blog post about it   [Eliding Async and Await](https://blog.stephencleary.com/2016/12/eliding-async-await.html)
+
+
+### Calling synchronous method inside the async method 
+
+
+```
+# AsyncFixer02: Long-running or blocking operations inside an async method
+dotnet_diagnostic.AsyncFixer02.severity = error
+
+# NOTE: Not working when method is async
+# VSTHRD103: Call async methods when in an async method
+dotnet_diagnostic.VSTHRD103.severity = error
+```
+
+
+### Async Void method
+
+```
+# AsyncFixer03: Fire & forget async void methods
+dotnet_diagnostic.AsyncFixer03.severity = error
+
+# VSTHRD100: Avoid async void methods
+dotnet_diagnostic.VSTHRD100.severity = error
+
+# ASYNC0003: Avoid void returning asynchronous method
+dotnet_diagnostic.ASYNC0003.severity = error
+```
+
+### Not awaited Task within using expression
+
+`System.Threading.Tasks.Task` implements `IDisposable` interface. Calling a method returning task directly in `using` expressions results in `Task` disposal at the end of `using` block which is never a expected behavior.
+
+❌ Wrong
+
+```cs
+using (CreateDisposableAsync())
+{
+    
+}
+```
+
+✔ Correct
+
+```cs
+using (await CreateDisposableAsync())
+{
+    
+}
+```
+
+
+```
+# VSTHRD107: Await Task within using expression
+dotnet_diagnostic.VSTHRD107.severity = error
+```
+
+### Not awaited Task inside the using block
+
+❌ Wrong
+
+```cs
+private Task<int> DoSomething()
+{
+    using (var service = CreateService())
+    {
+        return service.GetAsync();
+    }
+}
+```
+
+✔ Correct
+
+```cs
+private async Task<int> DoSomething()
+{
+    using (var service = CreateService())
+    {
+        return await service.GetAsync();
+    }
+}
+```
+
+```
+# AsyncFixer04: Fire & forget async call inside a using block
+dotnet_diagnostic.AsyncFixer04.severity = error
+
+# RCS1229: Use async/await when necessary.
+dotnet_diagnostic.RCS1229.severity = error
+```
+
+There is a small difference between those two analyzers.  `RCS1229` is reported on the method level and `AsyncFixer04` is reported in the return statement which is IMHO more intuitive.
+
+
+### Unobserved result of asynchronous method
+
+❌ Wrong
+
+```cs
+void DoSomethingElse()
+{
+    DoSomethingAsync();
+}
+```
+
+✔ Correct
+```cs
+async Task DoSomethingElse()
+{
+    await DoSomethingAsync();
+}
+```
+
+
+
+```
+# VSTHRD110: Observe result of async calls
+dotnet_diagnostic.VSTHRD110.severity = error
+```
+
+### Synchronous waits
+
+
 ## Summary
 
 | Code smell | AsyncFixer | Microsoft.VisualStudio.Threading.Analyzers | Roslyn.Analyzers | Meziantou.Analyzer | Roslynator |
@@ -117,7 +272,7 @@ https://www.nuget.org/packages/Asyncify/
 | Fire & forget async call inside a using block | AsyncFixer04   |  | | | RCS1229
 | Observe result of async calls | | VSTHRD110 | | |
 | Downcasting from a nested task to an outer task |  AsyncFixer05  | | | | |
-| Problematic synchronous waits | | VSTHRD002 | | MA0042, MA0045 | |
+| Synchronous waits | | VSTHRD002 | | MA0042, MA0045 | |
 | Awaiting foreign Tasks | | VSTHRD003 | | |
 | Unsupported async delegates | | VSTHRD101	| | |
 | Missing `ConfigureAwait(bool)` | | VSTHRD111 | ASYNC0004 | | RCS1090	|
