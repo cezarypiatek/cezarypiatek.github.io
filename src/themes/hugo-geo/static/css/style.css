@@ -7,11 +7,14 @@ article img, article video, article .gifplayer-wrapper {
 
 article table {
     margin: 0 0 25px 0;
+    border: 1px solid lightgray;
 }
 
 article table th{
-    font-style:bold;
+    font-style:bold;    
 }
+
+
 
 article table tr {
     border-width: 0 0 1px 0;
@@ -22,6 +25,7 @@ article table tr {
 article table td, article table th {
     padding: 2px 5px;
     vertical-align: top;
+    border-right: 1px solid lightgray;
 }
 
 ins.play-gif{
