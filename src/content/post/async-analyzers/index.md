@@ -8,6 +8,16 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
+##  Microsoft.CodeAnalysis.FxCopAnalyzers
+https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.FxCopAnalyzers/Microsoft.CodeAnalysis.FxCopAnalyzers.md
+
+| Id | Description | Default Severity | CodeFix |
+| -- | ----------- | ----------- | ---- |
+[CA2007](https://docs.microsoft.com/visualstudio/code-quality/ca2007) | Consider calling ConfigureAwait on the awaited task | Warning | Yes |
+[CA2008](https://docs.microsoft.com/visualstudio/code-quality/ca2008) | Do not create tasks without passing a TaskScheduler |  Warning | No |
+[CA2012](https://docs.microsoft.com/visualstudio/code-quality/ca2012) | Use ValueTasks correctly |  Warning | No |
+[CA2247](https://docs.microsoft.com/visualstudio/code-quality/ca2247) | Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum|Warning | Yes 
+
 
 ## Microsoft.VisualStudio.Threading.Analyzers (VSTHR)
 
@@ -81,12 +91,12 @@ https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs
 | Id | Description | Default Severity |
 | -- | ----------- | ----------- |
 | [MA0004](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0004.md) | Use .ConfigureAwait(false) | Warning |
-| [MA0032](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0032.md) | Use a cancellation token | Info |
-| [MA0040](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0040.md) | Use a cancellation token | Info |
-| [MA0042](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0042.md) | 	Do not use blocking call | Info |
-| [MA0045](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md) | 	Do not use blocking call (make method async) | Info |
-| [MA0079](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md) | 	Use a cancellation token using .WithCancellation() | Info |
-| [MA0080](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md) | 	Use a cancellation token using .WithCancellation() | Info |
+| [MA0032](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0032.md) | Specify a cancellation token | Info |
+| [MA0040](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0040.md) | Flow the cancellation token when available | Info |
+| [MA0042](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0042.md) | Do not use blocking call | Info |
+| [MA0045](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md) | Do not use blocking call (make method async) | Info |
+| [MA0079](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md) | Flow a cancellation token using .WithCancellation() | Info |
+| [MA0080](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md) | Specify a cancellation token using .WithCancellation() | Info |
 
 ## Roslynator
 
@@ -94,12 +104,12 @@ https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md
 
 | Id | Description | Default Severity |
 | -- | ----------- | ----------- |
-| [RCS1046](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1046.md) |	Asynchronous method name should end with 'Async' |	None |
-| [RCS1047](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1047.md) |	Non-asynchronous method name should not end with 'Async' |	Info |
-| [RCS1090](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090.md) |	Call 'ConfigureAwait(false)' |	Info |
-| [RCS1174](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1174.md) |	Remove redundant async/await |	None |
-| [RCS1210](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1210.md) |	Return Task.FromResult instead of returning null |	Warning |
-| [RCS1229](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md) |	Use async/await when necessary |	Info |
+| [RCS1046](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1046.md) | Asynchronous method name should end with 'Async' |	None |
+| [RCS1047](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1047.md) | Non-asynchronous method name should not end with 'Async' |	Info |
+| [RCS1090](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090.md) | Call 'ConfigureAwait(false)' |	Info |
+| [RCS1174](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1174.md) | Remove redundant async/await |	None |
+| [RCS1210](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1210.md) | Return Task.FromResult instead of returning null |	Warning |
+| [RCS1229](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md) | Use async/await when necessary |	Info |
 
 
 
@@ -111,21 +121,21 @@ https://www.nuget.org/packages/Asyncify/
 
 ### 1. Redundant async/await
 
-In some cases `async/await` keyword might be redundant. 
+Using `async/await` keyword results in implicit memory allocation required for the state machine responsible for orchestrating asynchronous invocations. When the awaited expression is the only one or the last statement in the function it might be skipped. However, there's a couple of concerns around this code optimization which you should be aware of. Before you start applying it I highly recommend reading an excellent blog post about it from Stephen Cleary [Eliding Async and Await](https://blog.stephencleary.com/2016/12/eliding-async-await.html)
 
 ❌ Wrong
 ```cs
-async Task DoSomethingElseAsync()
+async Task DoSomethingAsync()
 {
-    await DoSomethingAsync();
+    await DoSomethingElseAsync(); //Reported diagnostics: ASYNC0004, RCS1174
 }
 ```
 
 ✔️ Correct
 ```cs
-Task DoSomethingElseAsync()
+Task DoSomethingAsync()
 {
-    return DoSomethingAsync();
+    return DoSomethingElseAsync();
 }
 ```
 
@@ -139,12 +149,10 @@ dotnet_diagnostic.AsyncFixer01.severity = error
 dotnet_diagnostic.RCS1174.severity = error
 ```
 
-There's a couple of concerns around this rule and event Stephen Cleary wrote and excellent blog post about it   [Eliding Async and Await](https://blog.stephencleary.com/2016/12/eliding-async-await.html)
-
 
 ### 2. Calling synchronous method inside the async method 
 
-If we are writing asynchronous code then we should prefer calling asynchronous methods if they exist. Many IO related APIs offer asynchronous counterparts of their well know methods. Their should be our first choice.
+If we are writing asynchronous code then we should always prefer calling asynchronous methods if they exist. Many IO related APIs offer asynchronous counterparts of their well know synchronous methods. Their should be our first choice.
 
 ❌ Wrong
 ```cs
@@ -238,11 +246,11 @@ dotnet_diagnostic.VSTHRD107.severity = error
 ❌ Wrong
 
 ```cs
-private Task<int> DoSomething()
+private Task<int> DoSomething() // Reported diagnostics: RCS1229
 {
     using (var service = CreateService())
     {
-        return service.GetAsync();
+        return service.GetAsync(); // Reported diagnostics: AsyncFixer04
     }
 }
 ```
@@ -268,7 +276,15 @@ dotnet_diagnostic.AsyncFixer04.severity = error
 dotnet_diagnostic.RCS1229.severity = error
 ```
 
-There is a small difference between those two analyzers.  `RCS1229` is reported on the method level and `AsyncFixer04` is reported in the return statement which is IMHO more intuitive.
+There is a small difference between those two analyzers. `RCS1229` is reported on the method level and `AsyncFixer04` is reported in the return statement which is IMHO more intuitive. I also observed that those diagnostics are not able to report the issue while using a new `using var` syntax:
+
+```cs
+private Task<int> DoSomething(CancellationToken cancellationToken)
+{
+    using var service = CreateService();
+    return service.GetAsync(cancellationToken); // THIS SHOULD BE REPORTED!!!
+}
+```
 
 
 ### 6. Unobserved result of asynchronous method
@@ -368,17 +384,17 @@ dotnet_diagnostic.VSTHRD101.severity = error
 ❌ Wrong
 
 ```cs
-async Task DoSomethingElse()
+async Task DoSomethingAsync()
 {
-    await DoSomethingAsync(); //Reported diagnostics: ASYNC0004, MA0004, RCS1090, VSTHRD111
+    await DoSomethingElse(); //Reported diagnostics: ASYNC0004, MA0004, RCS1090, VSTHRD111
 }
 ```
 
 ✔️ Correct
 ```cs
-async Task DoSomethingElse()
+async Task DoSomethingAsync()
 {
-    await DoSomethingAsync().ConfigureAwait(false);
+    await DoSomethingElse().ConfigureAwait(false);
 }
 ```
 
@@ -484,6 +500,8 @@ dotnet_diagnostic.RCS1046.severity = error
 
 ### 12. Non asynchronous method names shouldn't end with Async
 
+This rule definitely makes more sense for me than the previous one. Adding `Async` suffix to non-asynchronous method might cause confusion. I think this code smell is rather a result of carless refactoring or requirements change rather than intended action.
+
 ❌ Wrong
 
 ```cs
@@ -512,8 +530,87 @@ dotnet_diagnostic.RCS1047.severity = error
 
 ```
 
-It's worth to point out that `VSTHRD200` is tracking both naming cases, it simply check if `Async` suffix is applied correctly. It might be good if you need both rules, if you just need only check if `Async` suffix is not applied to synchronous methods then you should rather use `ASYNC0002` or `RCS1047`.
+It's worth to point out that `VSTHRD200` is tracking both naming deviations, it simply check if `Async` suffix is applied correctly. It might be good if you need both rules, but if you just need only check if `Async` suffix is not applied to synchronous methods then you should rather use `ASYNC0002` or `RCS1047`.
 
+### 13. Pass cancellation token
+
+Forgetting about passing cancellation token might cost you a lot of trouble. Log running operation without a cancellation token can block the action of stopping the application or can result in thread starvation when there's a lot of cancelled web requests. In order to avoid such problems you should always provide and pass a cancellation token to the methods that accept it, even if it's an optional parameter. `Meziantou.Analyzer` package implements two diagnostic which can detect missing cancellation token: `MA0032` is reported always when we skip cancellation token parameter and `MA0040` is reported only when there's a cancellation token in current scope that can be used. More details about those analyzers you can find in the article from analyzers author [
+Detect missing CancellationToken using a Roslyn Analyzer](https://www.meziantou.net/detect-missing-cancellationtoken-using-a-roslyn-analyzer.htm).
+
+❌ Wrong
+
+```cs
+public async Task<string> GetSomethingA(HttpClient httpClient, CancellationToken cancellationToken)
+{
+    var response = await httpClient.GetAsync(new Uri("/some/endpoint")); //Reported diagnostics: MA0040
+    return await response.Content.ReadAsStringAsync();
+}
+
+public async Task<string> GetSomethingB(HttpClient httpClient)
+{
+    var response = await httpClient.GetAsync(new Uri("/some/endpoint")); //Reported diagnostics: MA0032
+    return await response.Content.ReadAsStringAsync();
+}
+```
+
+✔️ Correct
+```cs
+public async Task<string> GetSomething(HttpClient httpClient, CancellationToken cancellationToken)
+{
+    var response = await httpClient.GetAsync(new Uri("/some/endpoint"), cancellationToken);
+    return await response.Content.ReadAsStringAsync();
+}
+```
+
+🛠️ Configuration
+```
+# MA0040: Specify a cancellation token
+dotnet_diagnostic.MA0032.severity = error
+
+# MA0040: Flow the cancellation token when available
+dotnet_diagnostic.MA0040.severity = error
+```
+
+### 14. Using cancellation token with IAsyncEnumerable
+
+This is a similar code smell as the previous one but it's strictly related to the usage of `IAsyncEnumerable` an can quite easily overlooked. It might not be so obvious, but passing a cancellation token to asynchronous enumerator is done by calling `WithCancellation()` method. In case of `IAsyncEnumerable` the `Meziantou.Analyzer` provides two diagnostics: `MA0080` for all missing invocation of `WithCancellation()` method and `MA0079` only when any `CancellationToken` is present in the current context.
+
+❌ Wrong
+
+```cs
+async Task IterateB(IAsyncEnumerable<string> enumerable, CancellationToken cancellationToken)
+{
+    await foreach (var item in enumerable) // Reported diagnostics: MA0079
+    {
+    }
+}
+
+async Task IterateA(IAsyncEnumerable<string> enumerable)
+{
+    await foreach (var item in enumerable) // Reported diagnostics: MA0080
+    {
+    }
+}
+```
+
+✔️ Correct
+```cs
+async Task Iterate(IAsyncEnumerable<string> enumerable, CancellationToken cancellationToken)
+{
+    await foreach (var item in enumerable.WithCancellation(cancellationToken)) 
+    {
+    }
+}
+```
+
+🛠️ Configuration
+```
+# MA0079: Use a cancellation token using .WithCancellation()
+dotnet_diagnostic.MA0079.severity = error
+
+# MA0080: Use a cancellation token using .WithCancellation()
+dotnet_diagnostic.MA0080.severity = error
+```
 
 ## Summary
 
@@ -533,5 +630,5 @@ It's worth to point out that `VSTHRD200` is tracking both naming cases, it simpl
 | Returning null from a Task-returning method | | VSTHRD114 | | | RCS1210 |
 | Asynchronous method names should end with Async |  | VSTHRD200 | ASYNC0001 | | RCS1046 |
 | Non asynchronous method names shouldn't end with Async | | | ASYNC0002 | | RCS1047|
-| Pass cancellation token | | | | MA0040, MA0032 | |
-| Using cancellation token with IAsyncEnumeration | | | | MA0079,MA0080 | |
+| Pass cancellation token | | | | MA0032,MA0040 | |
+| Using cancellation token with IAsyncEnumerable | | | | MA0079,MA0080 | |
