@@ -127,7 +127,7 @@ Using `async/await` keyword results in implicit memory allocation required for t
 ```cs
 async Task DoSomethingAsync()
 {
-    await DoSomethingElseAsync(); //Reported diagnostics: ASYNC0004, RCS1174
+    await Task.Yield(); //Reported diagnostics: ASYNC0004, RCS1174
 }
 ```
 
@@ -135,7 +135,7 @@ async Task DoSomethingAsync()
 ```cs
 Task DoSomethingAsync()
 {
-    return DoSomethingElseAsync();
+    return Task.Yield();
 }
 ```
 
@@ -184,12 +184,18 @@ dotnet_diagnostic.VSTHRD103.severity = error
 
 ### 3. Async Void method
 
+There ara two reason why Async Void methods methods are harmful: 
+- A caller of the method is not able to await asynchronous operation.
+- There's no way to handle exception throw by te method. This will result with process crash.
+
+You should always use `async Task` instead of `async void` unless it's an event handler, but then you should guarantee yourself that the method can't throw an exception.
+
 
 ❌ Wrong
 ```cs
-async void DoSomethingAsync()
+async void DoSomethingAsync() // Reported diagnostics: VSTHRD100, AsyncFixer03, ASYNC0003
 {
-    await DoSomethingElseAsync();
+    await Task.Yield();
 }
 ```
 
@@ -197,7 +203,7 @@ async void DoSomethingAsync()
 ```cs
 async Task DoSomethingAsync()
 {
-    await DoSomethingElseAsync();
+    await Task.Yield();
 }
 ```
 
@@ -213,7 +219,49 @@ dotnet_diagnostic.VSTHRD100.severity = error
 dotnet_diagnostic.ASYNC0003.severity = error
 ```
 
-### 4. Not awaited Task within using expression
+### 4. Unsupported async delegates
+
+❌ Wrong
+```cs
+void DoSomething()
+{
+    // This delegate becomes an "async void" method to match the delegate type.
+    Callback(async () => // Reported diagnostics: VSTHRD101
+    {
+        await Task.Yield();
+    });
+}
+
+void Callback(Action action)
+{
+}
+```
+
+✔️ Correct
+
+```cs
+void DoSomething()
+{
+    // This delegate becomes an "async Task" method to match the delegate type.
+    Callback(async () =>
+    {
+        await Task.Yield();
+    });
+}
+
+void Callback(Func<Task> action)
+{
+}
+```
+
+🛠️ Configuration
+```
+# VSTHRD101: Avoid unsupported async delegates
+dotnet_diagnostic.VSTHRD101.severity = error
+```
+
+
+### 5. Not awaited Task within using expression
 
 `System.Threading.Tasks.Task` implements `IDisposable` interface. Calling a method returning task directly in `using` expressions results in `Task` disposal at the end of `using` block which is never a expected behavior.
 
@@ -241,7 +289,7 @@ using (await CreateDisposableAsync())
 dotnet_diagnostic.VSTHRD107.severity = error
 ```
 
-### 5. Not awaited Task inside the using block
+### 6. Not awaited Task inside the using block
 
 ❌ Wrong
 
@@ -287,7 +335,7 @@ private Task<int> DoSomething(CancellationToken cancellationToken)
 ```
 
 
-### 6. Unobserved result of asynchronous method
+### 7. Unobserved result of asynchronous method
 
 ❌ Wrong
 
@@ -313,7 +361,7 @@ async Task DoSomethingElse()
 dotnet_diagnostic.VSTHRD110.severity = error
 ```
 
-### 7. Synchronous waits
+### 8. Synchronous waits
 
 ❌ Wrong
 
@@ -335,48 +383,6 @@ void DoSomething()
     var result = await Task.Run(() => 10);
 }
 ```
-
-### 8. Unsupported async delegates
-
-❌ Wrong
-```cs
-void DoSomething()
-{
-    // This delegate becomes an "async void" method to match the delegate type.
-    Callback(async () =>
-    {
-        await Task.Yield();
-    });
-}
-
-void Callback(Action action)
-{
-}
-```
-
-✔️ Correct
-
-```cs
-void DoSomething()
-{
-    // This delegate becomes an "async Task" method to match the delegate type.
-    Callback(async () =>
-    {
-        await Task.Yield();
-    });
-}
-
-void Callback(Func<Task> action)
-{
-}
-```
-
-🛠️ Configuration
-```
-# VSTHRD101: Avoid unsupported async delegates
-dotnet_diagnostic.VSTHRD101.severity = error
-```
-
 
 ### 9. Missing ConfigureAwait(bool)
 
