@@ -221,11 +221,12 @@ dotnet_diagnostic.ASYNC0003.severity = error
 
 ### 4. Unsupported async delegates
 
+If we pass asynchronous lambda function the `Action` argument, compiler generates `async void` method which downsides were described in the previous code smell. There are two solutions for this problem: if it's possible then we should change parameter type from `Action` to `Func<Task>` otherwise we need to implement that callback delegate synchronously. It's worth to mention that some APIs already provide counterparts of their methods that accepts `Func<Task>` for the callback parameters.
+
 ❌ Wrong
 ```cs
 void DoSomething()
-{
-    // This delegate becomes an "async void" method to match the delegate type.
+{ 
     Callback(async () => // Reported diagnostics: VSTHRD101
     {
         await Task.Yield();
@@ -238,18 +239,16 @@ void Callback(Action action)
 ```
 
 ✔️ Correct
-
 ```cs
 void DoSomething()
-{
-    // This delegate becomes an "async Task" method to match the delegate type.
-    Callback(async () =>
+{  
+    CallbackAsync(async () =>
     {
         await Task.Yield();
     });
 }
 
-void Callback(Func<Task> action)
+void CallbackAsync(Func<Task> action)
 {
 }
 ```
@@ -290,6 +289,8 @@ dotnet_diagnostic.VSTHRD107.severity = error
 ```
 
 ### 6. Not awaited Task inside the using block
+
+If we skip `await` keyword for asynchronous operation inside the `using` block then the disposable object could be disposed before asynchronous invocation finish. This might result in incorrect behavior and very often ends with a runtime exception notifying that we are trying to perform operation on the object that is already disposed. This issue has two root causes: either is done by accident when somebody simply forgot about adding `async/await` keywords or it's a result of incorrectly applied code optimization described in `Redundant async/await` code smell. 
 
 ❌ Wrong
 
@@ -342,7 +343,7 @@ private Task<int> DoSomething(CancellationToken cancellationToken)
 ```cs
 void DoSomethingElse()
 {
-    DoSomethingAsync();
+    DoSomethingAsync(); // Reported diagnostics: CS4014
 }
 ```
 
@@ -360,6 +361,8 @@ async Task DoSomethingElse()
 # VSTHRD110: Observe result of async calls
 dotnet_diagnostic.VSTHRD110.severity = error
 ```
+
+There's also a standard compiler warning `CS4014` for tat issue but it's reported only `async` method.
 
 ### 8. Synchronous waits
 
