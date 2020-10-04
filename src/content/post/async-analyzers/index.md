@@ -93,7 +93,6 @@ https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs
 | [MA0004](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0004.md) | Use .ConfigureAwait(false) | Warning |
 | [MA0032](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0032.md) | Specify a cancellation token | Info |
 | [MA0040](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0040.md) | Flow the cancellation token when available | Info |
-| [MA0042](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0042.md) | Do not use blocking call | Info |
 | [MA0045](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md) | Do not use blocking call (make method async) | Info |
 | [MA0079](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md) | Flow a cancellation token using .WithCancellation() | Info |
 | [MA0080](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md) | Specify a cancellation token using .WithCancellation() | Info |
@@ -127,7 +126,7 @@ Using `async/await` keyword results in implicit memory allocation required for t
 ```cs
 async Task DoSomethingAsync()
 {
-    await Task.Yield(); //Reported diagnostics: ASYNC0004, RCS1174
+    await Task.Yield(); //Reported diagnostics: AsyncFixer01, RCS1174
 }
 ```
 
@@ -142,7 +141,7 @@ Task DoSomethingAsync()
 
 🛠️ Configuration
 ```
-# ASYNC0004: Use ConfigureAwait(false) on await expression
+# AsyncFixer01: Unnecessary async/await usage
 dotnet_diagnostic.AsyncFixer01.severity = error
 
 # RCS1174: Remove redundant async/await.
@@ -384,9 +383,10 @@ ASP.NET Core Diagnostic Scenarios - Asynchronous Programming](https://github.com
 ```cs
 void DoSomething()
 {
-    Thread.Sleep(1);
-    Task.Delay(2).Wait(); 
-    var result = Task.Run(() => 10).Result;
+    Thread.Sleep(1); // Reported diagnostics: MA0045
+    Task.Delay(2).Wait();  // Reported diagnostics: VSTHRD002, MA0045
+    var result1 = GetAsync().Result; // Reported diagnostics: VSTHRD002, MA0045
+    var result2 = GetAsync().GetAwaiter().GetResult() // Reported diagnostics: VSTHRD002, MA0045
 }
 ```
 
@@ -396,17 +396,24 @@ void DoSomething()
 {
     await Task.Delay(1);
     await Task.Delay(2);    
-    var result = await Task.Run(() => 10);
+    var result1 = await GetAsync();
+    var result2 = await GetAsync();
 }
 ```
 
-There's an amazing code fix which is able to automatically all methods in the call chain into asynchronous one:
 
+🛠️ Configuration
+```
+# VSTHRD002: Avoid problematic synchronous waits
+dotnet_diagnostic.VSTHRD002.severity = error
 
-
+# MA0045: Do not use blocking call (make method async)
+dotnet_diagnostic.MA0045.severity = error
+```
 
 ### 9. Missing ConfigureAwait(bool)
 
+By default, when we await asynchronous operation using `await` keyword, the continuation is scheduled using captured SynchronizationContext or TaskScheduler. This comes with additional performance cost and might result in deadlock depends on the SynchronizationContext/TaskScheduler provided by the environment - especially in `WindowsForms`, `WPF` and old `ASP.NET` application (yes, ASP.NET Core is not using SynchronizationContext). `ConfigureAwait` method wraps returned task into `ConfiguredTaskAwaitable` structure which change the logic of scheduling the continuation. By calling `ConfigureAwait(continueOnCapturedContext: false)` we are ensuring that the current context (if provided) is ignored while invoking the continuation. Setting `continueOnCapturedContext` parameter to `true` doesn't make any sense. If you want to go into the details about this subject I recommend reading [ConfigureAwait FAQ](https://devblogs.microsoft.com/dotnet/configureawait-faq/) by `Stephen Toub`.  
 
 ❌ Wrong
 
