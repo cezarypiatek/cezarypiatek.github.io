@@ -184,9 +184,9 @@ dotnet_diagnostic.VSTHRD103.severity = error
 
 ### 3. Async Void method
 
-There ara two reason why Async Void methods methods are harmful: 
+There ara two reason why Async Void methods are harmful: 
 - A caller of the method is not able to await asynchronous operation.
-- There's no way to handle exception throw by te method. This will result with process crash.
+- There's no way to handle exception throw by te method. `!!!If the exception occurs your process crash!!!`.
 
 You should always use `async Task` instead of `async void` unless it's an event handler, but then you should guarantee yourself that the method can't throw an exception.
 
@@ -325,7 +325,7 @@ dotnet_diagnostic.AsyncFixer04.severity = error
 dotnet_diagnostic.RCS1229.severity = error
 ```
 
-There is a small difference between those two analyzers. `RCS1229` is reported on the method level and `AsyncFixer04` is reported in the return statement which is IMHO more intuitive. I also observed that those diagnostics are not able to report the issue while using a new `using var` syntax:
+There is a small difference between those two analyzers. `RCS1229` is reported on the method level and `AsyncFixer04` is reported in the return statement line which is IMHO more intuitive. I also observed that those diagnostics are not able to report the issue while using a new `using var` syntax:
 
 ```cs
 private Task<int> DoSomething(CancellationToken cancellationToken)
@@ -334,24 +334,31 @@ private Task<int> DoSomething(CancellationToken cancellationToken)
     return service.GetAsync(cancellationToken); // THIS SHOULD BE REPORTED!!!
 }
 ```
-
+In `Roslynator` this problem has been recently fixed [issues/726](https://github.com/JosefPihrt/Roslynator/issues/726) (it's not released yet at the moment of publishing this article)
 
 ### 7. Unobserved result of asynchronous method
+
+Missing `await` keyword for asynchronous operation will result in function completing before a given async operation finish. The function will behave non-deterministically and the final outcome will be different from the expectations. What is worst, if un-waited expression throws an exception it 
+goes unnoticed and it doesn't cause process crash which makes it eve more harder to spot. You should always await asynchronous expression or assign returned task to a variable and ensure that finally something await it.
 
 ❌ Wrong
 
 ```cs
-void DoSomethingElse()
+async Task DoSomethingAsync()
 {
-    DoSomethingAsync(); // Reported diagnostics: CS4014
+    await DoSomethingAsync1(); 
+    DoSomethingAsync2(); // Reported diagnostics: CS4014, VSTHRD110
+    await DoSomethingAsync3(); 
 }
 ```
 
 ✔️ Correct
 ```cs
-async Task DoSomethingElse()
+async Task DoSomethingAsync()
 {
-    await DoSomethingAsync();
+    await DoSomethingAsync1(); 
+    await DoSomethingAsync2();
+    await DoSomethingAsync3();
 }
 ```
 
@@ -360,11 +367,17 @@ async Task DoSomethingElse()
 ```
 # VSTHRD110: Observe result of async calls
 dotnet_diagnostic.VSTHRD110.severity = error
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = error
 ```
 
-There's also a standard compiler warning `CS4014` for tat issue but it's reported only `async` method.
+There's also a standard compiler warning `CS4014` for tat issue but it's only able to report un-waited expressions inside the `async` methods.
 
 ### 8. Synchronous waits
+
+`async/await` keyword are viral which means if you want to await asynchronous expression and you are in non-asyc method then you are forced to rewrite the whole call chain to asynchronous. The easier solution seems to be calling `Wait` or `Result` on the returned task but it's just asking for the troubles. This solution will cost you two thread for that execution or even result in a deadlock. This problem is more widely described in [
+ASP.NET Core Diagnostic Scenarios - Asynchronous Programming](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#avoid-using-taskresult-and-taskwait). I highly recommend reading this article - you will find there even more asynchronous code smells.
 
 ❌ Wrong
 
@@ -386,6 +399,11 @@ void DoSomething()
     var result = await Task.Run(() => 10);
 }
 ```
+
+There's an amazing code fix which is able to automatically all methods in the call chain into asynchronous one:
+
+
+
 
 ### 9. Missing ConfigureAwait(bool)
 
