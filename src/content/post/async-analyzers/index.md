@@ -451,7 +451,8 @@ All of the above analyzers offer appropriate code fix.
 
 ### 10. Returning null from a Task-returning method
 
-
+Returning `null` value from non-async method that declares `Task/Task<>` as a returning type results in `NullReferenceException` if somebody awaits the method invocation. To avoid that, you should always return result from this kind of method using `Task.CompletedTask` or `Task.FromResult<T>(null)` helpers.
+  
 ❌ Wrong
 
 ```cs
@@ -463,6 +464,11 @@ Task DoAsync()
 Task<object> GetSomethingAsync() 
 {
     return null;  //Reported diagnostics: MA0022, VSTHRD114, RCS1210
+}
+
+Task<HttpResponseMessage> TryGetAsync(HttpClient httpClient)
+{
+    return httpClient?.GetAsync("/some/endpoint"); //Reported diagnostics: RCS1210
 }
 ```
 
@@ -476,6 +482,11 @@ Task DoAsync()
 Task<object> GetSomethingAsync() 
 {
     return Task.FromResult<object>(null);
+}
+
+Task<HttpResponseMessage> TryGetAsync(HttpClient httpClient)
+{
+    return httpClient?.GetAsync("/some/endpoint") ?? Task.FromResult(default(HttpResponseMessage));
 }
 ```
 
@@ -491,7 +502,7 @@ dotnet_diagnostic.RCS1210.severity = error
 dotnet_diagnostic.VSTHRD114.severity = error
 ```
 
-It looks like the best choice here is `VSTHRD114` because is able to detect issue for `Task` as well as for `Task<TResult>` and provides a code fix for both cases.
+Right now, non of the analyzers is able to detect all three cases so we should go with one of two combinations: `RCS1210` with `VSTHRD114` or `RCS1210` with `MA0022`.
 
 
 ### 11. Asynchronous method names should end with Async
@@ -648,21 +659,21 @@ dotnet_diagnostic.MA0080.severity = error
 
 ## Summary
 
-| Code smell | AsyncFixer | VSTHR | Roslyn.Analyzers | Meziantou.Analyzer | Roslynator |
-| -- | ----------- | ----------- |----------- |----------- |----------- |
-| Unnecessary async/await usage  | AsyncFixer01  | | | | RCS1174 |
-| Call sync methods when in an async method |   AsyncFixer02  | VSTHRD103 | | |
-| Async void methods | AsyncFixer03  | VSTHRD100 | ASYNC0003 | | |
-| Await Task within using expression | | VSTHRD107 | | ||
-| Fire & forget async call inside a using block | AsyncFixer04   |  | | | RCS1229
-| Observe result of async calls | | VSTHRD110 | | |
-| Downcasting from a nested task to an outer task |  AsyncFixer05  | | | | |
-| Synchronous waits | | VSTHRD002 | | MA0042, MA0045 | |
-| Awaiting foreign Tasks | | VSTHRD003 | | |
-| Unsupported async delegates | | VSTHRD101	| | |
-| Missing `ConfigureAwait(bool)` | | VSTHRD111 | ASYNC0004 | MA0004 | RCS1090	|
-| Returning null from a Task-returning method | | VSTHRD114 | | | RCS1210 |
-| Asynchronous method names should end with Async |  | VSTHRD200 | ASYNC0001 | | RCS1046 |
-| Non asynchronous method names shouldn't end with Async | | | ASYNC0002 | | RCS1047|
-| Pass cancellation token | | | | MA0032,MA0040 | |
-| Using cancellation token with IAsyncEnumerable | | | | MA0079,MA0080 | |
+| # | Code smell | AsyncFixer | VSTHR | Roslyn.Analyzers | Meziantou.Analyzer | Roslynator |
+| --: | -- | ----------- | ----------- |----------- |----------- |----------- |
+| 1. | Unnecessary async/await usage  | AsyncFixer01  | | | | RCS1174 |
+| 2. | Call sync methods inside async method |   AsyncFixer02  | VSTHRD103 | | |
+| 3. | Async void methods | AsyncFixer03  | VSTHRD100 | ASYNC0003 | | |
+| 4. | Unsupported async delegates | | VSTHRD101	| | |
+| 5. | Not awaited Task within using expression | | VSTHRD107 | | ||
+| 6. | Not awaited Task inside the using block  | AsyncFixer04   |  | | | RCS1229
+| 7. | Unobserved result of asynchronous method | | VSTHRD110 | | |
+| 8. | Synchronous waits | | VSTHRD002 | | MA0042, MA0045 | |
+| 9. | Missing `ConfigureAwait(bool)` | | VSTHRD111 | ASYNC0004 | MA0004 | RCS1090	|
+| 10.| Returning null from a Task-returning method | | VSTHRD114 | | | RCS1210 |
+| 11.| Asynchronous method names should end with Async |  | VSTHRD200 | ASYNC0001 | | RCS1046 |
+| 12.| Non asynchronous method names shouldn't end with Async | | | ASYNC0002 | | RCS1047|
+| 13.| Pass cancellation token | | | | MA0032,MA0040 | |
+| 14.| Using cancellation token with IAsyncEnumerable | | | | MA0079,MA0080 | |
+| 15.| Downcasting from a nested task to an outer task |  AsyncFixer05  | | | | |
+| 16.| Awaiting foreign Tasks | | VSTHRD003 | | |
