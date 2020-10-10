@@ -6,6 +6,7 @@ tags : ["NSwag", "AspCore", "C#", "WebAPI", "Rest"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
+draft: true
 ---
 
 ##  Microsoft.CodeAnalysis.FxCopAnalyzers
