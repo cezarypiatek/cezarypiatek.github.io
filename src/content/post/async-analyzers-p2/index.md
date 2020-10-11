@@ -452,6 +452,8 @@ All of the above analyzers offer appropriate code fix.
 
 ### 10. Returning null from a Task-returning method
 
+TODO: MA0022
+
 Returning `null` value from non-async method that declares `Task/Task<>` as a returning type results in `NullReferenceException` if somebody awaits the method invocation. To avoid that, you should always return result from this kind of method using `Task.CompletedTask` or `Task.FromResult<T>(null)` helpers.
   
 ❌ Wrong

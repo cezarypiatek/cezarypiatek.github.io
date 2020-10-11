@@ -110,7 +110,7 @@ ins.play-gif{
 }
 
 
-a:hover,a:focus{
+.custom-tabs a:hover, .custom-tabs a:focus{
     text-decoration: none;
     outline: none;
 }
@@ -120,9 +120,7 @@ a:hover,a:focus{
     margin-top: 15px !important;
     padding:12px !important;
 }
-.custom-tabs.tab{
-    padding-bottom: 60px !important;
-}
+
 .custom-tabs.tab li{
     border-right: 1px solid #e0e0e0 !important;
     border-top: 1px solid #e0e0e0 !important;
@@ -135,7 +133,7 @@ a:hover,a:focus{
     padding: 12px 30px !important;
 }
 .custom-tabs.tab li a:hover{
-    border-bottom:none !important;
+    
     background: #ebebeb !important;
     color: #232323 !important;
 }

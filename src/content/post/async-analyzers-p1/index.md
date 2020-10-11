@@ -432,21 +432,22 @@ dotnet_diagnostic.VSTHRD110.severity = error
 dotnet_diagnostic.CS4014.severity = error
 ```
 
-There's also a standard compiler warning `CS4014` for tat issue but it's only able to report un-waited expressions inside the `async` methods.
-
+There's also a standard compiler warning `CS4014` for tat issue but it's only able to report un-awaited expressions inside the `async` methods.
 
 
 ## Summary
 
-| # | Code smell | AsyncFixer | VS-Threading | Roslyn.Analyzers | Asyncify | Roslynator |
-| --: | -- | ----------- | ----------- |----------- |----------- |----------- |
-| 1. | Unnecessary async/await usage  | 🔎 🛠️  AsyncFixer01  | | | | 🔎🛠️  RCS1174 |
-| 2. | Call sync methods inside async method |   🔎🛠️  AsyncFixer02  | 🔎 🛠️ VSTHRD103 | | |
-| 3. | Async void methods | 🔎🛠️ AsyncFixer03  | 🔎 🛠️ VSTHRD100 | 🔎🛠️  ASYNC0003 | | |
-| 4. | Unsupported async delegates | | 🔎 VSTHRD101	| | |
-| 5. | Not awaited Task within using expression | | 🔎 🛠️ VSTHRD107 | | ||
-| 6. | Not awaited Task inside the using block  | 🔎 AsyncFixer04   |  | | | 🔎🛠️ RCS1229
-| 7. | Unobserved result of asynchronous method | | 🔎 VSTHRD110 | | |
+| #   | Code smell                               | AsyncFixer          | VS-Threading    | Roslyn.Analyzers | Roslynator     |
+|----:|------------------------------------------|---------------------|-----------------|------------------|----------------|
+| 1.  | Unnecessary async/await usage            | 🔎🛠️  AsyncFixer01 |                 |                  | 🔎🛠️  RCS1174 |
+| 2.  | Call sync methods inside async method    | 🔎🛠️  AsyncFixer02 | 🔎🛠️ VSTHRD103 |                  |                |
+| 3.  | Async void methods                       | 🔎🛠️ AsyncFixer03  | 🔎🛠️ VSTHRD100 | 🔎🛠️  ASYNC0003 |                |
+| 4.  | Unsupported async delegates              |                     | 🔎 VSTHRD101    |                  |                |
+| 5.  | Not awaited Task within using expression |                     | 🔎🛠️ VSTHRD107 |                  |                |
+| 6.  | Not awaited Task inside the using block  | 🔎 AsyncFixer04     |                 |                  | 🔎🛠️ RCS1229  |
+| 7.  | Unobserved result of asynchronous method |                     | 🔎 VSTHRD110    |                  |                |
+
+
 
 
 🔎 - Analyzer
