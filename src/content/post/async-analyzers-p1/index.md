@@ -22,7 +22,9 @@ If your are looking for the analyzer that can help to you detect different issue
 
 Most of those packages are not strictly devoted to asynchronous programming so I made an exercise by going through the complete list of offered rules and listed only those related to async code int the following sections.
 
-###  Microsoft.CodeAnalysis.FxCopAnalyzers
+{{< tabs tabTotal="6" tabID="1" tabName1="FxCopAnalyzers" tabName2="VSTHR" tabName3="AsyncFixer"  tabName4="Roslyn.Analyzers" tabName5="Meziantou.Analyzer" tabName6="Roslynator">}}
+{{< tab tabNum="1" >}}
+
 https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.FxCopAnalyzers/Microsoft.CodeAnalysis.FxCopAnalyzers.md
 
 | Id | Description | Default Severity | CodeFix |
@@ -32,11 +34,9 @@ https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysi
 [CA2012](https://docs.microsoft.com/visualstudio/code-quality/ca2012) | Use ValueTasks correctly |  Warning | No |
 [CA2247](https://docs.microsoft.com/visualstudio/code-quality/ca2247) | Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum|Warning | Yes 
 
-
-### Microsoft.VisualStudio.Threading.Analyzers (VSTHR)
-
+{{< /tab >}}
+{{< tab tabNum="2" >}}
 https://github.com/DotNetAnalyzers/AsyncUsageAnalyzers - Now superseded by Microsoft/vs-threading
-
 
 https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
 
@@ -68,8 +68,8 @@ https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
 [VSTHRD200](https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD200.md) | Use `Async` naming convention |  Warning
 
 
-
-### AsyncFixer
+{{< /tab >}}
+{{< tab tabNum="3" >}}
 
 http://www.asyncfixer.com/
 https://www.nuget.org/packages/AsyncFixer#
@@ -85,8 +85,8 @@ https://www.nuget.org/packages/AsyncFixer#
 
 https://stackoverflow.com/questions/54139584/code-analyzer-which-warn-dev-to-use-async-methods
 
-### Roslyn.Analyzers
-
+{{< /tab >}}
+{{< tab tabNum="4" >}}
 https://roslyn-analyzers.readthedocs.io/en/latest/repository.html#analyzers-in-the-repository
 
 | Id | Description | Default Severity |
@@ -95,9 +95,8 @@ https://roslyn-analyzers.readthedocs.io/en/latest/repository.html#analyzers-in-t
 | [ASYNC0002](https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/non-async-method-names-should-not-be-suffixed-with-async.html#non-async-method-names-should-not-be-suffixed-with-async) |	Non asynchronous method names shouldn't end with Async | Warning |
 | [ASYNC0003](https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/avoid-async-void-methods.html#avoid-async-void-methods) |	Avoid void returning asynchronous method |	Warning |
 | [ASYNC0004](https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/use-configure-await-false.html#use-configure-await-false) |	Use ConfigureAwait(false) on await expression |	Warning |
-
-
-### Meziantou.Analyzer
+{{< /tab >}}
+{{< tab tabNum="5" >}}
 
 https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
 https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs
@@ -110,8 +109,8 @@ https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs
 | [MA0045](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md) | Do not use blocking call (make method async) | Info |
 | [MA0079](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md) | Flow a cancellation token using .WithCancellation() | Info |
 | [MA0080](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md) | Specify a cancellation token using .WithCancellation() | Info |
-
-### Roslynator
+{{< /tab >}}
+{{< tab tabNum="6" >}}
 
 https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md
 
@@ -125,9 +124,12 @@ https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md
 | [RCS1229](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md) | Use async/await when necessary |	Info |
 
 
-
 https://github.com/hvanbakel/Asyncify-CSharp
 https://www.nuget.org/packages/Asyncify/
+
+{{< /tab >}}
+{{< /tabs >}}
+
 
 
 ## Async Code Smells
