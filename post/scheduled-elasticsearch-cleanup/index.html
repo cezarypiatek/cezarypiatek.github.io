@@ -182,14 +182,18 @@
 <p>In order to avoid all problems related to insufficient permissions, I&rsquo;ve started from switching to root user with <code>sudo su</code> command.</p>
 <h2 id="installing-curator">Installing curator<a href="#installing-curator" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Before we install <code>curator</code> we have to update package repository path. Without it <code>apt-get</code> will install curator&rsquo;s old version. In order to do that, please add the following line to <code>/etc/apt/sources.list</code> file:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main
-</code></pre></div><p>After adding this new repository path we have to download the package lists and update them to get information on the newest versions of packages and their dependencies. This can be simply achieved with the command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">apt-get update
-</code></pre></div><p>Now we can install <code>curator</code> with <code>apt-get</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">apt-get install elasticsearch-curator
-</code></pre></div><p>After installation, please verify <code>curator</code> version:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curator --version
-</code></pre></div><p>If you have a version older than 5.X or you experienced any problems during the installation, please check <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/apt-repository.html">the official installation instruction</a>.</p>
+<pre><code class="language-plaintext">deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main
+</code></pre>
+<p>After adding this new repository path we have to download the package lists and update them to get information on the newest versions of packages and their dependencies. This can be simply achieved with the command:</p>
+<pre><code class="language-shell">apt-get update
+</code></pre>
+<p>Now we can install <code>curator</code> with <code>apt-get</code>:</p>
+<pre><code class="language-shell">apt-get install elasticsearch-curator
+</code></pre>
+<p>After installation, please verify <code>curator</code> version:</p>
+<pre><code class="language-shell">curator --version
+</code></pre>
+<p>If you have a version older than 5.X or you experienced any problems during the installation, please check <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/apt-repository.html">the official installation instruction</a>.</p>
 <h2 id="configure-curator">Configure curator<a href="#configure-curator" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>We need to prepare two configuration files:</p>
 <ul>
@@ -197,72 +201,79 @@
 <li><code>action.yml</code> -  description for actions that will be performed on ElasticSearch indices</li>
 </ul>
 <p>Let&rsquo;s starts from  <code>curator</code> configuration:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
-<span style="color:#66d9ef">client</span>:
-  <span style="color:#66d9ef">hosts</span>:
-    - <span style="color:#ae81ff">127.0.0.1</span>
-  <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">9200</span>
-  <span style="color:#66d9ef">url_prefix</span>:
-  <span style="color:#66d9ef">use_ssl</span>: False
-  <span style="color:#66d9ef">certificate</span>:
-  <span style="color:#66d9ef">client_cert</span>:
-  <span style="color:#66d9ef">client_key</span>:
-  <span style="color:#66d9ef">ssl_no_validate</span>: False
-  <span style="color:#66d9ef">http_auth</span>:
-  <span style="color:#66d9ef">timeout</span>: <span style="color:#ae81ff">30</span>
-  <span style="color:#66d9ef">master_only</span>: False
+<pre><code class="language-yaml">---
+client:
+  hosts:
+    - 127.0.0.1
+  port: 9200
+  url_prefix:
+  use_ssl: False
+  certificate:
+  client_cert:
+  client_key:
+  ssl_no_validate: False
+  http_auth:
+  timeout: 30
+  master_only: False
 
-<span style="color:#66d9ef">logging</span>:
-  <span style="color:#66d9ef">loglevel</span>: INFO
-  <span style="color:#66d9ef">logfile</span>:  /var/log/curator/curator.log
-  <span style="color:#66d9ef">logformat</span>: default
-  <span style="color:#66d9ef">blacklist</span>: [<span style="color:#e6db74">&#39;elasticsearch&#39;</span>, <span style="color:#e6db74">&#39;urllib3&#39;</span>]
-</code></pre></div><p>Save this content to <code>config.yml</code>. For correct logging, you need to create <code>/var/log/curator</code> directory.
+logging:
+  loglevel: INFO
+  logfile:  /var/log/curator/curator.log
+  logformat: default
+  blacklist: ['elasticsearch', 'urllib3']
+</code></pre>
+<p>Save this content to <code>config.yml</code>. For correct logging, you need to create <code>/var/log/curator</code> directory.
 Sometimes using <code>127.0.0.1</code> for <code>client.hosts</code> is not working and you need to provide the real IP address (I think it depends on server configuration).  For more info about curator configuration please check <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/configfile.html">the official reference</a>.</p>
 <p>Prepare <code>action.yml</code> file with cleanup configuration:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
-<span style="color:#66d9ef">actions</span>:
-  <span style="color:#66d9ef">1</span>:
-    <span style="color:#66d9ef">action</span>: delete_indices
-    <span style="color:#66d9ef">description</span>: &gt;<span style="color:#e6db74">-
-</span><span style="color:#e6db74">      Delete indices older than 14 days (based on index creation date)</span>
-    <span style="color:#66d9ef">options</span>:
-      <span style="color:#66d9ef">ignore_empty_list</span>: True
-    <span style="color:#66d9ef">filters</span>:
-    - <span style="color:#66d9ef">filtertype</span>: pattern
-      <span style="color:#66d9ef">kind</span>: prefix
-      <span style="color:#66d9ef">value</span>: test_
-    - <span style="color:#66d9ef">filtertype</span>: age
-      <span style="color:#66d9ef">source</span>: creation_date
-      <span style="color:#66d9ef">direction</span>: older
-      <span style="color:#66d9ef">unit</span>: days
-      <span style="color:#66d9ef">unit_count</span>: <span style="color:#ae81ff">14</span>
+<pre><code class="language-yaml">---
+actions:
+  1:
+    action: delete_indices
+    description: &gt;-
+      Delete indices older than 14 days (based on index creation date)
+    options:
+      ignore_empty_list: True
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: test_
+    - filtertype: age
+      source: creation_date
+      direction: older
+      unit: days
+      unit_count: 14
 
-</code></pre></div><p>In this example I&rsquo;ve defined the action that deletes all indices selected by two filters:</p>
+</code></pre>
+<p>In this example I&rsquo;ve defined the action that deletes all indices selected by two filters:</p>
 <ul>
 <li><code>pattern</code> that select all indices which names starts with <code>test_</code> prefix (It&rsquo;s good to use this filer because it save you from accidental deleting ELK internal indices)</li>
 <li><code>age</code> to select indices that creation date is older than 14 days.</li>
 </ul>
 <p>All filters are combined with <code>AND</code> operator. All available filters are described <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/filters.html">here</a>.  More info about action configuration <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/5.x/actions.html">here</a>.</p>
 <p>Copy both files: <code>config.yml</code> and <code>action.yml</code> to <code>/opt/curator-config/</code> directory. Now we can perform cleanup by running <code>curator</code> with parameters as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml
-</code></pre></div><p>The output should be logged to <code>/var/log/curator/curator.log</code> file.</p>
+<pre><code class="language-shell">curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml
+</code></pre>
+<p>The output should be logged to <code>/var/log/curator/curator.log</code> file.</p>
 <h2 id="schedule-periodical-clean-up">Schedule periodical clean-up<a href="#schedule-periodical-clean-up" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Now we have to schedule the clean-up with <code>cron</code> scheduler. In order to configure <code>cron</code> use the following command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">crontab -e
-</code></pre></div><p>You should get the following info:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Select an editor.  To change later, run <span style="color:#e6db74">&#39;select-editor&#39;</span>.
+<pre><code class="language-shell">crontab -e
+</code></pre>
+<p>You should get the following info:</p>
+<pre><code class="language-shell">Select an editor.  To change later, run 'select-editor'.
   1. /bin/ed
   2. /bin/nano        &lt;---- easiest
   3. /usr/bin/vim.basic
   4. /usr/bin/vim.tiny
 
-Choose 1-4 <span style="color:#f92672">[</span>2<span style="color:#f92672">]</span>:
-</code></pre></div><p>Select your favorite text editor and add the following entry at the end of the opened file</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> * * * /usr/bin/curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml &gt;/dev/null 2&gt;&amp;<span style="color:#ae81ff">1</span>
-</code></pre></div><p>Each line in the crontab configuration has the following format:</p>
+Choose 1-4 [2]:
+</code></pre>
+<p>Select your favorite text editor and add the following entry at the end of the opened file</p>
+<pre><code class="language-shell">0 0 * * * /usr/bin/curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml &gt;/dev/null 2&gt;&amp;1
+</code></pre>
+<p>Each line in the crontab configuration has the following format:</p>
 <pre><code>&lt;time-expression&gt; &lt;command-to-execute&gt;
-</code></pre><p>In my example, I used <code>0 0 * * *</code> as a time-expression which means that my command will run every day at midnight. If you don&rsquo;t know crontab time syntax you can easily generate the desired expression using <a href="https://crontab-generator.org/">https://crontab-generator.org/</a>. After saving crontab config file, if everything was configured correctly, you should get <code>crontab: installing new crontab</code> message. That&rsquo;s all. You can verify if everything is working correctly by examining <code>/var/log/curator/curator.log</code>  log file.</p>
+</code></pre>
+<p>In my example, I used <code>0 0 * * *</code> as a time-expression which means that my command will run every day at midnight. If you don&rsquo;t know crontab time syntax you can easily generate the desired expression using <a href="https://crontab-generator.org/">https://crontab-generator.org/</a>. After saving crontab config file, if everything was configured correctly, you should get <code>crontab: installing new crontab</code> message. That&rsquo;s all. You can verify if everything is working correctly by examining <code>/var/log/curator/curator.log</code>  log file.</p>
 <h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>As you saw, thanks to <code>curator</code> and <code>cron</code> scheduler I was able to create the mechanism for automated ELK maintenance. Now I don&rsquo;t need to worry anymore that ELK server will run out of free disk space and bring all logging stack down. I would like to thank Robert Łysoń (<a href="https://twitter.com/RobertLyson">@RobertLyson</a>) who helped me with preparing  <code>curator</code> configuration. Next time the beer is on me ;)</p>
     

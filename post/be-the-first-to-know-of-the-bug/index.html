@@ -187,7 +187,8 @@
       }
   }
 }
-</code></pre><p>The <code>level</code> attribute contains information about log entry level (DEBUG, INFO, ERROR etc). From now on, every time Logstash processes error log entry, it will send a message to MS Teams.</p>
+</code></pre>
+<p>The <code>level</code> attribute contains information about log entry level (DEBUG, INFO, ERROR etc). From now on, every time Logstash processes error log entry, it will send a message to MS Teams.</p>
 <h2 id="notification-shape">Notification shape<a href="#notification-shape" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The notification sent to MS Teams channel should contain as much information as needed for fast diagnosis of the issue. In my implementation I used the following attributes:</p>
 <ul>
@@ -227,14 +228,17 @@ output {
       }
   }
 }
-</code></pre><p>Those Kibana filter links are very useful but have one flaw. By default, Kibana shows entries from the last 15-minute time period, so when somebody opens the link after 15 minutes - he gets nothing. There are two solutions: inform your team members that they need to pay attention to time filter; or add the time-related attribute to your link and parametrize it. So far I&rsquo;ve stayed with the first solution.</p>
+</code></pre>
+<p>Those Kibana filter links are very useful but have one flaw. By default, Kibana shows entries from the last 15-minute time period, so when somebody opens the link after 15 minutes - he gets nothing. There are two solutions: inform your team members that they need to pay attention to time filter; or add the time-related attribute to your link and parametrize it. So far I&rsquo;ve stayed with the first solution.</p>
 <h3 id="create-jira-issue-link">Create JIRA issue link<a href="#create-jira-issue-link" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>I&rsquo;ve also wanted to simplify the process of creating JIRA issue based on the data from the error notification. JIRA allows automating issue creation with REST API or by the special direct link.
 Unfortunately, I wasn&rsquo;t able to embed the link that send POST request to JIRA API in MS Teams message (as far as I know, it is possible with <a href="https://docs.microsoft.com/en-us/outlook/actionable-messages/actionable-messages-via-connectors">actionable message card</a> but there is a limitation of the Logstash HTTP plugin <a href="https://github.com/logstash-plugins/logstash-output-http/issues/4">issue#4</a> that prevents to create nested arrays inside JSON message). I choose the <a href="https://confluence.atlassian.com/jirakb/creating-issues-via-direct-html-links-159474.html">JIRA direct link</a> which should be in the following format:</p>
 <pre><code>https://jira.mydomain.com/secure/CreateIssueDetails!init.jspa?pid={PROJECT_ID}&amp;issuetype={ISSUE_TYPE_ID}&amp;summary={ERROR_MESSAGE}&amp;description={STACKTRACE}
-</code></pre><p>Values of <em>PROJECT_ID</em> and <em>ISSUE_TYPE_ID</em> can be retrieved through JIRA REST API by sending GET request to the following endpoint (replace XXX with the project key - the prefix of issue key from given project)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">https://jira.mydomain.com/rest/api/2/project/XXXX
-</code></pre></div><p>Now you can compose JIRA issue creation link in Logstash analogously as Kibana filter link.</p>
+</code></pre>
+<p>Values of <em>PROJECT_ID</em> and <em>ISSUE_TYPE_ID</em> can be retrieved through JIRA REST API by sending GET request to the following endpoint (replace XXX with the project key - the prefix of issue key from given project)</p>
+<pre><code class="language-plaintext">https://jira.mydomain.com/rest/api/2/project/XXXX
+</code></pre>
+<p>Now you can compose JIRA issue creation link in Logstash analogously as Kibana filter link.</p>
 <p>Unfortunately, this solution is not perfect. It&rsquo;s not possible to create subtasks and the size of the information that can be attached is limited. On top of that, MS Teams has a problem with long hyperlinks in messages - they stop being clickable. The simple workaround was to add information that you have to copy this link ;)</p>
 <h3 id="too-much-notifications">Too much notifications<a href="#too-much-notifications" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>After connecting Logstash with MS Teams I observed I was getting too many notifications, to the point I stopped paying attention. This whole solution seemed useless. Having analyzed it again though, I discovered that only a subset of events was valuable. To deal with that I made a few optimizations.</p>
@@ -250,7 +254,8 @@ Unfortunately, I wasn&rsquo;t able to embed the link that send POST request to J
       }
   }
 }
-</code></pre><p>The second optimization was introducing a throttling. If the same error occurs multiple times in given time window we want to get notification only once. This is possible with Logstash throttle plugin. In the following configuration I&rsquo;m using throttle plugin to mark the first message in the 60s time frame, uniquely identified by &ldquo;%{app_name}%{app_env}%{logmessage}%{exception}&rdquo; key, with &ldquo;throttled&rdquo; tag. Afterwards, in the output section, I filter only messages containing &ldquo;throttled&rdquo; tag (the rest is ignored by HTTP plugin)</p>
+</code></pre>
+<p>The second optimization was introducing a throttling. If the same error occurs multiple times in given time window we want to get notification only once. This is possible with Logstash throttle plugin. In the following configuration I&rsquo;m using throttle plugin to mark the first message in the 60s time frame, uniquely identified by &ldquo;%{app_name}%{app_env}%{logmessage}%{exception}&rdquo; key, with &ldquo;throttled&rdquo; tag. Afterwards, in the output section, I filter only messages containing &ldquo;throttled&rdquo; tag (the rest is ignored by HTTP plugin)</p>
 <pre><code>filter {  
     if [level] ==&quot;FATAL&quot;{
         throttle{
@@ -276,7 +281,8 @@ output {
       }
   }
 }
-</code></pre><h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Thanks to modularity and rich set of plugins ELK gives a lot of possibilities. As you can see it was quite easy to build Logstash-MsTeams integration. It enabled faster responding for app errors and detecting bugs which could normally remain unnoticed for a long period. I wonder if you have any other ideas - implemented already or not - for utilizing ELK which can help to improve productivity? I would appreciate if you could share them in the comment section.</p>
     
 		

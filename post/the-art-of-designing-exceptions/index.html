@@ -192,215 +192,234 @@
 <p>Following those guidelines should at some point make our life easier but there are also areas for more improvements, especially in terms of information which should be included in the exception.</p>
 <h2 id="argumentexception">ArgumentException<a href="#argumentexception" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Let&rsquo;s take a look at <code>ArgumentException</code> which comes from the standard library and is used for notifying about invalid parameters.  We have the following constructors at our disposal:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> ArgumentException()
-<span style="color:#66d9ef">public</span> ArgumentException(<span style="color:#66d9ef">string</span> message, Exception innerException)
-<span style="color:#66d9ef">public</span> ArgumentException(<span style="color:#66d9ef">string</span> message, <span style="color:#66d9ef">string</span> paramName)
-<span style="color:#66d9ef">public</span> ArgumentException(<span style="color:#66d9ef">string</span> message, <span style="color:#66d9ef">string</span> paramName, Exception innerException)
-</code></pre></div><p>and the most useful overloads are those which accept <code>parameterName</code>. When we try to throw this exception we get the following message:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">&lt;message&gt;
+<pre><code class="language-csharp">public ArgumentException()
+public ArgumentException(string message, Exception innerException)
+public ArgumentException(string message, string paramName)
+public ArgumentException(string message, string paramName, Exception innerException)
+</code></pre>
+<p>and the most useful overloads are those which accept <code>parameterName</code>. When we try to throw this exception we get the following message:</p>
+<pre><code class="language-plaintext">&lt;message&gt;
 Parameter name: &lt;parameterName&gt;
-</code></pre></div><p>Despite the <code>message</code> parameter value, the first question that comes to our mind is <strong>What was the value of invalid argument?</strong>. Now it&rsquo;s our responsibility to provide a comprehensive explanation that contains current value every time when we throw an exception using the aforementioned constructor. A better approach would be to own a helper function in our codebase that enforces providing the argument value and produces the exception with a message that explains current situation:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fail</span>
+</code></pre>
+<p>Despite the <code>message</code> parameter value, the first question that comes to our mind is <strong>What was the value of invalid argument?</strong>. Now it&rsquo;s our responsibility to provide a comprehensive explanation that contains current value every time when we throw an exception using the aforementioned constructor. A better approach would be to own a helper function in our codebase that enforces providing the argument value and produces the exception with a message that explains current situation:</p>
+<pre><code class="language-csharp">public class Fail
 {
-<span style="color:#a6e22e">    [Pure]</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ArgumentException BecauseArgumentXXX&lt;T&gt;(<span style="color:#66d9ef">string</span> argumentName, T argumentValue)
+    [Pure]
+    public static ArgumentException BecauseArgumentXXX&lt;T&gt;(string argumentName, T argumentValue)
     {        
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ArgumentException(<span style="color:#e6db74">$&#34;Here comes the explanation why the &#39;{argumentName}&#39; argument with value &#39;{argumentValue}&#39; is invalid&#34;</span>);
+        return new ArgumentException($&quot;Here comes the explanation why the '{argumentName}' argument with value '{argumentValue}' is invalid&quot;);
     }
 }
-</code></pre></div><p>Where the <code>XXX</code> part in the helper name is the reason why the argument was invalid. This solution takes off the burden of making up the exception message every time and enforces the need for providing argument&rsquo;s current value. If there is a requirement for internationalization, you can easily move the exception message to the resource file (remember about converting string interpolation into <code>string.Format</code>);</p>
+</code></pre>
+<p>Where the <code>XXX</code> part in the helper name is the reason why the argument was invalid. This solution takes off the burden of making up the exception message every time and enforces the need for providing argument&rsquo;s current value. If there is a requirement for internationalization, you can easily move the exception message to the resource file (remember about converting string interpolation into <code>string.Format</code>);</p>
 <h3 id="argumentoutofrangeexception---numeric-values">ArgumentOutOfRangeException - numeric values<a href="#argumentoutofrangeexception---numeric-values" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>One of the <code>BCL</code> exceptions that specify the reason for the invalid parameter is <code>ArgumentOutOfRangeException</code>. The situation is a little better than in <code>ArgumentException</code> case because, as we see below, there is a constructor overload that accepts <code>parameterName</code> as well as <code>actualValue</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> ArgumentOutOfRangeException()
-<span style="color:#66d9ef">public</span> ArgumentOutOfRangeException(<span style="color:#66d9ef">string</span> paramName)
-<span style="color:#66d9ef">public</span> ArgumentOutOfRangeException(<span style="color:#66d9ef">string</span> paramName, <span style="color:#66d9ef">string</span> message)
-<span style="color:#66d9ef">public</span> ArgumentOutOfRangeException(<span style="color:#66d9ef">string</span> message, Exception innerException)
-<span style="color:#66d9ef">public</span> ArgumentOutOfRangeException(<span style="color:#66d9ef">string</span> paramName, <span style="color:#66d9ef">object</span> actualValue, <span style="color:#66d9ef">string</span> message)
-</code></pre></div><p>The message produced by this overload looks as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">&lt;message&gt;
+<pre><code class="language-csharp">public ArgumentOutOfRangeException()
+public ArgumentOutOfRangeException(string paramName)
+public ArgumentOutOfRangeException(string paramName, string message)
+public ArgumentOutOfRangeException(string message, Exception innerException)
+public ArgumentOutOfRangeException(string paramName, object actualValue, string message)
+</code></pre>
+<p>The message produced by this overload looks as follows:</p>
+<pre><code class="language-plaintext">&lt;message&gt;
 Parameter name: &lt;parameterName&gt;
 Actual value was &lt;actualValue&gt;.
-</code></pre></div><p>Seeing this message, we immediately start asking the question: <strong>&ldquo;What are the limitation for this value&rdquo;?</strong> Of course, this information could be included in <code>message</code> parameter but constructing the message using the same pattern everytime would be very tedious. Let&rsquo;s take a look at one of the <a href="https://github.com/dotnet/coreclr/blob/57f8358221a3c4ad7f1608f625bc3c5936618505/src/System.Private.CoreLib/shared/System/DateTime.cs#L228">DateTime constructor</a>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> DateTime(<span style="color:#66d9ef">int</span> year, <span style="color:#66d9ef">int</span> month, <span style="color:#66d9ef">int</span> day, <span style="color:#66d9ef">int</span> hour, <span style="color:#66d9ef">int</span> minute, <span style="color:#66d9ef">int</span> second, <span style="color:#66d9ef">int</span> millisecond)
+</code></pre>
+<p>Seeing this message, we immediately start asking the question: <strong>&ldquo;What are the limitation for this value&rdquo;?</strong> Of course, this information could be included in <code>message</code> parameter but constructing the message using the same pattern everytime would be very tedious. Let&rsquo;s take a look at one of the <a href="https://github.com/dotnet/coreclr/blob/57f8358221a3c4ad7f1608f625bc3c5936618505/src/System.Private.CoreLib/shared/System/DateTime.cs#L228">DateTime constructor</a>:</p>
+<pre><code class="language-csharp">public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
 {
-    <span style="color:#66d9ef">if</span> (millisecond &lt; <span style="color:#ae81ff">0</span> || millisecond &gt;= MillisPerSecond)
+    if (millisecond &lt; 0 || millisecond &gt;= MillisPerSecond)
     {
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ArgumentOutOfRangeException(nameof(millisecond), SR.Format(SR.ArgumentOutOfRange_Range, <span style="color:#ae81ff">0</span>, MillisPerSecond - <span style="color:#ae81ff">1</span>));
+        throw new ArgumentOutOfRangeException(nameof(millisecond), SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1));
     }
-    <span style="color:#66d9ef">long</span> ticks = DateToTicks(year, month, day) + TimeToTicks(hour, minute, second);
+    long ticks = DateToTicks(year, month, day) + TimeToTicks(hour, minute, second);
     ticks += millisecond * TicksPerMillisecond;
-    <span style="color:#66d9ef">if</span> (ticks &lt; MinTicks || ticks &gt; MaxTicks)
-        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ArgumentException(SR.Arg_DateTimeRange);
-    _dateData = (<span style="color:#66d9ef">ulong</span>)ticks;
+    if (ticks &lt; MinTicks || ticks &gt; MaxTicks)
+        throw new ArgumentException(SR.Arg_DateTimeRange);
+    _dateData = (ulong)ticks;
 }
-</code></pre></div><p>As we see, there is a validation for <code>millisecond</code> parameter. If the value doesn&rsquo;t belong to <code>[0, MillisPerSecond)</code> range then the <code>ArgumentOutOfRangeException</code> exception is thrown. The exception message is constructed using <code>SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1)</code> statement. In order to compose the message, somebody had to know that he must use a special <code>SR.Format()</code> function with a dedicated constant <code>SR.ArgumentOutOfRange_Range</code> and he had to duplicate the values of range endpoints from the if statement. In terms of duplication - the same validation logic is repeated four times in <code>DateTime</code> struct. I also found the statement <code>SR.Format(SR.ArgumentOutOfRange_Range, MIN, MAX)</code> in 28 files in CoreCLR source code!!! (There was a <code>string.Format(CultureInfo.CurrentCulture, SR.ArgumentOutOfRange_Range,  MIN, MAX)</code> variation too).</p>
+</code></pre>
+<p>As we see, there is a validation for <code>millisecond</code> parameter. If the value doesn&rsquo;t belong to <code>[0, MillisPerSecond)</code> range then the <code>ArgumentOutOfRangeException</code> exception is thrown. The exception message is constructed using <code>SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1)</code> statement. In order to compose the message, somebody had to know that he must use a special <code>SR.Format()</code> function with a dedicated constant <code>SR.ArgumentOutOfRange_Range</code> and he had to duplicate the values of range endpoints from the if statement. In terms of duplication - the same validation logic is repeated four times in <code>DateTime</code> struct. I also found the statement <code>SR.Format(SR.ArgumentOutOfRange_Range, MIN, MAX)</code> in 28 files in CoreCLR source code!!! (There was a <code>string.Format(CultureInfo.CurrentCulture, SR.ArgumentOutOfRange_Range,  MIN, MAX)</code> variation too).</p>
 <p>For me there are two issues: range info duplication and error message composition logic duplication. These problems can be solved by introducing an interface that represents the range. An object that implements this interface can be used to verify given value correctness and also can be passed to exception factory in case we want to inform about exceeding the allowed range:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> IRange&lt;<span style="color:#66d9ef">in</span> T&gt;
+<pre><code class="language-csharp">
+public interface IRange&lt;in T&gt;
 {
-    <span style="color:#66d9ef">bool</span> Contains(T <span style="color:#66d9ef">value</span>);
-    <span style="color:#66d9ef">string</span> GetDescription();
+    bool Contains(T value);
+    string GetDescription();
 }
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fail</span>
+public class Fail
 {
-<span style="color:#a6e22e">    [Pure]</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ArgumentOutOfRangeException BecauseArgumentOutOfRange&lt;T&gt;(
-        T <span style="color:#66d9ef">value</span>,
-        <span style="color:#66d9ef">string</span> argumentName, 
+    [Pure]
+    public static ArgumentOutOfRangeException BecauseArgumentOutOfRange&lt;T&gt;(
+        T value,
+        string argumentName, 
         IRange&lt;T&gt; allowedRange
     )
     {
-        <span style="color:#66d9ef">var</span> rangeDescription = allowedRange.GetDescription();
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ArgumentOutOfRangeException(<span style="color:#e6db74">$&#34;Parameter &#39;{argumentName}&#39; with value &#39;{value}&#39; was outside the allowed range &#39;{rangeDescription}&#39;&#34;</span>);
+        var rangeDescription = allowedRange.GetDescription();
+        return new ArgumentOutOfRangeException($&quot;Parameter '{argumentName}' with value '{value}' was outside the allowed range '{rangeDescription}'&quot;);
     }
 }
-</code></pre></div><p>A sample implementation of <code>IRange&lt;&gt;</code> can look as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OpenRange</span>&lt;T&gt;:IRange&lt;T&gt; <span style="color:#66d9ef">where</span> T:IComparable&lt;T&gt;
+</code></pre>
+<p>A sample implementation of <code>IRange&lt;&gt;</code> can look as follows:</p>
+<pre><code class="language-csharp">public class OpenRange&lt;T&gt;:IRange&lt;T&gt; where T:IComparable&lt;T&gt;
 {
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> T min;
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> T max;
+    private readonly T min;
+    private readonly T max;
 
-    <span style="color:#66d9ef">public</span> OpenRange(T min, T max)
+    public OpenRange(T min, T max)
     {
-        <span style="color:#66d9ef">this</span>.min = min;
-        <span style="color:#66d9ef">this</span>.max = max;
+        this.min = min;
+        this.max = max;
     }
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">bool</span> Contains(T <span style="color:#66d9ef">value</span>) =&gt; <span style="color:#66d9ef">value</span>.CompareTo(min) &gt; <span style="color:#ae81ff">0</span> &amp;&amp; <span style="color:#66d9ef">value</span>.CompareTo(max) &lt; <span style="color:#ae81ff">0</span>;
+    public bool Contains(T value) =&gt; value.CompareTo(min) &gt; 0 &amp;&amp; value.CompareTo(max) &lt; 0;
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">string</span> GetDescription() =&gt; <span style="color:#e6db74">$&#34;({min}) - {max})&#34;</span>
+    public string GetDescription() =&gt; $&quot;({min}) - {max})&quot;
 }
-</code></pre></div><p>Using our new range facility we can rewrite <code>DateTime</code> constructor in the following way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> IRange&lt;<span style="color:#66d9ef">int</span>&gt; allowedMilisecondRange = <span style="color:#66d9ef">new</span> LeftClosedRightOpenRange&lt;<span style="color:#66d9ef">int</span>&gt;(<span style="color:#ae81ff">0</span>, MillisPerSecond);
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> IRange&lt;<span style="color:#66d9ef">long</span>&gt; allowedTicksRange = <span style="color:#66d9ef">new</span> ClosedRange&lt;<span style="color:#66d9ef">long</span>&gt;(MinTicks, MaxTicks);
+</code></pre>
+<p>Using our new range facility we can rewrite <code>DateTime</code> constructor in the following way:</p>
+<pre><code class="language-csharp">private static IRange&lt;int&gt; allowedMilisecondRange = new LeftClosedRightOpenRange&lt;int&gt;(0, MillisPerSecond);
+private static IRange&lt;long&gt; allowedTicksRange = new ClosedRange&lt;long&gt;(MinTicks, MaxTicks);
 
-<span style="color:#66d9ef">public</span> DateTime(<span style="color:#66d9ef">int</span> year, <span style="color:#66d9ef">int</span> month, <span style="color:#66d9ef">int</span> day, <span style="color:#66d9ef">int</span> hour, <span style="color:#66d9ef">int</span> minute, <span style="color:#66d9ef">int</span> second, <span style="color:#66d9ef">int</span> millisecond)
+public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
 {
-    <span style="color:#66d9ef">if</span> (allowedMilisecondRange.Contains(millisecond) == <span style="color:#66d9ef">false</span>)
+    if (allowedMilisecondRange.Contains(millisecond) == false)
     {
-        <span style="color:#66d9ef">throw</span> Fail.BecauseArgumentOutOfRange(millisecond, nameof(millisecond), allowedMilisecondRange);
+        throw Fail.BecauseArgumentOutOfRange(millisecond, nameof(millisecond), allowedMilisecondRange);
     }
-    <span style="color:#66d9ef">long</span> ticks = DateToTicks(year, month, day) + TimeToTicks(hour, minute, second);
+    long ticks = DateToTicks(year, month, day) + TimeToTicks(hour, minute, second);
     ticks += millisecond * TicksPerMillisecond;
-    <span style="color:#66d9ef">if</span> (allowedTicksRange.Contains(ticks) == <span style="color:#66d9ef">false</span>)
+    if (allowedTicksRange.Contains(ticks) == false)
     {
-        <span style="color:#66d9ef">throw</span> Fail.BecauseArgumentOutOfRange(ticks, nameof(ticks), allowedTicksRange);
+        throw Fail.BecauseArgumentOutOfRange(ticks, nameof(ticks), allowedTicksRange);
     }   
-    _dateData = (<span style="color:#66d9ef">ulong</span>)ticks;
+    _dateData = (ulong)ticks;
 }
-</code></pre></div><p>As we see <code>IRange&lt;&gt;</code> helps us improve code readability, reduce the duplication of information about the allowed range and facilitate throwing the exception. It also enforces consistency in our codebase - a ready recipe for testing and informing about values outside the range.
+</code></pre>
+<p>As we see <code>IRange&lt;&gt;</code> helps us improve code readability, reduce the duplication of information about the allowed range and facilitate throwing the exception. It also enforces consistency in our codebase - a ready recipe for testing and informing about values outside the range.
 Actually, this solution is not limited to the classical numeric ranges. You can have a class that implements <code>IRange&lt;string&gt;</code> and verifies if given value belongs to a predefined set of strings. Just remember to compose appropriate description in <code>GetDescription()</code> method.</p>
 <h2 id="argumentoutofrange---enum-values">ArgumentOutOfRange - enum values<a href="#argumentoutofrange---enum-values" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The special situation when we what to use <code>ArgumentOutOfRange</code> is <code>default</code> case in the <code>switch</code> statement for enum values. Here is the default code generated by Resharper for <code>switch</code> over an enum variable:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> DoSomething(SampleEnum option)
+<pre><code class="language-csharp">private void DoSomething(SampleEnum option)
 {
-    <span style="color:#66d9ef">switch</span> (option)
+    switch (option)
     {
-        <span style="color:#66d9ef">case</span> SampleEnum.Option1:
-            <span style="color:#66d9ef">break</span>;
-        <span style="color:#66d9ef">case</span> SampleEnum.Option2:
-            <span style="color:#66d9ef">break</span>;
-        <span style="color:#66d9ef">default</span>:
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ArgumentOutOfRangeException(nameof(option), option, <span style="color:#66d9ef">null</span>);
+        case SampleEnum.Option1:
+            break;
+        case SampleEnum.Option2:
+            break;
+        default:
+            throw new ArgumentOutOfRangeException(nameof(option), option, null);
     }
 }
-</code></pre></div><p>When we run this function with enum value that is not covered in <code>case</code> section, we get the exception with following message:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Exception of type &#39;System.ArgumentOutOfRangeException&#39; was thrown.
+</code></pre>
+<p>When we run this function with enum value that is not covered in <code>case</code> section, we get the exception with following message:</p>
+<pre><code class="language-plaintext">Exception of type 'System.ArgumentOutOfRangeException' was thrown.
 Parameter name: option
 Actual value was Option3.
-</code></pre></div><p>At first glance, it is not so obvious what went wrong. It could be even more cryptic when the value was a nullable type:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">Exception of type &#39;System.ArgumentOutOfRangeException&#39; was thrown.
+</code></pre>
+<p>At first glance, it is not so obvious what went wrong. It could be even more cryptic when the value was a nullable type:</p>
+<pre><code class="language-plaintext">Exception of type 'System.ArgumentOutOfRangeException' was thrown.
 Parameter name: option
 Actual value was null.
-</code></pre></div><p>In order to make it much easier to diagnose we can add a dedicated helper that constructs exception about what really happened:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fail</span>
+</code></pre>
+<p>In order to make it much easier to diagnose we can add a dedicated helper that constructs exception about what really happened:</p>
+<pre><code class="language-csharp">public class Fail
 {
-<span style="color:#a6e22e">    [Pure]</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ArgumentOutOfRangeException BecauseEnumOutOfRange&lt;T&gt;(<span style="color:#66d9ef">string</span> argumentName, T <span style="color:#66d9ef">value</span>)
+    [Pure]
+    public static ArgumentOutOfRangeException BecauseEnumOutOfRange&lt;T&gt;(string argumentName, T value)
     {
-        <span style="color:#66d9ef">var</span> enumType = <span style="color:#66d9ef">typeof</span>(T);
-        <span style="color:#66d9ef">var</span> message = <span style="color:#e6db74">$&#34;Unsupported &#39;{argumentName}&#39; enum value: {value} ({enumType.Name})&#34;</span>;
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ArgumentOutOfRangeException(argumentName, <span style="color:#66d9ef">value</span>, message);
+        var enumType = typeof(T);
+        var message = $&quot;Unsupported '{argumentName}' enum value: {value} ({enumType.Name})&quot;;
+        return new ArgumentOutOfRangeException(argumentName, value, message);
     }
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> DoSomething(SampleEnum option)
+</code></pre>
+<pre><code class="language-csharp">private void DoSomething(SampleEnum option)
 {
-    <span style="color:#66d9ef">switch</span> (option)
+    switch (option)
     {
-        <span style="color:#66d9ef">case</span> SampleEnum.Option1:
-            <span style="color:#66d9ef">break</span>;
-        <span style="color:#66d9ef">case</span> SampleEnum.Option2:
-            <span style="color:#66d9ef">break</span>;
-        <span style="color:#66d9ef">default</span>:
-            <span style="color:#66d9ef">throw</span> Fail.BecauseEnumOutOfRange(nameof(option), option);
+        case SampleEnum.Option1:
+            break;
+        case SampleEnum.Option2:
+            break;
+        default:
+            throw Fail.BecauseEnumOutOfRange(nameof(option), option);
     }
 }
-</code></pre></div><h3 id="filenotfoundexception">FileNotFoundException<a href="#filenotfoundexception" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> FileNotFoundException()
-<span style="color:#66d9ef">public</span> FileNotFoundException(<span style="color:#66d9ef">string</span> message)
-<span style="color:#66d9ef">public</span> FileNotFoundException(<span style="color:#66d9ef">string</span> message, Exception innerException)
-<span style="color:#66d9ef">public</span> FileNotFoundException(<span style="color:#66d9ef">string</span> message, <span style="color:#66d9ef">string</span> fileName)
-<span style="color:#66d9ef">public</span> FileNotFoundException(<span style="color:#66d9ef">string</span> message, <span style="color:#66d9ef">string</span> fileName, Exception innerException)
-</code></pre></div><p>Those are the public constructors for <code>FileNotFoundException</code>. The three first should be forbidden. The only useful versions are the ones which accept <code>fileName</code> parameter but there is still crucial information missing - <strong>Where were we looking for the file?</strong>. In order to make diagnostic less painful we can introduce a helper which accepts <code>fileName</code> as well as the list of potential locations and produce exception with comprehensive message:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Fail</span>
+</code></pre>
+<h3 id="filenotfoundexception">FileNotFoundException<a href="#filenotfoundexception" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<pre><code class="language-csharp">public FileNotFoundException()
+public FileNotFoundException(string message)
+public FileNotFoundException(string message, Exception innerException)
+public FileNotFoundException(string message, string fileName)
+public FileNotFoundException(string message, string fileName, Exception innerException)
+</code></pre>
+<p>Those are the public constructors for <code>FileNotFoundException</code>. The three first should be forbidden. The only useful versions are the ones which accept <code>fileName</code> parameter but there is still crucial information missing - <strong>Where were we looking for the file?</strong>. In order to make diagnostic less painful we can introduce a helper which accepts <code>fileName</code> as well as the list of potential locations and produce exception with comprehensive message:</p>
+<pre><code class="language-csharp">public static class Fail
 {
-<span style="color:#a6e22e">    [Pure]</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> FileNotFoundException BecauseMissingFile(<span style="color:#66d9ef">string</span> fileName, <span style="color:#66d9ef">params</span> <span style="color:#66d9ef">string</span>[] locations)
+    [Pure]
+    public static FileNotFoundException BecauseMissingFile(string fileName, params string[] locations)
     {
-        <span style="color:#66d9ef">var</span> combinedLocations = <span style="color:#66d9ef">string</span>.Join(<span style="color:#e6db74">&#34;,&#34;</span>, locations);
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> FileNotFoundException(<span style="color:#e6db74">$&#34;Cannot find file &#39;{fileName}&#39; at locations: {combinedLocations}&#34;</span>)
+        var combinedLocations = string.Join(&quot;,&quot;, locations);
+        return new FileNotFoundException($&quot;Cannot find file '{fileName}' at locations: {combinedLocations}&quot;)
     }
 }
-</code></pre></div><h2 id="missing-context-information">Missing context information<a href="#missing-context-information" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="missing-context-information">Missing context information<a href="#missing-context-information" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Sometimes we don&rsquo;t have enough information in given context to create a comprehensive error message. We can pass the missing information from the outside but this has a few disadvantages: additional parameters pollute our API and bound our method to given invocation context making it less reusable. Let&rsquo;s make an example: in our application, we want to load data stored in multiple <code>XML</code> files. The method that is responsible for loading data loops through the list of files, reads the content and passes it to the component responsible for parsing <code>XML</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp">
-<span style="color:#66d9ef">public</span> IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;<span style="color:#66d9ef">string</span>&gt; files)
+<pre><code class="language-csharp">
+public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
 {
-    <span style="color:#66d9ef">var</span> result = <span style="color:#66d9ef">new</span> List&lt;SampleData&gt;();
-    <span style="color:#66d9ef">foreach</span>(<span style="color:#66d9ef">var</span> file <span style="color:#66d9ef">in</span> files)
+    var result = new List&lt;SampleData&gt;();
+    foreach(var file in files)
     {
-        <span style="color:#66d9ef">var</span> rawConent = File.ReadAllText(file);
-        <span style="color:#66d9ef">var</span> data = xmlDataParser.Parse(rawContent);
+        var rawConent = File.ReadAllText(file);
+        var data = xmlDataParser.Parse(rawContent);
         result.AddRange(data);
     }
-    <span style="color:#66d9ef">return</span> result;
+    return result;
 }
-</code></pre></div><p>If there are any parsing errors we would like to be informed why the structure is invalid and also which file contains this corrupted content. Content verification logic is a part of the parser but it&rsquo;s totally unaware of the content physical source. We have two solutions: we can design the parser to return a structure that contains, besides the data, also a detailed information about errors if any occur:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;<span style="color:#66d9ef">string</span>&gt; files)
+</code></pre>
+<p>If there are any parsing errors we would like to be informed why the structure is invalid and also which file contains this corrupted content. Content verification logic is a part of the parser but it&rsquo;s totally unaware of the content physical source. We have two solutions: we can design the parser to return a structure that contains, besides the data, also a detailed information about errors if any occur:</p>
+<pre><code class="language-csharp">public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
 {
-    <span style="color:#66d9ef">var</span> result = <span style="color:#66d9ef">new</span> List&lt;SampleData&gt;();
-    <span style="color:#66d9ef">foreach</span>(<span style="color:#66d9ef">var</span> file <span style="color:#66d9ef">in</span> files)
+    var result = new List&lt;SampleData&gt;();
+    foreach(var file in files)
     {   
-        <span style="color:#66d9ef">var</span> rawConent = File.ReadAllText(file);
-        <span style="color:#66d9ef">var</span> parsingResult = xmlDataParser.Parse(rawContent);
-        <span style="color:#66d9ef">if</span>(parsingResult.IsSuccess == <span style="color:#66d9ef">false</span>)
+        var rawConent = File.ReadAllText(file);
+        var parsingResult = xmlDataParser.Parse(rawContent);
+        if(parsingResult.IsSuccess == false)
         {
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> DataLoadException(<span style="color:#e6db74">$&#34;Cannot load data from file &#39;{file}&#39;. Reason: {parsingResult.ErrorMessage}&#34;</span>)
+            throw new DataLoadException($&quot;Cannot load data from file '{file}'. Reason: {parsingResult.ErrorMessage}&quot;)
         }
         result.AddRange(parsingResult.Data);
     }
-    <span style="color:#66d9ef">return</span> result;
+    return result;
 }
-</code></pre></div><p>or we can catch the exception thrown by the parser and wrap it in new exception that provides the context information.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;<span style="color:#66d9ef">string</span>&gt; files)
+</code></pre>
+<p>or we can catch the exception thrown by the parser and wrap it in new exception that provides the context information.</p>
+<pre><code class="language-csharp">public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
 {
-    <span style="color:#66d9ef">var</span> result = <span style="color:#66d9ef">new</span> List&lt;SampleData&gt;();
-    <span style="color:#66d9ef">foreach</span>(<span style="color:#66d9ef">var</span> file <span style="color:#66d9ef">in</span> files)
+    var result = new List&lt;SampleData&gt;();
+    foreach(var file in files)
     {   
-        <span style="color:#66d9ef">try</span>
+        try
         {
-            <span style="color:#66d9ef">var</span> rawConent = File.ReadAllText(file);
-            <span style="color:#66d9ef">var</span> data = xmlDataParser.Parse(rawContent);
+            var rawConent = File.ReadAllText(file);
+            var data = xmlDataParser.Parse(rawContent);
             result.AddRange(data);
-        }<span style="color:#66d9ef">catch</span>(Exception exception)
+        }catch(Exception exception)
         {
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> DataLoadException(<span style="color:#e6db74">$&#34;Cannot load data from file &#39;{file}&#39;&#34;</span>, exception)
+            throw new DataLoadException($&quot;Cannot load data from file '{file}'&quot;, exception)
         }
     }
-    <span style="color:#66d9ef">return</span> result;
+    return result;
 }
-</code></pre></div><p>Of course, from the performance point of view, the first approach is much better, especially when we want to collect error information from all files and forward a complete summary. Unfortunately, sometimes the contract is enforced by the third party library and the <code>try-catch-throw</code> is the only possible option to handle this scenario.</p>
+</code></pre>
+<p>Of course, from the performance point of view, the first approach is much better, especially when we want to collect error information from all files and forward a complete summary. Unfortunately, sometimes the contract is enforced by the third party library and the <code>try-catch-throw</code> is the only possible option to handle this scenario.</p>
 <h2 id="pure-attribute">[Pure] attribute<a href="#pure-attribute" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>All of my exception factory methods are decorated with <code>[Pure]</code> attribute. This attribute comes from <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> NuGet package and it is intended to mark <a href="https://en.wikipedia.org/wiki/Pure_function">pure functions</a> - the functions which have no side effects. If you are using <code>Resharper</code> and have enabled <code>Solution-wide analysis</code> this attribute can save you a lot of trouble when you forget to add <code>throw</code> keyword before exception factory method invocation:</p>
 <p>

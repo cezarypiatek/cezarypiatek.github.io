@@ -3,68 +3,88 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/aspcore/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <loc>https://cezarypiatek.github.io/tags/analyzers/</loc>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <loc>https://cezarypiatek.github.io/tags/async/</loc>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/async-analyzers-p1/</loc>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/c#/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/nswag/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/rest/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <lastmod>2020-10-11T19:00:04+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/aspcore/</loc>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</loc>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/nswag/</loc>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/rest/</loc>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/webapi/</loc>
-    <lastmod>2020-09-06T17:16:57+02:00</lastmod>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/dapper/</loc>
-    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
-    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/sqlserver/</loc>
-    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</loc>
-    <lastmod>2020-08-02T21:16:58+02:00</lastmod>
+    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
   <url>
@@ -90,11 +110,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
     <lastmod>2020-06-14T19:07:15+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
-    <lastmod>2020-06-20T17:29:44+02:00</lastmod>
   </url>
   
   <url>
@@ -214,7 +229,7 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/testing/</loc>
-    <lastmod>2019-07-31T23:44:16+02:00</lastmod>
+    <lastmod>2020-10-11T00:06:31+02:00</lastmod>
   </url>
   
   <url>
@@ -349,22 +364,22 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</loc>
-    <lastmod>2018-11-13T22:28:44+01:00</lastmod>
+    <lastmod>2020-10-11T00:06:31+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/selenium/</loc>
-    <lastmod>2018-11-13T22:28:44+01:00</lastmod>
+    <lastmod>2020-10-11T00:06:31+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/ui-tests/</loc>
-    <lastmod>2018-11-13T22:28:44+01:00</lastmod>
+    <lastmod>2020-10-11T00:06:31+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/webdriver/</loc>
-    <lastmod>2018-11-13T22:28:44+01:00</lastmod>
+    <lastmod>2020-10-11T00:06:31+02:00</lastmod>
   </url>
   
   <url>

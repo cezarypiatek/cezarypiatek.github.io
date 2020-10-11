@@ -175,29 +175,32 @@
 		<p>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&rsquo;s shipped with MVC bootstrapping template and it&rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.NET MVC frontend developer, and how to fix them.</p>
 <h2 id="how-it-works">How it works.<a href="#how-it-works" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Before we start, let me briefly remind you how jquery.unobtrusive-ajax.js works. As I&rsquo;ve mentioned in the introduction, this library adds ajax support for forms and hyperlinks. In order to use it you have to provide a set of appropriate data-ajax-* attributes which will be &ldquo;interpreted&rdquo; by the javascript library. You don&rsquo;t need to type these attributes directly - you can use AjaxOptions object accepted by razor helpers and translated into given html attributes. These attributes are responsible for configuring ajax connection, selecting the predefined behavior for handling ajax response and providing custom callbacks for given ajax events. The latter can be entered in the form of javascript method name, but nothing prevents us from typing full javascript expression. A sample usage of AjaxOptions with conjunction of Ajax.BeginForm can look as follows.</p>
-<pre><code class="language-razor" data-lang="razor">@using (Ajax.BeginForm(&quot;SaveData&quot;, new AjaxOptions { OnSuccess = &quot;alert(\&quot;Data successfuly saved!\&quot;);&quot; }))
+<pre><code class="language-razor">@using (Ajax.BeginForm(&quot;SaveData&quot;, new AjaxOptions { OnSuccess = &quot;alert(\&quot;Data successfuly saved!\&quot;);&quot; }))
 {
     &lt;h1&gt;This is sample form&lt;/h1&gt;
     @*Sample form content*@
     &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
 }
-</code></pre><p>When you have in web.config <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> flag set to true, this razor code is translated into the following html markup :</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/Home/SaveData&#34;</span> <span style="color:#a6e22e">data-ajax</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">data-ajax-success</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;alert(&amp;quot;Data successfuly saved!&amp;quot;);&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form0&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
-    &lt;<span style="color:#f92672">h1</span>&gt;This is sample form&lt;/<span style="color:#f92672">h1</span>&gt;
-    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>&gt;
-&lt;/<span style="color:#f92672">form</span>&gt;
-</code></pre></div><p>If you switch <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> to false you get the code as below which is some kind of fallback in case you don&rsquo;t have jquery (it requires another Microsoft JavaScript library).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/Home/SaveData&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;form0&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">onclick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Sys.Mvc.AsyncForm.handleClick(this, new Sys.UI.DomEvent(event));&#34;</span> <span style="color:#a6e22e">onsubmit</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Sys.Mvc.AsyncForm.handleSubmit(this, new Sys.UI.DomEvent(event), { insertionMode: Sys.Mvc.InsertionMode.replace, onSuccess: Function.createDelegate(this, alert(&amp;quot;Data successfuly saved!&amp;quot;);) });&#34;</span>&gt;    
-    &lt;<span style="color:#f92672">h1</span>&gt;This is sample form&lt;/<span style="color:#f92672">h1</span>&gt;
-    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Submit&#34;</span>/&gt;
-&lt;/<span style="color:#f92672">form</span>&gt;
-&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span>&gt;
-<span style="color:#75715e">//&lt;![CDATA[
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>window.<span style="color:#a6e22e">mvcClientValidationMetadata</span>) { window.<span style="color:#a6e22e">mvcClientValidationMetadata</span> <span style="color:#f92672">=</span> []; }
-window.<span style="color:#a6e22e">mvcClientValidationMetadata</span>.<span style="color:#a6e22e">push</span>({<span style="color:#e6db74">&#34;Fields&#34;</span><span style="color:#f92672">:</span>[],<span style="color:#e6db74">&#34;FormId&#34;</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;form0&#34;</span>,<span style="color:#e6db74">&#34;ReplaceValidationSummary&#34;</span><span style="color:#f92672">:</span><span style="color:#66d9ef">false</span>});
-<span style="color:#75715e">//]]&gt;
-</span><span style="color:#75715e"></span>&lt;/<span style="color:#f92672">script</span>&gt;
-</code></pre></div><p>After analyzing this &ldquo;non-obtrusive&rdquo; version I very much doubt if this works with ajax callbacks provided as a javascript expression (probably the javascript literals are the only valid value).</p>
+</code></pre>
+<p>When you have in web.config <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> flag set to true, this razor code is translated into the following html markup :</p>
+<pre><code class="language-html">&lt;form action=&quot;/Home/SaveData&quot; data-ajax=&quot;true&quot; data-ajax-success=&quot;alert(&amp;quot;Data successfuly saved!&amp;quot;);&quot; id=&quot;form0&quot; method=&quot;post&quot;&gt;
+    &lt;h1&gt;This is sample form&lt;/h1&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>If you switch <strong>&ldquo;UnobtrusiveJavaScriptEnabled&rdquo;</strong> to false you get the code as below which is some kind of fallback in case you don&rsquo;t have jquery (it requires another Microsoft JavaScript library).</p>
+<pre><code class="language-html">&lt;form action=&quot;/Home/SaveData&quot; id=&quot;form0&quot; method=&quot;post&quot; onclick=&quot;Sys.Mvc.AsyncForm.handleClick(this, new Sys.UI.DomEvent(event));&quot; onsubmit=&quot;Sys.Mvc.AsyncForm.handleSubmit(this, new Sys.UI.DomEvent(event), { insertionMode: Sys.Mvc.InsertionMode.replace, onSuccess: Function.createDelegate(this, alert(&amp;quot;Data successfuly saved!&amp;quot;);) });&quot;&gt;    
+    &lt;h1&gt;This is sample form&lt;/h1&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+//&lt;![CDATA[
+if (!window.mvcClientValidationMetadata) { window.mvcClientValidationMetadata = []; }
+window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot;:&quot;form0&quot;,&quot;ReplaceValidationSummary&quot;:false});
+//]]&gt;
+&lt;/script&gt;
+</code></pre>
+<p>After analyzing this &ldquo;non-obtrusive&rdquo; version I very much doubt if this works with ajax callbacks provided as a javascript expression (probably the javascript literals are the only valid value).</p>
 <p>In ASP Core there is no longer AjaxHelper and AjaxOptions but you can still use jquery.unobtrusive-ajax.js functionality by providing data-ajax-* attributes manually.</p>
 <h2 id="is-it-truly-unobtrusive">Is it truly unobtrusive?<a href="#is-it-truly-unobtrusive" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>I think the root of all problems lays in the (miss)understanding of &ldquo;unobtrusive javascript&rdquo; term. According to <a href="https://en.wikipedia.org/wiki/Unobtrusive_JavaScript">Wikipedia</a> the concept of unobtrusive javascript appeared for the very first time in Stuart Langridge&rsquo;s article <a href="https://kryogenix.org/code/browser/aqlists/">Unobtrusive DHTML, and the power of unordered lists</a> from 2002. A better explanation we can find in David Flanagan&rsquo;s book &ldquo;JavaScript: The Definitive Guide&rdquo; which looks as follows:</p>
@@ -228,90 +231,96 @@ Unfortunately, I wasn&rsquo;t able to find any solution that wouldn&rsquo;t impl
 <a href="dom_event_solution.jpg"><img  src="dom_event_solution.jpg" alt=""></a>
 </p>
 <p>Now we can subscribe for those ajax events in a more elegant way directly from js code:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span>(){
-    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:begin&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Begin&#34;</span>);
+<pre><code class="language-js">$(function(){
+    $(&quot;#SampleForm&quot;).on(&quot;ajax:begin&quot;, function (event, ajaxData) {
+        console.log(&quot;Begin&quot;);
     });
 
-    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:complete&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Complete&#34;</span>);
+    $(&quot;#SampleForm&quot;).on(&quot;ajax:complete&quot;, function (event, ajaxData) {
+        console.log(&quot;Complete&quot;);
     });
 
-    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:success&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Success&#34;</span>);
+    $(&quot;#SampleForm&quot;).on(&quot;ajax:success&quot;, function (event, ajaxData) {
+        console.log(&quot;Success&quot;);
     });
 
-    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#SampleForm&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:failure&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Failure&#34;</span>);
+    $(&quot;#SampleForm&quot;).on(&quot;ajax:failure&quot;, function (event, ajaxData) {
+        console.log(&quot;Failure&quot;);
     });
 });
-</code></pre></div><p>The id attributes are not required for this solution, you can locate interesting element in any way you want, but this is good practice to assign unique id to every form (if you don&rsquo;t do that BeginForm helper assigns a &ldquo;default&rdquo; value). If you are working with element that occurs multiple times (for example delete button on every list item) you can use a class selector to locate element for subscription as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span>(){
-    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;.button-delete&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:begin&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Begin&#34;</span>);
+</code></pre>
+<p>The id attributes are not required for this solution, you can locate interesting element in any way you want, but this is good practice to assign unique id to every form (if you don&rsquo;t do that BeginForm helper assigns a &ldquo;default&rdquo; value). If you are working with element that occurs multiple times (for example delete button on every list item) you can use a class selector to locate element for subscription as follows:</p>
+<pre><code class="language-js">$(function(){
+    $(&quot;.button-delete&quot;).on(&quot;ajax:begin&quot;, function (event, ajaxData) {
+        console.log(&quot;Begin&quot;);
     });
 });
-</code></pre></div><p>&hellip; or in more efficient way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span>(){
-    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#ProductList&#34;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#34;ajax:begin&#34;</span>, <span style="color:#e6db74">&#34;.button-delete&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">ajaxData</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Begin&#34;</span>);
+</code></pre>
+<p>&hellip; or in more efficient way:</p>
+<pre><code class="language-js">$(function(){
+    $(&quot;#ProductList&quot;).on(&quot;ajax:begin&quot;, &quot;.button-delete&quot;, function (event, ajaxData) {
+        console.log(&quot;Begin&quot;);
     });
 });
-</code></pre></div><p>Unfortunately, this solution has few drawbacks which can materialize in certain use cases. Namely, this fix is based on DOM events, so when the element with subscription is deleted in the meantime from the DOM, certain callbacks will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or its parent element) - the complete subscription will be ignored. Another disadvantage can be the necessity to wait with creating subscription until given element appears in the DOM (which could be an issue with dynamically loaded elements) but this is a more versatile problem related to DOM events and dynamic content.</p>
+</code></pre>
+<p>Unfortunately, this solution has few drawbacks which can materialize in certain use cases. Namely, this fix is based on DOM events, so when the element with subscription is deleted in the meantime from the DOM, certain callbacks will not be fired. For example you have two subscriptions - success and complete - attached to the form, and you remove or replace form element in the success callback (this can be also done by pointing data-ajax-update attribute to the same form or its parent element) - the complete subscription will be ignored. Another disadvantage can be the necessity to wait with creating subscription until given element appears in the DOM (which could be an issue with dynamically loaded elements) but this is a more versatile problem related to DOM events and dynamic content.</p>
 <p>Another possible solution that could address all formerly mentioned issues, as well as drawback of the previous solution, is to publish events through custom event aggregator instead of triggering it on DOM tree. You can declare this event aggregator globally or inject with some kind of DI container (I&rsquo;ll never understand why there is a need for DI container in a dynamic language like javascript). You can put the code responsible for triggering events in the same places as in the previous solution or organize it in separated unit without the need to modify jquery.unobtrusive-ajax.js thanks to <a href="https://api.jquery.com/category/ajax/global-ajax-event-handlers/">global ajax event handlers</a>. Unfortunately, this is not entirely true because in global handlers we have no information about the DOM element corelated with ajax events. We can smuggle the element responsible for context through the ajax options with a small modification to jquery.unobtrusive-ajax.js:</p>
 <p>
 <a href="context_element.jpg"><img  src="context_element.jpg" alt=""></a>
 </p>
 <p>Now we are able to utilize global ajax event handlers to publish our custom events:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">function</span> () {
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$document</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(document);
-    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxSend</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>) {
-        <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;send&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
+<pre><code class="language-javascript">$(function () {
+    var $document = $(document);
+    $document.ajaxSend(function (event, xhr, settings) {
+        AjaxEventAggregator.publish(&quot;send&quot;, settings.contextElement, arguments);
      });
 
-    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxComplete</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>) {
-       <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;complete&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
+    $document.ajaxComplete(function (event, xhr, settings) {
+       AjaxEventAggregator.publish(&quot;complete&quot;, settings.contextElement, arguments);
     });
     
-    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxError</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>, <span style="color:#a6e22e">error</span>) {
-        <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;error&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
+    $document.ajaxError(function (event, xhr, settings, error) {
+        AjaxEventAggregator.publish(&quot;error&quot;, settings.contextElement, arguments);
     });
 
-    <span style="color:#a6e22e">$document</span>.<span style="color:#a6e22e">ajaxSuccess</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span>, <span style="color:#a6e22e">xhr</span>, <span style="color:#a6e22e">settings</span>, <span style="color:#a6e22e">data</span>) {       
-        <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">publish</span>(<span style="color:#e6db74">&#34;success&#34;</span>, <span style="color:#a6e22e">settings</span>.<span style="color:#a6e22e">contextElement</span>, <span style="color:#a6e22e">arguments</span>);
+    $document.ajaxSuccess(function (event, xhr, settings, data) {       
+        AjaxEventAggregator.publish(&quot;success&quot;, settings.contextElement, arguments);
     });
 });
-</code></pre></div><p>Inside the AjaxEventAggregator implementation you should somehow determine channel name based on the parameter which receives the value of settings.contextElement (you can use the id or value of other custom attribute, for example data-ajax-channel) and publish the event only to subscriptions for given event on given channel.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">AjaxEventAggregator</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">AjaxEventAggregator</span> <span style="color:#f92672">||</span> {};
-<span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">extend</span>(<span style="color:#a6e22e">AjaxEventAggregator</span>, (<span style="color:#66d9ef">function</span> () {
-    <span style="color:#66d9ef">return</span> {       
-        <span style="color:#a6e22e">subscribe</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">ajaxEventName</span>, <span style="color:#a6e22e">channel</span>, <span style="color:#a6e22e">callback</span>) {
-            <span style="color:#75715e">//subscribe for given ajax event on channell
-</span><span style="color:#75715e"></span>        },       
-        <span style="color:#a6e22e">publish</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">ajaxEventName</span>, <span style="color:#a6e22e">$contextElement</span>, <span style="color:#a6e22e">args</span>) {
-            <span style="color:#75715e">//determine the channel name base on the $contextElement and publish given event on this channel
-</span><span style="color:#75715e"></span>        }
+</code></pre>
+<p>Inside the AjaxEventAggregator implementation you should somehow determine channel name based on the parameter which receives the value of settings.contextElement (you can use the id or value of other custom attribute, for example data-ajax-channel) and publish the event only to subscriptions for given event on given channel.</p>
+<pre><code class="language-javascript">var AjaxEventAggregator = AjaxEventAggregator || {};
+$.extend(AjaxEventAggregator, (function () {
+    return {       
+        subscribe: function (ajaxEventName, channel, callback) {
+            //subscribe for given ajax event on channell
+        },       
+        publish: function (ajaxEventName, $contextElement, args) {
+            //determine the channel name base on the $contextElement and publish given event on this channel
+        }
     }
 })());
-</code></pre></div><p>Now we can subscribe for the given ajax events in the following way (I&rsquo;m using form id for channel name)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">(<span style="color:#66d9ef">function</span>(){
-    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;send&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;send&#34;</span>);
+</code></pre>
+<p>Now we can subscribe for the given ajax events in the following way (I&rsquo;m using form id for channel name)</p>
+<pre><code class="language-javascript">(function(){
+    AjaxEventAggregator.subscribe(&quot;send&quot;, &quot;SampleForm&quot;, function (response) {
+        console.log(&quot;send&quot;);
     });
 
-    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;complete&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;complete&#34;</span>);
+    AjaxEventAggregator.subscribe(&quot;complete&quot;, &quot;SampleForm&quot;, function (response) {
+        console.log(&quot;complete&quot;);
     });
 
-    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;error&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;error&#34;</span>);
+    AjaxEventAggregator.subscribe(&quot;error&quot;, &quot;SampleForm&quot;, function (response) {
+        console.log(&quot;error&quot;);
     });
 
-    <span style="color:#a6e22e">AjaxEventAggregator</span>.<span style="color:#a6e22e">subscribe</span>(<span style="color:#e6db74">&#34;success&#34;</span>, <span style="color:#e6db74">&#34;SampleForm&#34;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">response</span>) {
-        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;success&#34;</span>);
+    AjaxEventAggregator.subscribe(&quot;success&quot;, &quot;SampleForm&quot;, function (response) {
+        console.log(&quot;success&quot;);
     });
 })();
-</code></pre></div><p>Here come some benefits from this approach:</p>
+</code></pre>
+<p>Here come some benefits from this approach:</p>
 <ol>
 <li>You don&rsquo;t need to mix your javascript code with html markup anymore.</li>
 <li>You can subscribe for ajax events in a very elegant way directly from javascript.</li>

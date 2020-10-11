@@ -192,30 +192,32 @@ For me, the static analysis plays a really important role in managing the projec
 <p>Another problem is that it is not possible to find out which field from DTO maps to which field in entity (or entities). When we use tools like &ldquo;show usages&rdquo; it shows us only this single occurrence because there is no explicit mapping in the codebase. The resolution is to explicitly write mapping configuration for all the fields we want to map, but do I really need a heavy reflection mechanism to rewrite value from field in one object to another?</p>
 <h2 id="hard-to-debug">Hard to debug<a href="#hard-to-debug" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The next important issue is fluent configuration. I&rsquo;m not a huge fan of this code writing approach, actually I don&rsquo;t like it at all. Why? It&rsquo;s very hard to debug this kind of code and sometimes it&rsquo;s even impossible. This is not a code which is evaluated, it&rsquo;s only a declarative description of expected behavior. Your &ldquo;code&rdquo; is processed by third party library which produces real code based on this description. Even if you provide mapping code within <strong>MapFrom&lt;&gt;</strong> method, you can&rsquo;t put there breakpoint and expect that program invocation stops when you call  <strong>Mapper.Map&lt;&gt;()</strong> method. This is due the fact that <strong>MapFrom&lt;&gt;()</strong> is expecting <strong>Expression&lt;Func&lt;TSource, TSourceMember&gt;&gt;</strong> not <strong>Func&lt;TSource, TSourceMember&gt;</strong>.  And if you have a bug in your mapping code you don&rsquo;t get exception in the place where you could potentially expect it. Actually you don&rsquo;t get any exception at all. I observed that AutoMapper is somehow swallowing exception that occurs during the mapping. These reasons makes debugging very hard.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Main(<span style="color:#66d9ef">string</span>[] args)
+<pre><code class="language-csharp">static void Main(string[] args)
 {
     Mapper.Initialize(cfg =&gt;
     {
         cfg.CreateMap&lt;UserEntity, UserDTO&gt;()
-           .ForMember(x=&gt;x.FullName, opt=&gt; opt.MapFrom(x=&gt; <span style="color:#e6db74">$&#34;{x.FirstName} {x.LastName} ({x.Address.City})&#34;</span>));
+           .ForMember(x=&gt;x.FullName, opt=&gt; opt.MapFrom(x=&gt; $&quot;{x.FirstName} {x.LastName} ({x.Address.City})&quot;));
     });
 
-    <span style="color:#66d9ef">var</span> userEntity = <span style="color:#66d9ef">new</span> UserEntity()
+    var userEntity = new UserEntity()
     {
-        FirstName = <span style="color:#e6db74">&#34;Cezary&#34;</span>,
-        LastName = <span style="color:#e6db74">&#34;Piątek&#34;</span>,
-        Address = <span style="color:#66d9ef">null</span>
+        FirstName = &quot;Cezary&quot;,
+        LastName = &quot;Piątek&quot;,
+        Address = null
     };
-    <span style="color:#66d9ef">var</span> userDto = Mapper.Map&lt;UserDTO&gt;(userEntity);
-    <span style="color:#66d9ef">var</span> serialized = JsonConvert.SerializeObject(userDto, Formatting.Indented);
+    var userDto = Mapper.Map&lt;UserDTO&gt;(userEntity);
+    var serialized = JsonConvert.SerializeObject(userDto, Formatting.Indented);
     Console.WriteLine(serialized);
     Console.ReadKey();
 }
-</code></pre></div><p>In the example above I&rsquo;ve been expecting <em>NullReferenceException</em> when I called <em>Mapper.Map<UserDTO>(userEntity)</em> (because x.Address in mapping code is null) but as the result I got the following output on my console:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-    <span style="color:#a6e22e">FullName</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span>
+</code></pre>
+<p>In the example above I&rsquo;ve been expecting <em>NullReferenceException</em> when I called <em>Mapper.Map<UserDTO>(userEntity)</em> (because x.Address in mapping code is null) but as the result I got the following output on my console:</p>
+<pre><code class="language-javascript">{
+    FullName : null
 }
-</code></pre></div><h2 id="broken-code-organization">Broken code organization<a href="#broken-code-organization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="broken-code-organization">Broken code organization<a href="#broken-code-organization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Some people say that AutoMapper is perfectly fine for simple projects, but believe me - there is no such thing as simple project. Even when it looks simple at the beginning - sooner or later it gets complex. Starting with straigth one-to-one mapping between entities and dtos (or whatever types of objects you need to map) doesn&rsquo;t mean that you won&rsquo;t need to implement the following requirements in further stages of your project development:</p>
 <ol>
 <li>Formatting</li>
@@ -226,33 +228,34 @@ For me, the static analysis plays a really important role in managing the projec
 <p>People tend to put this complex mapping logic inside the AutoMapper configuration because this is the fastest way to achieve expected effect. I think it&rsquo;s a really bad practice to put your business and security logic inside some infrastructure tool configuration. This is the beginning of slippery slope and in the long term it will make the development, testing and maintenance more complicated. You can say ok - if I&rsquo;ve got complex mapping then I write it explicitly. But then you have two ways of implementing one thing - AutoMapper and explicit mapping. And then the question appears: &ldquo;When should I use which?&rdquo;. And the answer is: &ldquo;it depends&hellip;&rdquo;. And you introduce chaos into your codebase.</p>
 <h2 id="how-to-organize-mappings">How to organize mappings<a href="#how-to-organize-mappings" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this &ldquo;dummy&rdquo; code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I&rsquo;ve mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo* and MapFrom* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context). Example service mapper can look like this below:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserServiceMapper</span>{
+<pre><code class="language-cs">public class UserServiceMapper{
 
-	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> AddressServiceMapper addressServiceMapper;
+	private readonly AddressServiceMapper addressServiceMapper;
 	
-	<span style="color:#66d9ef">public</span> UserServiceMapper(AddressServiceMapper addressServiceMapper)
+	public UserServiceMapper(AddressServiceMapper addressServiceMapper)
 	{
-		<span style="color:#66d9ef">this</span>.addressServiceMapper = addressServiceMapper;
+		this.addressServiceMapper = addressServiceMapper;
 	}
 	
-	<span style="color:#66d9ef">public</span> UserDTO MapToUserDTO(UserEntity entity)
+	public UserDTO MapToUserDTO(UserEntity entity)
 	{
-		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> UserDTO {
+		return new UserDTO {
 			FirstName = entity.FirstName,
 			LastName = entity.LastName,
-			Address = <span style="color:#66d9ef">this</span>.addressServiceMapper.MapToAddressDTO(entity.Address)
+			Address = this.addressServiceMapper.MapToAddressDTO(entity.Address)
 		};
 	}
 	
-	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> UpdateUserEntity(UserEntity entity, UserDTO dto)
+	public void UpdateUserEntity(UserEntity entity, UserDTO dto)
 	{
 		entity.FirstName = dto.FirstName;
 		entity.LastName = dto.LastName;
 		entity.Age = dto.Age;
-		<span style="color:#66d9ef">this</span>.addressServiceMapper.UpdateAddress(entity.Address, dto.Address);
+		this.addressServiceMapper.UpdateAddress(entity.Address, dto.Address);
 	}
 }
-</code></pre></div><h2 id="final-thought">Final thought<a href="#final-thought" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="final-thought">Final thought<a href="#final-thought" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>AutoMapper is probably good for really small, short-lived projects or proof of concepts, but when you start to care about your code quality, you should definitely rethink all pros and cons regarding using AutoMapper. When you observe problems like the ones described in this blog post, you should consider abandoning AutoMapper and start to write your mappings explicitly (it really doesn&rsquo;t hurt). If you encountered other problems which arised from using AutoMapper I would be really appreciate if you could share your experience in the comment section down below.</p>
     
 		

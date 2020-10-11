@@ -195,74 +195,77 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
 </p>
 <p><code>Generate Outputs</code> button allows us to preview the generated client source code. After achieving the desired output, we should save the current configuration as <code>nswag.json</code> file directly in <code>SampleService.ApiClient</code> project&rsquo;s directory - <code>NSwag</code> should automatically convert all paths (assembly and references) to the relative form.</p>
 <p>In addition to options selected on the screenshot I also use the following settings to customize client proxy code:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;codeGenerators&#34;</span>: {
-    <span style="color:#f92672">&#34;openApiToCSharpClient&#34;</span>: {      
-      <span style="color:#f92672">&#34;generateClientInterfaces&#34;</span>: <span style="color:#66d9ef">true</span>,
-      <span style="color:#f92672">&#34;useBaseUrl&#34;</span>: <span style="color:#66d9ef">false</span>,
-      <span style="color:#f92672">&#34;generateBaseUrlProperty&#34;</span>: <span style="color:#66d9ef">false</span>,
-      <span style="color:#f92672">&#34;generateOptionalParameters&#34;</span>: <span style="color:#66d9ef">true</span>,
-      <span style="color:#f92672">&#34;parameterArrayType&#34;</span>: <span style="color:#e6db74">&#34;System.Collections.Generic.IReadOnlyList&#34;</span>,
-      <span style="color:#f92672">&#34;responseArrayType&#34;</span>: <span style="color:#e6db74">&#34;System.Collections.Generic.IReadOnlyList&#34;</span>,      
-      <span style="color:#f92672">&#34;generateOptionalPropertiesAsNullable&#34;</span>: <span style="color:#66d9ef">true</span>,
-      <span style="color:#f92672">&#34;generateNullableReferenceTypes&#34;</span>: <span style="color:#66d9ef">true</span>,
-      <span style="color:#f92672">&#34;output&#34;</span>: <span style="color:#e6db74">&#34;$(Output)&#34;</span>,
+<pre><code class="language-json">{
+  &quot;codeGenerators&quot;: {
+    &quot;openApiToCSharpClient&quot;: {      
+      &quot;generateClientInterfaces&quot;: true,
+      &quot;useBaseUrl&quot;: false,
+      &quot;generateBaseUrlProperty&quot;: false,
+      &quot;generateOptionalParameters&quot;: true,
+      &quot;parameterArrayType&quot;: &quot;System.Collections.Generic.IReadOnlyList&quot;,
+      &quot;responseArrayType&quot;: &quot;System.Collections.Generic.IReadOnlyList&quot;,      
+      &quot;generateOptionalPropertiesAsNullable&quot;: true,
+      &quot;generateNullableReferenceTypes&quot;: true,
+      &quot;output&quot;: &quot;$(Output)&quot;,
     }
   }
 }
-</code></pre></div><h3 id="configure-build-of-apiclient-project">Configure build of ApiClient project<a href="#configure-build-of-apiclient-project" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+</code></pre>
+<h3 id="configure-build-of-apiclient-project">Configure build of ApiClient project<a href="#configure-build-of-apiclient-project" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>Having <code>nswag.json</code> manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with <a href="https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild">NSwag.MSBuild</a> package and a little bit of <code>MsBuild</code> scripting. Here&rsquo;s a content of <code>SampleService.ApiClient.csproj</code> file:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Project</span> <span style="color:#a6e22e">Sdk=</span><span style="color:#e6db74">&#34;Microsoft.NET.Sdk&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;PropertyGroup&gt;</span>
-    <span style="color:#f92672">&lt;TargetFramework&gt;</span>netcoreapp3.1<span style="color:#f92672">&lt;/TargetFramework&gt;</span>
-    <span style="color:#75715e">&lt;!--Automatically generate nuget package with client library--&gt;</span>
-    <span style="color:#f92672">&lt;GeneratePackageOnBuild&gt;</span>true<span style="color:#f92672">&lt;/GeneratePackageOnBuild&gt;</span>
-  <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
-  <span style="color:#f92672">&lt;ItemGroup&gt;</span>
-    <span style="color:#75715e">&lt;!--Add required nuget packages necessary for ApiClient build--&gt;</span>
-    <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;System.ComponentModel.Annotations&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;4.7.0&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;Newtonsoft.Json&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;12.0.3&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;NSwag.MSBuild&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;13.7.0&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;PrivateAssets&gt;</span>all<span style="color:#f92672">&lt;/PrivateAssets&gt;</span>
-      <span style="color:#f92672">&lt;IncludeAssets&gt;</span>runtime; build; native; contentfiles; analyzers; buildtransitive<span style="color:#f92672">&lt;/IncludeAssets&gt;</span>
-    <span style="color:#f92672">&lt;/PackageReference&gt;</span>
-  <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-  <span style="color:#f92672">&lt;ItemGroup&gt;</span>
-    <span style="color:#75715e">&lt;!--Add build time reference to SampleService project--&gt;</span>
-    <span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\SampleService\SampleService.csproj&#34;</span><span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;Private&gt;</span>False<span style="color:#f92672">&lt;/Private&gt;</span>
-      <span style="color:#f92672">&lt;ReferenceOutputAssembly&gt;</span>False<span style="color:#f92672">&lt;/ReferenceOutputAssembly&gt;</span>
-    <span style="color:#f92672">&lt;/ProjectReference&gt;</span>
-  <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-  <span style="color:#75715e">&lt;!--Add build step responsible for generating the source code of client api and including it to compilation--&gt;</span>
-  <span style="color:#f92672">&lt;Target</span> <span style="color:#a6e22e">Name=</span><span style="color:#e6db74">&#34;GenerateApiClientSourceCode&#34;</span> <span style="color:#a6e22e">BeforeTargets=</span><span style="color:#e6db74">&#34;CoreCompile;PrepareResource&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;Exec</span> <span style="color:#a6e22e">Command=</span><span style="color:#e6db74">&#34;$(NSwagExe_Core31) run nswag.json /variables:Configuration=$(Configuration),Output=$(IntermediateOutputPath)\ApiClient.generated.cs&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;ItemGroup&gt;</span>
-      <span style="color:#f92672">&lt;Compile</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;$(IntermediateOutputPath)\ApiClient.generated.cs&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-  <span style="color:#f92672">&lt;/Target&gt;</span>
-<span style="color:#f92672">&lt;/Project&gt;</span>
-</code></pre></div><p>In the <code>GenerateApiClientSourceCode</code> build target we are passing additional values with <code>/variables</code> parameter to NSwag CLI. Those values can be accessed in <code>nswag.json</code> manifest using <code>$()</code> notation, as shown on the following excerpt:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;runtime&#34;</span>: <span style="color:#e6db74">&#34;NetCore31&#34;</span>,
-  <span style="color:#f92672">&#34;defaultVariables&#34;</span>: <span style="color:#e6db74">&#34;Configuration=Debug,Output=./ApiClient.generated.cs&#34;</span>,
-  <span style="color:#f92672">&#34;documentGenerator&#34;</span>: {
-    <span style="color:#f92672">&#34;webApiToOpenApi&#34;</span>: {
-      <span style="color:#f92672">&#34;assemblyPaths&#34;</span>: [
-        <span style="color:#e6db74">&#34;../SampleService/bin/$(Configuration)/netcoreapp3.1/SampleService.dll&#34;</span>
+<pre><code class="language-xml">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;netcoreapp3.1&lt;/TargetFramework&gt;
+    &lt;!--Automatically generate nuget package with client library--&gt;
+    &lt;GeneratePackageOnBuild&gt;true&lt;/GeneratePackageOnBuild&gt;
+  &lt;/PropertyGroup&gt;
+  &lt;ItemGroup&gt;
+    &lt;!--Add required nuget packages necessary for ApiClient build--&gt;
+    &lt;PackageReference Include=&quot;System.ComponentModel.Annotations&quot; Version=&quot;4.7.0&quot; /&gt;
+    &lt;PackageReference Include=&quot;Newtonsoft.Json&quot; Version=&quot;12.0.3&quot; /&gt;
+    &lt;PackageReference Include=&quot;NSwag.MSBuild&quot; Version=&quot;13.7.0&quot;&gt;
+      &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
+      &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+    &lt;/PackageReference&gt;
+  &lt;/ItemGroup&gt;
+  &lt;ItemGroup&gt;
+    &lt;!--Add build time reference to SampleService project--&gt;
+    &lt;ProjectReference Include=&quot;..\SampleService\SampleService.csproj&quot;&gt;
+      &lt;Private&gt;False&lt;/Private&gt;
+      &lt;ReferenceOutputAssembly&gt;False&lt;/ReferenceOutputAssembly&gt;
+    &lt;/ProjectReference&gt;
+  &lt;/ItemGroup&gt;
+  &lt;!--Add build step responsible for generating the source code of client api and including it to compilation--&gt;
+  &lt;Target Name=&quot;GenerateApiClientSourceCode&quot; BeforeTargets=&quot;CoreCompile;PrepareResource&quot;&gt;
+    &lt;Exec Command=&quot;$(NSwagExe_Core31) run nswag.json /variables:Configuration=$(Configuration),Output=$(IntermediateOutputPath)\ApiClient.generated.cs&quot; /&gt;
+    &lt;ItemGroup&gt;
+      &lt;Compile Include=&quot;$(IntermediateOutputPath)\ApiClient.generated.cs&quot; /&gt;
+    &lt;/ItemGroup&gt;
+  &lt;/Target&gt;
+&lt;/Project&gt;
+</code></pre>
+<p>In the <code>GenerateApiClientSourceCode</code> build target we are passing additional values with <code>/variables</code> parameter to NSwag CLI. Those values can be accessed in <code>nswag.json</code> manifest using <code>$()</code> notation, as shown on the following excerpt:</p>
+<pre><code class="language-json">{
+  &quot;runtime&quot;: &quot;NetCore31&quot;,
+  &quot;defaultVariables&quot;: &quot;Configuration=Debug,Output=./ApiClient.generated.cs&quot;,
+  &quot;documentGenerator&quot;: {
+    &quot;webApiToOpenApi&quot;: {
+      &quot;assemblyPaths&quot;: [
+        &quot;../SampleService/bin/$(Configuration)/netcoreapp3.1/SampleService.dll&quot;
       ],
-      <span style="color:#f92672">&#34;referencePaths&#34;</span>: [
-        <span style="color:#e6db74">&#34;../SampleService/bin/$(Configuration)/netcoreapp3.1/&#34;</span>
+      &quot;referencePaths&quot;: [
+        &quot;../SampleService/bin/$(Configuration)/netcoreapp3.1/&quot;
       ],
     }
   },
-  <span style="color:#f92672">&#34;codeGenerators&#34;</span>: {
-    <span style="color:#f92672">&#34;openApiToCSharpClient&#34;</span>: {
-      <span style="color:#f92672">&#34;output&#34;</span>: <span style="color:#e6db74">&#34;$(Output)&#34;</span>
+  &quot;codeGenerators&quot;: {
+    &quot;openApiToCSharpClient&quot;: {
+      &quot;output&quot;: &quot;$(Output)&quot;
     }
   }
 }
-</code></pre></div><p>Defaults can be defined with <code>&quot;defaultVariables&quot;</code> - this is very useful if we are going to edit this file in <code>NSwag Studio</code> in the future.</p>
+</code></pre>
+<p>Defaults can be defined with <code>&quot;defaultVariables&quot;</code> - this is very useful if we are going to edit this file in <code>NSwag Studio</code> in the future.</p>
 <p>Since now, on every build, NSwag should generate automatically the source code of API client which is later compiled into <code>SampleService.ClientApi.dll</code> library and packed as a nuget.</p>
 <p>Here are the benefits of configuring automatic client generation in this way:</p>
 <ul>
@@ -272,15 +275,16 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
 </ul>
 <p>The last fact can be used for providing an implementation of partial methods defined in generated client class like: <code>UpdateJsonSerializerSettings</code>, <code>PrepareRequest</code>, and <code>ProcessResponse</code>.
 We can also extend generated client by inheritance or with extension methods:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">WeatherForecastClientExtensions</span>
+<pre><code class="language-cs">public static class WeatherForecastClientExtensions
 {
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForTodayAsync(<span style="color:#66d9ef">this</span> IWeatherForecastClient client, CancellationToken cancellationToken = <span style="color:#66d9ef">default</span>) 
-        =&gt; client.GetAsync(<span style="color:#ae81ff">1</span>, cancellationToken);
+    public static Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForTodayAsync(this IWeatherForecastClient client, CancellationToken cancellationToken = default) 
+        =&gt; client.GetAsync(1, cancellationToken);
     
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForNextWeekAsync(<span style="color:#66d9ef">this</span> IWeatherForecastClient client, CancellationToken cancellationToken = <span style="color:#66d9ef">default</span>) 
-        =&gt; client.GetAsync(<span style="color:#ae81ff">7</span>, cancellationToken);
+    public static Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForNextWeekAsync(this IWeatherForecastClient client, CancellationToken cancellationToken = default) 
+        =&gt; client.GetAsync(7, cancellationToken);
 }
-</code></pre></div><h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Thanks to <code>NSwag</code> tooling we can very easily configure automatic WebAPI client generation. A basic setup presented in this blog post is available as a <a href="https://github.com/cezarypiatek/SampleWebApiClientGeneration">Sample Project</a> on my Github.</p>
     
 		
@@ -293,6 +297,21 @@ We can also extend generated client by inheritance or with extension methods:</p
 	
 	<h3>See Also</h3>
 	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/async-analyzers-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
+								<div class="card-body">
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
 		
 			
 				
@@ -319,21 +338,6 @@ We can also extend generated client by inheritance or with extension methods:</p
 								<img class="card-img-top" src="../../post/methods-with-special-signature/splashscreen_huad0994e5edc03298d344367c5114e98c_58460_320x240_fill_q75_box_smart1.jpg" alt="The Magical Methods in C#">
 								<div class="card-body">
 									<h5 class="card-title">The Magical Methods in C#</h5>											  
-								</div>
-							</div></a>
-				</div>		
-			
-		
-			
-				
-				
-				
-				<div class="col-md-4 col-sm-12">
-						<a href="../../post/csharp-twin-types/" >
-						<div class="card">
-								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
-								<div class="card-body">
-									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
 								</div>
 							</div></a>
 				</div>		

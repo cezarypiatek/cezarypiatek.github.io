@@ -177,14 +177,15 @@
 <p><code>CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.</code></p>
 </blockquote>
 <p>Our code will compile but all the rules related to the non-nullable references will be ignored (our code will be interpreted as it was before C# 8). Because this feature is a breaking change in the language, it should be explicitly enabled. To test it in a single file, add <code>#nullable enable</code> directive. In order to enable it for the whole project, add <code>&lt;Nullable&gt;enable&lt;/Nullable&gt;</code> to your <code>csproj</code> definition.  If you are serious about using non-nullable references, I would recommend enabling it for the whole solution by adding <code>Directory.Build.props</code> file in the root directory of your source code with the following content:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Project&gt;</span>
- <span style="color:#f92672">&lt;PropertyGroup&gt;</span>
-    <span style="color:#f92672">&lt;Nullable&gt;</span>enable<span style="color:#f92672">&lt;/Nullable&gt;</span>
-    <span style="color:#f92672">&lt;RunAnalyzersDuringBuild&gt;</span>true<span style="color:#f92672">&lt;/RunAnalyzersDuringBuild&gt;</span>
-    <span style="color:#f92672">&lt;RunAnalyzersDuringLiveAnalysis&gt;</span>true<span style="color:#f92672">&lt;/RunAnalyzersDuringLiveAnalysis&gt;</span>
- <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
-<span style="color:#f92672">&lt;/Project&gt;</span>
-</code></pre></div><p>Since now all the references to the reference types are treated as <code>non-nullable</code> unless they are explicitly marked as nullable with <code>?</code> annotation. These new rules are verified by the Roslyn analyzers from <code>Microsoft.CodeAnalysis.CSharp</code> package (which is added implicitly to all C# projects). There are over 40 rules related to the <code>nullability</code> and the complete list is presented below:</p>
+<pre><code class="language-xml">&lt;Project&gt;
+ &lt;PropertyGroup&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+    &lt;RunAnalyzersDuringBuild&gt;true&lt;/RunAnalyzersDuringBuild&gt;
+    &lt;RunAnalyzersDuringLiveAnalysis&gt;true&lt;/RunAnalyzersDuringLiveAnalysis&gt;
+ &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+<p>Since now all the references to the reference types are treated as <code>non-nullable</code> unless they are explicitly marked as nullable with <code>?</code> annotation. These new rules are verified by the Roslyn analyzers from <code>Microsoft.CodeAnalysis.CSharp</code> package (which is added implicitly to all C# projects). There are over 40 rules related to the <code>nullability</code> and the complete list is presented below:</p>
 <table>
 <thead>
 <tr>
@@ -368,20 +369,22 @@
 <a href="2019-10-05-23-42-23.png"><img  src="2019-10-05-23-42-23.png" alt=""></a>
 </p>
 <p>In the next step, you have to reference this ruleset file in your <code>*.csproj</code> or <code>Directory.Build.props</code> file with the following entry:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"> <span style="color:#f92672">&lt;CodeAnalysisRuleSet&gt;</span>$(MSBuildThisFileDirectory)MyRules.ruleset<span style="color:#f92672">&lt;/CodeAnalysisRuleSet&gt;</span>
-</code></pre></div><p>Do not forget to add this file to your source control system in order to enforce all these rules across your teammates and CI.</p>
+<pre><code class="language-xml"> &lt;CodeAnalysisRuleSet&gt;$(MSBuildThisFileDirectory)MyRules.ruleset&lt;/CodeAnalysisRuleSet&gt;
+</code></pre>
+<p>Do not forget to add this file to your source control system in order to enforce all these rules across your teammates and CI.</p>
 <p>Now you can start configuring severity level for individual rules.  After double clicking on your ruleset file, Visual Studio should open it in <code>Ruleset editor</code>. As I&rsquo;ve mentioned before, entries related to <code>Nullable reference types</code> should be available under <code>Microsoft.CodeAnalysis.CSharp</code> branch. You can find them all by writing a <code>null</code> keyword in the search field.</p>
 <p>
 <a href="configure_ruleset.jpg"><img  src="configure_ruleset.jpg" alt="Ruleset editor"></a>
 </p>
 <p>If you are using <code>JetBrains Rider</code> you have to configure ruleset by manually editing xml inside <code>*.ruleset</code> file - there is no graphical editor for this. The file&rsquo;s format looks as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;RuleSet</span> <span style="color:#a6e22e">Name=</span><span style="color:#e6db74">&#34;New Rule Set&#34;</span> <span style="color:#a6e22e">Description=</span><span style="color:#e6db74">&#34; &#34;</span> <span style="color:#a6e22e">ToolsVersion=</span><span style="color:#e6db74">&#34;16.0&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;Rules</span> <span style="color:#a6e22e">AnalyzerId=</span><span style="color:#e6db74">&#34;Microsoft.CodeAnalysis.CSharp&#34;</span> <span style="color:#a6e22e">RuleNamespace=</span><span style="color:#e6db74">&#34;Microsoft.CodeAnalysis.CSharp&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;Rule</span> <span style="color:#a6e22e">Id=</span><span style="color:#e6db74">&#34;CS8618&#34;</span> <span style="color:#a6e22e">Action=</span><span style="color:#e6db74">&#34;Error&#34;</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/Rules&gt;</span>
-<span style="color:#f92672">&lt;/RuleSet&gt;</span>
-</code></pre></div><p>After increasing the severity level to <code>ERROR</code>, all the violations of a given rule will be reported in a more noticeable manner and will block the compilation.</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RuleSet Name=&quot;New Rule Set&quot; Description=&quot; &quot; ToolsVersion=&quot;16.0&quot;&gt;
+  &lt;Rules AnalyzerId=&quot;Microsoft.CodeAnalysis.CSharp&quot; RuleNamespace=&quot;Microsoft.CodeAnalysis.CSharp&quot;&gt;
+    &lt;Rule Id=&quot;CS8618&quot; Action=&quot;Error&quot; /&gt;
+  &lt;/Rules&gt;
+&lt;/RuleSet&gt;
+</code></pre>
+<p>After increasing the severity level to <code>ERROR</code>, all the violations of a given rule will be reported in a more noticeable manner and will block the compilation.</p>
 <p>
 <a href="cs8604_violation.jpg"><img  src="cs8604_violation.jpg" alt="cs8604 violation"></a>
 </p>
@@ -422,12 +425,13 @@
 <a href="missing_rules_resharper.jpg"><img  src="missing_rules_resharper.jpg" alt=""></a>
 </p>
 <p><strong>UPDATE 2019-10-08 (I):</strong> If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without <code>Null reference types</code>. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using <a href="https://www.nuget.org/packages/Synergy.Contracts/">Synergy.Contracts</a> package:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> DoSomething(UserEntity user)
+<pre><code class="language-csharp">public void DoSomething(UserEntity user)
 {
     Fail.IfNull(user, nameof(user))
 
 }
-</code></pre></div><p><strong>UPDATE 2019-10-08 (II):</strong> The return value of <code>ToString()</code> method was marked as nullable. This is quite surprising because according to <a href="https://docs.microsoft.com/en-US/dotnet/api/system.object.tostring?view=netframework-4.8#notes-to-inheritors">Notes to Inheritors</a> at MSDN nobody should return null from this method:</p>
+</code></pre>
+<p><strong>UPDATE 2019-10-08 (II):</strong> The return value of <code>ToString()</code> method was marked as nullable. This is quite surprising because according to <a href="https://docs.microsoft.com/en-US/dotnet/api/system.object.tostring?view=netframework-4.8#notes-to-inheritors">Notes to Inheritors</a> at MSDN nobody should return null from this method:</p>
 <blockquote>
 <p>&ldquo;Your ToString() override should not return Empty or a null string.&rdquo;</p>
 </blockquote>

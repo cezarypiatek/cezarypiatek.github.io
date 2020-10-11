@@ -177,19 +177,21 @@ In most scenarios references added with standard mechanism (Visual Studio or <co
 </p>
 <h2 id="the-default-setup">The default setup<a href="#the-default-setup" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>By default, references to other projects are added with the following entry in the <code>csproj</code> file:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ItemGroup&gt;</span>
-  <span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\ProjectB\ProjectB.csproj&#34;</span> <span style="color:#f92672">/&gt;</span>
-<span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-</code></pre></div><p>After we compile our solution, the <code>*.dll</code> and <code>*.pdb</code> files of the referenced projects are copied to the output directory - by default <code>bin\$(Configuration)\$(TargetFramework)</code>. The output location can be changed by defining <code>OutputPath</code> parameter or, if you only need to skip the <code>$(TargetFramework)</code> part, just set <code>AppendTargetFrameworkToOutputPath=false</code>.  We can see the output for the default settings on the following screenshot:</p>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;ProjectReference Include=&quot;..\ProjectB\ProjectB.csproj&quot; /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p>After we compile our solution, the <code>*.dll</code> and <code>*.pdb</code> files of the referenced projects are copied to the output directory - by default <code>bin\$(Configuration)\$(TargetFramework)</code>. The output location can be changed by defining <code>OutputPath</code> parameter or, if you only need to skip the <code>$(TargetFramework)</code> part, just set <code>AppendTargetFrameworkToOutputPath=false</code>.  We can see the output for the default settings on the following screenshot:</p>
 <p>
 <a href="default_output_content.jpg"><img  src="default_output_content.jpg" alt="default output"></a>
 </p>
 <p>As you probably notice, the library files from referenced NuGet packages are not copied to the output dir. If our project was a program (not a library) with the following configuration:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#f92672">&lt;PropertyGroup&gt;</span>
-    <span style="color:#f92672">&lt;OutputType&gt;</span>Exe<span style="color:#f92672">&lt;/OutputType&gt;</span>
-    <span style="color:#f92672">&lt;TargetFramework&gt;</span>netcoreapp3.0<span style="color:#f92672">&lt;/TargetFramework&gt;</span>
-  <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
-</code></pre></div><p>the output should contain libraries from the all NuGet packages (referenced directly and non-directly) as well:</p>
+<pre><code class="language-xml">  &lt;PropertyGroup&gt;
+    &lt;OutputType&gt;Exe&lt;/OutputType&gt;
+    &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;
+  &lt;/PropertyGroup&gt;
+</code></pre>
+<p>the output should contain libraries from the all NuGet packages (referenced directly and non-directly) as well:</p>
 <p>
 <a href="app_output.jpg"><img  src="app_output.jpg" alt="output of the application project"></a>
 </p>
@@ -203,67 +205,74 @@ In most scenarios references added with standard mechanism (Visual Studio or <co
 <a href="extra_targets.jpg"><img  src="extra_targets.jpg" alt="extra targets"></a>
 </p>
 <p>This tool is very helpful for investigating issues when you are experiencing unexpected behaviors during the build process. You can, of course, control what IS and what IS NOT consumed from the NuGet package with <code>IncludeAssets</code> and <code>ExcludeAssets</code> properties - please check <a href="https://docs.microsoft.com/en-US/nuget/consume-packages/package-references-in-project-files#controlling-dependency-assets">Controlling dependency assets</a> for more details. To prevent loading build scripts (<code>props</code> and <code>targets</code>) from the dependent packages just set <code>ExcludeAssets=build</code> on the <code>PackageReference</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ItemGroup&gt;</span>
-  <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;Microsoft.Build.Locator&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;1.2.6&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;ExcludeAssets&gt;</span>build<span style="color:#f92672">&lt;/ExcludeAssets&gt;</span>
-  <span style="color:#f92672">&lt;/PackageReference&gt;</span>
-<span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-</code></pre></div><p><strong>UPDATE 2019-11-07:</strong> You can globally block loading *.props and *.targets files from nuget packages by setting <code>ImportProjectExtensionProps=false</code>. You can read more about that <a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#msbuildprojectextensionspath">here</a></p>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;PackageReference Include=&quot;Microsoft.Build.Locator&quot; Version=&quot;1.2.6&quot;&gt;
+    &lt;ExcludeAssets&gt;build&lt;/ExcludeAssets&gt;
+  &lt;/PackageReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p><strong>UPDATE 2019-11-07:</strong> You can globally block loading *.props and *.targets files from nuget packages by setting <code>ImportProjectExtensionProps=false</code>. You can read more about that <a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#msbuildprojectextensionspath">here</a></p>
 <p>If we want to enforce copying NuGet dependencies to the output directory for the library projects, we can do that by setting <code>CopyLocalLockFileAssemblies=true</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Project</span> <span style="color:#a6e22e">Sdk=</span><span style="color:#e6db74">&#34;Microsoft.NET.Sdk&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;PropertyGroup&gt;</span>
-    <span style="color:#f92672">&lt;TargetFramework&gt;</span>netstandard2.0<span style="color:#f92672">&lt;/TargetFramework&gt;</span>
-    <span style="color:#f92672">&lt;CopyLocalLockFileAssemblies&gt;</span>true<span style="color:#f92672">&lt;/CopyLocalLockFileAssemblies&gt;</span>    
-  <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
-<span style="color:#f92672">&lt;/Project&gt;</span>
-</code></pre></div><p>After rebuild, the output directory should look as follows:</p>
+<pre><code class="language-xml">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt;
+    &lt;CopyLocalLockFileAssemblies&gt;true&lt;/CopyLocalLockFileAssemblies&gt;    
+  &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+<p>After rebuild, the output directory should look as follows:</p>
 <p>
 <a href="lib_with_enforced_dependencies.jpg"><img  src="lib_with_enforced_dependencies.jpg" alt="library with dependencies in output dir"></a>
 </p>
 <p>To our surprise, <code>msbuild</code> copied also a couple of <code>System.*.dll</code> files into the output. These libraries come (directly and indirectly) from <code>NETStandard.Library</code> and <code>Microsoft.NETCore.App</code> (depends on the selected <code>TargetFramework</code>) packages which are referenced implicitly.</p>
 <p>If you want to copy all framework and runtime dependencies as well, you have to set <code>SelfContained</code> and <code>RuntimeIdentifier</code> properties:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;PropertyGroup&gt;</span>    
-    <span style="color:#f92672">&lt;OutputType&gt;</span>Exe<span style="color:#f92672">&lt;/OutputType&gt;</span>
-    <span style="color:#f92672">&lt;SelfContained&gt;</span>true<span style="color:#f92672">&lt;/SelfContained&gt;</span>
-    <span style="color:#f92672">&lt;RuntimeIdentifier&gt;</span>win-x64<span style="color:#f92672">&lt;/RuntimeIdentifier&gt;</span>
-    <span style="color:#f92672">&lt;TargetFramework&gt;</span>netcoreapp3.0<span style="color:#f92672">&lt;/TargetFramework&gt;</span>    
-  <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
-</code></pre></div><p>You can read more about <code>Self-contained deployments (SCD)</code> in the <a href="https://docs.microsoft.com/en-us/dotnet/core/deploying/index">.NET Core application deployment</a> article.</p>
+<pre><code class="language-xml">&lt;PropertyGroup&gt;    
+    &lt;OutputType&gt;Exe&lt;/OutputType&gt;
+    &lt;SelfContained&gt;true&lt;/SelfContained&gt;
+    &lt;RuntimeIdentifier&gt;win-x64&lt;/RuntimeIdentifier&gt;
+    &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;    
+  &lt;/PropertyGroup&gt;
+</code></pre>
+<p>You can read more about <code>Self-contained deployments (SCD)</code> in the <a href="https://docs.microsoft.com/en-us/dotnet/core/deploying/index">.NET Core application deployment</a> article.</p>
 <h2 id="putting-the-output-dir-on-the-diet">Putting the output dir on the diet<a href="#putting-the-output-dir-on-the-diet" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>As you saw in the paragraph about the default setup, the <code>*.dll</code> files of the referenced projects are copied to the output dir. This default behavior can be changed by setting <code>Private=False</code> property on the <code>ProjectReference</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ItemGroup&gt;</span>
-  <span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\ProjectB\ProjectB.csproj&#34;</span> <span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;Private&gt;</span>False<span style="color:#f92672">&lt;/Private&gt;</span>
-  <span style="color:#f92672">&lt;/ProjectReference&gt;</span>
-<span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-</code></pre></div><p><code>Private</code> metadata is responsible for controlling well known <code>Copy Local</code> property for the dependent project assembly file. Here&rsquo;s an excerpt of comment from <a href="https://referencesource.microsoft.com/#MSBuildFiles/C/ProgramFiles(x86)/MSBuild/14.0/bin_/amd64/Microsoft.Common.CurrentVersion.targets,1742">Microsoft.Common.CurrentVersion.targets</a> definition:</p>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;ProjectReference Include=&quot;..\ProjectB\ProjectB.csproj&quot; &gt;
+      &lt;Private&gt;False&lt;/Private&gt;
+  &lt;/ProjectReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p><code>Private</code> metadata is responsible for controlling well known <code>Copy Local</code> property for the dependent project assembly file. Here&rsquo;s an excerpt of comment from <a href="https://referencesource.microsoft.com/#MSBuildFiles/C/ProgramFiles(x86)/MSBuild/14.0/bin_/amd64/Microsoft.Common.CurrentVersion.targets,1742">Microsoft.Common.CurrentVersion.targets</a> definition:</p>
 <pre><code>The 'Private' attribute on the reference corresponds to the Copy Local flag in IDE.
 The 'Private' flag can have three possible values:
     - 'True' means the reference should be Copied Local
     - 'False' means the reference should not be Copied Local
     - [Missing] means this task will decide whether to treat this reference as CopyLocal or not.
-</code></pre><p>This option can be used to optimize build performance. Switching it to <code>False</code> should reduce the amount of <code>IO</code> during the build. If we would like to apply this behavior to all library projects in the solution, it can be achieved by adding the following code into <code>Directory.Build.targets</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Target</span> <span style="color:#a6e22e">Name=</span><span style="color:#e6db74">&#34;SetAllProjectReferenceAsPublic&#34;</span>
-        <span style="color:#a6e22e">AfterTargets=</span><span style="color:#e6db74">&#34;AssignProjectConfiguration&#34;</span> 
-        <span style="color:#a6e22e">BeforeTargets=</span><span style="color:#e6db74">&#34;ResolveProjectReferences&#34;</span> 
-        <span style="color:#a6e22e">Condition=</span><span style="color:#e6db74">&#34;&#39;$(OutputType)&#39; == &#39;Library&#39; and &#39;$(CopyLocalLockFileAssemblies)&#39; != &#39;true&#39; and $(AssemblyName.EndsWith(&#39;Tests&#39;)) == &#39;false&#39; &#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;ItemGroup&gt;</span>
-    <span style="color:#f92672">&lt;ProjectReferenceWithConfiguration</span> <span style="color:#a6e22e">Update=</span><span style="color:#e6db74">&#34;@(ProjectReferenceWithConfiguration)&#34;</span> <span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;Private&gt;</span>false<span style="color:#f92672">&lt;/Private&gt;</span>
-    <span style="color:#f92672">&lt;/ProjectReferenceWithConfiguration&gt;</span>
-    <span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Update=</span><span style="color:#e6db74">&#34;@(ProjectReference)&#34;</span> <span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;Private&gt;</span>false<span style="color:#f92672">&lt;/Private&gt;</span>
-    <span style="color:#f92672">&lt;/ProjectReference&gt;</span>
-  <span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-<span style="color:#f92672">&lt;/Target&gt;</span>
-</code></pre></div><p>This custom target has to be run after <code>AssignProjectConfiguration</code> because before that the <code>ProjectReference</code> item group contains only direct project references - updating <code>ProjectReference</code> earlier will result with some dependencies still being copied to the output. Besides the <code>ProjectReference</code> group, it also updates <code>ProjectReferenceWithConfiguration</code>, because this one is used later by <code>GetCopyToOutputDirectoryItems</code> to determine which files should be copied to the output directory (actually this collection goes through the following conversions <code>ProjectReferenceWithConfiguration -&gt; _MSBuildProjectReference -&gt; _MSBuildProjectReferenceExistent</code> in the meantime). For our purpose, updating <code>ProjectReferenceWithConfiguration</code> should be enough but I wanted to preserve the consistency. It took me two evenings to come up with this working solution ;) If you are going to use it, please pay attention to the <code>Condition</code> attribute - maybe this should be adjusted to your needs.</p>
+</code></pre>
+<p>This option can be used to optimize build performance. Switching it to <code>False</code> should reduce the amount of <code>IO</code> during the build. If we would like to apply this behavior to all library projects in the solution, it can be achieved by adding the following code into <code>Directory.Build.targets</code>:</p>
+<pre><code class="language-xml">&lt;Target Name=&quot;SetAllProjectReferenceAsPublic&quot;
+        AfterTargets=&quot;AssignProjectConfiguration&quot; 
+        BeforeTargets=&quot;ResolveProjectReferences&quot; 
+        Condition=&quot;'$(OutputType)' == 'Library' and '$(CopyLocalLockFileAssemblies)' != 'true' and $(AssemblyName.EndsWith('Tests')) == 'false' &quot;&gt;
+  &lt;ItemGroup&gt;
+    &lt;ProjectReferenceWithConfiguration Update=&quot;@(ProjectReferenceWithConfiguration)&quot; &gt;
+      &lt;Private&gt;false&lt;/Private&gt;
+    &lt;/ProjectReferenceWithConfiguration&gt;
+    &lt;ProjectReference Update=&quot;@(ProjectReference)&quot; &gt;
+      &lt;Private&gt;false&lt;/Private&gt;
+    &lt;/ProjectReference&gt;
+  &lt;/ItemGroup&gt;
+&lt;/Target&gt;
+</code></pre>
+<p>This custom target has to be run after <code>AssignProjectConfiguration</code> because before that the <code>ProjectReference</code> item group contains only direct project references - updating <code>ProjectReference</code> earlier will result with some dependencies still being copied to the output. Besides the <code>ProjectReference</code> group, it also updates <code>ProjectReferenceWithConfiguration</code>, because this one is used later by <code>GetCopyToOutputDirectoryItems</code> to determine which files should be copied to the output directory (actually this collection goes through the following conversions <code>ProjectReferenceWithConfiguration -&gt; _MSBuildProjectReference -&gt; _MSBuildProjectReferenceExistent</code> in the meantime). For our purpose, updating <code>ProjectReferenceWithConfiguration</code> should be enough but I wanted to preserve the consistency. It took me two evenings to come up with this working solution ;) If you are going to use it, please pay attention to the <code>Condition</code> attribute - maybe this should be adjusted to your needs.</p>
 <p>Although the library B is not copied to the output, it&rsquo;s still a dependency for library A. If it is, for example, a design-time dependency and we what to get rid of it from runtime dependencies, we can achieve it by setting <code>ReferenceOutputAssembly</code> property to <code>false</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ItemGroup&gt;</span>
-  <span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\ProjectB\ProjectA.csproj&#34;</span> <span style="color:#f92672">&gt;</span>
-      <span style="color:#f92672">&lt;ReferenceOutputAssembly&gt;</span>false<span style="color:#f92672">&lt;/ReferenceOutputAssembly&gt;</span>
-  <span style="color:#f92672">&lt;/ProjectReference&gt;</span>
-<span style="color:#f92672">&lt;/ItemGroup&gt;</span>
-</code></pre></div><h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;ProjectReference Include=&quot;..\ProjectB\ProjectA.csproj&quot; &gt;
+      &lt;ReferenceOutputAssembly&gt;false&lt;/ReferenceOutputAssembly&gt;
+  &lt;/ProjectReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>As you saw, there are multiple mechanisms that allow controlling what is in the output directory. It&rsquo;s good to be aware of their existence to avoid surprises and losing hours for fighting with something that appears in our output dir in spite of our expectations.</p>
     
 		
@@ -312,11 +321,11 @@ The 'Private' flag can have three possible values:
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/auto-generated-web-api-client/" >
+						<a href="../../post/async-analyzers-p1/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/auto-generated-web-api-client/splashscreen_hua05f900ef5215c00a4b82e282bbff4e6_76712_320x240_fill_q75_box_smart1.jpg" alt="Auto generated WebAPI client library with NSwag">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
 								<div class="card-body">
-									<h5 class="card-title">Auto generated WebAPI client library with NSwag</h5>											  
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
 								</div>
 							</div></a>
 				</div>		

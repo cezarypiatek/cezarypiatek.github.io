@@ -177,32 +177,36 @@
 <ul>
 <li>
 <p>Pure mapping method - non-void method that takes single parameter</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> UserDTO Map(UserEntity entity)
+<pre><code class="language-csharp">public UserDTO Map(UserEntity entity)
 {
-    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NotImplementedException();
+    throw new NotImplementedException();
 }
-</code></pre></div></li>
+</code></pre>
+</li>
 <li>
 <p>Updating method - void method that takes two parameters</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Update(UserDTO source, UserEntity target)
+<pre><code class="language-csharp">public void Update(UserDTO source, UserEntity target)
 {
-    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NotImplementedException();
+    throw new NotImplementedException();
 }
-</code></pre></div></li>
+</code></pre>
+</li>
 <li>
 <p>Mapping Constructor - constructor that takes single parameter</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> UserDTO(UserEntity user)
+<pre><code class="language-csharp">public UserDTO(UserEntity user)
 {
       
 }
-</code></pre></div></li>
+</code></pre>
+</li>
 <li>
 <p>Updating member method - void member method that takes single parameter</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> UpdateWith(UserEntity en)
+<pre><code class="language-csharp">public void UpdateWith(UserEntity en)
 {
-    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> NotImplementedException();
+    throw new NotImplementedException();
 }
-</code></pre></div></li>
+</code></pre>
+</li>
 </ul>
 <p>Thanks to the abilities Roslyn gives, I could quite easily create code fix provider that generates implementation for the types of mapping methods mentioned above. A sample code generation in action looks as follows:</p>
 <p>

@@ -175,8 +175,9 @@
 <h3 id="powershell-and-windows-explorer">PowerShell and Windows Explorer<a href="#powershell-and-windows-explorer" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>The first tip is about switching between PowerShell console and Windows Explorer back and forth while keeping working directory context. This is the most trivial but at the same time very useful operation.
 In order to open Windows Explorer with current directory simply type:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">&gt; explorer .
-</code></pre></div><p>&hellip; and to open PowerShell console with working directory set to currently opened folder within the Windows Explorer type <strong>powershell</strong> command in address bar.</p>
+<pre><code class="language-powershell">&gt; explorer .
+</code></pre>
+<p>&hellip; and to open PowerShell console with working directory set to currently opened folder within the Windows Explorer type <strong>powershell</strong> command in address bar.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/cDhM1wreRtw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
@@ -197,8 +198,9 @@ In order to open Windows Explorer with current directory simply type:</p>
 <a href="vscode_pluggin.jpg"><img  src="vscode_pluggin.jpg" alt="Visual Studio Code plugin for PowerShell"></a>
 </p>
 <p>When VSCode is your PowerShell editor of choice too, you can also easily switch from console to this environment. Just execute <strong>code</strong> command with file path as a parameter to open given script with VSCode or replace the file path parameter with &ldquo;.&rdquo; (dot sign) to load current directory as a workspace inside VSCode.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">&gt; code .
-</code></pre></div><h3 id="filtering-result-list-with-out-gridview">Filtering result list with Out-GridView<a href="#filtering-result-list-with-out-gridview" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<pre><code class="language-powershell">&gt; code .
+</code></pre>
+<h3 id="filtering-result-list-with-out-gridview">Filtering result list with Out-GridView<a href="#filtering-result-list-with-out-gridview" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>When your command or script returns a long list it can be hard to spot interesting positions by scrolling through the console. You can make it a lot easier by redirecting the result to <strong>Out-GridView</strong> cmdlet (use <strong>ogv</strong> alias for shorten). The Out-GridView outputter presents data using grid control and allows to sort and filter results by defining complex criteria based on data attributes.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/bNyBg_wEnxY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -206,8 +208,9 @@ In order to open Windows Explorer with current directory simply type:</p>
 <p>You can also use Out-GridView to select elements by providing  <strong>OutputMode</strong> parameter</p>
 <h3 id="exploring-powershell-cmdlets">Exploring PowerShell CmdLets<a href="#exploring-powershell-cmdlets" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>Sometimes it&rsquo;s hard to remember all method parameters (especially when we use them very rarely). You can check the list of available parameters by displaying method documentation inside the console with <strong>Get-Help</strong> command or utilizing dedicated form which could be created with <strong>Show-Command</strong> cmdlet.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">&gt; Show-Command Invoke-WebRequest 
-</code></pre></div><p>If you don&rsquo;t remember the exact name of the method you can skip it and <strong>Show-Command</strong> cmdlet opens a window which allows you to search command by name. When you select a specific command all available parameter sets will be presented as tabs. You can select a given parameter set, provide values for parameters with dedicated form and click <em>Run</em> button to execute method. You can always get the method manual by clicking <em>help</em> button.</p>
+<pre><code class="language-powershell">&gt; Show-Command Invoke-WebRequest 
+</code></pre>
+<p>If you don&rsquo;t remember the exact name of the method you can skip it and <strong>Show-Command</strong> cmdlet opens a window which allows you to search command by name. When you select a specific command all available parameter sets will be presented as tabs. You can select a given parameter set, provide values for parameters with dedicated form and click <em>Run</em> button to execute method. You can always get the method manual by clicking <em>help</em> button.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/mZEY1W9-pR8?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>

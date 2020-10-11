@@ -193,43 +193,46 @@
 <li>Install <code>MappingGenerator.OnBuildGenerator</code> nuget package</li>
 <li>Add the following snippet into your codebase:</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">using</span> System;
-<span style="color:#66d9ef">using</span> System.Diagnostics;
+<pre><code class="language-csharp">using System;
+using System.Diagnostics;
 
-<span style="color:#66d9ef">namespace</span> MappingGenerator.OnBuildGenerator
+namespace MappingGenerator.OnBuildGenerator
 {
-<span style="color:#a6e22e">    [AttributeUsage(AttributeTargets.Interface)]</span>
-<span style="color:#a6e22e">    [Conditional(&#34;CodeGeneration&#34;)]</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MappingInterface</span> : Attribute
+    [AttributeUsage(AttributeTargets.Interface)]
+    [Conditional(&quot;CodeGeneration&quot;)]
+    public class MappingInterface : Attribute
     {
     }
 }
-</code></pre></div><p>Since now, for every interface marked with <code>[MappingInterface]</code>, <code>MappingGenerator.OnBuildGenerator</code> will generate an implementation during the build. Sample usage can look as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">namespace</span> TestGenerator
+</code></pre>
+<p>Since now, for every interface marked with <code>[MappingInterface]</code>, <code>MappingGenerator.OnBuildGenerator</code> will generate an implementation during the build. Sample usage can look as follows:</p>
+<pre><code class="language-csharp">namespace TestGenerator
 {
-<span style="color:#a6e22e">    [MappingInterface]</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> IUserMapper
+    [MappingInterface]
+    public interface IUserMapper
     {
         UserDTO Map(UserEntity entity);
         UserEntity Map(UserDTO dto);
     }
 }
 
-</code></pre></div><p>After rebuilding the project, you should be able to use in the codebase <code>UserMapper</code> class which implements <code>IUserMapper</code> interface (sometimes there is a need for solution reload to make the intellisense and syntax highlighting work correctly). You should be able to easily navigate to the source code of the generated class which should be located under <code>IntermediateOutputPath</code> (by default the <code>obj</code> directory). You can watch <code>MappingGenerator.OnBuildGenerator</code> in action on the following video:</p>
+</code></pre>
+<p>After rebuilding the project, you should be able to use in the codebase <code>UserMapper</code> class which implements <code>IUserMapper</code> interface (sometimes there is a need for solution reload to make the intellisense and syntax highlighting work correctly). You should be able to easily navigate to the source code of the generated class which should be located under <code>IntermediateOutputPath</code> (by default the <code>obj</code> directory). You can watch <code>MappingGenerator.OnBuildGenerator</code> in action on the following video:</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/43tRxSEa11Y?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 <p>All the generated methods are virtual, so if you need to make some adjustments to the mapping logic, you can achieve it by inheriting from the generated class and overriding given method by adding extra mapping logic:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomUserMapper</span>: UserMapper
+<pre><code class="language-csharp">public class CustomUserMapper: UserMapper
 {
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">override</span> UserDTO MapFrom(UserEntity user)
+    public override UserDTO MapFrom(UserEntity user)
     {
-        <span style="color:#66d9ef">var</span> dto = <span style="color:#66d9ef">base</span>.MapFrom(user);
-        <span style="color:#75715e">//TODO: Make some adjustment to dto here
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> dto;
+        var dto = base.MapFrom(user);
+        //TODO: Make some adjustment to dto here
+        return dto;
     }
 }
-</code></pre></div>    
+</code></pre>
+    
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	
