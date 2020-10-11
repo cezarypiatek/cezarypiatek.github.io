@@ -1,17 +1,17 @@
 ---
 title: "Async code smells and how to track them down with analyzers - Part I"
 description: "Which analyzer package should I use and how to configure it to avoid most common problems related to async/await."
-date: 2020-10-10T00:11:45+02:00
+date: 2020-10-11T00:11:45+02:00
 tags : ["async", "C#", "roslyn", "analyzers"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-Roslyn analyzers are great because they do not only detect different issues in our code but they are able also to propose solutions thanks to accompanying code fixes. There's also one less-advertised aspect of analyzers - besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. **This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time**. There are many existing analyzer packages provided by the community (mostly free and open-sources) with hundreds of different rules. This abundance raises the following question: **Which analyzer packages should I use and which rules should be reported as errors?**. To help answer that question I decided to start a blog post series that describes a different code smells together with analyzers that can detect them. I will start with analyzers related to asynchronous programming. However, this area is full of traps so this article is the first of two episodes devoted to async/await.
+Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There's one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. **This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time**. There are many existing analyzer packages provided by the community (mostly free and open-source) with hundreds of different rules. This abundance raises the following question: **Which analyzer packages should I use and which rules should be reported as errors?** To help answer this question, I decided to start a blog post series that describes different code smells together with analyzers that can detect them. I will start with analyzers related to asynchronous programming. However, this area is full of traps, so this article is the first of two episodes devoted to async/await.
 
 ## Analyzers for asynchronous programming
-If you are looking for the analyzer that can help to you detect different issues with asynchronous code you can find them in the following packages:
+If you are looking for analyzers that can help you detect different issues with asynchronous code, you can find them in the following packages:
 
 - [Microsoft.CodeAnalysis.FxCopAnalyzers](https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/)
 - [Microsoft.VisualStudio.Threading.Analyzers](https://www.nuget.org/packages/Microsoft.VisualStudio.Threading.Analyzers/)
@@ -21,7 +21,7 @@ If you are looking for the analyzer that can help to you detect different issues
 - [Roslynator](https://www.nuget.org/packages/Roslynator.Analyzers/)
 - [Asyncify](https://www.nuget.org/packages/Asyncify/)
 
-Most of those packages are not strictly devoted to asynchronous programming, so I made an exercise by going through the complete list of offered rules and listed only those related to async code int the following sections:
+Most of those packages are not exclusively devoted to asynchronous programming, so I made an exercise by going through the complete list of offered rules and listed only those related to async code in the following sections:
 
 {{< tabs tabTotal="7" tabID="1" tabName1="FxCopAnalyzers" tabName2="VS-Threading" tabName3="AsyncFixer"  tabName4="Roslyn.Analyzers" tabName5="Meziantou.Analyzer" tabName6="Roslynator" tabName7="Asyncify">}}
 {{< tab tabNum="1" >}}
@@ -181,7 +181,7 @@ Here's my list of the first seven most common issues related to asynchronous pro
 
 ### 1. Redundant async/await
 
-Using the `async/await` keywords results in implicit memory allocation required for the state machine responsible for orchestrating asynchronous invocations. When the awaited expression is the only one or the last statement in the function it might be skipped. However, there's a couple of concerns around this code optimization of which you should be aware of. Before you start applying it I highly recommend reading an excellent blog post about it from Stephen Cleary [Eliding Async and Await](https://blog.stephencleary.com/2016/12/eliding-async-await.html)
+Using the `async/await` keywords results in implicit memory allocation required for the state machine responsible for orchestrating asynchronous invocations. When the awaited expression is the only one or the last statement in the function, it might be skipped. However, there's a couple of concerns around this code optimization of which you should be aware. Before you start applying it, I highly recommend reading an excellent blog post about it from Stephen Cleary [Eliding Async and Await](https://blog.stephencleary.com/2016/12/eliding-async-await.html).
 
 ❌ Wrong
 ```cs
@@ -212,7 +212,7 @@ dotnet_diagnostic.RCS1174.severity = error
 
 ### 2. Calling synchronous method inside the async method 
 
-If we are writing asynchronous code then we should always prefer calling asynchronous methods if they exist. Many IO related APIs offer asynchronous counterparts of their well know synchronous methods. They should be our first choice.
+If we are writing asynchronous code then we should always prefer calling asynchronous methods if they exist. Many IO related APIs offer asynchronous counterparts of their well known synchronous methods. They should be our first choice.
 
 ❌ Wrong
 ```cs
@@ -246,9 +246,9 @@ dotnet_diagnostic.VSTHRD103.severity = error
 
 There are two reasons why Async Void methods are harmful: 
 - A caller of the method is not able to await asynchronous operation.
-- There's no way to handle exception throw by the method. **If the exception occurs your process crash!!!**.
+- There's no way to handle exception thrown by the method. **If the exception occurs, your process crashes!!!**
 
-You should always use `async Task` instead of `async void` unless it's an event handler, but then you should guarantee yourself that the method can't throw an exception.
+You should always use `async Task` instead of `async void`, unless it's an event handler, but then you should guarantee yourself that the method can't throw an exception.
 
 
 ❌ Wrong
@@ -281,7 +281,7 @@ dotnet_diagnostic.ASYNC0003.severity = error
 
 ### 4. Unsupported async delegates
 
-If we pass the asynchronous lambda function the `Action` argument, the compiler generates `async void` method which downsides were described in the previous code smell. There are two solutions for this problem: if it's possible then we should change the parameter type from `Action` to `Func<Task>` otherwise we need to implement that callback delegate synchronously. It's worth mentioning that some APIs already provide counterparts of their methods that accept `Func<Task>` for the callback parameters.
+If we pass the asynchronous lambda function the `Action` argument, the compiler generates `async void` method which downsides were described in the previous code smell. There are two solutions for this problem: if it's possible, we should change the parameter type from `Action` to `Func<Task>`, otherwise we need to implement that callback delegate synchronously. It's worth mentioning that some APIs already provide counterparts of their methods that accept `Func<Task>` for the callback parameters.
 
 ❌ Wrong
 ```cs
@@ -350,7 +350,7 @@ dotnet_diagnostic.VSTHRD107.severity = error
 
 ### 6. Not awaited Task inside the using block
 
-If we skip the `await` keyword for asynchronous operation inside the `using` block then the disposable object could be disposed before the asynchronous invocation finish. This might result in incorrect behavior and very often ends with a runtime exception notifying that we are trying to operate on the object that is already disposed. This issue has two root causes: either is done by accident when somebody simply forgot about adding `async/await` keywords or it's a result of incorrectly applied code optimization described in `Redundant async/await` code smell. 
+If we skip the `await` keyword for asynchronous operation inside the `using` block, then the disposable object could be disposed before the asynchronous invocation finishes. This might result in incorrect behavior and very often ends with a runtime exception notifying that we are trying to operate on the object that is already disposed. This issue has two root causes: either it's done by accident when somebody simply forgot about adding `async/await` keywords or it's a result of incorrectly applied code optimization described in `Redundant async/await` code smell. 
 
 ❌ Wrong
 
@@ -394,11 +394,11 @@ private Task<int> DoSomething(CancellationToken cancellationToken)
     return service.GetAsync(cancellationToken); // THIS SHOULD BE REPORTED!!!
 }
 ```
-In `Roslynator` this problem has been recently fixed [issues/726](https://github.com/JosefPihrt/Roslynator/issues/726) (it's not released yet at the moment of publishing this article)
+In `Roslynator` this problem has been recently fixed [issues/726](https://github.com/JosefPihrt/Roslynator/issues/726) (it's not released yet at the moment of publishing this article).
 
 ### 7. Unobserved result of asynchronous method
 
-Missing `await` keyword before asynchronous operation will result in function completing before a given async operation finish. The function will behave non-deterministically and the outcome will be different from the expectations. What is worst, if the un-awaited expression throws an exception it goes unnoticed and it doesn't cause the process crash which makes it eve more harder to spot. You should always await asynchronous expression or assign a returned task to a variable and ensure that finally something awaits it.
+Missing `await` keyword before asynchronous operation will result in method completing before given async operation finishes. The method will behave non-deterministically and the outcome will be different from the expectations. What is worse, if the un-awaited expression throws an exception, it goes unnoticed and it doesn't cause the process to crash, which makes it even harder to spot. You should always await asynchronous expression or assign a returned task to a variable and ensure that finally something awaits it.
 
 ❌ Wrong
 
@@ -431,7 +431,7 @@ dotnet_diagnostic.VSTHRD110.severity = error
 dotnet_diagnostic.CS4014.severity = error
 ```
 
-There's also a standard compiler warning `CS4014` for tat issue but it's only able to report un-awaited expressions inside the `async` methods.
+There's also a standard compiler warning `CS4014` for that issue but it's only able to report un-awaited expressions inside the `async` methods.
 
 
 ## Summary
