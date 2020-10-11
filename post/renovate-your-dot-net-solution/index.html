@@ -175,20 +175,24 @@
 <h3 id="project-references">Project references<a href="#project-references" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>The new project format also changed the way how the information about dependencies is stored. First of all, the <code>ProjectReference</code> node has been simplified and we only need a <code>csproj</code> path to reference other project.</p>
 <p><strong>Old project reference style:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\..\Domain.Invoice\Domain.Invoice.csproj&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;Project&gt;</span>{f7cc9baa-c366-4652-b1e6-a96a82bceb1f}<span style="color:#f92672">&lt;/Project&gt;</span>
-    <span style="color:#f92672">&lt;Name&gt;</span>Domain.Invoice<span style="color:#f92672">&lt;/Name&gt;</span>
-<span style="color:#f92672">&lt;/ProjectReference&gt;</span>
-</code></pre></div><p><strong>New project reference style:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ProjectReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;..\..\Domain.Invoice\Domain.Invoice.csproj&#34;</span> <span style="color:#f92672">/&gt;</span>
-</code></pre></div><p>The way of referencing NuGet packages has also been changed. As I&rsquo;ve mentioned before there is no <code>package.config</code> anymore and the information about NuGet references from the <code>package.config</code> and project file was merged and simplified. Currently, in order to add NuGet package, we only need a <code>PackageReference</code> entry in <code>csproj</code> with appropriate attributes pointing to the right package id and version. The information about location of downloaded libraries was removed. Those changes solved the problem of potential inconsistency between the information about the package in <code>package.config</code> and csproj file - in the past, I came across the situation when somebody upgraded the package and forgot to commit one of those two files. With new csproj format this is not possible anymore.</p>
+<pre><code class="language-xml">&lt;ProjectReference Include=&quot;..\..\Domain.Invoice\Domain.Invoice.csproj&quot;&gt;
+    &lt;Project&gt;{f7cc9baa-c366-4652-b1e6-a96a82bceb1f}&lt;/Project&gt;
+    &lt;Name&gt;Domain.Invoice&lt;/Name&gt;
+&lt;/ProjectReference&gt;
+</code></pre>
+<p><strong>New project reference style:</strong></p>
+<pre><code class="language-xml">&lt;ProjectReference Include=&quot;..\..\Domain.Invoice\Domain.Invoice.csproj&quot; /&gt;
+</code></pre>
+<p>The way of referencing NuGet packages has also been changed. As I&rsquo;ve mentioned before there is no <code>package.config</code> anymore and the information about NuGet references from the <code>package.config</code> and project file was merged and simplified. Currently, in order to add NuGet package, we only need a <code>PackageReference</code> entry in <code>csproj</code> with appropriate attributes pointing to the right package id and version. The information about location of downloaded libraries was removed. Those changes solved the problem of potential inconsistency between the information about the package in <code>package.config</code> and csproj file - in the past, I came across the situation when somebody upgraded the package and forgot to commit one of those two files. With new csproj format this is not possible anymore.</p>
 <p><strong>Old NuGet reference style:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Reference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;Castle.Core, Version=4.3.1, Culture=neutral, processorArchitecture=MSIL&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;HintPath&gt;</span>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll<span style="color:#f92672">&lt;/HintPath&gt;</span>
-<span style="color:#f92672">&lt;/Reference&gt;</span>
-</code></pre></div><p><strong>New NuGet reference style:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"> <span style="color:#f92672">&lt;PackageReference</span> <span style="color:#a6e22e">Include=</span><span style="color:#e6db74">&#34;Castle.Core&#34;</span> <span style="color:#a6e22e">Version=</span><span style="color:#e6db74">&#34;4.3.1&#34;</span> <span style="color:#f92672">/&gt;</span>
-</code></pre></div><p>All project references are very clearly presented now in the <code>Solution Explorer</code> in the form of a tree, divided into categories based on the dependency source:</p>
+<pre><code class="language-xml">&lt;Reference Include=&quot;Castle.Core, Version=4.3.1, Culture=neutral, processorArchitecture=MSIL&quot;&gt;
+    &lt;HintPath&gt;..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll&lt;/HintPath&gt;
+&lt;/Reference&gt;
+</code></pre>
+<p><strong>New NuGet reference style:</strong></p>
+<pre><code class="language-xml"> &lt;PackageReference Include=&quot;Castle.Core&quot; Version=&quot;4.3.1&quot; /&gt;
+</code></pre>
+<p>All project references are very clearly presented now in the <code>Solution Explorer</code> in the form of a tree, divided into categories based on the dependency source:</p>
 <p>
 <a href="project_references.jpg"><img  src="project_references.jpg" alt="Project references"></a>
 </p>
@@ -210,15 +214,16 @@
 <p>The only thing that caused an issue for me during the migration was the resource files because they still need to be explicitly referenced inside the csproj file. At the time when I was performing the migration on my solution (over a year ago), this scenario was not supported by the <code>CsprojToVs2017</code> tool, so if you have <code>resx</code> files in your project you have to pay attention to them and fix them manually in case this is still an issue.</p>
 <h2 id="reusing-project-configuration">Reusing project configuration<a href="#reusing-project-configuration" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>After migrating projects into the new format it&rsquo;s good to extract common projects configuration into <code>Directory.Build.props</code> file and put into the solution root directory. This will save you a lot of time in the future when there is a need to change common properties for all projects such as a framework or C# language version. This mechanism is very well described by <a href="https://www.thomaslevesque.com/">Thomas Levesque</a> in his article  <a href="https://www.thomaslevesque.com/2017/09/18/common-msbuild-properties-and-items-with-directory-build-props/">COMMON MSBUILD PROPERTIES AND ITEMS WITH DIRECTORY.BUILD.PROPS</a>.  My ``Directory.Build.props` file looks as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Project&gt;</span>
-    <span style="color:#f92672">&lt;PropertyGroup&gt;</span>
-        <span style="color:#f92672">&lt;TargetFramework&gt;</span>netstandard2.0<span style="color:#f92672">&lt;/TargetFramework&gt;</span>
-         <span style="color:#f92672">&lt;Platforms&gt;</span>x64<span style="color:#f92672">&lt;/Platforms&gt;</span>
-         <span style="color:#f92672">&lt;RunCodeAnalysis&gt;</span>false<span style="color:#f92672">&lt;/RunCodeAnalysis&gt;</span>
-         <span style="color:#f92672">&lt;LangVersion&gt;</span>7.2<span style="color:#f92672">&lt;/LangVersion&gt;</span>
-    <span style="color:#f92672">&lt;/PropertyGroup&gt;</span>
-<span style="color:#f92672">&lt;/Project&gt;</span>
-</code></pre></div><h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<pre><code class="language-xml">&lt;Project&gt;
+    &lt;PropertyGroup&gt;
+        &lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt;
+         &lt;Platforms&gt;x64&lt;/Platforms&gt;
+         &lt;RunCodeAnalysis&gt;false&lt;/RunCodeAnalysis&gt;
+         &lt;LangVersion&gt;7.2&lt;/LangVersion&gt;
+    &lt;/PropertyGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The new csproj format comes with a lot of benefits. The project file is much cleaner than before and many well known issues related to dotnet development were solved with the new schema. And the most important information: this new format is not reserved only for dotnet core - you can utilize it no matter what kind of .net framework you are using - it works event with Full .NET Framework. You should definitely start using it if it hasn&rsquo;t happen so far.</p>
 <p><strong>UPDATE 2019-02-12:</strong>  The new csproj format still isn&rsquo;t supported with .NET Framework&rsquo;s ASP.NET MVC. You can track the issue on github <a href="https://github.com/dotnet/project-system/issues/2670">#2670</a>. However, until the issue is resolved, you can have a mix of projects in old and new format inside a single solution.</p>
 <p><strong>UPDATE 2019-02-21:</strong>   If you want to go even further with the renovation I highly recommend checking the <a href="https://github.com/sharpenrocks/Sharpen">Sharpen</a> project. <code>Thanks to that extension  you can easily start introducing new C# features into your codebase.</code></p>
@@ -226,9 +231,10 @@
 <a href="https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png"><img  src="https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png" alt=""></a>
 </p>
 <p><strong>UPDATE 2019-09-30:</strong>  <code>CsprojToVs2017</code> can be easily installed and used as a dotnet cli global tool:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> dotnet tool install --global Project2015To2017.Migrate2019.Tool
+<pre><code class="language-shell"> dotnet tool install --global Project2015To2017.Migrate2019.Tool
  dotnet-migrate-2019 migrate
-</code></pre></div>    
+</code></pre>
+    
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	

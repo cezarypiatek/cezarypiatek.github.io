@@ -178,45 +178,48 @@ It seems to be one of the most trivial tasks, but can cause a lot of problems. V
 <li>&hellip;</li>
 </ol>
 <p>There is <strong>ExpectedConditions.ElementToBeClickable</strong> method in Selenium.Support library which at the first glance should solve the problem. So we wait for certain condition to be met before we perform click action.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> ClickOn(<span style="color:#66d9ef">this</span> RemoteWebDriver driver, IWebElement expectedElement)
+<pre><code class="language-cs">internal static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
     driver.WaitUntil((d) =&gt; ExpectedConditions.ElementToBeClickable(expectedElement));
     expectedElement.Click();
 }
-</code></pre></div><p>But sometimes we still get the exception. So lets check how ExpectedConditions.ElementToBeClickable method works:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Func&lt;IWebDriver, IWebElement&gt; ElementToBeClickable(IWebElement element)
+</code></pre>
+<p>But sometimes we still get the exception. So lets check how ExpectedConditions.ElementToBeClickable method works:</p>
+<pre><code class="language-cs">public static Func&lt;IWebDriver, IWebElement&gt; ElementToBeClickable(IWebElement element)
 {
-	<span style="color:#66d9ef">return</span> (driver) =&gt;
+	return (driver) =&gt;
 	{
-		<span style="color:#66d9ef">try</span>
+		try
 		{
-			<span style="color:#66d9ef">if</span> (element != <span style="color:#66d9ef">null</span> &amp;&amp; element.Displayed &amp;&amp; element.Enabled)
+			if (element != null &amp;&amp; element.Displayed &amp;&amp; element.Enabled)
 			{
-				<span style="color:#66d9ef">return</span> element;
+				return element;
 			}
-			<span style="color:#66d9ef">else</span>
+			else
 			{
-				<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+				return null;
 			}
 		}
-		<span style="color:#66d9ef">catch</span> (StaleElementReferenceException)
+		catch (StaleElementReferenceException)
 		{
-			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+			return null;
 		}
 	};
 }
-</code></pre></div><p><a href="https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/support/UI/ExpectedConditions.cs">https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/support/UI/ExpectedConditions.cs</a></p>
+</code></pre>
+<p><a href="https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/support/UI/ExpectedConditions.cs">https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/support/UI/ExpectedConditions.cs</a></p>
 <p>The interesting part is checking element.Displayed flag. What does &ldquo;Displayed&rdquo; really mean? Reading webdriver specification (<a href="https://w3c.github.io/webdriver/webdriver-spec.html#dfn-element-displayed">https://w3c.github.io/webdriver/webdriver-spec.html#dfn-element-displayed</a>) we can find this definition</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">The element displayed algorithm is a boolean state where true signifies that the element is displayed and false signifies that the element is not displayed. To compute the state on element, invoke the Call(bot.dom.isShown, null, element). If doing so does not produce an error, return the return value from this function call. Otherwise return an error with error code unknown error.
-</code></pre></div><p>This doesn&rsquo;t explain exactly what &ldquo;Displayed&rdquo; means, but gives us another clue. We have to check <strong>bot.dom.isShown</strong> implementation.
+<pre><code class="language-plaintext">The element displayed algorithm is a boolean state where true signifies that the element is displayed and false signifies that the element is not displayed. To compute the state on element, invoke the Call(bot.dom.isShown, null, element). If doing so does not produce an error, return the return value from this function call. Otherwise return an error with error code unknown error.
+</code></pre>
+<p>This doesn&rsquo;t explain exactly what &ldquo;Displayed&rdquo; means, but gives us another clue. We have to check <strong>bot.dom.isShown</strong> implementation.
 <a href="https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L437">https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L437</a></p>
 <p>Even thought the code is pretty clear, there is a lot of comments which can help us understand how complex the problem is.
 The method documentation comment explains general rules of testing if element is &ldquo;Displayed&rdquo;</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">/**
- * Determines whether an element is what a user would call &#34;shown&#34;. This means
+<pre><code class="language-plaintext">/**
+ * Determines whether an element is what a user would call &quot;shown&quot;. This means
  * that the element is shown in the viewport of the browser, and only has
- * height and width greater than 0px, and that its visibility is not &#34;hidden&#34;
- * and its display property is not &#34;none&#34;.
+ * height and width greater than 0px, and that its visibility is not &quot;hidden&quot;
+ * and its display property is not &quot;none&quot;.
  * Options and Optgroup elements are treated as special cases: they are
  * considered shown iff they have a enclosing select element that is shown.
  *
@@ -226,137 +229,142 @@ The method documentation comment explains general rules of testing if element is
  * DOM.
  *
  * @param {!Element} elem The element to consider.
- * @param {boolean=} opt_ignoreOpacity Whether to ignore the element&#39;s opacity
+ * @param {boolean=} opt_ignoreOpacity Whether to ignore the element's opacity
  *     when determining whether it is shown; defaults to false.
  * @return {boolean} Whether or not the element is visible.
  */
  bot.dom.isShown = function(elem, opt_ignoreOpacity)
-</code></pre></div><p>And everything seems so true, except that I was unable to find code which is responsible for checking if element is inside current viewport (maybe there is another layer of proxy methods specific to given driver implementation). Another problem is that this code doesn&rsquo;t cover the scenario when our click target element is placed behind others. This could be easily detected with javascript</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">bool</span> IsElementInteractable(<span style="color:#66d9ef">this</span> RemoteWebDriver driver, IWebElement element)
+</code></pre>
+<p>And everything seems so true, except that I was unable to find code which is responsible for checking if element is inside current viewport (maybe there is another layer of proxy methods specific to given driver implementation). Another problem is that this code doesn&rsquo;t cover the scenario when our click target element is placed behind others. This could be easily detected with javascript</p>
+<pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
-   <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">bool</span>)driver.ExecuteScript(<span style="color:#e6db74">@&#34;
-</span><span style="color:#e6db74">       return (function(element)
-</span><span style="color:#e6db74">       {
-</span><span style="color:#e6db74">           function belongsToElement(subElement)
-</span><span style="color:#e6db74">           {
-</span><span style="color:#e6db74">               return element == subElement || element.contains(subElement);
-</span><span style="color:#e6db74">           }
-</span><span style="color:#e6db74">           var rec = element.getBoundingClientRect();                        
-</span><span style="color:#e6db74">           var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-</span><span style="color:#e6db74">           return belongsToElement(elementAtPosition);
-</span><span style="color:#e6db74">       })(arguments[0]);                    
-</span><span style="color:#e6db74">   &#34;</span>, element);
+   return (bool)driver.ExecuteScript(@&quot;
+       return (function(element)
+       {
+           function belongsToElement(subElement)
+           {
+               return element == subElement || element.contains(subElement);
+           }
+           var rec = element.getBoundingClientRect();                        
+           var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+           return belongsToElement(elementAtPosition);
+       })(arguments[0]);                    
+   &quot;, element);
 }
-</code></pre></div><p>Unfortunately, some drivers have problem with <strong>document.elementFromPoint</strong> and inline elements so I&rsquo;ve added checks of additional two points</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">bool</span> IsElementInteractable(<span style="color:#66d9ef">this</span> RemoteWebDriver driver, IWebElement element)
+</code></pre>
+<p>Unfortunately, some drivers have problem with <strong>document.elementFromPoint</strong> and inline elements so I&rsquo;ve added checks of additional two points</p>
+<pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
-	<span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">bool</span>)driver.ExecuteScript(<span style="color:#e6db74">@&#34;
-</span><span style="color:#e6db74">		return (function(element)
-</span><span style="color:#e6db74">		{
-</span><span style="color:#e6db74">			function belongsToElement(subElement)
-</span><span style="color:#e6db74">			{
-</span><span style="color:#e6db74">				return element == subElement || element.contains(subElement);
-</span><span style="color:#e6db74">			}
-</span><span style="color:#e6db74">			var rec = element.getBoundingClientRect();  
-</span><span style="color:#e6db74">			var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
-</span><span style="color:#e6db74">			var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-</span><span style="color:#e6db74">			var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
-</span><span style="color:#e6db74">			return belongsToElement(elementAtPosition1) || belongsToElement(elementAtPosition2) || belongsToElement(elementAtPosition3);
-</span><span style="color:#e6db74">		})(arguments[0]);                    
-</span><span style="color:#e6db74">	&#34;</span>, element);
+	return (bool)driver.ExecuteScript(@&quot;
+		return (function(element)
+		{
+			function belongsToElement(subElement)
+			{
+				return element == subElement || element.contains(subElement);
+			}
+			var rec = element.getBoundingClientRect();  
+			var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
+			var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+			var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
+			return belongsToElement(elementAtPosition1) || belongsToElement(elementAtPosition2) || belongsToElement(elementAtPosition3);
+		})(arguments[0]);                    
+	&quot;, element);
 }
-</code></pre></div><p>It seems that <em>document.elementFromPoint(rec.left, rec.top)</em> should solve the problem by itself, but it doesn&rsquo;t work when element has rounded corners. This implementation is not perfect but gives a high level of confidence.</p>
+</code></pre>
+<p>It seems that <em>document.elementFromPoint(rec.left, rec.top)</em> should solve the problem by itself, but it doesn&rsquo;t work when element has rounded corners. This implementation is not perfect but gives a high level of confidence.</p>
 <p>All right, when we put this altogether and handle also the scenario when element is outside the viewport (some browser can handle this automatically) we can end up with implementation as follows</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> ClickOn(<span style="color:#66d9ef">this</span> RemoteWebDriver driver, IWebElement expectedElement)
+<pre><code class="language-cs">static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
-	<span style="color:#66d9ef">try</span>
+	try
 	{
 		driver.WaitUntil((d) =&gt; ExpectedConditions.ElementToBeClickable(expectedElement));
 		expectedElement.Click();
 	}
-	<span style="color:#66d9ef">catch</span> (Exception ex)
+	catch (Exception ex)
 	{
-		<span style="color:#66d9ef">if</span> (IsTerminatingException(ex))
+		if (IsTerminatingException(ex))
 		{
-			<span style="color:#66d9ef">throw</span>;
+			throw;
 		}
 
-		<span style="color:#66d9ef">var</span> originalViewportPosition = driver.ScrollViewportToElement(expectedElement);
+		var originalViewportPosition = driver.ScrollViewportToElement(expectedElement);
 	   
-		<span style="color:#66d9ef">try</span>
+		try
 		{
 			driver.WaitUntil((d) =&gt; driver.IsElementInteractable(expectedElement));
 		}
-		<span style="color:#66d9ef">catch</span> (WebDriverTimeoutException)
+		catch (WebDriverTimeoutException)
 		{
-			<span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ElementIsNotClickableException(expectedElement);
+			throw new ElementIsNotClickableException(expectedElement);
 		}
 		
 		expectedElement.Click();
 		originalViewportPosition.Restore();
 	}
 }
-</code></pre></div><p>&hellip; and the supporting methods</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"> 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> TResult WaitUntil&lt;TResult&gt;(<span style="color:#66d9ef">this</span> RemoteWebDriver driver, Func&lt;IWebDriver, TResult&gt; waitPredictor, <span style="color:#66d9ef">int</span> timeout=SeleniumFinderExtensions.SearchElementDefaultTimeout)
+</code></pre>
+<p>&hellip; and the supporting methods</p>
+<pre><code class="language-csharp"> 
+public static TResult WaitUntil&lt;TResult&gt;(this RemoteWebDriver driver, Func&lt;IWebDriver, TResult&gt; waitPredictor, int timeout=SeleniumFinderExtensions.SearchElementDefaultTimeout)
 {
-	<span style="color:#66d9ef">var</span> waiter = <span style="color:#66d9ef">new</span> WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
-	<span style="color:#66d9ef">return</span> waiter.Until(waitPredictor);
+	var waiter = new WebDriverWait(driver, TimeSpan.FromSeconds(timeout));
+	return waiter.Until(waitPredictor);
 }
  
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">bool</span> IsTerminatingException(Exception ex)
+private static bool IsTerminatingException(Exception ex)
 {
-	<span style="color:#66d9ef">return</span> ex <span style="color:#66d9ef">is</span> InvalidOperationException == <span style="color:#66d9ef">false</span>  &amp;&amp; ex <span style="color:#66d9ef">is</span> WebDriverException == <span style="color:#66d9ef">false</span>;
+	return ex is InvalidOperationException == false  &amp;&amp; ex is WebDriverException == false;
 }
 
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> ViewPortPosition ScrollViewportToElement(<span style="color:#66d9ef">this</span> RemoteWebDriver driver, IWebElement expectedElement)
+private static ViewPortPosition ScrollViewportToElement(this RemoteWebDriver driver, IWebElement expectedElement)
 {
-	<span style="color:#66d9ef">int?</span> originalScrollPosition = <span style="color:#66d9ef">null</span>;
-	<span style="color:#66d9ef">if</span> (expectedElement.Location.Y &gt; driver.GetWindowHeight())
+	int? originalScrollPosition = null;
+	if (expectedElement.Location.Y &gt; driver.GetWindowHeight())
 	{
 		originalScrollPosition = driver.GetScrollY();
 		driver.ScrollToY(expectedElement.Location.Y + expectedElement.Size.Height);
 	}
-	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ViewPortPosition(originalScrollPosition, driver);
+	return new ViewPortPosition(originalScrollPosition, driver);
 }
 
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> GetWindowHeight(<span style="color:#66d9ef">this</span> RemoteWebDriver driver)
+private static int GetWindowHeight(this RemoteWebDriver driver)
 {
-	<span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">long</span>)driver.ExecuteScript(<span style="color:#e6db74">&#34;return window.innerHeight&#34;</span>);
+	return (int)(long)driver.ExecuteScript(&quot;return window.innerHeight&quot;);
 } 
 
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> GetScrollY(<span style="color:#66d9ef">this</span> RemoteWebDriver driver)
+private static int GetScrollY(this RemoteWebDriver driver)
 {
-	<span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">int</span>)(<span style="color:#66d9ef">long</span>)driver.ExecuteScript(<span style="color:#e6db74">@&#34;
-</span><span style="color:#e6db74">		if(typeof window.scrollY != &#39;undefined&#39;){
-</span><span style="color:#e6db74">			return window.scrollY;
-</span><span style="color:#e6db74">		}else if(typeof document.documentElement.scrollTop != &#39;undefined&#39;){
-</span><span style="color:#e6db74">			return document.documentElement.scrollTop;
-</span><span style="color:#e6db74">		}
-</span><span style="color:#e6db74">		return 0;
-</span><span style="color:#e6db74">&#34;</span>);
+	return (int)(long)driver.ExecuteScript(@&quot;
+		if(typeof window.scrollY != 'undefined'){
+			return window.scrollY;
+		}else if(typeof document.documentElement.scrollTop != 'undefined'){
+			return document.documentElement.scrollTop;
+		}
+		return 0;
+&quot;);
 }
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewPortPosition</span>
+public class ViewPortPosition
 {
-	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#66d9ef">int?</span> scrollPositionY;
-	<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> RemoteWebDriver webDriver;
+	private readonly int? scrollPositionY;
+	private readonly RemoteWebDriver webDriver;
 
-	<span style="color:#66d9ef">public</span> ViewPortPosition(<span style="color:#66d9ef">int?</span> scrollPositionY, RemoteWebDriver webDriver)
+	public ViewPortPosition(int? scrollPositionY, RemoteWebDriver webDriver)
 	{
-		<span style="color:#66d9ef">this</span>.scrollPositionY = scrollPositionY;
-		<span style="color:#66d9ef">this</span>.webDriver = webDriver;
+		this.scrollPositionY = scrollPositionY;
+		this.webDriver = webDriver;
 	}
 
-	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Restore()
+	public void Restore()
 	{
-		<span style="color:#66d9ef">if</span> (scrollPositionY != <span style="color:#66d9ef">null</span>)
+		if (scrollPositionY != null)
 		{
 			webDriver.ScrollToY(scrollPositionY.Value);
 		}
 	}
 }
-</code></pre></div>    
+</code></pre>
+    
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	

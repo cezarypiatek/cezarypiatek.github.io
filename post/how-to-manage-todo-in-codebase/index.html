@@ -189,8 +189,9 @@
 <a href="todo_explorer_pattern_definition.jpg"><img  src="todo_explorer_pattern_definition.jpg" alt="To-Do-Explorer Pattern definition"></a>
 </p>
 <p>This is the regular expression to detect CEZARYPIATEK user TODOs:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">(?&lt;=\W|^)(?&lt;TAG&gt;TODO(:)?(\s*?)CEZARYPIATEK)(\W|$)(.*)
-</code></pre></div><p>After adding new pattern we should be able to use it from filter menu in To-do-Explorer</p>
+<pre><code class="language-plaintext">(?&lt;=\W|^)(?&lt;TAG&gt;TODO(:)?(\s*?)CEZARYPIATEK)(\W|$)(.*)
+</code></pre>
+<p>After adding new pattern we should be able to use it from filter menu in To-do-Explorer</p>
 <p>
 <a href="todo_explorer_new_filter.jpg"><img  src="todo_explorer_new_filter.jpg" alt="To-Do-Explorer Pattern definition"></a>
 </p>
@@ -198,8 +199,9 @@
 <p>
 <a href="live_templates_todo_pattern.jpg"><img  src="live_templates_todo_pattern.jpg" alt="To-Do-Explorer Pattern definition"></a>
 </p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-plaintext" data-lang="plaintext">// TODO:$to$:$task$ ($autor$:$date$) $description$ $END$
-</code></pre></div><p>I&rsquo;ve enriched the basic pattern with additional information such as: issue tracker task identifier (for my project JIRA Id), author and inserting date. This data is mandatory (we should pay attention to it during code review) and helps to manage TODO. The complete set of information represents the following rules:</p>
+<pre><code class="language-plaintext">// TODO:$to$:$task$ ($autor$:$date$) $description$ $END$
+</code></pre>
+<p>I&rsquo;ve enriched the basic pattern with additional information such as: issue tracker task identifier (for my project JIRA Id), author and inserting date. This data is mandatory (we should pay attention to it during code review) and helps to manage TODO. The complete set of information represents the following rules:</p>
 <ol>
 <li>Every TODO should have an owner. It should be clear who is responsible for completing this task.</li>
 <li>Every TODO should be correlated with given task in issue tracker. If we are not able to complete this work in current task, another one should be created and appropriately scheduled.</li>
@@ -208,8 +210,9 @@
 </ol>
 <p>Thanks to LiveTemplates macros values of $to$, $author$ and $date$ variables are automatically filled with default values. I&rsquo;ve set &ldquo;td&rdquo; shortcut for this templates so every time I type &ldquo;td&rdquo; in my code Resharper helps me to insert TODO in appropriate format. This is really convenient and helps to enforce common pattern for TODO.</p>
 <p>A full TODO message could look as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#75715e">// TODO:CEZARYPIATEK:TELL-1234 (JOHNDOE:2017-12-03) Release this event handler in dispose method
-</span></code></pre></div>    
+<pre><code class="language-csharp">// TODO:CEZARYPIATEK:TELL-1234 (JOHNDOE:2017-12-03) Release this event handler in dispose method
+</code></pre>
+    
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, please don't hesitate to use these buttons below:</p>	

@@ -216,20 +216,21 @@ To guard a codebase against using generic types of exceptions I&rsquo;ve created
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. The original reason of the error is swallowed.</p>
 <h2 id="exception-driven-logic">Exception Driven Logic<a href="#exception-driven-logic" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>What is the <code>Exception Driven Logic</code>? It&rsquo;s a kind of code where business flows are implemented using exceptions mechanism (<code>try-catch</code>) instead of condition statements (<code>if-else</code>). It can be easily identified because in the same method given exception is thrown and caught, something like that:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">try</span>
+<pre><code class="language-cs">try
 {
-	<span style="color:#75715e">// do sth
-</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span>(condition)
+	// do sth
+	if(condition)
 	{
-	   <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> SpecificException();
+	   throw new SpecificException();
 	}
-	<span style="color:#75715e">// do sth
-</span><span style="color:#75715e"></span>}
-<span style="color:#66d9ef">catch</span>(SpecificException e)
+	// do sth
+}
+catch(SpecificException e)
 {
-	<span style="color:#75715e">// do sth
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>This approach makes the code harder to analyze and has a huge impact on performance. According to 
+	// do sth
+}
+</code></pre>
+<p>This approach makes the code harder to analyze and has a huge impact on performance. According to 
 <a href="https://www.amazon.com/Writing-High-Performance-NET-Code-Watson-ebook/dp/B07BF68842/">Writing High-Performance .NET Code</a> by <code>Ben Watson</code> it can be even <strong>thousands of times slower</strong> (For more details on that I recommend reading chapter: &ldquo;General Coding and Class Design - Exceptions&rdquo;). Exceptions are for exceptional situations (when you don&rsquo;t know how to react on given conditions in the current context) and should not be used for well-known business workflow. In order to prevent this kind of violation in the code I&rsquo;ve implemented <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ExceptionDrivenLogic/ExceptionDrivenLogicAnalyzer.cs">ExceptionDrivenLogicAnalyzer</a> which is able to spot places where the exception is thrown and caught inside the code of the same method.</p>
 <p>
 <a href="exception_deriven_logic_example.jpg"><img  src="exception_deriven_logic_example.jpg" alt="exception driven logic example"></a>

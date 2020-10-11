@@ -191,10 +191,11 @@
 <p>If the <code>Moq</code> is not your mocking framework of choice don&rsquo;t worry, there&rsquo;s certainly a similar analyzer for your library. I was able to also find analyzers such as <a href="https://www.nuget.org/packages/NSubstitute.Analyzers.CSharp/">NSubstitute.Analyzers.CSharp</a> and <a href="https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp/">FakeItEasy.Analyzer.CSharp</a></p>
 <h2 id="less-typing-to-create-a-mock">Less typing to create a mock<a href="#less-typing-to-create-a-mock" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Besides all those traps with mocking rules, preparing mocks involves a lot of typing which is a dummy work. For example, to mock a method with three parameters (without carrying for their values) we need to write a code like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">var</span> mock = <span style="color:#66d9ef">new</span> Mock&lt;ISampleInterface&gt;();
-mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;<span style="color:#66d9ef">int</span>&gt;(), It.IsAny&lt;<span style="color:#66d9ef">decimal</span>&gt;(), It.IsAny&lt;<span style="color:#66d9ef">string</span>&gt;()))
+<pre><code class="language-csharp">var mock = new Mock&lt;ISampleInterface&gt;();
+mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;int&gt;(), It.IsAny&lt;decimal&gt;(), It.IsAny&lt;string&gt;()))
     .Returns((p1, p2, p3)=&gt;  EXPECT_VALUE);
-</code></pre></div><p>Typing repeatable <code>It.IsAny&lt;&gt;()</code> and trying to match the method signature in <code>Returns()</code> is quite boring and error-prone. Happily, these issues can be solved with Visual Studio extension - <a href="https://marketplace.visualstudio.com/items?itemName=AndreyLipatkin.moqautocomplete">Moq.Autocomplete</a> that can propose and insert the whole code for us.</p>
+</code></pre>
+<p>Typing repeatable <code>It.IsAny&lt;&gt;()</code> and trying to match the method signature in <code>Returns()</code> is quite boring and error-prone. Happily, these issues can be solved with Visual Studio extension - <a href="https://marketplace.visualstudio.com/items?itemName=AndreyLipatkin.moqautocomplete">Moq.Autocomplete</a> that can propose and insert the whole code for us.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/cTZR66mgt8Y?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
@@ -250,11 +251,11 @@ mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;<span style="color:#66d9ef">int</sp
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/better-non-nullable-handling/" >
+						<a href="../../post/async-analyzers-p1/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/better-non-nullable-handling/splashscreen_hua2a5c0e1b25e36f0314c2d7b21c3fd45_140846_320x240_fill_q75_box_smart1.jpg" alt="Improving non-nullable reference types handling">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
 								<div class="card-body">
-									<h5 class="card-title">Improving non-nullable reference types handling</h5>											  
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
 								</div>
 							</div></a>
 				</div>		

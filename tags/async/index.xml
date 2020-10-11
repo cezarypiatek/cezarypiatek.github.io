@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>async on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/async/</link>
+    <description>Recent content in async on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Oct 2020 00:11:45 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/async/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Async code smells and how to track them down with analyzers - Part I</title>
+      <link>https://cezarypiatek.github.io/post/async-analyzers-p1/</link>
+      <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/async-analyzers-p1/</guid>
+      <description>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&amp;rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time.</description>
+    </item>
+    
+  </channel>
+</rss>

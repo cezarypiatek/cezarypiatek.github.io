@@ -164,7 +164,7 @@ public bool IsStale()
 
 ### Applying StableWebElement 
 
-In order to use StableWebElement we need to add extension method for `ISearchContex` that searches for given element and wraps it into our StableWebElement proxy:
+In order to use StableWebElement we need to add extension method for `ISearchContext` that searches for given element and wraps it into our StableWebElement proxy:
 
 
 ```csharp
@@ -175,18 +175,10 @@ static class StableElementExtensions
         var element = context.FindElement(locator);
         return new StableWebElement(context, element, locator);
     }    
-
-    public static ReadOnlyCollection<IStableWebElement> FindStableElements(this ISearchContext context, By locator)
-    {        
-        return  context.FindElements(locator
-                .Select(x=> new StableWebElement(context, x, locator))
-                .ToList()
-                .AsReadOnly();
-    }    
 }
 ```
 
-Now we have to replace all invocation of `FindElement` with our new extension method. If we don't need to be explicit about using this new approach, we can tweak `FindElement` and `FindElements` methods from our `StableWebElement` wrapper to intercept the real result and wrap it into StableWebElement:
+Now we have to replace all invocation of `FindElement` with our new extension method. If we don't need to be explicit about using this new approach, we can tweak `FindElement` method from our `StableWebElement` wrapper to intercept the real result and wrap it into StableWebElement:
 
 ```cs
 public IWebElement FindElement(By locator)
@@ -194,17 +186,11 @@ public IWebElement FindElement(By locator)
     var foundElement = Execute(() => element.FindElement(locator));
     return new StableWebElement(this.parent, foundElement, locator);
 }
-
-public ReadOnlyCollection<IWebElement> FindElements(By locator)
-{
-    return Execute(() => element.FindElements(locator))
-        .Select(x=> new StableWebElement(this.parent, x, locator))
-        .ToList()
-        .AsReadOnly();
-}
 ```
 
 This little trick allows us to introduce `StableWebElement` almost transparently into existing codebase with minimal effort. I said "almost" because we still  need to use `FindStableElement` extension method on search context which is `WebDriver` (alternatively, we can create a wrapper for `WebDriver` that uses the same trick as StableWebElement).
+
+> **UPDATE 2020-10-08:** I do not change the logic of `FindElements` method (the one that search for all elements that match a given locator because it could not guarantee the unambiguity during the "regeneration" process)
 
 
 ## Summary

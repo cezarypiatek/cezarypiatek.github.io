@@ -170,14 +170,15 @@
 <h2 id="abandoned-locks">Abandoned locks<a href="#abandoned-locks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The <code>lock()</code> statement allows acquiring a lock on the given object with a guarantee of releasing it at the end of the scope. However, sometimes you have to manually manage the scope of locking by directly calling methods responsible for acquiring and releasing, and the burden of ensuring that the release is always executed is on you. The most common trap is the assumption that there is no code between lock acquire and release that could throw an exception. Even if it looks like this at first, it can be misleading. There is a class of exceptions called <code>out-of-band-exceptions</code> which can be thrown from random places. One of those situations we can meet in multithreading applications is when the current thread is aborted by the external code and the <code>ThreadAbortException</code> can be thrown from a place where we don&rsquo;t expect it. You can read more about <code>Out-of-band-exceptions</code> in <a href="https://www.amazon.com/gp/product/B07RQ4ZCJR">.NET Internals Cookbook</a>.
 If you don&rsquo;t have a 100% confidence that the code responsible for the release will be always invoked, you can end up with the <code>abandoned lock</code> which simply causes a deadlock. To avoid that, you should always apply a pattern like that:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">try</span>{
-    <span style="color:#75715e">//Acquire the lock
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">//Critical section logic
-</span><span style="color:#75715e"></span>}
-<span style="color:#66d9ef">finally</span>{
-    <span style="color:#75715e">//Release the lock
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>In order to bring attention to this problem I&rsquo;ve created the following analyzers:</p>
+<pre><code class="language-csharp">try{
+    //Acquire the lock
+    //Critical section logic
+}
+finally{
+    //Release the lock
+}
+</code></pre>
+<p>In order to bring attention to this problem I&rsquo;ve created the following analyzers:</p>
 <ul>
 <li><code>MT1012: Acquiring lock without guarantee of releasing</code></li>
 <li><code>MT1013: Releasing lock without guarantee of execution</code></li>
@@ -240,11 +241,11 @@ If you don&rsquo;t have a 100% confidence that the code responsible for the rele
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/csharp-twin-types/" >
+						<a href="../../post/async-analyzers-p1/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
 								<div class="card-body">
-									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -255,11 +256,11 @@ If you don&rsquo;t have a 100% confidence that the code responsible for the rele
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/better-non-nullable-handling/" >
+						<a href="../../post/csharp-twin-types/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/better-non-nullable-handling/splashscreen_hua2a5c0e1b25e36f0314c2d7b21c3fd45_140846_320x240_fill_q75_box_smart1.jpg" alt="Improving non-nullable reference types handling">
+								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
 								<div class="card-body">
-									<h5 class="card-title">Improving non-nullable reference types handling</h5>											  
+									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
 								</div>
 							</div></a>
 				</div>		

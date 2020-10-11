@@ -2,7 +2,7 @@ baseURL = "https://cezarypiatek.github.io/"
 relativeURLs = true
 languageCode = "en-us"
 title = "Cezary Piątek Blog"
-theme = "hugo-geo"
+theme = ["hugo-dynamic-tabs", "hugo-geo"]
 disqusShortname= "cezarypiatek-github-io"
 publishDir = "../"
 paginate = 5
@@ -74,3 +74,18 @@ enableGitInfo = true
 
 [markup.goldmark.renderer]
 unsafe= true
+enableEmoji=true
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = false
+    guessSyntax = false
+    hl_Lines = ""
+    lineAnchors = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "monokai"
+    tabWidth = 4

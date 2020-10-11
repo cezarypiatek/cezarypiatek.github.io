@@ -179,33 +179,36 @@
 <a href="teamcity_failure_condition.jpg"><img  src="teamcity_failure_condition.jpg" alt=""></a>
 </p>
 <p>Since now all PowerShell errors will be properly reported and will affect build status. Besides these two configuration options in TeamCity, there is one more thing related to the PowerShell errors to keep in mind - PowerShell error model. Powershell errors can be dived into two categories: terminating (mostly syntax errors) and non-terminating. The latter is not obvious and causes a lot of troubles for people without strong PowerShell foundations. Even if the <code>non-terminating</code> error occurs, the script execution is continued. This effect can be highly unwanted for scripts performing interlinked operations dependent on each other. Of course, we can change this behavior and turn all &lsquo;non-terminating&rsquo; errors into &lsquo;terminating&rsquo; ones by setting <code>$ErrorActionPreference</code> variable at the begging of our scripts:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#75715e">#Error Action Preference:</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e">#PowerShell halts execution on terminating errors, as mentioned before. For non-terminating errors we have the option to tell PowerShell how to handle these situations. </span>
-<span style="color:#75715e">#This is where the error action preference comes in. Error Action Preference allows us to specify the desired behavior for a non-terminating error; it can be scoped at the command level or all the way up to the script level.</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e">#Available choices for error action preference:</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># SilentlyContinue – error messages are suppressed and execution continues.</span>
-<span style="color:#75715e"># Stop – forces execution to stop, behaving like a terminating error.</span>
-<span style="color:#75715e"># Continue - the default option. Errors will display and execution will continue.</span>
-<span style="color:#75715e"># Inquire – prompt the user for input to see if we should proceed.</span>
-<span style="color:#75715e"># Ignore – (new in v3) – the error is ignored and not logged to the error stream. Has very restricted usage scenarios.</span>
-<span style="color:#75715e"># Example: Set the preference at the script scope to Stop, place the following near the top of the script file:</span>
-$ErrorActionPreference = <span style="color:#e6db74">&#34;Stop&#34;</span>
-</code></pre></div><p>This can also be configured for each CmdLet separately without the need to setup it globally. You can read more about CmdLet common parameters <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_commonparameters?view=powershell-6">here</a></p>
+<pre><code class="language-powershell">#Error Action Preference:
+#
+#PowerShell halts execution on terminating errors, as mentioned before. For non-terminating errors we have the option to tell PowerShell how to handle these situations. 
+#This is where the error action preference comes in. Error Action Preference allows us to specify the desired behavior for a non-terminating error; it can be scoped at the command level or all the way up to the script level.
+#
+#Available choices for error action preference:
+#
+# SilentlyContinue – error messages are suppressed and execution continues.
+# Stop – forces execution to stop, behaving like a terminating error.
+# Continue - the default option. Errors will display and execution will continue.
+# Inquire – prompt the user for input to see if we should proceed.
+# Ignore – (new in v3) – the error is ignored and not logged to the error stream. Has very restricted usage scenarios.
+# Example: Set the preference at the script scope to Stop, place the following near the top of the script file:
+$ErrorActionPreference = &quot;Stop&quot;
+</code></pre>
+<p>This can also be configured for each CmdLet separately without the need to setup it globally. You can read more about CmdLet common parameters <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_commonparameters?view=powershell-6">here</a></p>
 <h2 id="protect-yourself-from-accidental-errors">Protect yourself from accidental errors<a href="#protect-yourself-from-accidental-errors" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Besides the error handling, it&rsquo;s good to write your scripts in a manner that protects you from accidental errors that can be very hard to detect. At first, you should turn all your functions into real <code>Cmdlets</code>. In order to do that, you should always define parameters with <code>param()</code> block and decorate it with <code>[CmdletBinding()]</code> parameter:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell"><span style="color:#66d9ef">function</span> Verb-Noun {
-    [<span style="color:#66d9ef">CmdletBinding</span>()]
-    <span style="color:#66d9ef">param</span> (
-     <span style="color:#75715e">#parameters go here   </span>
+<pre><code class="language-powershell">function Verb-Noun {
+    [CmdletBinding()]
+    param (
+     #parameters go here   
     )    
 }
-</code></pre></div><p><code>[CmdletBinding()]</code> parameter protects your methods from invoking them with an undefined parameter. Every time when somebody uses undefined (or deleted) parameter or makes a typo in parameter name, this fact will be reported as PowerShell error.  If the method is not CmdLet the parameter names are not validated, making the problem hard to detect.</p>
+</code></pre>
+<p><code>[CmdletBinding()]</code> parameter protects your methods from invoking them with an undefined parameter. Every time when somebody uses undefined (or deleted) parameter or makes a typo in parameter name, this fact will be reported as PowerShell error.  If the method is not CmdLet the parameter names are not validated, making the problem hard to detect.</p>
 <p>We can also detect potential errors caused by violation of best practices and coding rules by enabling strict mode. In order to do that, add the following code at the beginning of your script:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">Set-StrictMode -Version Latest
-</code></pre></div><p>After turning on strict mode, PowerShell will report all uninitialized variables and properties with terminating error. You can read about all consequences of using strict mode <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/set-strictmode?view=powershell-6">here</a></p>
+<pre><code class="language-powershell">Set-StrictMode -Version Latest
+</code></pre>
+<p>After turning on strict mode, PowerShell will report all uninitialized variables and properties with terminating error. You can read about all consequences of using strict mode <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/set-strictmode?view=powershell-6">here</a></p>
 <p>And here&rsquo;s one more advice that should help you avoid dummy mistakes:</p>
 <blockquote>
 <p>Always use a decent IDE to create and edit your PowerShell scripts.</p>

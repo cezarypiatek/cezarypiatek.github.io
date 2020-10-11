@@ -195,16 +195,17 @@
 <p>The explanation for this is quite straightforward - value types don&rsquo;t have an <code>object header</code> where the information about the acquired lock could be stored. If we write a lock statement over a value object, we get the <code>CS0185</code> compiler error. However, if we use <code>Monitor.Enter</code> or <code>Monitor.TryEnter</code> instead of <code>lock()</code> statement, the code will compile but it will also crush in the runtime with <code>System.Threading.SynchronizationLockException</code>, when we try to release the lock. This happens because when we pass a value object to <code>Monitor.Enter</code> and <code>Monitor.Exit</code>, every method gets a different instance because of the <code>boxing</code>. The lock statement as well as <code>Monitor</code> usages will be monitored with <code>MT1004: Lock on value type instance</code> rule.</p>
 <h2 id="best-practice-for-locking">Best practice for locking<a href="#best-practice-for-locking" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The best practice to avoid all these problems with selecting suitable object to lock onto, is to create a <code>private</code> and <code>readonly</code> instance of <code>object</code> type dedicated exclusively for locking purpose:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-csharp" data-lang="csharp"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">readonly</span> <span style="color:#66d9ef">object</span> lockObject = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">object</span>();
+<pre><code class="language-csharp">private readonly object lockObject = new object();
 
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> DoSomething()
+public void DoSomething()
 {
-    <span style="color:#66d9ef">lock</span> (lockObject)
+    lock (lockObject)
     {
-        <span style="color:#75715e">//Critical section
-</span><span style="color:#75715e"></span>    }
+        //Critical section
+    }
 }
-</code></pre></div><h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>All my propositions of Roslyn analyzers are available on Github <a href="https://github.com/smartanalyzers/MultithreadingAnalyzer">MultithreadingAnalyzer</a> and can be added to your projects with NuGet package <a href="https://www.nuget.org/packages/SmartAnalyzers.MultithreadingAnalyzer/">SmartAnalyzers.MultithreadingAnalyzer</a>. I would appreciate if you could try it out and let me know if it was able to spot real problems in your codebase or all those reported diagnostics were wrong. A lot of stuff presented here I leaned from the following resources:</p>
 <ul>
 <li>[FREE EBOOK] <a href="https://www.microsoft.com/en-us/download/details.aspx?id=19222">Patterns for Parallel Programming: Understanding and Applying Parallel Patterns with the .NET Framework 4</a> by Stephen Toub</li>
@@ -244,11 +245,11 @@
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/csharp-twin-types/" >
+						<a href="../../post/async-analyzers-p1/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
 								<div class="card-body">
-									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -259,11 +260,11 @@
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/better-non-nullable-handling/" >
+						<a href="../../post/csharp-twin-types/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/better-non-nullable-handling/splashscreen_hua2a5c0e1b25e36f0314c2d7b21c3fd45_140846_320x240_fill_q75_box_smart1.jpg" alt="Improving non-nullable reference types handling">
+								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
 								<div class="card-body">
-									<h5 class="card-title">Improving non-nullable reference types handling</h5>											  
+									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
 								</div>
 							</div></a>
 				</div>		

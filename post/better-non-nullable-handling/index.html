@@ -181,11 +181,12 @@
 <a href="initialization_hack.jpg"><img  src="initialization_hack.jpg" alt=""></a>
 </p>
 <p>But this is rather a dirty hack that hides the real problem instead of solving it. If we want to go that way, then we might as well completely disable <code>CS8618</code>, for example with the following entry in <code>.editorconfig</code>:</p>
-<pre><code class="language-editorconfig" data-lang="editorconfig">[*.cs]
+<pre><code class="language-editorconfig">[*.cs]
 
 # CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = none
-</code></pre><h2 id="proposition-of-improvements">Proposition of improvements<a href="#proposition-of-improvements" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+</code></pre>
+<h2 id="proposition-of-improvements">Proposition of improvements<a href="#proposition-of-improvements" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Recently, I&rsquo;ve been experimenting with Roslyn analyzer that could enforce mandatory initialization via initialization block for members decorated with special attributes. I&rsquo;ve come up with two attributes <code>[InitRequired]</code> and <code>[InitOnly]</code> - you can read about them in my previous blog post <a href="../../post/immutable-types-with-roslyn/">Immutable types in C# with Roslyn</a>. Those attributes basically move the responsibility for field initialization from class creator to class users. Everyone who wants to create a new class instance, is obligated to provide values for all non-nullable reference fields via initialization block. However, using those attributes solves the problem only partially because the compiler still keeps reporting <code>CS8618</code> diagnostic. To solve that issue, I implemented a dedicated <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.diagnostics.diagnosticsuppressor?view=roslyn-dotnet">DiagnosticSuppressor</a> which discards <code>CS8618</code> for fields and properties marked with those properties.</p>
 <p>
 <a href="init_required_improved.jpg"><img  src="init_required_improved.jpg" alt=""></a>
@@ -235,11 +236,11 @@ dotnet_diagnostic.CS8618.severity = none
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/csharp-twin-types/" >
+						<a href="../../post/async-analyzers-p1/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
 								<div class="card-body">
-									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -250,11 +251,11 @@ dotnet_diagnostic.CS8618.severity = none
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/generate-mappings-on-build/" >
+						<a href="../../post/csharp-twin-types/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/generate-mappings-on-build/splashscreen_hu831a556e644f698f06f7bab476f01bf6_99100_320x240_fill_q75_box_smart1.jpg" alt="How to simulate AutoMapper that works during the build time">
+								<img class="card-img-top" src="../../post/csharp-twin-types/splashscreen_hu79ad02ab373e041bd343579fd88dc5ca_155528_320x240_fill_q75_box_smart1.jpg" alt="Twin types - properties synchronization without inheritance">
 								<div class="card-body">
-									<h5 class="card-title">How to simulate AutoMapper that works during the build time</h5>											  
+									<h5 class="card-title">Twin types - properties synchronization without inheritance</h5>											  
 								</div>
 							</div></a>
 				</div>		

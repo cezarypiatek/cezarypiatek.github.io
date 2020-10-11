@@ -171,17 +171,19 @@
 			<br />
 		
 		<p>With the beginning of new year I joined a new team where I help with project bootstrapping. I&rsquo;ve been configuring TeamCity, Gitlab and webservers. It&rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &ldquo;Integration&rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat. In my company MS Teams is the basic communication channel, so I gave it a shot and tried to connect the two systems. The configuration was very easy - Gitlab communicates with MS Teams via webhooks - and as result my team receives notification related to merge request on MS Teams channel. This is really cool, but it would be more useful if my continuous integration system could send notifications to my team&rsquo;s channel too. I checked all available build steps in TeamCity and there was noting related to MS Teams. Fortunately, nothing was lost - webhooks are pretty easy concepts so I was able to create this integration with little amount of work. For those who don’t know webhooks mechanism, it is nothing more than REST API. I checked <a href="https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors">MS Teams documentation</a> and in order to send message to MS Teams channel we have to submit POST request to given webhook url with json payload in the following format:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">{
-    <span style="color:#a6e22e">title</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Message title&#34;</span>,
-    <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Message content&#34;</span>
+<pre><code class="language-javascript">{
+    title: &quot;Message title&quot;,
+    text: &quot;Message content&quot;
 }
-</code></pre></div><p>The &ldquo;text&rdquo; field can accept html markup.  In order to generate webhook url use right click on given MS Teams channel, click &ldquo;Connectors&rdquo; from the context menu and select &ldquo;Incoming webhook&rdquo; on the &ldquo;Configuration&rdquo; list. The rest is pretty intuitive and easy. We&rsquo;ve got all required data but how can we send a web request from TeamCity? The easiest way without using third party tools is to use PowerShell build step. Powershell has <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1">Invoke-WebRequest</a> cmdlet which allows us to send webrequest very easily. The whole code required to send a message to MS Teams channel can look as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">$body = @{
-    title= <span style="color:#e6db74">&#34;Message Title&#34;</span>;
-    text= <span style="color:#e6db74">&#34;Message content&#34;</span>
+</code></pre>
+<p>The &ldquo;text&rdquo; field can accept html markup.  In order to generate webhook url use right click on given MS Teams channel, click &ldquo;Connectors&rdquo; from the context menu and select &ldquo;Incoming webhook&rdquo; on the &ldquo;Configuration&rdquo; list. The rest is pretty intuitive and easy. We&rsquo;ve got all required data but how can we send a web request from TeamCity? The easiest way without using third party tools is to use PowerShell build step. Powershell has <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1">Invoke-WebRequest</a> cmdlet which allows us to send webrequest very easily. The whole code required to send a message to MS Teams channel can look as follows:</p>
+<pre><code class="language-powershell">$body = @{
+    title= &quot;Message Title&quot;;
+    text= &quot;Message content&quot;
 } | ConvertTo-Json
-Invoke-WebRequest -Method Post -Uri <span style="color:#e6db74">&#34;http://my_ms_teams_channe_webook_url&#34;</span> -Body $body -ContentType <span style="color:#e6db74">&#34;application/json&#34;</span> -UseBasicParsing
-</code></pre></div><p>You have to remember about adding <strong>UseBasicParsing</strong> switch to <em>Invoke-WebRequest</em> cmdlet - without it you will get a weird error related to InternetExplorer. In order to run this in TeamCity pipeline add PowerShell build step and past the code from above.</p>
+Invoke-WebRequest -Method Post -Uri &quot;http://my_ms_teams_channe_webook_url&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing
+</code></pre>
+<p>You have to remember about adding <strong>UseBasicParsing</strong> switch to <em>Invoke-WebRequest</em> cmdlet - without it you will get a weird error related to InternetExplorer. In order to run this in TeamCity pipeline add PowerShell build step and past the code from above.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/VHPKLnYGd2o?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
@@ -190,12 +192,13 @@ Invoke-WebRequest -Method Post -Uri <span style="color:#e6db74">&#34;http://my_m
 <a href="teams_simple_notification.jpg"><img  src="teams_simple_notification.jpg" alt="teams notification"></a>
 </p>
 <p>Alright, it was very easy. But how about reusability? I&rsquo;m not going to copy&amp;paste this Powershell script every time I need to send a message to MS Teams channel from TeamCity. For example, I need to send that notification twice during my deployment build: once to inform my team that I started deployment and the test environment will be not available for the next couple of minutes; and the second time when the deployment finished, notifying about that fact as well as version and changelog. Happily, TeamCity development team anticipated this requirement and provided <a href="https://confluence.jetbrains.com/display/TCD10/Working+with+Meta-Runner">meta runners</a> mechanism which allows to convert existing build step configuration into new reusable build step template. Before we convert our build step into meta runner we have to make it more generic by parametrization. Message title, content and webhook url will differ depending on the use case, so we can replace these values with TeamCity configuration parameters (parameter names should start and end with percentage sign).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">$body = @{
-    title= <span style="color:#e6db74">&#34;%MSTeams_MessageTitle%&#34;</span>;
-    text= <span style="color:#e6db74">&#34;%MSTeams_MessageContent%t&#34;</span>
+<pre><code class="language-powershell">$body = @{
+    title= &quot;%MSTeams_MessageTitle%&quot;;
+    text= &quot;%MSTeams_MessageContent%t&quot;
 } | ConvertTo-Json
-Invoke-WebRequest -Method Post -Uri <span style="color:#e6db74">&#34;%MSTeams_WebhookUrl%&#34;</span> -Body $body -ContentType <span style="color:#e6db74">&#34;application/json&#34;</span> -UseBasicParsing
-</code></pre></div><p>After saving these changes a new parameter should appear in the &ldquo;Parameters&rdquo; tab in build configuration. You can tweak parameter options by editing it. You can define label and input type which will be used to present this parameter on the build step configuration form.</p>
+Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing
+</code></pre>
+<p>After saving these changes a new parameter should appear in the &ldquo;Parameters&rdquo; tab in build configuration. You can tweak parameter options by editing it. You can define label and input type which will be used to present this parameter on the build step configuration form.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/U2bm8sGXt1A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
@@ -204,41 +207,43 @@ Invoke-WebRequest -Method Post -Uri <span style="color:#e6db74">&#34;%MSTeams_We
 <iframe width="853" height="480" src="https://www.youtube.com/embed/F9yi8jUomXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 <p>Be careful because TeamCity creates meta runner based not on given build step but on our whole pipeline from current build configuration. To change that we have to modify our meta runner xml definition by deleting redundant nodes: <strong>/meta-runner/settings/build-runners/runner</strong> and <strong>/meta-runner/settings/parameters/parameter</strong>. Meta runner definition after these changes should look as follows:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;meta-runner</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Microsoft Teams Notification&#34;</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;description&gt;</span>Send notification to MS Teams<span style="color:#f92672">&lt;/description&gt;</span>
-  <span style="color:#f92672">&lt;settings&gt;</span>
-    <span style="color:#f92672">&lt;parameters&gt;</span>
-      <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;MSTeams_MessageContent&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">spec=</span><span style="color:#e6db74">&#34;text display=&#39;normal&#39; label=&#39;Content&#39; validationMode=&#39;any&#39;&#34;</span> <span style="color:#f92672">/&gt;</span>
-      <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;MSTeams_MessageTitle&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">spec=</span><span style="color:#e6db74">&#34;text display=&#39;normal&#39; label=&#39;Title&#39; validationMode=&#39;any&#39;&#34;</span> <span style="color:#f92672">/&gt;</span>
-      <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;MSTeams_WebhookUrl&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">spec=</span><span style="color:#e6db74">&#34;text display=&#39;normal&#39; label=&#39;MS Teams Webhook Url&#39; validationMode=&#39;any&#39;&#34;</span> <span style="color:#f92672">/&gt;</span>
-    <span style="color:#f92672">&lt;/parameters&gt;</span>
-    <span style="color:#f92672">&lt;build-runners&gt;</span>     
-      <span style="color:#f92672">&lt;runner</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Send Teams Notification&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;jetbrains_powershell&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;parameters&gt;</span>
-          <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jetbrains_powershell_errorToError&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">/&gt;</span>
-          <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jetbrains_powershell_execution&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;PS1&#34;</span> <span style="color:#f92672">/&gt;</span>
-          <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jetbrains_powershell_noprofile&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">/&gt;</span>
-          <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jetbrains_powershell_script_code&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;![CDATA[$body = @{
-</span><span style="color:#75715e">    title= &#34;%MSTeams_MessageTitle%&#34;;
-</span><span style="color:#75715e">    text= &#34;%MSTeams_MessageContent%t&#34;
-</span><span style="color:#75715e">} | ConvertTo-Json
-</span><span style="color:#75715e">Invoke-WebRequest -Method Post -Uri &#34;%MSTeams_WebhookUrl%&#34; -Body $body -ContentType &#34;application/json&#34; -UseBasicParsing]]&gt;</span><span style="color:#f92672">&lt;/param&gt;</span>
-          <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jetbrains_powershell_script_mode&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;CODE&#34;</span> <span style="color:#f92672">/&gt;</span>
-          <span style="color:#f92672">&lt;param</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;teamcity.step.mode&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;default&#34;</span> <span style="color:#f92672">/&gt;</span>
-        <span style="color:#f92672">&lt;/parameters&gt;</span>
-      <span style="color:#f92672">&lt;/runner&gt;</span>
-    <span style="color:#f92672">&lt;/build-runners&gt;</span>
-    <span style="color:#f92672">&lt;requirements</span> <span style="color:#f92672">/&gt;</span>
-  <span style="color:#f92672">&lt;/settings&gt;</span>
-<span style="color:#f92672">&lt;/meta-runner&gt;</span>
-</code></pre></div><p>From now your meta runner should be available as a new runner type in build step configuration.</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;meta-runner name=&quot;Microsoft Teams Notification&quot;&gt;
+  &lt;description&gt;Send notification to MS Teams&lt;/description&gt;
+  &lt;settings&gt;
+    &lt;parameters&gt;
+      &lt;param name=&quot;MSTeams_MessageContent&quot; value=&quot;&quot; spec=&quot;text display='normal' label='Content' validationMode='any'&quot; /&gt;
+      &lt;param name=&quot;MSTeams_MessageTitle&quot; value=&quot;&quot; spec=&quot;text display='normal' label='Title' validationMode='any'&quot; /&gt;
+      &lt;param name=&quot;MSTeams_WebhookUrl&quot; value=&quot;&quot; spec=&quot;text display='normal' label='MS Teams Webhook Url' validationMode='any'&quot; /&gt;
+    &lt;/parameters&gt;
+    &lt;build-runners&gt;     
+      &lt;runner name=&quot;Send Teams Notification&quot; type=&quot;jetbrains_powershell&quot;&gt;
+        &lt;parameters&gt;
+          &lt;param name=&quot;jetbrains_powershell_errorToError&quot; value=&quot;true&quot; /&gt;
+          &lt;param name=&quot;jetbrains_powershell_execution&quot; value=&quot;PS1&quot; /&gt;
+          &lt;param name=&quot;jetbrains_powershell_noprofile&quot; value=&quot;true&quot; /&gt;
+          &lt;param name=&quot;jetbrains_powershell_script_code&quot;&gt;&lt;![CDATA[$body = @{
+    title= &quot;%MSTeams_MessageTitle%&quot;;
+    text= &quot;%MSTeams_MessageContent%t&quot;
+} | ConvertTo-Json
+Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing]]&gt;&lt;/param&gt;
+          &lt;param name=&quot;jetbrains_powershell_script_mode&quot; value=&quot;CODE&quot; /&gt;
+          &lt;param name=&quot;teamcity.step.mode&quot; value=&quot;default&quot; /&gt;
+        &lt;/parameters&gt;
+      &lt;/runner&gt;
+    &lt;/build-runners&gt;
+    &lt;requirements /&gt;
+  &lt;/settings&gt;
+&lt;/meta-runner&gt;
+</code></pre>
+<p>From now your meta runner should be available as a new runner type in build step configuration.</p>
 <p>
 <a href="meta_runner_as_build_step.jpg"><img  src="meta_runner_as_build_step.jpg" alt="New Runner Type"></a>
 </p>
 <p>This powershell-based meta runner has a very interesting feature. All parameters of this runner are passed as a string parameters to powershell cmdlet, hence the string interpolation should work. Simply speaking, any powershell expression wrapped in <strong>$()</strong> should be evaluated. Somebody can say that this can be used to Powershell Injection attacks but I think this is not the case as long as you control the environment. For me this is a really nice point of extensions which gives me a lot of possibilities. For example, if we want content of given file embedded in our message, we can achieve this by adding the following code in our message field:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">$(Get-Content <span style="color:#f92672">-File</span> file_with_additional_info.txt)
-</code></pre></div><p>I used this hack in my deployment notification to add changelog from file to the message. Complete configuration of build step based on our new meta runner can look as follows:</p>
+<pre><code class="language-powershell">$(Get-Content -File file_with_additional_info.txt)
+</code></pre>
+<p>I used this hack in my deployment notification to add changelog from file to the message. Complete configuration of build step based on our new meta runner can look as follows:</p>
 <p>
 <a href="teams_notification_configured.jpg"><img  src="teams_notification_configured.jpg" alt="Teams notification configuration"></a>
 </p>
