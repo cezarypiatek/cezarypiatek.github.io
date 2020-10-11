@@ -19,13 +19,12 @@ If your are looking for the analyzer that can help to you detect different issue
 - [Roslyn.Analyzers](https://www.nuget.org/packages/Roslyn.Analyzers/)
 - [Meziantou.Analyzer](https://www.nuget.org/packages/Meziantou.Analyzer/)
 - [Roslynator](https://www.nuget.org/packages/Roslynator.Analyzers/)
+- [Asyncify](https://www.nuget.org/packages/Asyncify/)
 
 Most of those packages are not strictly devoted to asynchronous programming so I made an exercise by going through the complete list of offered rules and listed only those related to async code int the following sections.
 
-{{< tabs tabTotal="6" tabID="1" tabName1="FxCopAnalyzers" tabName2="VSTHR" tabName3="AsyncFixer"  tabName4="Roslyn.Analyzers" tabName5="Meziantou.Analyzer" tabName6="Roslynator">}}
+{{< tabs tabTotal="7" tabID="1" tabName1="FxCopAnalyzers" tabName2="VS-Threading" tabName3="AsyncFixer"  tabName4="Roslyn.Analyzers" tabName5="Meziantou.Analyzer" tabName6="Roslynator" tabName7="Asyncify">}}
 {{< tab tabNum="1" >}}
-
-https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.FxCopAnalyzers/Microsoft.CodeAnalysis.FxCopAnalyzers.md
 
 | Id | Description | Default Severity | CodeFix |
 | -- | ----------- | ----------- | ---- |
@@ -34,11 +33,16 @@ https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysi
 [CA2012](https://docs.microsoft.com/visualstudio/code-quality/ca2012) | Use ValueTasks correctly |  Warning | No |
 [CA2247](https://docs.microsoft.com/visualstudio/code-quality/ca2247) | Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum|Warning | Yes 
 
+👉 [Full list of supported rules](https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.FxCopAnalyzers/Microsoft.CodeAnalysis.FxCopAnalyzers.md)
+
+👉 [Nuget package](https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/)
+
+👉 [Official website](https://github.com/dotnet/roslyn-analyzers#microsoftcodeanalysisfxcopanalyzers)
+
 {{< /tab >}}
 {{< tab tabNum="2" >}}
-https://github.com/DotNetAnalyzers/AsyncUsageAnalyzers - Now superseded by Microsoft/vs-threading
 
-https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
+
 
 
 | Id | Description | Default Severity |
@@ -67,12 +71,16 @@ https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md
 [VSTHRD114](https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD114.md) | Avoid returning null from a `Task`-returning method. |Warning
 [VSTHRD200](https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD200.md) | Use `Async` naming convention |  Warning
 
+👉 [Full list of supported rules](https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md)
+
+👉 [Nuget package](https://www.nuget.org/packages/Microsoft.VisualStudio.Threading.Analyzers/)
+
+👉 [Official website](https://github.com/microsoft/vs-threading)
+
 
 {{< /tab >}}
 {{< tab tabNum="3" >}}
 
-http://www.asyncfixer.com/
-https://www.nuget.org/packages/AsyncFixer#
 
 | Id | Description | Default Severity |
 | -- | ----------- | ----------- |
@@ -82,12 +90,16 @@ https://www.nuget.org/packages/AsyncFixer#
 | AsyncFixer04 | Fire & forget async call inside a using block | Warning  | 
 | AsyncFixer05 | Downcasting from a nested task to an outer task |  Warning  | 
 
+👉 [Full list of supported rules](https://www.nuget.org/packages/AsyncFixer)
 
-https://stackoverflow.com/questions/54139584/code-analyzer-which-warn-dev-to-use-async-methods
+👉 [Nuget package](https://www.nuget.org/packages/AsyncFixer)
+
+👉 [Official website](http://www.asyncfixer.com/)
+
 
 {{< /tab >}}
 {{< tab tabNum="4" >}}
-https://roslyn-analyzers.readthedocs.io/en/latest/repository.html#analyzers-in-the-repository
+
 
 | Id | Description | Default Severity |
 | -- | ----------- | ----------- |
@@ -95,11 +107,17 @@ https://roslyn-analyzers.readthedocs.io/en/latest/repository.html#analyzers-in-t
 | [ASYNC0002](https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/non-async-method-names-should-not-be-suffixed-with-async.html#non-async-method-names-should-not-be-suffixed-with-async) |	Non asynchronous method names shouldn't end with Async | Warning |
 | [ASYNC0003](https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/avoid-async-void-methods.html#avoid-async-void-methods) |	Avoid void returning asynchronous method |	Warning |
 | [ASYNC0004](https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/use-configure-await-false.html#use-configure-await-false) |	Use ConfigureAwait(false) on await expression |	Warning |
+
+👉 [Full list of supported rules](https://roslyn-analyzers.readthedocs.io/en/latest/repository.html#analyzers-in-the-repository)
+
+👉 [Nuget package](https://www.nuget.org/packages/Roslyn.Analyzers/)
+
+👉 [Official website](https://roslyn-analyzers.readthedocs.io/)
+
+
 {{< /tab >}}
 {{< tab tabNum="5" >}}
 
-https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
-https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs
 
 | Id | Description | Default Severity |
 | -- | ----------- | ----------- |
@@ -109,10 +127,17 @@ https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs
 | [MA0045](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md) | Do not use blocking call (make method async) | Info |
 | [MA0079](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md) | Flow a cancellation token using .WithCancellation() | Info |
 | [MA0080](https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md) | Specify a cancellation token using .WithCancellation() | Info |
+
+👉 [Full list of supported rules](https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs)
+
+👉 [Nuget package](https://www.nuget.org/packages/Meziantou.Analyzer/)
+
+👉 [Official website](https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm)
+
 {{< /tab >}}
 {{< tab tabNum="6" >}}
 
-https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md
+
 
 | Id | Description | Default Severity |
 | -- | ----------- | ----------- |
@@ -124,8 +149,24 @@ https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md
 | [RCS1229](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md) | Use async/await when necessary |	Info |
 
 
-https://github.com/hvanbakel/Asyncify-CSharp
-https://www.nuget.org/packages/Asyncify/
+👉 [Full list of supported rules](https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md)
+
+👉 [Nuget package](https://www.nuget.org/packages/Roslynator.Analyzers/)
+
+👉 [Official website](https://github.com/JosefPihrt/Roslynator)
+
+{{< /tab >}}
+{{< tab tabNum="7" >}}
+
+| Id | Description | Default Severity | CodeFix |
+| -- | ----------- | ----------- | ---- |
+| AsyncifyInvocation | This invocation could benefit from the use of Task async. | Warning | Yes |
+| AsyncifyVariable | This variable access could benefit from the use of Task async. | Warning | Yes |
+
+
+👉 [Nuget package](https://www.nuget.org/packages/Asyncify/)
+
+👉 [Official website](https://github.com/hvanbakel/Asyncify-CSharp)
 
 {{< /tab >}}
 {{< /tabs >}}
