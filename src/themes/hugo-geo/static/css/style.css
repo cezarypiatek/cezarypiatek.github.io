@@ -108,3 +108,48 @@ ins.play-gif{
 #profile-pic {
     margin-bottom: 100px;
 }
+
+
+a:hover,a:focus{
+    text-decoration: none;
+    outline: none;
+}
+.custom-tabs .tab-content{
+    border: 1px solid #ddd !important;
+    border-top: 0px solid transparent !important;
+    margin-top: 15px !important;
+    padding:12px !important;
+}
+.custom-tabs.tab{
+    padding-bottom: 60px !important;
+}
+.custom-tabs.tab li{
+    border-right: 1px solid #e0e0e0 !important;
+    border-top: 1px solid #e0e0e0 !important;
+}
+.custom-tabs.tab li a {
+    border-radius: 0 !important;
+    color: #232323 !important;
+    font-size: 15px !important;
+    margin-right:0 !important;
+    padding: 12px 30px !important;
+}
+.custom-tabs.tab li a:hover{
+    border-bottom:none !important;
+    background: #ebebeb !important;
+    color: #232323 !important;
+}
+.custom-tabs.tab li.active > a,
+.custom-tabs.tab .nav-tabs > li.active > a:focus,
+.custom-tabs.tab .nav-tabs > li.active > a:hover {
+    border: none !important;
+    border-top: 2px solid #dc005a !important;
+    color: #dc005a !important;
+}
+.custom-tabs.tab ul{
+    border-left: 1px solid #e0e0e0 !important;
+}
+.custom-tabs.tab .tab-content{
+    color:#5a5a5a !important;  
+    margin: 0 !important;
+}

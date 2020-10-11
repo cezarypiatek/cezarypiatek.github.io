@@ -1,0 +1,29 @@
+<div class="tab custom-tabs" role="tabpanel">
+	<ul class="nav nav-tabs" role="tablist">
+
+		{{ $tabTotal := .Get "tabTotal" }}
+		{{ range $i, $sequence := (seq $tabTotal) }}
+
+		{{ $tabID := $.Get "tabID" }}
+		{{ $tabName := (print "tabName" $sequence) }}
+		{{ $tabHREF := (print "tab" $tabID $sequence) }}
+
+		{{ if eq $sequence 1 }}
+		<li role="presentation" class="active">
+			<a data-toggle="tab" href="#{{ $tabHREF | urlize }}" role="tab" aria-controls="nav-home" aria-selected="true">{{ $.Get $tabName }}</a>
+		</li>
+		{{ else }}
+		<li>
+			<a data-toggle="tab" href="#{{ $tabHREF | urlize }}" role="tab" aria-controls="nav-home" aria-selected="false">{{ $.Get $tabName }}</a>
+		</li>
+		{{ end }}
+		{{ end }}
+
+	</ul>
+
+	<div class="tab-content">
+
+	{{ .Inner }}
+
+	</div>
+</div>
