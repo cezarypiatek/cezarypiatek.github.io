@@ -2,19 +2,19 @@
 title: "Async code smells and how to track them down with analyzers - Part II"
 description: "Which analyzer package should I use and how to configure it to avoid most common problems related to async/await."
 date: 2020-10-18T00:11:45+02:00
-tags : ["async", "C#", "roslyn", "analyzers"]
+tags : ["dotnet", "csharp", "async", "roslyn", "analyzers"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-This blog post continues the series which is a guide through the available on the market code analyzers and their possibilities. I'm trying to help you answer the question: **"Which analyzer package should I use and how to configure it to avoid problems related to async/await.?"**. In [the previous episode](http://localhost:1313/post/async-analyzers-p1/) I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area. Lucky you, they can be easily avoided with an appropriate analyzer - for every issue, I provide entries for `.editorconfig` that configure analyzers that can detect it. Links to NuGet packages as well as a complete list of analyzers' rules can be found in the previous article.
+This blog post continues the series which is a guide through the code analyzers available on the market, and their possibilities. I'm trying to help you answer the question: **"Which analyzer package should I use and how to configure it to avoid problems related to async/await?"**. In [the previous episode](http://localhost:1313/post/async-analyzers-p1/), I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area. Lucky you, they can be easily avoided with an appropriate analyzer - for every issue, I provide entries for `.editorconfig` that configure analyzers that can detect it. Links to NuGet packages, as well as a complete list of analyzers' rules, can be found in the previous article.
 
 ## Async Code Smells
 
 ### 8. Synchronous waits
 
-`async/await` keyword are viral which means if you want to await asynchronous expression and you are in the non-asyc method then you are forced to rewrite the whole call chain to asynchronous. The easier solution seems to be calling `Wait` or `Result` on the returned task but it's just asking for the troubles. This solution will cost you two threads for that execution or even result in a deadlock. This problem is more widely described in [
+`async/await` keywords are viral, which means if you want to await asynchronous expression and you are in the non-asyc method, then you are forced to rewrite the whole call chain to asynchronous. The easier solution seems to be calling `Wait` or `Result` on the returned task but it's just asking for trouble. This solution will cost you two threads for that execution, or even result in a deadlock. This problem is more widely described in [
 ASP.NET Core Diagnostic Scenarios - Asynchronous Programming](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#avoid-using-taskresult-and-taskwait). I highly recommend reading this article - you will find there even more asynchronous code smells.
 
 ❌ Wrong
@@ -59,16 +59,16 @@ dotnet_diagnostic.AsyncifyVariable.severity = error
 
 ```
 
-`Asyncify` package has very simple diagnostic - it only detects usage of `Task.Result` property. **However, it has a very powerful code fix which can automatically rewrite the whole synchronous call chain to the one that uses `async/await` keywords:**
+`Asyncify` package has a very simple diagnostic - it only detects usage of `Task.Result` property. **However, it has a very powerful code fix which can automatically rewrite the whole synchronous call chain to the one that uses `async/await` keywords:**
 
 ![Auto rewrite sync to async](rewrite_async.jpg)
 
 
-`vs-threading` has a similar code fix, unfortunately right now is totally broken [Issue #454](https://github.com/microsoft/vs-threading/issues/454)
+`vs-threading` has a similar code fix, unfortunately right now it is totally broken [Issue #454](https://github.com/microsoft/vs-threading/issues/454).
 
 ### 9. Missing ConfigureAwait(bool)
 
-By default, when we await asynchronous operation using the `await` keyword, the continuation is scheduled using captured SynchronizationContext or TaskScheduler. This comes with additional performance cost and might result in deadlock depends on the SynchronizationContext/TaskScheduler provided by the environment - especially in `WindowsForms`, `WPF` and old `ASP.NET` application (yes, ASP.NET Core is not using SynchronizationContext). `ConfigureAwait` method wraps returned task into `ConfiguredTaskAwaitable` structure which changes the logic of scheduling the continuation. By calling `ConfigureAwait(continueOnCapturedContext: false)` we are ensuring that the current context (if provided) is ignored while invoking the continuation. Setting `continueOnCapturedContext` parameter to `true` doesn't make any sense. If you want to go into the details about this subject I recommend reading [ConfigureAwait FAQ](https://devblogs.microsoft.com/dotnet/configureawait-faq/) by `Stephen Toub`.  
+By default, when we await asynchronous operation using the `await` keyword, the continuation is scheduled using captured SynchronizationContext or TaskScheduler. This comes with additional performance cost and might result in a deadlock, depending on the SynchronizationContext/TaskScheduler provided by the environment - especially in `WindowsForms`, `WPF` and old `ASP.NET` application (yes, ASP.NET Core is not using SynchronizationContext). `ConfigureAwait` method wraps returned task into `ConfiguredTaskAwaitable` structure which changes the logic of scheduling the continuation. By calling `ConfigureAwait(continueOnCapturedContext: false)` we are ensuring that the current context (if provided) is ignored while invoking the continuation. Setting `continueOnCapturedContext` parameter to `true` doesn't make any sense. If you want to go into the details about this subject, I recommend reading [ConfigureAwait FAQ](https://devblogs.microsoft.com/dotnet/configureawait-faq/) by `Stephen Toub`.  
 
 ❌ Wrong
 
@@ -112,7 +112,7 @@ All of the above analyzers offer appropriate code fixes. You can easily add "Con
 
 ### 10. Returning null from a Task-returning method
 
-Returning `null` value from the non-async method that declares `Task/Task<>` as a returning type results in `NullReferenceException` if somebody awaits the method invocation. To avoid that, you should always return the result from this kind of method using `Task.CompletedTask` or `Task.FromResult<T>(null)` helpers.
+Returning `null` value from a non-async method that declares `Task/Task<>` as a returning type results in `NullReferenceException` if somebody awaits the method invocation. To avoid that, you should always return the result from this kind of method using `Task.CompletedTask` or `Task.FromResult<T>(null)` helpers.
   
 ❌ Wrong
 
@@ -163,7 +163,7 @@ dotnet_diagnostic.RCS1210.severity = error
 dotnet_diagnostic.VSTHRD114.severity = error
 ```
 
-Right now, non of the analyzers is able to detect all three cases so we should go with one of two combinations: `RCS1210` with `VSTHRD114` or `RCS1210` with `MA0022`.
+Right now, none of the analyzers is able to detect all three cases, so we should go with one of two combinations: `RCS1210` with `VSTHRD114` or `RCS1210` with `MA0022`.
 
 
 ### 11. Asynchronous method names should end with Async
@@ -172,7 +172,7 @@ I'm not a fan of this rule. It adds unnecessary noise and reminds me of the [hun
 
 > `The .NET Guidelines for async methods includes that such methods should have names that include an "Async" suffix.` 
 
-However, I wasn't able to find an original document and there's nothing about it in the [Framework Design Guidelines - Naming Guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines). IMHO, this naming convention only makes sense when a class provides both synchronous and asynchronous versions of a given method - this is the case mostly for APIs that were created before the `async/await` era. Anyway, if this rule belongs to your coding standard you can easily spot all the violations with the following diagnostics: `VSTHRD200`, `ASYNC0001`, `RCS1046`.
+However, I wasn't able to find the original document and there's nothing about it in the [Framework Design Guidelines - Naming Guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines). IMHO, this naming convention only makes sense when a class provides both synchronous and asynchronous versions of a given method - this is the case mostly for APIs that were created before the `async/await` era. Anyway, if this rule belongs to your coding standard, you can easily spot all the violations with the following diagnostics: `VSTHRD200`, `ASYNC0001`, `RCS1046`.
 
 ❌ Wrong
 
@@ -206,7 +206,7 @@ dotnet_diagnostic.RCS1046.severity = error
 
 ### 12. Non asynchronous method names shouldn't end with Async
 
-This rule definitely makes more sense for me than the previous one. Adding `Async` suffix to the non-asynchronous method might cause confusion. I think this code smell is rather a result of careless refactoring or requirements changes rather than intended action.
+This rule definitely makes more sense for me than the previous one. Adding `Async` suffix to the non-asynchronous method might cause confusion. I think this code smell is rather a result of careless refactoring or requirement changes than intended action.
 
 ❌ Wrong
 
@@ -236,11 +236,11 @@ dotnet_diagnostic.RCS1047.severity = error
 
 ```
 
-It's worth pointing out that `VSTHRD200` is tracking both naming deviations, it simply checks if the `Async` suffix is applied correctly. It might be good if you need both rules, but if you just need only check if the `Async` suffix is not applied to synchronous methods then you should rather use `ASYNC0002` or `RCS1047`.
+It's worth pointing out that `VSTHRD200` is tracking both naming deviations, it simply checks if the `Async` suffix is applied correctly. It might be good if you need both rules, but if you just need to check if the `Async` suffix is not applied to synchronous methods, then you should rather use `ASYNC0002` or `RCS1047`.
 
 ### 13. Pass cancellation token
 
-Forgetting about passing the cancellation token might cost you a lot of trouble. Log running operation without a cancellation token can block the action of stopping the application or can result in thread starvation when there's a lot of canceled web requests. To avoid such problems you should always provide and pass a cancellation token to the methods that accept it, even if it's an optional parameter. `Meziantou.Analyzer` package implements two diagnostic which can detect missing cancellation token: `MA0032` is reported always when we skip cancellation token parameter and `MA0040` is reported only when there's a cancellation token in current scope that can be used. More details about those analyzers you can find in the article from analyzers author [
+Forgetting about passing the cancellation token might cost you a lot of trouble. Log running operation without a cancellation token can block the action of stopping the application or can result in thread starvation when there's a lot of canceled web requests. To avoid such problems, you should always provide and pass a cancellation token to the methods that accept it, even if it's an optional parameter. `Meziantou.Analyzer` package implements two diagnostics which can detect missing cancellation token: `MA0032` is reported always when we skip cancellation token parameter and `MA0040` is reported only when there's a cancellation token in current scope that can be used. You can find more details about those analyzers in the article from analyzers author [
 Detect missing CancellationToken using a Roslyn Analyzer](https://www.meziantou.net/detect-missing-cancellationtoken-using-a-roslyn-analyzer.htm).
 
 ❌ Wrong
