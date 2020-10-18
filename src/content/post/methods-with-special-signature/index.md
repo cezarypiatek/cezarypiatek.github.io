@@ -2,7 +2,7 @@
 title: "The Magical Methods in C#"
 description: "Methods with specific signature which have a special support in C#"
 date: 2020-06-30T00:08:00+02:00
-tags : ["c#", "protobuf", "linq"]
+tags : ["dotnet", "csharp", "protobuf", "linq"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true

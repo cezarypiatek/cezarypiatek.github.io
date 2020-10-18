@@ -2,7 +2,7 @@
 title: "Async code smells and how to track them down with analyzers - Part I"
 description: "Which analyzer package should I use and how to configure it to avoid most common problems related to async/await."
 date: 2020-10-11T00:11:45+02:00
-tags : ["async", "C#", "roslyn", "analyzers"]
+tags : ["dotnet", "csharp", "async", "roslyn", "analyzers"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true

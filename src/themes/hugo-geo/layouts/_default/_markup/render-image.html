@@ -1,4 +1,4 @@
-{{ if hasPrefix "_animated.png" .Destination}}
+{{ if strings.HasSuffix .Destination "_animated.png"}}
 <img  src="{{ .Destination | safeURL }}" alt="{{ .Text }}">
 {{ else }}
 <a href="{{ .Destination | safeURL }}"><img  src="{{ .Destination | safeURL }}" alt="{{ .Text }}"></a>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>csharp on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/csharp/</link>
+    <description>Recent content in csharp on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Oct 2020 00:11:45 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Async code smells and how to track them down with analyzers - Part II</title>
+      <link>https://cezarypiatek.github.io/post/async-analyzers-p2/</link>
+      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/async-analyzers-p2/</guid>
+      <description>This blog post continues the series which is a guide through the code analyzers available on the market, and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
+    </item>
+    
+    <item>
+      <title>Async code smells and how to track them down with analyzers - Part I</title>
+      <link>https://cezarypiatek.github.io/post/async-analyzers-p1/</link>
+      <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/async-analyzers-p1/</guid>
+      <description>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&amp;rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time.</description>
+    </item>
+    
+    <item>
+      <title>The Magical Methods in C#</title>
+      <link>https://cezarypiatek.github.io/post/methods-with-special-signature/</link>
+      <pubDate>Tue, 30 Jun 2020 00:08:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/methods-with-special-signature/</guid>
+      <description>There&amp;rsquo;s a certain set of special method signatures in C# which have particular support on the language level. Methods with those signatures allow for using a special syntax which has several benefits. For example, we can use them to simplify our code or create DSL to express a solution to our domain-specific problem in a much cleaner way. I came across those methods in different places, so I decided to create a blog post to summarize all my discoveries on this subject.</description>
+    </item>
+    
+    <item>
+      <title>Improving non-nullable reference types handling</title>
+      <link>https://cezarypiatek.github.io/post/better-non-nullable-handling/</link>
+      <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/better-non-nullable-handling/</guid>
+      <description>A few weeks ago I started using non-nullable reference types - a new C# language feature which was shipped with version 8.0. It wasn&amp;rsquo;t a completely new experience for me, because I was working before on projects that were heavily utilizing [NotNull] and [CanBeNull] Resharper annotations. The way how non-nullable types are handled by Roslyn seems to be a little more complex in comparison to Resharper - there are around 40 different diagnostics related to this area.</description>
+    </item>
+    
+  </channel>
+</rss>
