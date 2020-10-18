@@ -155,3 +155,7 @@ ins.play-gif{
 .addthis_inline_share_toolbox * {
     border: none!important;
 }
+
+#content{
+    max-height:100%!important;
+}
