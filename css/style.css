@@ -151,3 +151,11 @@ ins.play-gif{
     color:#5a5a5a !important;  
     margin: 0 !important;
 }
+
+.addthis_inline_share_toolbox * {
+    border: none!important;
+}
+
+#content{
+    max-height:100%!important;
+}

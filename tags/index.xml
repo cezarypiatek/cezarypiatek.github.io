@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Oct 2020 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 18 Oct 2020 00:11:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>analyzers</title>
       <link>https://cezarypiatek.github.io/tags/analyzers/</link>
-      <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
+      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/analyzers/</guid>
       <description></description>
@@ -23,25 +23,34 @@
     <item>
       <title>async</title>
       <link>https://cezarypiatek.github.io/tags/async/</link>
-      <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
+      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/async/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>C#</title>
-      <link>https://cezarypiatek.github.io/tags/c#/</link>
-      <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
+      <title>csharp</title>
+      <link>https://cezarypiatek.github.io/tags/csharp/</link>
+      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
       
-      <guid>https://cezarypiatek.github.io/tags/c#/</guid>
+      <guid>https://cezarypiatek.github.io/tags/csharp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnet</title>
+      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
+      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>roslyn</title>
       <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-      <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
+      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
@@ -53,6 +62,15 @@
       <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/aspcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>C#</title>
+      <link>https://cezarypiatek.github.io/tags/c#/</link>
+      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/c#/</guid>
       <description></description>
     </item>
     
@@ -89,15 +107,6 @@
       <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dapper/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnet</title>
-      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
       <description></description>
     </item>
     
