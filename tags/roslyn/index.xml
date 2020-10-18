@@ -6,7 +6,7 @@
     <description>Recent content in roslyn on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Oct 2020 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 18 Oct 2020 16:00:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/roslyn/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Async code smells and how to track them down with analyzers - Part II</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-p2/</link>
-      <pubDate>Sun, 18 Oct 2020 00:11:45 +0200</pubDate>
+      <pubDate>Sun, 18 Oct 2020 16:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p2/</guid>
       <description>This blog post continues the series which is a guide through the code analyzers available on the market, and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
