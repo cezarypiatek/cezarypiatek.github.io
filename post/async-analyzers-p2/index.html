@@ -187,7 +187,7 @@ ASP.NET Core Diagnostic Scenarios - Asynchronous Programming</a>. I highly recom
 }
 </code></pre>
 <p>✔️ Correct</p>
-<pre><code class="language-cs">void DoSomething()
+<pre><code class="language-cs">async Task DoSomething()
 {
     await Task.Delay(1);
     await Task.Delay(2);    

@@ -33,7 +33,7 @@ void DoSomething()
 
 ✔️ Correct
 ```cs
-void DoSomething()
+async Task DoSomething()
 {
     await Task.Delay(1);
     await Task.Delay(2);    
