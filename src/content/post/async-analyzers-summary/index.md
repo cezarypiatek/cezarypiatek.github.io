@@ -56,25 +56,21 @@ If you install analyzer packages manually using Nuget UI or CLI then you might n
 
 ## Configuring the rules
 
-You can have two options. You can leave the default settings as they are and progressively adjust it to your need or you can set them all to none and the increase the severity for the rules that you are interested in. You can easily set the severity for multiple rules at once using a context menu in the Solution Explorer:
-
-
-
-
-//TODO: Present how to set those rules.
-
-
-2. Calling synchronous method inside the async method 
-
-AsyncFixer02 - Detect usage of Thread.Sleep(), Task.Wait(), Task.WaitAll(), Task.WaitAny() or if there is the same method with `Async` suffix
-
-
 ```
+# AsyncFixer01: Unnecessary async/await usage
+dotnet_diagnostic.AsyncFixer01.severity = suggestion
+
+# RCS1174: Remove redundant async/await.
+dotnet_diagnostic.RCS1174.severity = suggestion
+
 # AsyncFixer02: Long-running or blocking operations inside an async method
 dotnet_diagnostic.AsyncFixer02.severity = error
 
-# VSTHRD103: Call async methods when in an async method
+# NOTE: Not working when method is async
 dotnet_diagnostic.VSTHRD103.severity = error
+
+# AsyncFixer03: Fire & forget async void methods
+dotnet_diagnostic.AsyncFixer03.severity = error
 
 # VSTHRD100: Avoid async void methods
 dotnet_diagnostic.VSTHRD100.severity = error
@@ -88,10 +84,14 @@ dotnet_diagnostic.VSTHRD107.severity = error
 # AsyncFixer04: Fire & forget async call inside a using block
 dotnet_diagnostic.AsyncFixer04.severity = error
 
+# RCS1229: Use async/await when necessary.
+dotnet_diagnostic.RCS1229.severity = error
+
 # VSTHRD110: Observe result of async calls
 dotnet_diagnostic.VSTHRD110.severity = error
-#-----------
-# 8. Synchronous waits
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = error
 
 # VSTHRD002: Avoid problematic synchronous waits
 dotnet_diagnostic.VSTHRD002.severity = error
@@ -105,27 +105,17 @@ dotnet_diagnostic.AsyncifyInvocation.severity = error
 # AsyncifyVariable: Use Task Async
 dotnet_diagnostic.AsyncifyVariable.severity = error
 
-
-#-----------
-# 9. Missing ConfigureAwait(bool)
-
-# ASYNC0004: Use ConfigureAwait(false) on await expression
-dotnet_diagnostic.ASYNC0004.severity = error
-
 # MA0004: Use .ConfigureAwait(false)
-dotnet_diagnostic.MA0004.severity = error
+dotnet_diagnostic.MA0004.severity = none
 
 # RCS1090: Call 'ConfigureAwait(false)'.
-dotnet_diagnostic.RCS1090.severity = error
+dotnet_diagnostic.RCS1090.severity = none
 
 # VSTHRD111: Use ConfigureAwait(bool)
-dotnet_diagnostic.VSTHRD111.severity = error
+dotnet_diagnostic.VSTHRD111.severity = none
 
 # CA2007: Consider calling ConfigureAwait on the awaited task
-dotnet_diagnostic.CA2007.severity = error
-
-#-----------
-# 10. Returning null from a Task-returning method
+dotnet_diagnostic.CA2007.severity = none
 
 # MA0022: Return Task.FromResult instead of returning null
 dotnet_diagnostic.MA0022.severity = error
@@ -136,51 +126,42 @@ dotnet_diagnostic.RCS1210.severity = error
 # VSTHRD114: Avoid returning a null Task
 dotnet_diagnostic.VSTHRD114.severity = error
 
-#-----------
-# 11. Asynchronous method names should end with Async
-
-# ASYNC0001: Asynchronous method names should end with Async
-dotnet_diagnostic.ASYNC0001.severity = error
-
 # VSTHRD200: Use "Async" suffix for async methods
-dotnet_diagnostic.VSTHRD200.severity = error
+dotnet_diagnostic.VSTHRD200.severity = none
 
 #RCS1046: Asynchronous method name should end with 'Async'.
-dotnet_diagnostic.RCS1046.severity = error
-
-
-#-----------
-# 12. Non asynchronous method names shouldn't end with Async
+dotnet_diagnostic.RCS1046.severity = none
 
 # VSTHRD200: Use "Async" suffix for async methods
-dotnet_diagnostic.VSTHRD200.severity = error
-
-# ASYNC0002: Non asynchronous method names should end with Async
-dotnet_diagnostic.ASYNC0002.severity = error
+dotnet_diagnostic.VSTHRD200.severity = none
 
 # RCS1047: Non-asynchronous method name should not end with 'Async'.
-dotnet_diagnostic.RCS1047.severity = error
-
-#-----------
-# 13. Pass cancellation token
+dotnet_diagnostic.RCS1047.severity = none
 
 # MA0040: Specify a cancellation token
-dotnet_diagnostic.MA0032.severity = error
+dotnet_diagnostic.MA0032.severity = suggestion
 
 # MA0040: Flow the cancellation token when available
 dotnet_diagnostic.MA0040.severity = error
 
-#-----------
-# 14. Using cancellation token with IAsyncEnumerable
-
 # MA0079: Use a cancellation token using .WithCancellation()
-dotnet_diagnostic.MA0079.severity = error
+dotnet_diagnostic.MA0079.severity = suggestion
 
 # MA0080: Use a cancellation token using .WithCancellation()
 dotnet_diagnostic.MA0080.severity = error
 ```
 
+Explanation:
+- Rules related to redundant `async/await` keywords marked as `suggestion` because are not critical and should be applied with caution.
+- All rules related to blocking calls are marked as `error`.
+- Rules detecting `async void` methods and lambdas as well as and un-awaited asynchronous operations configured with severity set to `error`.
+- Detecting missing `ConfigureAwait(false)` discarded because right now I'm not working on apps with SynchronizationContext. It should be applied with caution.
+- Returning null instead of Task set to `error`
+- Rules related to the async method naming convention discarded. Those conventions don't make any sense to me.
+- Rules verifying the flow of `CancellationToken` set to severity `error.
+- Rules enforcing the mandatory of `CancellationToken` set to `suggestion` - Satisfying that rule can result in introducing breaking changes in the API.
 
+You can have two options. You can leave the default settings as they are and progressively adjust it to your need or you can set them all to none and the increase the severity for the rules that you are interested in. You can easily set the severity for multiple rules at once using a context menu in the Solution Explorer:
 
 
 ## Summary
