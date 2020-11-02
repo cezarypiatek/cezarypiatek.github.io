@@ -8,7 +8,7 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-In the last two posts, I've described 14 different code smells related to the `async/await` keywords. Besides the problem description, I've also provided info about code analyzers that can detect and report a given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They contain also rules from other fields with predefined severity which might not be appropriate to your needs or you might not be interested in enforcing them at all. The fact that those analyzers come from different packages provided by different community members results in the duplicated effort (some rules were implemented more than once) and force us to spend more time researching then and deciding which one to use. **I wish there was a single analyzer package that contains all those rules related to async programming, and only them.** This will result in a better time disposition of people who works on the analyzers (in most cases, they are doing it in their spare time without getting paid for it), increasing analyzers' quality, and definitely simplify the consumption. Right now we need to somehow deal with what we have. To save you some time and to finally answer the question **"Which analyzer package should I use and how to configure it to avoid problems related to async/await?"** I decided to write this summary. 
+In the last two posts, I've described 14 different code smells related to the `async/await` keywords. Besides the problem description, I've also provided info about code analyzers that can detect and report given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They contain also rules from other fields with predefined severity which might not be appropriate to your needs, or you might not be interested in enforcing them at all. The fact that those analyzers come from different packages provided by different community members results in the duplicated effort (some rules were implemented more than once) and force us to spend more time researching then and deciding which one to use. **I wish there was a single analyzer package that contains all those rules related to async programming, and only them.** This will result in a better time disposition of people who work on the analyzers (in most cases, they are doing it in their spare time without getting paid for it), increasing analyzers' quality, and definitely simplifying the consumption. Right now we need to somehow deal with what we have. To save you some time and to finally answer the question **"Which analyzer package should I use and how to configure it to avoid problems related to async/await?"** I decided to write this summary. 
 
 ## Installing the analyzers
 
@@ -35,21 +35,21 @@ Here are the entries for `csproj` that add async analyzers to your project.
 </ItemGroup>
 ```
 
-If you install analyzer packages manually using Nuget UI or CLI then you might notice that some package references are decorated with
-`PrivateAssets` as well as `IncludeAssets` properties. This is due to the fact that packages were marked as [DevelopmentDependency](https://docs.microsoft.com/en-us/nuget/reference/nuspec#developmentdependency). **I think the lack of those attributes is rather an overlook and you can safely add them for analyzer references which are missing them** - they do not provide any runtime dependencies which will be required to run your app or library. **If you do not add it, those packages became your dependencies which is rather not expected:**
+If you install analyzer packages manually using Nuget UI or CLI, then you might notice that some package references are decorated with
+`PrivateAssets` as well as `IncludeAssets` properties. This is due to the fact that packages were marked as [DevelopmentDependency](https://docs.microsoft.com/en-us/nuget/reference/nuspec#developmentdependency). **I think the lack of those attributes is rather an overlooking and you can safely add them for analyzer references which are missing them** - they do not provide any runtime dependencies required to run your app or library. **If you do not add them, those packages become your dependencies, which is rather not expected:**
 
 ![Nuget package with references to other analyzers](package_dependencies.jpg)
 
 Justification of the choice:
 
 - I decided to go with `AsyncFixture`, `VS-Threading` and  `Meziantou.Analyzer`. Those packages combined together cover all rules which are critical in my opinion.
-- I took additionally `Asyncify` package because contains very helpful refactoring which can rewrite whole call chain from sync to async. Similar code fix is provided by `VS-Threading` but it's broken right now [Issue#454](https://github.com/microsoft/vs-threading/issues/454) - I hope somebody will fix it soon.
-- I decided to not use `Roslyn.Analyzers` package because the maintainer is not responding to Github Issues and PRs. No activity since 2017 so the project looks dead to me.
+- I additionally took `Asyncify` package, because it contains a very helpful refactoring which can rewrite a whole call chain from sync to async. Similar code fix is provided by `VS-Threading` but it's broken right now [Issue#454](https://github.com/microsoft/vs-threading/issues/454) - I hope somebody fixes it soon.
+- I decided not to use `Roslyn.Analyzers` package because the maintainer is not responding to Github Issues and PRs. No activity since 2017, so the project looks dead to me.
 
 
 ## Configuring the rules
 
-Analyzer's rules can be configured using `ruleset` file or `.editorconfig` which is recently gaining the popularity and it seems to be currently recommended option. Here's the excerpt from my `.editorconfig` file with a configuration of async related rules from the chosen packages:
+Analyzer rules can be configured using `ruleset` file or `.editorconfig`, which is recently gaining popularity and it seems to be currently recommended option. Here's the excerpt from my `.editorconfig` file with a configuration of async related rules from the chosen packages:
 
 ```
 # AsyncFixer01: Unnecessary async/await usage
@@ -132,17 +132,20 @@ Justification of the choice:
 
 - Rules related to redundant `async/await` keywords marked as `suggestion` because they are not critical and they should be applied with caution.
 - All rules related to blocking calls are marked as `error`.
-- Rules detecting `async void` methods and lambdas as well as and un-awaited asynchronous operations configured with severity set to `error`.
+- Rules detecting `async void` methods and lambdas, as well as and un-awaited asynchronous operations, configured with severity set to `error`.
 - Detecting missing `ConfigureAwait(false)` discarded because right now I'm not working on apps with SynchronizationContext. It should be applied with caution.
-- Returning null value as a Task set to `error` - awaiting always results with runtime exception.
+- Returning null value as a Task set to `error` - awaiting always results in runtime exception.
 - Rules related to the async method naming convention discarded. Those conventions don't make any sense to me. Adding `Async` suffix to every asynchronous method smells like a `Hungarian notation`. I've also encountered a perfectly fine situation when the `Async` suffix was added to a method that doesn't return `Task`.
 - Rules verifying the flow of `CancellationToken` set to severity `error`.
-- Rules enforcing the mandatory of `CancellationToken` set to `suggestion`.  Satisfying that rule can result in introducing breaking changes in the API - sometimes it might not be welcomed.
+- Rules enforcing the mandatory of `CancellationToken` set to `suggestion`.  Satisfying this rule can result in introducing breaking changes in the API - sometimes it may not be welcomed.
 - I've also marked as error the `AsyncFixer05: Downcasting from a nested task to an outer task.` which can also be a source of troubles.
 
 ## Call to action
 
-If you read my two previous articles about async analyzers and you haven't installed them so far then I highly encourage you to do so. You can start by taking my configuration from this article (`NuGet` as well as `.editorconfig`) and give a try. You don't need to right away commit then to the repository - just install, apply config, and try to build your solution. I'm very curious how many code smells did you detect with this setup. How many of them might cause real troubles in the future but they haven't revealed so far on the production? How many false-positives have been reported? Please let me know in the comment section. Thanks for sharing your experience.
+If you've read my two previous articles about async analyzers and you haven't installed them so far, then I highly encourage you to do so. You can start by taking my configuration from this article (`NuGet` as well as `.editorconfig`) and give a try. You don't need to right away commit them to the repository - just install, apply config, and try to build your solution. I'm very curious how many code smells did you detect with this setup. How many of them might cause real troubles in the future but they haven't revealed themselves so far on the production? How many false-positives have been reported? Please let me know in the comment section. Thanks for sharing your experience.
+
+- [Async code smells and how to track them down with analyzers - Part I](/post/async-analyzers-p1/)
+- [Async code smells and how to track them down with analyzers - Part II](/post/async-analyzers-p2/)
 
 
 ## Summary
