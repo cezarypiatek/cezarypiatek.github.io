@@ -8,7 +8,7 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-In the last two posts I've described 14 different code smells related to the `async/await` keywords. Besides the problem description I've also provided info about code analyzers which are able to detect and report a given issue. Those analyzer comes from few different packages that are not strictly devoted to the asynchronous programming area. They contain also rules from other fields with predefined severity which might not be appropriate to your needs or you might not be interested in enforcing them at all. The fact that those analyzers comes from different packages provided by different community members results in duplicated effort (some rules were implemented more than once) and force us to spend more time researching then and deciding which one to use. **I wish there was a single analyzer package that contains all those rules related to async programming, and only them.** This will result in better time disposition of people who works on the analyzers (in most cases, they are doing it in their spare time without getting paid for it), increasing analyzers quality and definitely simplify the consumption. Right now we need to somehow deal with what we have. To save you some time and to finally answer the question **"Which analyzer package should I use and how to configure it to avoid problems related to async/await?"** I decided to write this summary. 
+In the last two posts, I've described 14 different code smells related to the `async/await` keywords. Besides the problem description, I've also provided info about code analyzers that can detect and report a given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They contain also rules from other fields with predefined severity which might not be appropriate to your needs or you might not be interested in enforcing them at all. The fact that those analyzers come from different packages provided by different community members results in the duplicated effort (some rules were implemented more than once) and force us to spend more time researching then and deciding which one to use. **I wish there was a single analyzer package that contains all those rules related to async programming, and only them.** This will result in a better time disposition of people who works on the analyzers (in most cases, they are doing it in their spare time without getting paid for it), increasing analyzers' quality, and definitely simplify the consumption. Right now we need to somehow deal with what we have. To save you some time and to finally answer the question **"Which analyzer package should I use and how to configure it to avoid problems related to async/await?"** I decided to write this summary. 
 
 ## Installing the analyzers
 
@@ -130,12 +130,12 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 
 Justification of the choice:
 
-- Rules related to redundant `async/await` keywords marked as `suggestion` because are not critical and should be applied with caution.
+- Rules related to redundant `async/await` keywords marked as `suggestion` because they are not critical and they should be applied with caution.
 - All rules related to blocking calls are marked as `error`.
 - Rules detecting `async void` methods and lambdas as well as and un-awaited asynchronous operations configured with severity set to `error`.
 - Detecting missing `ConfigureAwait(false)` discarded because right now I'm not working on apps with SynchronizationContext. It should be applied with caution.
 - Returning null value as a Task set to `error` - awaiting always results with runtime exception.
-- Rules related to the async method naming convention discarded. Those conventions don't make any sense to me. Adding `Aysnc` suffix to every asynchronous method smells like a `hungarian notation`. I've also encounter a perfectly fine situation when `Async` suffix was added to method that doesn't return `Task`.
+- Rules related to the async method naming convention discarded. Those conventions don't make any sense to me. Adding `Async` suffix to every asynchronous method smells like a `Hungarian notation`. I've also encountered a perfectly fine situation when the `Async` suffix was added to a method that doesn't return `Task`.
 - Rules verifying the flow of `CancellationToken` set to severity `error`.
 - Rules enforcing the mandatory of `CancellationToken` set to `suggestion`.  Satisfying that rule can result in introducing breaking changes in the API - sometimes it might not be welcomed.
 - I've also marked as error the `AsyncFixer05: Downcasting from a nested task to an outer task.` which can also be a source of troubles.
