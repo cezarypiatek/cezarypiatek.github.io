@@ -12,7 +12,7 @@ In the last two posts I've described 14 different code smells related to the `as
 
 ## Installing the analyzers
 
-Here's the entries for `csproj` that add async analyzers to your project.
+Here are the entries for `csproj` that add async analyzers to your project.
 
 ```xml
 <ItemGroup>
@@ -28,15 +28,7 @@ Here's the entries for `csproj` that add async analyzers to your project.
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.50" >
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="3.0.0">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -48,25 +40,25 @@ If you install analyzer packages manually using Nuget UI or CLI then you might n
 
 ![Nuget package with references to other analyzers](package_dependencies.jpg)
 
+Justification of the choice:
 
-> I decided to not use `Roslyn.Analyzers` package because the maintainer is not responding to Github Issues and PRs. No activity since 2017 so the project looks dead to me.
-
-
+- I decided to go with `AsyncFixture`, `VS-Threading` and  `Meziantou.Analyzer`. Those packages combined together cover all rules which are critical in my opinion.
+- I took additionally `Asyncify` package because contains very helpful refactoring which can rewrite whole call chain from sync to async. Similar code fix is provided by `VS-Threading` but it's broken right now [Issue#454](https://github.com/microsoft/vs-threading/issues/454) - I hope somebody will fix it soon.
+- I decided to not use `Roslyn.Analyzers` package because the maintainer is not responding to Github Issues and PRs. No activity since 2017 so the project looks dead to me.
 
 
 ## Configuring the rules
+
+Analyzer's rules can be configured using `ruleset` file or `.editorconfig` which is recently gaining the popularity and it seems to be currently recommended option. Here's the excerpt from my `.editorconfig` file with a configuration of async related rules from the chosen packages:
 
 ```
 # AsyncFixer01: Unnecessary async/await usage
 dotnet_diagnostic.AsyncFixer01.severity = suggestion
 
-# RCS1174: Remove redundant async/await.
-dotnet_diagnostic.RCS1174.severity = suggestion
-
 # AsyncFixer02: Long-running or blocking operations inside an async method
 dotnet_diagnostic.AsyncFixer02.severity = error
 
-# NOTE: Not working when method is async
+# VSTHRD103: Call async methods when in an async method
 dotnet_diagnostic.VSTHRD103.severity = error
 
 # AsyncFixer03: Fire & forget async void methods
@@ -84,14 +76,8 @@ dotnet_diagnostic.VSTHRD107.severity = error
 # AsyncFixer04: Fire & forget async call inside a using block
 dotnet_diagnostic.AsyncFixer04.severity = error
 
-# RCS1229: Use async/await when necessary.
-dotnet_diagnostic.RCS1229.severity = error
-
 # VSTHRD110: Observe result of async calls
 dotnet_diagnostic.VSTHRD110.severity = error
-
-# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
-dotnet_diagnostic.CS4014.severity = error
 
 # VSTHRD002: Avoid problematic synchronous waits
 dotnet_diagnostic.VSTHRD002.severity = error
@@ -108,9 +94,6 @@ dotnet_diagnostic.AsyncifyVariable.severity = error
 # MA0004: Use .ConfigureAwait(false)
 dotnet_diagnostic.MA0004.severity = none
 
-# RCS1090: Call 'ConfigureAwait(false)'.
-dotnet_diagnostic.RCS1090.severity = none
-
 # VSTHRD111: Use ConfigureAwait(bool)
 dotnet_diagnostic.VSTHRD111.severity = none
 
@@ -120,23 +103,14 @@ dotnet_diagnostic.CA2007.severity = none
 # MA0022: Return Task.FromResult instead of returning null
 dotnet_diagnostic.MA0022.severity = error
 
-# RCS1210: Return Task.FromResult instead of returning null.
-dotnet_diagnostic.RCS1210.severity = error
-
 # VSTHRD114: Avoid returning a null Task
 dotnet_diagnostic.VSTHRD114.severity = error
 
 # VSTHRD200: Use "Async" suffix for async methods
 dotnet_diagnostic.VSTHRD200.severity = none
 
-#RCS1046: Asynchronous method name should end with 'Async'.
-dotnet_diagnostic.RCS1046.severity = none
-
 # VSTHRD200: Use "Async" suffix for async methods
 dotnet_diagnostic.VSTHRD200.severity = none
-
-# RCS1047: Non-asynchronous method name should not end with 'Async'.
-dotnet_diagnostic.RCS1047.severity = none
 
 # MA0040: Specify a cancellation token
 dotnet_diagnostic.MA0032.severity = suggestion
@@ -149,19 +123,26 @@ dotnet_diagnostic.MA0079.severity = suggestion
 
 # MA0080: Use a cancellation token using .WithCancellation()
 dotnet_diagnostic.MA0080.severity = error
+
+#AsyncFixer05: Downcasting from a nested task to an outer task.
+dotnet_diagnostic.AsyncFixer05.severity = error
 ```
 
-Explanation:
+Justification of the choice:
+
 - Rules related to redundant `async/await` keywords marked as `suggestion` because are not critical and should be applied with caution.
 - All rules related to blocking calls are marked as `error`.
 - Rules detecting `async void` methods and lambdas as well as and un-awaited asynchronous operations configured with severity set to `error`.
 - Detecting missing `ConfigureAwait(false)` discarded because right now I'm not working on apps with SynchronizationContext. It should be applied with caution.
-- Returning null instead of Task set to `error`
-- Rules related to the async method naming convention discarded. Those conventions don't make any sense to me.
-- Rules verifying the flow of `CancellationToken` set to severity `error.
-- Rules enforcing the mandatory of `CancellationToken` set to `suggestion` - Satisfying that rule can result in introducing breaking changes in the API.
+- Returning null value as a Task set to `error` - awaiting always results with runtime exception.
+- Rules related to the async method naming convention discarded. Those conventions don't make any sense to me. Adding `Aysnc` suffix to every asynchronous method smells like a `hungarian notation`. I've also encounter a perfectly fine situation when `Async` suffix was added to method that doesn't return `Task`.
+- Rules verifying the flow of `CancellationToken` set to severity `error`.
+- Rules enforcing the mandatory of `CancellationToken` set to `suggestion`.  Satisfying that rule can result in introducing breaking changes in the API - sometimes it might not be welcomed.
+- I've also marked as error the `AsyncFixer05: Downcasting from a nested task to an outer task.` which can also be a source of troubles.
 
-You can have two options. You can leave the default settings as they are and progressively adjust it to your need or you can set them all to none and the increase the severity for the rules that you are interested in. You can easily set the severity for multiple rules at once using a context menu in the Solution Explorer:
+## Call to action
+
+If you read my two previous articles about async analyzers and you haven't installed them so far then I highly encourage you to do so. You can start by taking my configuration from this article (`NuGet` as well as `.editorconfig`) and give a try. You don't need to right away commit then to the repository - just install, apply config, and try to build your solution. I'm very curious how many code smells did you detect with this setup. How many of them might cause real troubles in the future but they haven't revealed so far on the production? How many false-positives have been reported? Please let me know in the comment section. Thanks for sharing your experience.
 
 
 ## Summary
