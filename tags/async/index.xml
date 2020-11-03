@@ -6,10 +6,19 @@
     <description>Recent content in async on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Oct 2020 16:00:45 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 03 Nov 2020 10:00:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/async/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Async code smells and how to track them down with analyzers - Summary</title>
+      <link>https://cezarypiatek.github.io/post/async-analyzers-summary/</link>
+      <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/async-analyzers-summary/</guid>
+      <description>In the last two posts, I&amp;rsquo;ve described 14 different code smells related to the async/await keywords. Beside the problem description, I&amp;rsquo;ve also provided info about code analyzers that can detect and report given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They also contain rules from other fields with predefined severity, which might not be appropriate to your needs, or you might not be interested in enforcing them at all.</description>
+    </item>
     
     <item>
       <title>Async code smells and how to track them down with analyzers - Part II</title>
