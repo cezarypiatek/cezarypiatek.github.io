@@ -236,7 +236,6 @@ async Task DoAsync(Stream file, byte[] buffer)
 # AsyncFixer02: Long-running or blocking operations inside an async method
 dotnet_diagnostic.AsyncFixer02.severity = error
 
-# NOTE: Not working when method is async
 # VSTHRD103: Call async methods when in an async method
 dotnet_diagnostic.VSTHRD103.severity = error
 ```
