@@ -89,3 +89,12 @@ enableEmoji=true
     noClasses = true
     style = "monokai"
     tabWidth = 4
+    [markup.goldmark]
+        [markup.goldmark.extensions]
+            definitionList = true
+            footnote = true
+            linkify = true
+            strikethrough = true
+            table = true
+            taskList = true
+            typographer = true
