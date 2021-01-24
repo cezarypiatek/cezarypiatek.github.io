@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to completely automate continuous integration and release management of visual studio extensions.">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/develop-vsextension-with-github-actions\/"
+            },
+          "headline" : "Github Actions for Visual Studio Extension developers",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2021-01-24",
+          "dateModified" : "2021-01-03",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/develop-vsextension-with-github-actions\/splashscreen.jpg",
+          "description": "How to completely automate continuous integration and release management of visual studio extensions."
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2021-01-24">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/">	
+	<meta property="og:title" content="Github Actions for Visual Studio Extension developers">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/splashscreen.jpg">
+    <meta property="og:description" content="How to completely automate continuous integration and release management of visual studio extensions.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="dotnetcore">
+    
+    <meta property="og:tags" content="VisualStudio">
+    
+    <meta property="og:tags" content="Github">
+    
+    <meta property="og:tags" content="GithubActions">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/splashscreen.jpg">
+	<meta property="twitter:title" content="Github Actions for Visual Studio Extension developers">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to completely automate continuous integration and release management of visual studio extensions.">
+
+	<meta name="keywords" value="dotnet, dotnetcore, VisualStudio, Github, GithubActions" />
+    <meta name="generator" content="Hugo 0.74.3" />
+    <title>Github Actions for Visual Studio Extension developers &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Github Actions for Visual Studio Extension developers</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>24 January 2021</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>I discovered the power of Roslyn over three years ago and since then I&rsquo;ve developed <a href="https://marketplace.visualstudio.com/publishers/54748ff9-45fc-43c2-8ec5-cf7912bc3b84">three Visual Studio extensions</a> and <a href="https://github.com/cezarypiatek?tab=repositories&amp;q=analyzer&amp;type=source&amp;language=">a couple of code analyzers</a>. Because I work on those tools only in my free time, the word &ldquo;time&rdquo; is a key here, so automation really matters. So far I&rsquo;ve been using <a href="https://www.appveyor.com/">AppVeyor</a> for building and testing my extensions. However, I&rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</p>
+<h2 id="automate-cicd-for-vsix">Automate CI/CD for VSIX<a href="#automate-cicd-for-vsix" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<p>The official <a href="https://docs.github.com/en/free-pro-team@latest/actions">GithubActions documentation</a> together with <a href="https://github.com/actions/starter-workflows/">actions/starter-workflows</a> repository are really good starting points. Unfortunately, I didn&rsquo;t find there a complete example workflow for building an publishing Visual Studio extensions. After around 10 hours of googling and experimenting, I managed to assemble two complete workflows: one for Pull Request verification and one for automatic release.</p>
+<h2 id="problems">Problems<a href="#problems" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h3 id="you-cant-build-with-dotnet-build">You can&rsquo;t build with <code>dotnet build</code><a href="#you-cant-build-with-dotnet-build" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<p>After a few hours of struggling with the compilation, I discovered that you can&rsquo;t build a solution that contains VSIX project with <code>dotnet build</code> even if all your projects are in the new <code>csproj2017</code> format (<a href="https://github.com/dotnet/sdk/issues/12421">Issue#12421</a>). This kind of solution needs to be built with the <code>msbuild</code> directly. The windows based virtual environment for Github Actions has pre-installed msbuild. Unfortunately, the path to <code>msbuild</code> is not added automatically to the PATH environment variable and we need to somehow figure out where it is installed. This can be solved with a little bit of scripting and <a href="https://docs.microsoft.com/en-us/visualstudio/install/tools-for-managing-visual-studio-instances?view=vs-2019">vswhere</a> or we can use a dedicated Github Action for that:</p>
+<pre><code class="language-yml">- name: Setup MSBuild.exe
+  uses: microsoft/setup-msbuild@v1.0.2
+  with:
+    vs-version: '[16.8,16.9)'
+</code></pre>
+<p>After that you can invoke <code>msbuild</code> without providing a path for it:</p>
+<pre><code class="language-yml">- name: Build extension
+  run: msbuild $env:SolutionPath /t:Rebuild
+  env: 
+    DeployExtension: False
+</code></pre>
+<p>I also passed <code>DeployExtension</code> environment variable to the build step. Without it, the build might take quite long or even timeout while executing <code>DeployVsixExtensionFiles</code> build task.</p>
+<h3 id="whats-the-next-version">What&rsquo;s the next version<a href="#whats-the-next-version" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<p>When I was building my extension using <code>AppVeyor</code> service, I hardcoded extension version in the build script using the <code>{Major}.{Minor}.{BuildNumber}</code> format. So my first approach was to move that mechanism to GithubActions and it was quite easy to implement by taking leverage of environment variables (you can read more about in <a href="../../post/setting-assembly-and-package-metadata/">Setting assembly and nuget package metadata in .NET Core</a>):</p>
+<pre><code class="language-yml">build-extension:
+  runs-on: windows-latest
+  env: 
+    Version: '1.21.${{ github.run_number }}'
+</code></pre>
+<p>However, this approach has a few disadvantages. Every time before releasing a version with new features I needed to manually modify build script by updating <code>{Major}.{Minor}</code> part, which resulted with additional commit. It was required every single time (yes, I forgot about it a couple of times) and this unnecessarily pollutes the git history. Such disadvantage requires more attention and work during releases, so I started looking for a better solution. There&rsquo;s plenty of different tools that allow bumping up version based on the git tag, but I got a really good inspiration when I discovered the <a href="https://github.com/semantic-release/semantic-release">semantic-release</a> project. Those tools allow for generating next version which obeys <a href="https://semver.org/">semantic versioning specification</a> based on the <a href="https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines">Angular convention commits</a>. I didn&rsquo;t use that notation - and not sure if I want to - but this gave me an idea for a new Github Action that could read the latest version tag from the repository and bump it up based on the predefined message patterns. The outcome is available as <a href="https://github.com/cezarypiatek/NextVersionGeneratorAction">NextVersionGeneratorAction</a> project and it can be easily used and adjusted to our own message conventions as follows:</p>
+<pre><code class="language-yml">- name: Calculate next version
+  uses: cezarypiatek/NextVersionGeneratorAction@0.4
+  with:
+    major-pattern: 'BREAKING CHANGES:'
+    minor-pattern: 'FEATURE:'
+    patch-pattern: '.*'
+    output-to-env-variable: 'Version'
+</code></pre>
+<h3 id="how-to-set-the-version-for-vsix-file">How to set the version for VSIX file<a href="#how-to-set-the-version-for-vsix-file" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<p>The version of VSIX file is not taken from the build configuration because it is defined in external file <code>source.extension.vsixmanifest</code> and it must be set separately. We can update version number in manifest file using <code>PowerShell</code> script step:</p>
+<pre><code class="language-yml">- name: Set version for VSIX
+  run: |
+    $manifestPath = 'src\MappingGenerator.Vsix\bin\Release\MappingGenerator.vsix'
+    $manifestXml = [xml](Get-Content $manifestPath -Raw)
+    $manifestXml.PackageManifest.Metadata.Identity.Version = $env:Version
+    $manifestXml.save($manifestPath)
+</code></pre>
+<p>However, repeating this script in every repository might be quite tedious, so I created a Github Action dedicated for that job and it can be used as follows:</p>
+<pre><code class="language-yml">- name: Set version for Visual Studio Extension
+  uses: cezarypiatek/VsixVersionAction@1.0
+  with:
+    version: ${{ env.Version }}
+    vsix-manifest-file: 'src\MappingGenerator.Vsix\source.extension.vsixmanifest'
+</code></pre>
+<p>The source code for the action is available on Github <a href="https://github.com/cezarypiatek/VsixVersionAction">cezarypiatek/VsixVersionAction</a></p>
+<h3 id="how-to-publish-extension-to-the-marketplace">How to publish extension to the Marketplace<a href="#how-to-publish-extension-to-the-marketplace" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<p>So far I was publishing my extensions by manually downloading artifact with VSIX file from the build server to my disc and then uploading it to the Marketplace via <a href="https://marketplace.visualstudio.com/">marketplace.visualstudio.com</a> website. That operation is also time-consuming and may raise security concerns. Happily, this can be automated with <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line?view=vs-2019">VsixPublisher</a> which is also pre-installed on the Windows based virtual environment for Github Actions. However, with <code>VsixPublisher</code> we have the same problem as with <code>msbuild</code> - the tool&rsquo;s executable path is not available in the <code>PATH</code> environment variable and we need to hardcode it or write a script that would be able to automatically locate it. To simplify things, I created <a href="https://github.com/cezarypiatek/VsixPublisherAction">VsixPublisherAction</a> which makes the publishing super easy:</p>
+<pre><code class="language-yml">- name: Publish extension to Marketplace
+  uses: cezarypiatek/VsixPublisherAction@0.1
+  with:
+    extension-file: 'src\MappingGenerator.Vsix\bin\Release\MappingGenerator.vsix'
+    publish-manifest-file: 'src\MappingGenerator.Vsix\publishManifest.json'
+    personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}
+</code></pre>
+<p>Beside the <code>*.vsix</code> file, we need also the <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line?view=vs-2019#publishmanifest-file">publishManifest file</a> and <a href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token">Personal Access Token</a> which should be stored in <a href="https://docs.github.com/en/actions/reference/encrypted-secrets">Repository Encrypted Secrets</a>.</p>
+<h2 id="pr-workflow">PR Workflow<a href="#pr-workflow" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<p>This workflow is responsible for verifying Pull Request. It should build and test code with changes introduced by PR and should produce artifacts that can be used for manual testing - I very often ask the issue reporter to verify if a new proposed version is working according to the expectations. This workflow should be triggered every time a new PR is created, or the existing one is updated with newer changes. My typical workflow for PR looks as follows:</p>
+<ol>
+<li>Set up the build environment
+<ul>
+<li>Setup .NET Core</li>
+<li>Setup MsBuild</li>
+</ul>
+</li>
+<li>Calculate next version number</li>
+<li>Build the extension
+<ul>
+<li>Restore NuGet packages</li>
+<li>Set version for VSIX</li>
+<li>Invoke the <code>msbuild</code> to build the solution</li>
+</ul>
+</li>
+<li>Execute Test suite</li>
+<li>Collect artifacts to allow manual verification</li>
+</ol>
+<p>This workflow can be automated with Github Actions using the following script:</p>
+<pre><code class="language-yml">name: pr-verification
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build-extension:
+    runs-on: windows-latest
+    env: 
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+        RepositoryUrl: 'https://github.com/${{ github.repository }}'
+        RepositoryBranch: '${{ github.ref }}'
+        SourceRevisionId: '${{ github.sha }}'
+        VersionSuffix: 'pr-${{github.event.number}}.${{ github.run_number }}'
+        Configuration: Release
+        SolutionPath: src\MappingGenerator.sln
+        VsixManifestPath: src\MappingGenerator.Vsix\source.extension.vsixmanifest
+    steps:
+    - uses: actions/checkout@v2   
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        vs-version: '[16.8,16.9)'
+    - name: Restore NuGet Packages
+      run: nuget restore $env:SolutionPath
+    - name: Calculate next version
+      uses: cezarypiatek/NextVersionGeneratorAction@0.4
+      with:
+        minor-pattern: '\bAdd\b'
+        patch-pattern: '.*'
+        output-to-env-variable: 'VersionPrefix'
+    - name: Set version for Visual Studio Extension
+      uses: cezarypiatek/VsixVersionAction@1.0
+      with:
+        version: '${{env.VersionPrefix}}+${{env.VersionSuffix}}'
+        vsix-manifest-file: ${{ env.VsixManifestPath }}
+    - name: Build extension
+      run: msbuild $env:SolutionPath /t:Rebuild
+      env: 
+        DeployExtension: False
+    - name: Test extension
+      run: dotnet test --no-build --verbosity normal $env:SolutionPath
+    - name: Collect artifacts - VSIX
+      uses: actions/upload-artifact@v2
+      with:
+        name: MappingGenerator-VSIX
+        path: src\MappingGenerator.Vsix\bin\Release\MappingGenerator.vsix
+    - name: Collect artifacts - nugets
+      uses: actions/upload-artifact@v2
+      with:
+        name: MappingGenerator-Nugets
+        path: '**/MappingGenerator*.nupkg'
+</code></pre>
+<p><strong>REMARKS</strong>:</p>
+<ol>
+<li>
+<p>Packages generated by the PR builds should be marked as <code>pre-release</code>, so I&rsquo;m storing the next version number in <code>VersionPrefix</code> environment variable, and there&rsquo;s also <code>VersionSuffix</code> variable defined as <code>pr-${{github.event.number}}.${{ github.run_number }}</code>. An example version produced with this approach can be <code>1.22.1-pr-163.55</code>. The <code>msbuild</code> can handle the <code>VersionPrefix</code> and <code>VersionSuffix</code> variables, however in the build step for setting <code>VSIX</code> version we need to define it explicitly <code>'${{env.VersionPrefix}}+${{env.VersionSuffix}}'</code>.</p>
+</li>
+<li>
+<p>At the beginning of the build script I defined <code>RepositoryUrl</code>, <code>RepositoryUrl</code>, and <code>SourceRevisionId</code>environment variables. Thanks to that <code>NuGet package</code> and <code>dotnet assemblies</code> will contain information about the repository address, branch name, and commit identifier which was used to produce those artifacts.</p>
+</li>
+</ol>
+<p>To make it work correctly, the project files can&rsquo;t contain the definition of any of those variables. You can read more about that in <a href="../../post/setting-assembly-and-package-metadata/">Setting assembly and NuGet package metadata in .NET Core</a>.</p>
+<h2 id="release-workflow">Release Workflow<a href="#release-workflow" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<p>I needed another workflow that would be triggered when the PR is merged, or the commit is directly pushed to the <code>master</code> branch. Release workflow is an extended version of the PR-Verification, and beside building and testing my extension, it should also publish the extension to the Visual Studio Marketplace and the Nuget feed:</p>
+<ol>
+<li>Set up the build environment
+<ul>
+<li>Setup .NET Core</li>
+<li>Setup MsBuild</li>
+</ul>
+</li>
+<li>Calculate next version number</li>
+<li>Build the extension
+<ul>
+<li>Restore NuGet packages</li>
+<li>Set version for VSIX</li>
+<li>Invoke the <code>msbuild</code> to build the solution</li>
+</ul>
+</li>
+<li>Execute Test suite</li>
+<li>Generate release note</li>
+<li>Create github release
+<ul>
+<li>Create the new release with git tag</li>
+<li>Upload artifacts (<code>vsix</code> and <code>nupkg</code> files) to the newly create release</li>
+</ul>
+</li>
+<li>Upload the Visual Studio Extension to Visual Studio Marketplace</li>
+<li>Upload NuGet packages</li>
+</ol>
+<p>This workflow can be automated with Github Actions using the following script:</p>
+<pre><code class="language-yml">name: release
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - '!src/.editorconfig'
+jobs:
+  build-extension:
+    runs-on: windows-latest
+    env: 
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
+        RepositoryUrl: 'https://github.com/${{ github.repository }}'
+        RepositoryBranch: '${{ github.ref }}'
+        SourceRevisionId: '${{ github.sha }}'
+        Configuration: Release
+        SolutionPath: src\MappingGenerator.sln
+        VsixManifestPath: src\MappingGenerator.Vsix\source.extension.vsixmanifest
+        VsixPath: src\MappingGenerator.Vsix\bin\Release\MappingGenerator.vsix
+        VsixPublishManifestPath: src\MappingGenerator.Vsix\publishManifest.json
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2   
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+      id: MsBuildSetup
+      with:
+        vs-version: '[16.8,16.9)'
+    - name: Restore NuGet Packages
+      run: nuget restore $env:SolutionPath
+    - name: Calculate next version
+      uses: cezarypiatek/NextVersionGeneratorAction@0.4
+      with:
+        minor-pattern: '\bAdd\b'
+        patch-pattern: '.*'
+        output-to-env-variable: 'Version'
+    - name: Set version for Visual Studio Extension
+      uses: cezarypiatek/VsixVersionAction@1.0
+      with:
+        version: ${{ env.Version }} 
+        vsix-manifest-file: ${{ env.VsixManifestPath }}
+    - name: Build extension
+      run: msbuild $env:SolutionPath /t:Rebuild
+      env: 
+        DeployExtension: False
+    - name: Test extension
+      run: dotnet test --no-build --verbosity normal $env:SolutionPath
+    - name: Generate release note
+      run: |
+        git fetch --prune --unshallow
+        $commitLog = git log &quot;$(git describe --tags --abbrev=0)..HEAD&quot; --pretty=format:&quot;- %s&quot;
+        &quot;What's new: `r`n`r`n$([string]::Join(&quot;`r`n&quot;,$commitLog))&quot; | Out-File release_note.md -Encoding utf8
+    - name: Create Github Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.Version }}
+        release_name:  ${{ env.Version }}
+        body_path: release_note.md
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset - VSIX
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ env.VsixPath }}
+        asset_name: MappingGenerator.vsix
+        asset_content_type: binary/octet-stream
+    - name: Upload Release Asset - Nuget
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: src\MappingGenerator\bin\Release\MappingGenerator.${{ env.Version }}.nupkg
+        asset_name: MappingGenerator.${{ env.Version }}.nupkg
+        asset_content_type: binary/octet-stream
+    - name: Publish extension to Marketplace
+      uses: cezarypiatek/VsixPublisherAction@0.1
+      with:
+        extension-file: ${{ env.VsixPath }}
+        publish-manifest-file: ${{ env.VsixPublishManifestPath }}
+        personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}      
+    - name: Publish extension to Nuget
+      run: |
+        dotnet nuget push src\MappingGenerator\bin\Release\MappingGenerator.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+</code></pre>
+<p><strong>REMARKS:</strong></p>
+<ol>
+<li>
+<p>In the trigger&rsquo;s configuration, I defined the <code>paths</code> option. Thanks to that, the workflow will be triggered only when there are changes that affect the binaries. Updating documentation files (especially <code>README.md</code>) will not result in releasing a new version.</p>
+</li>
+<li>
+<p>This workflow creates the official packages, so this time I&rsquo;m storing the next version in the <code>Version</code> environment variable.</p>
+</li>
+<li>
+<p>All tokens required for packages publishing are stored in <a href="https://docs.github.com/en/actions/reference/encrypted-secrets">Repository Encrypted Secrets</a>.</p>
+</li>
+</ol>
+    
+		
+		<hr/>  
+		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
+		<div class="addthis_inline_share_toolbox"></div>
+		
+	</article>
+	
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/async-analyzers-summary/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/async-analyzers-summary/splashscreen_hud85bee5dadbc1fc45560823c855f89ae_1501025_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Summary">
+								<div class="card-body">
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Summary</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/async-analyzers-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/async-analyzers-p2/splashscreen_hu73bdedc1b07de211d2ee5d014a251d3c_195136_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part II">
+								<div class="card-body">
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part II</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/async-analyzers-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/async-analyzers-p1/splashscreen_hu7e472247c1e29739f650fc1c19431356_89562_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Part I">
+								<div class="card-body">
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Part I</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+</main>
+
+<div id="bottom-nav" class="text-center center-block">
+	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
+</div>
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/yaml.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/powershell.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "dotnet,dotnetcore,VisualStudio,Github,GithubActions"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>

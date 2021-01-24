@@ -6,10 +6,55 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Nov 2020 10:00:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 24 Jan 2021 10:00:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>dotnet</title>
+      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
+      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnetcore</title>
+      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
+      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Github</title>
+      <link>https://cezarypiatek.github.io/tags/github/</link>
+      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GithubActions</title>
+      <link>https://cezarypiatek.github.io/tags/githubactions/</link>
+      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/githubactions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VisualStudio</title>
+      <link>https://cezarypiatek.github.io/tags/visualstudio/</link>
+      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/visualstudio/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>analyzers</title>
@@ -35,24 +80,6 @@
       <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/csharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnet</title>
-      <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnetcore</title>
-      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
-      <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
       <description></description>
     </item>
     
