@@ -155,7 +155,7 @@ ins.play-gif{
 }
 .custom-tabs.tab li a {
     border-radius: 0 !important;
-    color: #232323 !important;
+    /* color: #232323 !important; */
     font-size: 15px !important;
     margin-right:0 !important;
     padding: 12px 30px !important;
@@ -206,4 +206,9 @@ ins.play-gif{
 .pagination>li>a, .pagination>li>span
 {
     background:transparent!important;
+}
+
+#content table
+{
+    color: white;
 }
