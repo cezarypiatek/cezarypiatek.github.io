@@ -42,7 +42,7 @@ If you install analyzer packages manually using Nuget UI or CLI, then you may no
 
 Justification of the choice:
 
-- I decided to go with `AsyncFixture`, `VS-Threading` and  `Meziantou.Analyzer`. Those packages combined together cover all rules critical in my opinion.
+- I decided to go with `AsyncFixer`, `VS-Threading` and  `Meziantou.Analyzer`. Those packages combined together cover all rules critical in my opinion.
 - I additionally took `Asyncify` package, because it contains a very helpful refactoring that can rewrite a whole call chain from sync to async. Similar code fix is provided by `VS-Threading` but it's broken right now [Issue#454](https://github.com/microsoft/vs-threading/issues/454) - I hope somebody fixes it soon.
 - I decided not to use `Roslyn.Analyzers` package because the maintainer is not responding to Github Issues and PRs. No activity since 2017, so the project looks dead to me.
 

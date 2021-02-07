@@ -167,7 +167,8 @@
 			<br />
 		
 		<p>Recently, I&rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with <code>NSubstitute</code>. Of course, my answer was <code>&quot;Yes&quot;</code> but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked <a href="https://nuget.org">nuget.org</a> and <a href="https://marketplace.visualstudio.com">Visual Studio extensions marketplace</a>, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for <code>NSubstitute</code> but for other mocking frameworks, just like <code>Moq</code> or <code>Fake It Easy</code>, too.  In this blog post, I will show you how these tools are helping to avoid common problems with mocking and boost your productivity by saving you a lot of typing. Presented examples will be mostly based on the <code>Moq</code> library because it&rsquo;s my favoring mocking package.</p>
-<h2 id="moving-runtime-problems-to-design-time">Moving runtime problems to design time<a href="#moving-runtime-problems-to-design-time" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="moving-runtime-problems-to-design-time"><a href="#moving-runtime-problems-to-design-time">Moving runtime problems to design time  🔗&#xFE0E;</a></h2>
+
 <p>The idea behind mocking is to create in runtime a type that inherits from the mocked type and behaves in a way that we specify in mock configuration. The most common problem with mocking is that not everything related to mock preparation can be verified in design time, and we need to compile and run our test in order to verify if the mock was constructed correctly. For example, from the semantical and syntactical point of view, it&rsquo;s possible to write a code that creates mock of sealed class or for a non-overridable method (sealed or non-abstract, or non-virtual). However, when we run a test that uses such kind of mock we&rsquo;ve got the exception:</p>
 <p>
 <a href="non_overridable_exception.jpg"><img  src="non_overridable_exception.jpg" alt="Exception when non-overridable used in setup"></a>
@@ -189,7 +190,8 @@
 <a href="sonfigure_severity_level.jpg"><img  src="sonfigure_severity_level.jpg" alt="Configure roslyn rule severity level"></a>
 </p>
 <p>If the <code>Moq</code> is not your mocking framework of choice don&rsquo;t worry, there&rsquo;s certainly a similar analyzer for your library. I was able to also find analyzers such as <a href="https://www.nuget.org/packages/NSubstitute.Analyzers.CSharp/">NSubstitute.Analyzers.CSharp</a> and <a href="https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp/">FakeItEasy.Analyzer.CSharp</a></p>
-<h2 id="less-typing-to-create-a-mock">Less typing to create a mock<a href="#less-typing-to-create-a-mock" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="less-typing-to-create-a-mock"><a href="#less-typing-to-create-a-mock">Less typing to create a mock  🔗&#xFE0E;</a></h2>
+
 <p>Besides all those traps with mocking rules, preparing mocks involves a lot of typing which is a dummy work. For example, to mock a method with three parameters (without carrying for their values) we need to write a code like this:</p>
 <pre><code class="language-csharp">var mock = new Mock&lt;ISampleInterface&gt;();
 mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;int&gt;(), It.IsAny&lt;decimal&gt;(), It.IsAny&lt;string&gt;()))
@@ -209,9 +211,38 @@ mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;int&gt;(), It.IsAny&lt;decimal&gt;(
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -263,34 +294,6 @@ mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;int&gt;(), It.IsAny&lt;decimal&gt;(
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

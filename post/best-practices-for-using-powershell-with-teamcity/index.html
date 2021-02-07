@@ -169,7 +169,8 @@
 			<br />
 		
 		<p>In the last few projects that I&rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results. For the more complicated and non-standard activities, I&rsquo;ve been using <code>PowerShell</code> scripts. TeamCity has really good support for running <code>PowerShell</code> thanks to dedicated build step. However, it can cause some troubles if it&rsquo;s not configured correctly. After coming across the same mistakes and issues over and over again, I finally decided to write this article that shows how to use <code>PowerShell</code> properly, together with <code>TeamCity</code>. I hope you will find it useful.</p>
-<h2 id="proper-error-handling">Proper error handling<a href="#proper-error-handling" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="proper-error-handling"><a href="#proper-error-handling">Proper error handling  🔗&#xFE0E;</a></h2>
+
 <p>The most common problem is that TeamCity disallows Powershell errors, at least with the default configuration. Event if PowerShell script fails, it&rsquo;s still considered as successful by TeamCity. This can have a serious ramification because the errors can occur unnoticed for months and can cost you a lot when you finally spot them. This is caused by default setting for <code>Format stderr output as</code> in PowerShell build step template, which is set to <code>warning</code>.  In order to propagate PowerShell errors to the TeamCity UI (mark the build step as failed), this should be set to <code>error</code> as the following screenshot shows.</p>
 <p>
 <a href="error_handling_for_ps.jpg"><img  src="error_handling_for_ps.jpg" alt=""></a>
@@ -195,7 +196,8 @@
 $ErrorActionPreference = &quot;Stop&quot;
 </code></pre>
 <p>This can also be configured for each CmdLet separately without the need to setup it globally. You can read more about CmdLet common parameters <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_commonparameters?view=powershell-6">here</a></p>
-<h2 id="protect-yourself-from-accidental-errors">Protect yourself from accidental errors<a href="#protect-yourself-from-accidental-errors" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="protect-yourself-from-accidental-errors"><a href="#protect-yourself-from-accidental-errors">Protect yourself from accidental errors  🔗&#xFE0E;</a></h2>
+
 <p>Besides the error handling, it&rsquo;s good to write your scripts in a manner that protects you from accidental errors that can be very hard to detect. At first, you should turn all your functions into real <code>Cmdlets</code>. In order to do that, you should always define parameters with <code>param()</code> block and decorate it with <code>[CmdletBinding()]</code> parameter:</p>
 <pre><code class="language-powershell">function Verb-Noun {
     [CmdletBinding()]
@@ -214,7 +216,8 @@ $ErrorActionPreference = &quot;Stop&quot;
 <p>Always use a decent IDE to create and edit your PowerShell scripts.</p>
 </blockquote>
 <p>I&rsquo;m currently working in VSCode with PowerShell plugin which seems to be more powerful than <code>PowerShell ISE</code>. It ships with a rich set of snippets, it is able to detect unused variables, allows to track method usages and provides a really nice experience in terms of debugging scripts. It also has integrated <code>PSScriptAnalyzer</code> module which helps to detect many issues related to the code correctness and quality. You can read about all features <a href="https://code.visualstudio.com/docs/languages/powershell">here</a>.</p>
-<h2 id="using-scrips">Using scrips<a href="#using-scrips" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="using-scrips"><a href="#using-scrips">Using scrips  🔗&#xFE0E;</a></h2>
+
 <p>The TeamCity PowerShell build step allows to run PowerShell scripts provided as inline source code as well as script files. For project specific scripts you should always use script file options. This allows you to keep your script under version control system together with the project source code and make it easier to edit your scripts (any IDE is better than textarea on the build configuration step page). Of course, you can keep your &lsquo;inline-scripts&rsquo; versioned when you are using <a href="https://confluence.jetbrains.com/display/TCD10/Storing+Project+Settings+in+Version+Control">Versioned settings</a> but it&rsquo;s very tedious to edit PowerShell scripts embedded inside the <code>XML files</code>.</p>
 <p>For project non-specific scripts, when you want to re-use scripts between different projects, you have at least two options:</p>
 <ul>
@@ -222,18 +225,49 @@ $ErrorActionPreference = &quot;Stop&quot;
 <li>use an inline script and extract common meta-runner</li>
 </ul>
 <p>The second option allows you to create a nice configuration UI for your scripts. However, versioning will be not possible anymore (as far as I know). You can find an example how to create meta-runner in my <a href="../../post/integrating-teamcity-with-msteams/">previous article</a>.</p>
-<h2 id="always-remember-about-clean-code">Always remember about Clean Code<a href="#always-remember-about-clean-code" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-<p>You should always treat your CI/CD scripts equally as your project source code in terms of quality. <strong>They should be versioned, reviewed and automatically tested</strong>. It doesn&rsquo;t matter that these scripts are not ran on production. They are helping you to properly prepare production artifacts and if they are of poor quality, you cannot expect good quality outcomes. Even if the code is written using scripting language - you should always remember about obeying <a href="https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM">Clean Code</a> rules. For PowerShell, there is a really good <a href="https://github.com/PoshCode/PowerShellPracticeAndStyle">Best Practices and Style Guide</a> which you can find as an invaluable source of knowledge how to create scripts that are easy to read, understand and maintain. That may be surprising for some people, but CI/CD scripts can be unit-tested. PowerShell has its own unit test framework - <a href="https://github.com/pester/Pester">Pester</a> which is very well supported by <a href="https://code.visualstudio.com/docs/languages/powershell#_pester">VSCode</a>. Pester helps to quickly create tests with <code>BDD</code> approach which can also serve as living documentation. By applying these rules, you will avoid a lot of problems and you will make your CI/CD more bulletproof.</p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="always-remember-about-clean-code"><a href="#always-remember-about-clean-code">Always remember about Clean Code  🔗&#xFE0E;</a></h2>
+
+<p>You should always treat your CI/CD scripts equally as your project source code in terms of quality. <strong>They should be versioned, reviewed and automatically tested</strong>. It doesn&rsquo;t matter that these scripts are not run on production. They are helping you to properly prepare production artifacts and if they are of poor quality, you cannot expect good quality outcomes. Even if the code is written using scripting language - you should always remember about obeying <a href="https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM">Clean Code</a> rules. For PowerShell, there is a really good <a href="https://github.com/PoshCode/PowerShellPracticeAndStyle">Best Practices and Style Guide</a> which you can find as an invaluable source of knowledge how to create scripts that are easy to read, understand and maintain. That may be surprising for some people, but CI/CD scripts can be unit-tested. PowerShell has its own unit test framework - <a href="https://github.com/pester/Pester">Pester</a> which is very well supported by <a href="https://code.visualstudio.com/docs/languages/powershell#_pester">VSCode</a>. Pester helps to quickly create tests with <code>BDD</code> approach which can also serve as living documentation. By applying these rules, you will avoid a lot of problems and you will make your CI/CD more bulletproof.</p>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>Together with TeamCity and PowerSHell you can build very powerful and flexible CI/CD system but without understanding basic concepts and mechanisms you can&rsquo;t obtain maximum benefits. Default configuration can be a trap, especially in terms of error handling and reporting. Besides the proper configuration there are additional tools and guidelines for PowerShell that you can leverage in order to make your process highly maintainable and less error-prone. Using decent IDE and applying programming rules and best practices for script development can save you a lot of troubles.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -285,34 +319,6 @@ $ErrorActionPreference = &quot;Stop&quot;
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

@@ -177,7 +177,8 @@
 <li>Use <code>FOR JSON PATH</code> to simplify fetching complex objects from database</li>
 </ul>
 </blockquote>
-<h2 id="resilient-to-refactoring">Resilient to refactoring<a href="#resilient-to-refactoring" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="resilient-to-refactoring"><a href="#resilient-to-refactoring">Resilient to refactoring  🔗&#xFE0E;</a></h2>
+
 <p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns&rsquo; names match object fields&rsquo; name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
 <pre><code class="language-sql">SELECT 
     UserID AS [Id], 
@@ -207,7 +208,8 @@ FROM
 <p>
 <a href="resharper_copy_FQN.jpg"><img  src="resharper_copy_FQN.jpg" alt=""></a>
 </p>
-<h2 id="no-magic-numbers">No magic numbers<a href="#no-magic-numbers" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="no-magic-numbers"><a href="#no-magic-numbers">No magic numbers  🔗&#xFE0E;</a></h2>
+
 <p>Sometimes there is a need to use some sort of constant values in the SQL query (especially in the conditions). Queries with those cryptic values are very hard to review or even can cause a problem with understanding for the author himself after a while:</p>
 <pre><code class="language-cs">public class Repository {
    private static readonly string GetActiveUsersListQuery = @$&quot;
@@ -242,7 +244,8 @@ WHERE
 }
 </code></pre>
 <p>Those constants must be a string type even if they are numeric values, otherwise the compiler generates invocation of <code>System.String.Format()</code> instead of creating a single string.</p>
-<h2 id="bridge-the-gap-between-relational-and-object-oriented-models">Bridge the gap between relational and object-oriented models<a href="#bridge-the-gap-between-relational-and-object-oriented-models" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="bridge-the-gap-between-relational-and-object-oriented-models"><a href="#bridge-the-gap-between-relational-and-object-oriented-models">Bridge the gap between relational and object-oriented models  🔗&#xFE0E;</a></h2>
+
 <p>Very often posts advertising micro ORMs present fairly simple examples where database data structures match almost 1-1 the C# structures. However, the reality is quite different and the discrepancy between relational and object-oriented model might be expensive and result with a large amount of code responsible for fetching and transforming data.</p>
 <pre><code class="language-cs">public class User
 {
@@ -483,9 +486,38 @@ FOR JSON PATH
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -537,34 +569,6 @@ FOR JSON PATH
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

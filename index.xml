@@ -81,7 +81,7 @@
       
       <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
       <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
-The Problem One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
+The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
     </item>
     
     <item>
@@ -207,8 +207,8 @@ The Problem One of the first problems that I came across was that I had a lot of
       <pubDate>Sat, 09 Feb 2019 19:59:11 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/public-speaking/</guid>
-      <description>Upcoming currently nothing in the bucket list
-Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 124. spotkanie Warszawskiej Grupy .NET [2019-02-19] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 115. spotkanie Wrocławskiej Grupy .NET [2019-01-15] &amp;quot;Tworzenie łatwych w utrzymaniu oraz stabilnych testów UI&amp;quot; - KraQA #36 [2018-12-04] &amp;quot;Programisto, rozwijaj się!&amp;quot; - Dzień IT Politechniki Krakowskiej [2018-11-07] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn.</description>
+      <description>Upcoming 🔗&amp;#xFE0E;currently nothing in the bucket list
+Past 🔗&amp;#xFE0E; [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 124. spotkanie Warszawskiej Grupy .NET [2019-02-19] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 115. spotkanie Wrocławskiej Grupy .NET [2019-01-15] &amp;quot;Tworzenie łatwych w utrzymaniu oraz stabilnych testów UI&amp;quot; - KraQA #36 [2018-12-04] &amp;quot;Programisto, rozwijaj się!&amp;quot; - Dzień IT Politechniki Krakowskiej [2018-11-07] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn.</description>
     </item>
     
     <item>
@@ -299,7 +299,7 @@ Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania pr
       <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</guid>
-      <description>The challenge Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:</description>
+      <description>The challenge 🔗&amp;#xFE0E;Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
     </item>
     
     <item>
@@ -389,9 +389,9 @@ Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania pr
       <pubDate>Tue, 03 Oct 2017 20:17:23 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/projects/</guid>
-      <description>Mapping Generator &amp;ldquo;AutoMapper&amp;rdquo; like, Roslyn based, code fix provider that allows to generate mapping code in design time.
- Article: Generate mapping code with Roslyn code fix provider. Repository: cezarypiatek/MappingGenerator Nuget: MappingGenerator Visual Studio Extension: MappingGenerator   CsharpMacros A simple template base system of macros for C# that can be executed in design time.
- Article: CSharp Macros - let the Roslyn type for you Repository: cezarypiatek/CsharpMacros Nuget: CsharpMacros Visual Studio Extension: CsharpMacros   Tellurium A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.</description>
+      <description>Mapping Generator 🔗&amp;#xFE0E;&amp;ldquo;AutoMapper&amp;rdquo; like, Roslyn based, code fix provider that allows to generate mapping code in design time.
+ Article: Generate mapping code with Roslyn code fix provider. Repository: cezarypiatek/MappingGenerator Nuget: MappingGenerator Visual Studio Extension: MappingGenerator   CsharpMacros 🔗&amp;#xFE0E;A simple template base system of macros for C# that can be executed in design time.
+ Article: CSharp Macros - let the Roslyn type for you Repository: cezarypiatek/CsharpMacros Nuget: CsharpMacros Visual Studio Extension: CsharpMacros   Tellurium 🔗&amp;#xFE0E;A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.</description>
     </item>
     
     <item>
@@ -428,7 +428,7 @@ Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania pr
       
       <guid>https://cezarypiatek.github.io/post/livetemplates/</guid>
       <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
-Template Explorer You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
+Template Explorer 🔗&amp;#xFE0E;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
     </item>
     
   </channel>

@@ -170,12 +170,14 @@
 		
 		<p>When it comes to writing maintainable UI test there always appears the term of <code>Page Object Pattern</code>. For those who are not familiar with <code>Page Object</code>, it&rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler <a href="https://martinfowler.com/bliki/PageObject.html">here</a>.</p>
 <p>Page Objects can be prepared by programmers who participate in development of tested application. This approach is very efficient because the programmer knows best the implementation details, how particular elements were built and how to interact with them. Such Page Object can be then used by testers to automate test cases. I think this is the most effective way of preparing automatic UI tests because everybody does what they know best. A testing person is excused from the need of getting to know how the tested app is built, how the used technology works and they can focus entirely on automatig test cases using high level testing api.</p>
-<h2 id="introduction-of-feature-object">Introduction of Feature Object<a href="#introduction-of-feature-object" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="introduction-of-feature-object"><a href="#introduction-of-feature-object">Introduction of Feature Object  🔗&#xFE0E;</a></h2>
+
 <blockquote>
 <p>A page object wraps a HTML page, or fragment, with an application-specific API, allowing you to manipulate page elements without digging around in the HTML.</p>
 </blockquote>
 <p>This is a quote from Martin Fowler&rsquo;s Page Object description. We can take it a little further by applying the <code>divide and conquer</code> rule and introduce a new kind of object that represents a single type of building element appearing repeatedly in tested application. These can be objects such as lists, tables, trees, forms etc. I call this kind of wrapper a <code>Feature Object Pattern</code>. This approach has a few benefits. It allows to program interaction with given type of element only once and reuse it everywhere in the tests. We can use <code>Feature Object</code> to compose Page Object of them by adding contextual integration. When a given type of element changes, it only requires modificaion in one place. One of the positive side effects is that it enforces on the programmers to build the application in a consistent way (all list, tables, forms etc should be constructed and behave consistently). This is a counterpart of the component approach in application development. Each component (or set of components) should be reflected by <code>Feature Object</code>. Before we start writing a UI test, we should perform analysis by identifying the application building elements and prepare the appropriate <code>Feature Object</code> for them. Similar to Page Object, in order to make the process more efficient, they should be prepared by the developer.</p>
-<h2 id="implementing-feature-objects">Implementing Feature Objects<a href="#implementing-feature-objects" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="implementing-feature-objects"><a href="#implementing-feature-objects">Implementing Feature Objects  🔗&#xFE0E;</a></h2>
+
 <p>I&rsquo;ve made an attempt of implementing generic <code>Feature Objects</code> for elements such as forms, lists, tables and trees in my Selenium wrapper called <a href="https://github.com/cezarypiatek/Tellurium">Tellurium</a> which is available on Github.  A sample usage of these <code>Feature Objects</code> is described on the project&rsquo;s wiki in the following sections:</p>
 <ul>
 <li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-lists">Working with lists</a></li>
@@ -202,7 +204,8 @@ loginForm.SetFieldValueByLabel(&quot;First name&quot;, &quot;John&quot;);
 loginForm.SetFieldValueByLabel(&quot;Last name&quot;, &quot;Doe&quot;);
 loginForm.ClickOnElementWithText(&quot;Register&quot;);
 </code></pre>
-<h2 id="building-page-object-from-feature-objects">Building Page Object from Feature Objects<a href="#building-page-object-from-feature-objects" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="building-page-object-from-feature-objects"><a href="#building-page-object-from-feature-objects">Building Page Object from Feature Objects  🔗&#xFE0E;</a></h2>
+
 <p>Having <code>Feature Objects</code>representing forms and lists, we can use them to build <code>Page Object</code> for user list with filters:</p>
 <pre><code class="language-csharp">public class UserListPage()
 {
@@ -261,16 +264,46 @@ public void should_be_able_to_filter_users()
   Assert.AreEquals(5, userList.GetNumberOfUsers())
 }
 </code></pre>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>If you want to create maintainable UI Tests, you should definitely utilize <code>Page Object Pattern</code> in conjunction with <code>Feature Object Pattern</code>. In order to make the process of preparing UI Tests more effective, the people responsible for automating test cases should be supported by programmers developing tested application and building appropriate Page Objects and Feature Objects. If you don&rsquo;t know how to start building Feature Objects you can check the implementations of <a href="https://github.com/cezarypiatek/Tellurium/blob/6bd0673a04464f67ea6a41700c5d3419a9e028ce/Src/MvcPages/WebPages/WebTree.cs">WebTree</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebList.cs">WebList</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebTable.cs">WebTable</a> and <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebForms/WebForm.cs">WebForm</a> from <a href="https://github.com/cezarypiatek/Tellurium">Tellurium</a> Project. I used it to automate tests for the application that consist of 100+ forms and it works like a charm.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -322,34 +355,6 @@ public void should_be_able_to_filter_users()
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

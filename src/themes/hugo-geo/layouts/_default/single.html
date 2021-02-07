@@ -14,14 +14,24 @@
 			<img src="{{.Params.Image}}" width="100%" />
 			<br />
 		{{end}}
-		{{ .Content | replaceRE "(<h[1-9] id=\"([^\"]+)\".+)(</h[1-9]+>)" `${1}<a href="#${2}" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> ${3}` | safeHTML }}    
+		{{ .Content | safeHTML }}    
 		{{ if .Params.isBlogpost }}
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		{{end}}
 	</article>
-	{{ $related := .Site.RegularPages.Related . | first 3 }}
+	
+</main>
+
+{{ if .Params.isBlogpost }}  
+	{{ if .Site.DisqusShortname }}
+	  {{ template "_internal/disqus.html" . }}
+	{{ end }}
+{{end}}
+
+{{ $related := .Site.RegularPages.Related . | first 3 }}
 	{{ with $related }}
 	<h3>See Also</h3>
 	<div class="row">
@@ -44,14 +54,5 @@
 	</div>
 	<br />
 	{{ end }}
-</main>
 
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" {{ .Site.BaseURL }}" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-{{ if .Params.isBlogpost }}  
-	{{ if .Site.DisqusShortname }}
-	  {{ template "_internal/disqus.html" . }}
-	{{ end }}
-{{end}}
 {{ partial "footer.html" . }}

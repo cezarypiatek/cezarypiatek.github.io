@@ -172,7 +172,8 @@
 <p>Mentioned DSC tutorial can be found under the following links:</p>
 <p><a href="https://mva.microsoft.com/en-us/training-courses/getting-started-with-powershell-desired-state-configuration-dsc--8672?l=ZwHuclG1_2504984382">Getting Started with PowerShell Desired State Configuration (DSC)</a></p>
 <p><a href="https://mva.microsoft.com/en-US/training-courses/advanced-powershell-desired-state-configuration-dsc-and-custom-resources-8702?l=3DnsS2H1_1504984382">Advanced PowerShell Desired State Configuration (DSC) and Custom Resources</a></p>
-<h3 id="powershell-and-windows-explorer">PowerShell and Windows Explorer<a href="#powershell-and-windows-explorer" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="powershell-and-windows-explorer"><a href="#powershell-and-windows-explorer">PowerShell and Windows Explorer  🔗&#xFE0E;</a></h3>
+
 <p>The first tip is about switching between PowerShell console and Windows Explorer back and forth while keeping working directory context. This is the most trivial but at the same time very useful operation.
 In order to open Windows Explorer with current directory simply type:</p>
 <pre><code class="language-powershell">&gt; explorer .
@@ -181,18 +182,21 @@ In order to open Windows Explorer with current directory simply type:</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/cDhM1wreRtw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-<h3 id="browsing-scripts-in-console">Browsing scripts in console<a href="#browsing-scripts-in-console" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="browsing-scripts-in-console"><a href="#browsing-scripts-in-console">Browsing scripts in console  🔗&#xFE0E;</a></h3>
+
 <p>When you are working in console environment and you want to check script content you can use <strong>Get-Content</strong> command to print script into screen in raw format or use <strong>Get-ColorizedContent</strong> to display script with line numbers and syntax highlighting. This cmdlet comes from <a href="https://www.powershellgallery.com/packages/PowerShellCookbook/1.3.6">PowerShellCookbook module</a> which could be easily installed with <strong>Install-Module</strong> cmdlet from <a href="https://www.powershellgallery.com">PowerShell gallery</a>.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/iELQGYxJclw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-<h3 id="opening-powershell-ise-from-powershell-console">Opening PowerShell ISE from PowerShell console<a href="#opening-powershell-ise-from-powershell-console" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="opening-powershell-ise-from-powershell-console"><a href="#opening-powershell-ise-from-powershell-console">Opening PowerShell ISE from PowerShell console  🔗&#xFE0E;</a></h3>
+
 <p>There is no out-of-the-box editor which allows you to edit scripts right inside the PowerShell console. You can install <a href="https://stackoverflow.com/questions/11045077/edit-a-text-file-on-the-console-in-64-bit-windows">third-party console editors</a> or use PowerShell ISE which comes with Windows Management Framework. Simply type <strong>ise</strong> command with file path as the parameter to open it with ISE (you can skip file parameter to open a new instance of ISE with context set to current directory). In order to open another script in new ISE tab use <strong>psedit</strong> command (this command works only inside the ISE console).</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/sc50cA7M6CY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 <p>PowerShell ISE is very useful to play around with PowerShell scripts because it allows you to execute your script partially (simply select parts of you code and press F8 to send it to PowerShell console).</p>
-<h3 id="opening-visual-studio-code-from-powershell-console">Opening Visual Studio Code from PowerShell console<a href="#opening-visual-studio-code-from-powershell-console" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="opening-visual-studio-code-from-powershell-console"><a href="#opening-visual-studio-code-from-powershell-console">Opening Visual Studio Code from PowerShell console  🔗&#xFE0E;</a></h3>
+
 <p>A good alternative to PowerShell ISE could be <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell">Visual Studio Code with plugin for powershell</a>. I find VSCode better than ISE in terms of support for static analysis and debugging.</p>
 <p>
 <a href="vscode_pluggin.jpg"><img  src="vscode_pluggin.jpg" alt="Visual Studio Code plugin for PowerShell"></a>
@@ -200,13 +204,15 @@ In order to open Windows Explorer with current directory simply type:</p>
 <p>When VSCode is your PowerShell editor of choice too, you can also easily switch from console to this environment. Just execute <strong>code</strong> command with file path as a parameter to open given script with VSCode or replace the file path parameter with &ldquo;.&rdquo; (dot sign) to load current directory as a workspace inside VSCode.</p>
 <pre><code class="language-powershell">&gt; code .
 </code></pre>
-<h3 id="filtering-result-list-with-out-gridview">Filtering result list with Out-GridView<a href="#filtering-result-list-with-out-gridview" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="filtering-result-list-with-out-gridview"><a href="#filtering-result-list-with-out-gridview">Filtering result list with Out-GridView  🔗&#xFE0E;</a></h3>
+
 <p>When your command or script returns a long list it can be hard to spot interesting positions by scrolling through the console. You can make it a lot easier by redirecting the result to <strong>Out-GridView</strong> cmdlet (use <strong>ogv</strong> alias for shorten). The Out-GridView outputter presents data using grid control and allows to sort and filter results by defining complex criteria based on data attributes.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/bNyBg_wEnxY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 <p>You can also use Out-GridView to select elements by providing  <strong>OutputMode</strong> parameter</p>
-<h3 id="exploring-powershell-cmdlets">Exploring PowerShell CmdLets<a href="#exploring-powershell-cmdlets" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="exploring-powershell-cmdlets"><a href="#exploring-powershell-cmdlets">Exploring PowerShell CmdLets  🔗&#xFE0E;</a></h3>
+
 <p>Sometimes it&rsquo;s hard to remember all method parameters (especially when we use them very rarely). You can check the list of available parameters by displaying method documentation inside the console with <strong>Get-Help</strong> command or utilizing dedicated form which could be created with <strong>Show-Command</strong> cmdlet.</p>
 <pre><code class="language-powershell">&gt; Show-Command Invoke-WebRequest 
 </code></pre>
@@ -214,7 +220,8 @@ In order to open Windows Explorer with current directory simply type:</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/mZEY1W9-pR8?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-<h3 id="inspecting-complex-objects">Inspecting complex objects<a href="#inspecting-complex-objects" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="inspecting-complex-objects"><a href="#inspecting-complex-objects">Inspecting complex objects  🔗&#xFE0E;</a></h3>
+
 <p>Another interesting cmdlet that we can find in <em>PowerShellCookbook</em> module is <strong>Show-Object</strong>. This command presents complex objects in the form of a tree. This expandable tree allows us to drill down and explore nested properties. It&rsquo;s extremely useful when we have to deal with unknown objects.</p>
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/tfx85SkqSEc?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -224,9 +231,38 @@ In order to open Windows Explorer with current directory simply type:</p>
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -278,34 +314,6 @@ In order to open Windows Explorer with current directory simply type:</p>
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

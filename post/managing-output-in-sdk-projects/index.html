@@ -170,12 +170,14 @@
 		
 		<p>With the new SDK format for .NET projects, it&rsquo;s much easier to manage with the project&rsquo;s dependencies.
 In most scenarios references added with standard mechanism (Visual Studio or <code>dotnet cli</code>) result in sufficient content in the output directory. However, sometimes we want to do something non-standard that requires a slightly different set of components in the output dir - simply speaking we expect to see there either more or fewer files. The content of the output directory can be controlled with different properties inside the project file. Documentation for new <code>csproj</code> format, as well as for <code>Nuget</code> related properties, is scattered across different MSDN documents, so I decided to create this blog post as a reference to what I&rsquo;ve recently learned and discovered about the project&rsquo;s options that affect the content of the output directory.</p>
-<h2 id="an-example-solution">An example solution<a href="#an-example-solution" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="an-example-solution"><a href="#an-example-solution">An example solution  🔗&#xFE0E;</a></h2>
+
 <p>Let&rsquo;s take a sample solution with the following projects and references structure:</p>
 <p>
 <a href="sample_project_structure.jpg"><img  src="sample_project_structure.jpg" alt="sample solution"></a>
 </p>
-<h2 id="the-default-setup">The default setup<a href="#the-default-setup" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="the-default-setup"><a href="#the-default-setup">The default setup  🔗&#xFE0E;</a></h2>
+
 <p>By default, references to other projects are added with the following entry in the <code>csproj</code> file:</p>
 <pre><code class="language-xml">&lt;ItemGroup&gt;
   &lt;ProjectReference Include=&quot;..\ProjectB\ProjectB.csproj&quot; /&gt;
@@ -195,7 +197,8 @@ In most scenarios references added with standard mechanism (Visual Studio or <co
 <p>
 <a href="app_output.jpg"><img  src="app_output.jpg" alt="output of the application project"></a>
 </p>
-<h2 id="enriching-the-output-dir">Enriching the output dir<a href="#enriching-the-output-dir" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="enriching-the-output-dir"><a href="#enriching-the-output-dir">Enriching the output dir  🔗&#xFE0E;</a></h2>
+
 <p>Sometimes you might notice that, despite what I told you in the previous paragraph, some libraries form NuGet package are copied to the output directory. This can be caused by custom build scripts that are shipped together with given NuGet package - you can find them in <code>build</code> directory inside the NuGet package (they must obey naming convention <code>PackageId.props</code> or <code>PackageId.target</code>). An example could be <a href="https://www.nuget.org/packages/NUnit3TestAdapter/">NUnit3TestAdapter</a> package:</p>
 <p>
 <a href="nunit3TestAdapterContent.jpg"><img  src="nunit3TestAdapterContent.jpg" alt="Content of NUnit3TestAdapter package"></a>
@@ -234,7 +237,8 @@ In most scenarios references added with standard mechanism (Visual Studio or <co
   &lt;/PropertyGroup&gt;
 </code></pre>
 <p>You can read more about <code>Self-contained deployments (SCD)</code> in the <a href="https://docs.microsoft.com/en-us/dotnet/core/deploying/index">.NET Core application deployment</a> article.</p>
-<h2 id="putting-the-output-dir-on-the-diet">Putting the output dir on the diet<a href="#putting-the-output-dir-on-the-diet" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="putting-the-output-dir-on-the-diet"><a href="#putting-the-output-dir-on-the-diet">Putting the output dir on the diet  🔗&#xFE0E;</a></h2>
+
 <p>As you saw in the paragraph about the default setup, the <code>*.dll</code> files of the referenced projects are copied to the output dir. This default behavior can be changed by setting <code>Private=False</code> property on the <code>ProjectReference</code>.</p>
 <pre><code class="language-xml">&lt;ItemGroup&gt;
   &lt;ProjectReference Include=&quot;..\ProjectB\ProjectB.csproj&quot; &gt;
@@ -272,16 +276,46 @@ The 'Private' flag can have three possible values:
   &lt;/ProjectReference&gt;
 &lt;/ItemGroup&gt;
 </code></pre>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>As you saw, there are multiple mechanisms that allow controlling what is in the output directory. It&rsquo;s good to be aware of their existence to avoid surprises and losing hours for fighting with something that appears in our output dir in spite of our expectations.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -333,34 +367,6 @@ The 'Private' flag can have three possible values:
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

@@ -171,7 +171,8 @@
 			<br />
 		
 		<p>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8">here</a> on the MSDN, but the one that deserves special attention is <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8#nullable-reference-types">Nullable reference types</a>. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference <code>nullability</code> on the compilation stage. In this blog post, I will show you how to use this new language feature and how to achieve similar benefits if you still cannot use .NET Core 3.0 in your projects.</p>
-<h2 id="how-to-use-non-nullable-references">How to use Non-nullable references<a href="#how-to-use-non-nullable-references" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="how-to-use-non-nullable-references"><a href="#how-to-use-non-nullable-references">How to use Non-nullable references  🔗&#xFE0E;</a></h2>
+
 <p>If our project is targeting .NET Core 3.0 or higher, we can start using non-nullable references. However, when we add <code>?</code> annotation to the reference type we get the following warning:</p>
 <blockquote>
 <p><code>CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.</code></p>
@@ -388,7 +389,8 @@
 <p>
 <a href="cs8604_violation.jpg"><img  src="cs8604_violation.jpg" alt="cs8604 violation"></a>
 </p>
-<h2 id="the-era-before-c-8">The era before C# 8<a href="#the-era-before-c-8" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="the-era-before-c-8"><a href="#the-era-before-c-8">The era before C# 8  🔗&#xFE0E;</a></h2>
+
 <p>Although the <code>Nullable reference types</code> are a very new language feature, I&rsquo;ve been working with this concept for quite some time. To simulate similar behavior in the previous language versions, I&rsquo;ve been using the following attributes from <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> package:</p>
 <ul>
 <li><code>[NotNull]</code></li>
@@ -408,7 +410,8 @@
 </p>
 <p>These inspections work only in Visual Studio and rule violations don&rsquo;t affect the compilation process. However, you can enforce all the checks in your <code>CI</code> pipelines using Resharper&rsquo;s <a href="https://www.jetbrains.com/help/resharper/InspectCode.html">InspectCode Command-Line Tool</a>. If the <code>design time</code> check is not enough for you, you can bring these validations to runtime by using <a href="https://github.com/Fody/Fody">Fody</a> together with <a href="https://github.com/Fody/NullGuard">NullGuard</a> plugin. I tried it once and everything worked as expected but there were some <a href="https://github.com/Fody/NullGuard/issues/83">issues with code coverage</a>.</p>
 <p>All the attributes from <code>JetBrains.Annotations</code> package are conditional, which means they are not compiled into output assemblies unless you defined <code>JETBRAINS_ANNOTATIONS</code> build constant. You can read more about usage of these attributes in my blog post <a href="../../post/hunt-your-bugs-design-time/#notnull-and-canbenull-and-implicitnotnull">Hunt your bugs in design time</a> or in the <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__Value_Analysis.html">official documentation</a></p>
-<h2 id="there-is-still-room-for-improvement">There is still room for improvement<a href="#there-is-still-room-for-improvement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="there-is-still-room-for-improvement"><a href="#there-is-still-room-for-improvement">There is still room for improvement  🔗&#xFE0E;</a></h2>
+
 <p>I&rsquo;ve played a little with <code>Nullable reference types</code> from C# 8.0 to compare it with <code>JetBrains.Annotations</code> and I&rsquo;ve spotted a few missing bits. Let&rsquo;s take the following code with C# 8.0 annotations</p>
 <p>
 <a href="missing_rules_roslyn.jpg"><img  src="missing_rules_roslyn.jpg" alt=""></a>
@@ -447,9 +450,38 @@
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -501,34 +533,6 @@
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

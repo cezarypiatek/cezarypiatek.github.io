@@ -169,7 +169,8 @@
 			<br />
 		
 		<p>A couple of months ago I&rsquo;ve started working on a simple <code>CRUD</code> service. A mix of <code>ASP Core</code> for <code>REST API</code> with <code>Dapper</code> for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&rsquo;s more complex than I expected and this &ldquo;simple-boring&rdquo; <code>CRUD</code> became more interesting and challenging.</p>
-<h2 id="the-problem">The Problem<a href="#the-problem" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="the-problem"><a href="#the-problem">The Problem  🔗&#xFE0E;</a></h2>
+
 <p>One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</p>
 <ul>
 <li><code>DBO</code> - <code>Data Base Object</code> - types for mapping SQL query result to C# object.</li>
@@ -183,7 +184,8 @@
 </ul>
 <p>The most important thing about inheritance, that programmers very often forget, is that it was invented to share behaviors, not a code (more precisely a state). Those <code>POCO</code> types have no common behaviors - only similar shapes. We can also try to address this issue by introducing an interface with common fields, but it has similar downsides as inheritance and we end up with an even bigger amount of places that require synchronization. When I add a new field to any of my <code>POCO</code> types, I need to remember to add this field to common interface in order to make this synchronization work - and properties declaration need to be repeated in all types that implement an interface, which results in even more code.</p>
 <p>I didn&rsquo;t find a good solution for this problem using standard C# mechanisms, so I came up with the idea of <code>TwinTypes</code>.</p>
-<h2 id="the-solution---extending-c-rules-with-custom-analyzer">The Solution - Extending C# rules with custom analyzer<a href="#the-solution---extending-c-rules-with-custom-analyzer" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="the-solution---extending-c-rules-with-custom-analyzer"><a href="#the-solution---extending-c-rules-with-custom-analyzer">The Solution - Extending C# rules with custom analyzer  🔗&#xFE0E;</a></h2>
+
 <p>Because standard C# mechanisms don&rsquo;t provide any satisfying solution, I tried once again to take advantage of the Roslyn analyzers and extend language possibilities. The idea of <code>TwinType</code> is to introduce a marker that will express some sort of <code>&quot;soft dependency&quot;</code> between types. The whole solution consists of three parts:</p>
 <ul>
 <li><code>[TwinType]</code> attribute to define this <code>&quot;soft dependency&quot;</code> or <code>&quot;shape similarity&quot;</code> with other types.</li>
@@ -206,16 +208,46 @@
 <p>
 <img  src="generate_missing_members_animated.png" alt="">
 </p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>All attributes and analyzers described here are available as a single Nuget package <a href="https://www.nuget.org/packages/SmartAnalyzers.CSharpExtensions.Annotations/">SmartAnalyzers.CSharpExtensions.Annotations</a>. The source code is published on <code>Github</code> under <a href="https://github.com/cezarypiatek/CSharpExtensions">CSharpExtensions</a> project. Please let me know what you think about those extensions to C# language and if you encounter any problems with using it, feel free to report an issue on Github page.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -267,34 +299,6 @@
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

@@ -173,7 +173,8 @@
 			<br />
 		
 		<p>A few months ago I published &ldquo;<a href="../../post/demystifying-elk-stack/">Demystifying ELK stack</a>&rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&rsquo;re worth sharing.</p>
-<h2 id="shrinking-filebeat-configuration">Shrinking Filebeat configuration<a href="#shrinking-filebeat-configuration" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="shrinking-filebeat-configuration"><a href="#shrinking-filebeat-configuration">Shrinking Filebeat configuration  🔗&#xFE0E;</a></h2>
+
 <p>I use <code>Filebeat</code> to collect data from log files and send them to <code>Logstash</code> for further processing and analyzing. <code>Filebeat</code> configuration is in <code>YAML</code> format and the most important part of it is the section <code>filebeat.prospectors</code> which is responsible for configuring harvesting data. A sample configuration looks as follows:</p>
 <pre><code class="language-yaml">filebeat.prospectors:
 - input_type: log
@@ -219,7 +220,8 @@ filebeat.prospectors:
     type: web
 </code></pre>
 <p>Thanks to this little trick I was able to reduce the number of entries in my <code>Filebeat</code> configuration and improve its maintainability. A lot of people criticize <code>YAML</code> for being hard to read and edit - in comparizon to <code>JSON</code> format - but it has some less known features which give it more possibilities than <code>JSON</code> has.</p>
-<h2 id="temporary-variables-in-logstash-configuration">Temporary variables in Logstash configuration<a href="#temporary-variables-in-logstash-configuration" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="temporary-variables-in-logstash-configuration"><a href="#temporary-variables-in-logstash-configuration">Temporary variables in Logstash configuration  🔗&#xFE0E;</a></h2>
+
 <p>In the <a href="../../post/be-the-first-to-know-of-the-bug/">Be the first to know of the bug</a> article I described how we can easily integrate <code>Logstash</code> with <code>Microsoft Teams</code> to create some kind of early-warning system. In the proposed solution I used <code>mutate</code> filter  to create extra fields which hold additional data consumed only by the <code>output</code> section, for example URL for Kibana filter, Jira create issue link or <code>Microsft Teams</code> webhook. After a while, I&rsquo;ve realized that this additional data is unnecessarily stored in <code>ElasticSearch</code> index and consumes a lot of space. Thankfully, the authors of Filebeat foresaw the need for temporal variables and introduced <a href="https://www.elastic.co/blog/logstash-metadata">Logstash Metadata</a>. Now, instead of adding fields to events only for processing purpose, we can store them in the dedicated <code>@metadata</code> field:</p>
 <pre><code class="language-js"> mutate
  {
@@ -229,7 +231,8 @@ filebeat.prospectors:
     }
 }
 </code></pre>
-<h2 id="automating-the-configuration-update">Automating the configuration update<a href="#automating-the-configuration-update" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="automating-the-configuration-update"><a href="#automating-the-configuration-update">Automating the configuration update  🔗&#xFE0E;</a></h2>
+
 <p>Every time I changed <code>Logstash</code> or <code>Filebeat</code> configuration I had to log in to the appropriate server, replace the old config with the new one, restart the service and examine the service log file if the whole operation was successful. If something failed, I needed to correct the config file and repeat the whole routine. It was a very tedious process and nobody in the team besides me knew to how to do it. I even wrote the whole instruction down but the number of steps or the need to log into <code>Linux</code> server repealed others. A better solution than creating manual instruction is to automate the process. The easiest part was to create the script that updates <code>Filebeat</code> configuration because it resides on the Windows server:</p>
 <pre><code class="language-powershell">function Update-FilebeatConfig
 {
@@ -253,7 +256,8 @@ filebeat.prospectors:
 <p>Now everybody can easily update Filebeat configuration by invoking this function as follows:</p>
 <pre><code class="language-powershell">Update-FilebeatConfig -ComputerName &quot;app.server.lan&quot; -Credentials (Get-Credential) -FilebeatSrcFile &quot;./filebeat.yml&quot; -Verbose
 </code></pre>
-<h3 id="powershell-core-on-linux">PowerShell Core on Linux<a href="#powershell-core-on-linux" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="powershell-core-on-linux"><a href="#powershell-core-on-linux">PowerShell Core on Linux  🔗&#xFE0E;</a></h3>
+
 <p>However, the real challenge for me was to automate the same process for <code>Logstash</code> configuration that lives on the <code>Linux</code> server. I started by installing <code>PowerShell Core</code> on my Linux server with the following commands:</p>
 <pre><code class="language-bash">sudo apt-get install libunwind8 libicu55 liblttng-ust0
 wget https://github.com/PowerShell/PowerShell/releases/download/v6.1.0/powershell_6.1.0-1.ubuntu.16.04_amd64.deb
@@ -342,15 +346,45 @@ function Update-LogstashConfig
 <pre><code class="language-powershell">Update-LogstashConfig -ComputerName 'elk.server.lan' -Credentials (Get-Credential) -LogstashSrcFile &quot;./logstash/App.conf&quot; -Verbose
 </code></pre>
 <p>I&rsquo;ve put all of the above scripts together with the config files in the source control so everybody in the team can easily modify and deploy new ELK configuration.</p>
-<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="tldr"><a href="#tldr">TL;DR  🔗&#xFE0E;</a></h2>
+
 <p>Thanks to <code>!!merge, Anchors and Aliases</code> I can simulate variables in <code>YAML</code> and create reusable parts of <code>Filebeat</code> configuration. The  Logstash <code>@metadata</code> field allows me to create variables needed only for processing logic without polluting <code>ElasticSeach</code> indices. With <code>PowerShell Core</code> I can easily manage Linux servers directly from my Windows workstation and automatically deploy <code>ELK</code> configuration.</p>    
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -402,34 +436,6 @@ function Update-LogstashConfig
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

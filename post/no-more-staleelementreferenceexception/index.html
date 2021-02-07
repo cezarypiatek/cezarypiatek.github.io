@@ -175,7 +175,8 @@
 <li>an element was re-rendered by JavaScript view/template framework</li>
 </ul>
 <p>In the first case, <code>StaleElementReferenceException</code> indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&rsquo;t affect our UI test. All of the solutions that I&rsquo;ve found in the network are based on applying try-catch-retry pattern around the places where the problem occurs. However, this could degrade readability and maintainability. So how to get rid of <code>StaleElementReferenceException</code> without introducing technical debt and changing the way we interact with web elements?</p>
-<h2 id="stablewebelement-to-the-rescue">StableWebElement to the rescue!<a href="#stablewebelement-to-the-rescue" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="stablewebelement-to-the-rescue"><a href="#stablewebelement-to-the-rescue">StableWebElement to the rescue!  🔗&#xFE0E;</a></h2>
+
 <p>I got the idea of <code>StableWebElement</code> – a wrapper for <code>IWebElement</code> which could detect the situation of stale reference and try to find a new reference to the original element (all this happening behind the scenes). The key element of this wrapper is memoization of searching context (parent element) and locator.  Let&rsquo;s see how it works on example. We have a user list which is a collection of list elements and each list element contains a button to deactivate the user. In order to perform user deactivation, we have to find user list, next find list element that represents given user and at the end, locate deactivation button inside the list element. The code for automating it with <code>Selenium</code> can look as follows:</p>
 <pre><code class="language-csharp">[Test]
 publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
@@ -191,7 +192,8 @@ publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
 <a href="stable_element_diagram.jpg"><img  src="stable_element_diagram.jpg" alt="stable element relation diagram"></a>
 </p>
 <p>The problem of stale reference can occur at any level of object hierarchy: our deactivate button can be re-rendered or either list element or the whole user list can be replaced with the newer version of HTML. No matter which element was refreshed, StableObjectElement should be able to restore all references necessary to perform intended action.</p>
-<h3 id="implementing-stablewebelement">Implementing StableWebElement<a href="#implementing-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="implementing-stablewebelement"><a href="#implementing-stablewebelement">Implementing StableWebElement  🔗&#xFE0E;</a></h3>
+
 <p>I started with defining <code>IStableWebElement</code> that enriches <code>IWebElement</code> with two additional methods: <code>IsStale</code> which detects if the element is affected by stale reference and  <code>RegenerateElement</code> which restores the reference to the original element.</p>
 <pre><code class="language-csharp">public interface IStableWebElement : IWebElement, ILocatable, ITakesScreenshot, IWrapsElement, IWrapsDriver
 {
@@ -296,7 +298,8 @@ private void Execute(Action action)
     }
 }
 </code></pre>
-<h3 id="applying-stablewebelement">Applying StableWebElement<a href="#applying-stablewebelement" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="applying-stablewebelement"><a href="#applying-stablewebelement">Applying StableWebElement  🔗&#xFE0E;</a></h3>
+
 <p>In order to use StableWebElement we need to add extension method for <code>ISearchContext</code> that searches for given element and wraps it into our StableWebElement proxy:</p>
 <pre><code class="language-csharp">static class StableElementExtensions
 {
@@ -318,16 +321,46 @@ private void Execute(Action action)
 <blockquote>
 <p><strong>UPDATE 2020-10-08:</strong> I do not change the logic of <code>FindElements</code> method (the one that search for all elements that match a given locator because it could not guarantee the unambiguity during the &ldquo;regeneration&rdquo; process)</p>
 </blockquote>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>After applying <code>StableWebElement</code> in my UI Test the problem of <code>StaleObjectReferenceException</code> was completely eliminated. Utilizing the proxy pattern allowed me to introduce the <code>StableWebElement</code> with minimal effort, preserving standard Selenium API and keeping the readability of my test code. An attempt of implementation of <code>StableWebElement</code> can be found in <code>Tellurium</code> project <a href="https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs">here</a>.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -379,34 +412,6 @@ private void Execute(Action action)
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

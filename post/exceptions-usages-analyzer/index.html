@@ -182,14 +182,16 @@
 <p>If there is no analyzer that meets your expectations, you can always create one of your own. You can easily find many tutorials on the web that teach how to start your journey as an analyzer creator. If you need a comprehensive introduction, I highly recommend to read  <a href="https://www.amazon.com/Roslyn-Cookbook-Compiler-Service-Analysis-ebook/dp/B0719Q2KHT/">Roslyn Cookbook</a> by <code>Manish Vasani</code>
 (I used this book for preparing my talk about Roslyn analyzers and I also use it as a reference when I create my own analyzers.)</p>
 <p>I wanted to automate my advice from the article about the exception designs by creating Roslyn analyzers. I also asked on Twitter in <a href="https://twitter.com/cezary_piatek/status/1116270781254852613">this thread</a> what kind of automatic verifications related to the exceptions would be useful and I got a few inspirations from <a href="https://twitter.com/dhermyt">@dhermyt</a> and <a href="https://twitter.com/marcinwachulski">@marcinwachulski</a>. In this article, I describe all those ideas as well as the implementation of Roslyn analyzers for detecting issues with the exception usage.</p>
-<h2 id="be-more-specific">Be more specific<a href="#be-more-specific" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="be-more-specific"><a href="#be-more-specific">Be more specific  🔗&#xFE0E;</a></h2>
+
 <p>The first remark related to the exception usage was about the exception types. <code>Throw</code> statements should not directly use types such as <code>Exception</code>, <code>SystemException</code> and <code>ApplicationException</code> because they are too vague and don&rsquo;t have information about the failure reason. The actual role of the <code>ApplicationException</code> is not clear and should be completely avoided. According to the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.applicationexception?redirectedfrom=MSDN&amp;view=netframework-4.8">msdn documentation</a> it was originally intended as a base class for application&rsquo;s custom exceptions but there are <a href="https://docs.microsoft.com/en-us/dotnet/api/system.applicationexception?redirectedfrom=MSDN&amp;view=netframework-4.8#remarks">additional remarks</a> that advice to derive custom exceptions directly from the <code>Exception</code> class. Throwing and catching <code>SystemException</code> is also discouraged by the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.systemexception?view=netframework-4.8#remarks">msdn</a>. You should always use more specific types of exceptions from <code>BCL</code> or create your own that represents given exceptional situation. It&rsquo;s a common practice to persist the type of exception in logs, so having a specific types for all types of failures makes logs filtering and aggregating much easier. Custom exception types allow also to convey in semantic form more contextual information inside the exception object.
 To guard a codebase against using generic types of exceptions I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/UseMoreSpecificExceptionType/UseMoreSpecificExceptionTypeAnalyzer.cs">UseMoreSpecificExceptionTypeAnalyzer</a> which enforces using more specific types of exceptions in <code>throw</code> statements and expressions.</p>
 <p>
 <a href="use_more_specific_exception.jpg"><img  src="use_more_specific_exception.jpg" alt="use more specific exception example"></a>
 </p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/gitextensions/gitextensions">gitextensions</a>. The generic type of exception with a totally meaningless error message. No way to investigate this problem without digging into the source code.</p>
-<h2 id="context-will-save-you">Context will save you<a href="#context-will-save-you" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="context-will-save-you"><a href="#context-will-save-you">Context will save you  🔗&#xFE0E;</a></h2>
+
 <p>The huge problem with the exceptions is that they very often don&rsquo;t contain enough information for investigating a failure. I guess you saw a code when somebody throws an exception with a very vague or even meaningless message at least once. This lack of proper attention focused on the message can cause a lot of problems and can be very expensive. After finding that exception in the logs, it&rsquo;s highly probable that it will be necessary to add additional logging and redeploy the application in order to collect crucial information that allows solving the problem. In order to avoid that and save a lot of time, it&rsquo;s worth to think every time when we are writing <code>throw</code> statements - what information about the current context could be necessary to investigate this problem when it occurs. For this kind of affliction I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/UseContextAwareConstructor/UseContextAwareConstructorAnalyzer.cs">UseContextAwareConstructorAnalyzer</a> which enforces using context-aware constructors in throw statements by forbidding constructors with the following signatures:</p>
 <ul>
 <li>()</li>
@@ -202,19 +204,22 @@ To guard a codebase against using generic types of exceptions I&rsquo;ve created
 <a href="use_context_aware_constructor.jpg"><img  src="use_context_aware_constructor.jpg" alt="use context aware constructor example"></a>
 </p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/gitextensions/gitextensions">gitextensions</a>. The <code>ArgumentOutOfRangeException</code> is created without any parameter giving no clue to the method consumer what went wrong. Besides this method (property) has no argument so it&rsquo;s even more confusing.</p>
-<h2 id="parameters-validation">Parameters validation<a href="#parameters-validation" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="parameters-validation"><a href="#parameters-validation">Parameters validation  🔗&#xFE0E;</a></h2>
+
 <p><code>BCL</code> contains predefined exceptions intended for parameter&rsquo;s validation such as: <code>ArgumentException</code>, <code>ArgumentNullException</code> and <code>ArgumentOutOfRangeException</code>. Each of these types has a constructor that accepts a string representing the name of the parameter that violates the contract of our method. The obligation of providing this parameter should be enforced by the <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/UseContextAwareConstructor/UseContextAwareConstructorAnalyzer.cs">UseContextAwareConstructorAnalyzer</a>. However, it&rsquo;s important to provide a valid parameter name. Even if we do so, our code can become easily outdated especially if we don&rsquo;t use <code>nameof()</code> expression. I&rsquo;ve also seen a code where argument related exceptions were used for reporting invalid values of local variables or current object members which is, in my opinion, a symptom of improper design. In order to prevent those issues I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ArgumentExceptionParameterName/ArgumentExceptionParameterNameAnalyzer.cs">ArgumentExceptionParameterNameAnalyzer</a> which is responsible for verification if the value of the exception constructor&rsquo;s parameter with name <code>parameterName</code> matches the name of any current method parameter.</p>
 <p>
 <a href="invalid_parameter_name.jpg"><img  src="invalid_parameter_name.jpg" alt="invalid parameter name"></a>
 </p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. Somebody confused <code>parameterName</code> with <code>message</code> parameter.</p>
-<h2 id="original-culprit">Original culprit<a href="#original-culprit" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="original-culprit"><a href="#original-culprit">Original culprit  🔗&#xFE0E;</a></h2>
+
 <p>On numerous occasions I come across a code where somebody catches an exception and from the <code>catch</code> clause throws a new one, without supplying the original exception as the <code>innerException</code> parameter. Re-throwing exception from the <code>catch</code> clause should serve for providing more context information instead of hiding the original reason. Some developers may be doing it on purpose, advocating it with security concerns but this aspect should be rather handled on the service boundary. The original exception in the logs certainly helps you investigate the problem and find the failure reason faster. In order to detect this code smell I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ProvideInnerExceptionInCatch/ProvideInnerExceptionInCatchAnalyzer.cs">ProvideInnerExceptionInCatchAnalyzer</a>. This analyzer searches for all <code>throw</code> statements inside the <code>catch</code> clause which don&rsquo;t pass caught exception as an <code>innerException</code> parameter for the new exception.</p>
 <p>
 <a href="inner_exception_hiding_example.jpg"><img  src="inner_exception_hiding_example.jpg" alt="inner exception hiding example"></a>
 </p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. The original reason of the error is swallowed.</p>
-<h2 id="exception-driven-logic">Exception Driven Logic<a href="#exception-driven-logic" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="exception-driven-logic"><a href="#exception-driven-logic">Exception Driven Logic  🔗&#xFE0E;</a></h2>
+
 <p>What is the <code>Exception Driven Logic</code>? It&rsquo;s a kind of code where business flows are implemented using exceptions mechanism (<code>try-catch</code>) instead of condition statements (<code>if-else</code>). It can be easily identified because in the same method given exception is thrown and caught, something like that:</p>
 <pre><code class="language-cs">try
 {
@@ -236,16 +241,46 @@ catch(SpecificException e)
 <a href="exception_deriven_logic_example.jpg"><img  src="exception_deriven_logic_example.jpg" alt="exception driven logic example"></a>
 </p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. This additional level of indirection seems to be redundant.</p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>This is the first experimental implementation of analyzers so they might report false positives. I would appreciate if you could try it and let me know if it was able to spot real problems in your code base or all those reported diagnostics were wrong. The analyzers can be installed from <code>nuget</code> <a href="https://www.nuget.org/packages/SmartAnalyzers.ExceptionAnalyzer/">SmartAnalyzers.ExceptionAnalyzer</a> and the source code is available on <code>Github</code> as the <a href="https://github.com/smartanalyzers/ExceptionAnalyzer">ExceptionAnalyzer</a> project.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -297,34 +332,6 @@ catch(SpecificException e)
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

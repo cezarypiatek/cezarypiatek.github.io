@@ -50,7 +50,7 @@ I started programming at 10 years old trying to retype some simple Basic program
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
-    $("#mailaddress").attr("href", "mailto:" + "cezarypiatek" + "@live" + ".com");
+    $("#mailaddress").attr("href", "mailto:" + "cezarypiatek+blog" + "@live" + ".com");
 });
 </script>
 

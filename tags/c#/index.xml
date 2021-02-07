@@ -36,7 +36,7 @@
       
       <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
       <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
-The Problem One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
+The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
     </item>
     
     <item>

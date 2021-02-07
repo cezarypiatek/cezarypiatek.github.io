@@ -175,7 +175,8 @@
 			<br />
 		
 		<p>Have you ever been in a situation when you discovered an exception in the logs that forced you to spend the next couple of minutes - or even hours - figuring out what exactly went wrong? The message was very cryptic and the only useful information that guided you to the crime scene was a stack trace. And after arriving there, you still had no idea what had really happened and what was the culprit. The most frustrating part is that in many cases the reason is very trivial and could be diagnosed immediately if the error message contained sufficient information. Sounds familiar? I was in such situation many times before, especially when I was working with 3rd party libraries. In this blog post, I would like to share with you my thoughts and experience related to designing exception.</p>
-<h2 id="official-guidelines">Official guidelines<a href="#official-guidelines" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="official-guidelines"><a href="#official-guidelines">Official guidelines  🔗&#xFE0E;</a></h2>
+
 <p>First of all, there is a chapter in <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/index">Framework Design Guideline</a> devoted to <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions">Design Guidelines for Exceptions</a> which every .net developer should get familiar with. There are three main sections which cover the subject of:</p>
 <ul>
 <li>
@@ -190,7 +191,8 @@
 </ul>
 <p>On top of that, it&rsquo;s worth to read the <a href="https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions">Best practices for exceptions</a> page in <a href="https://docs.microsoft.com/en-us/dotnet/standard/index">.NET Guide</a> too.</p>
 <p>Following those guidelines should at some point make our life easier but there are also areas for more improvements, especially in terms of information which should be included in the exception.</p>
-<h2 id="argumentexception">ArgumentException<a href="#argumentexception" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="argumentexception"><a href="#argumentexception">ArgumentException  🔗&#xFE0E;</a></h2>
+
 <p>Let&rsquo;s take a look at <code>ArgumentException</code> which comes from the standard library and is used for notifying about invalid parameters.  We have the following constructors at our disposal:</p>
 <pre><code class="language-csharp">public ArgumentException()
 public ArgumentException(string message, Exception innerException)
@@ -212,7 +214,8 @@ Parameter name: &lt;parameterName&gt;
 }
 </code></pre>
 <p>Where the <code>XXX</code> part in the helper name is the reason why the argument was invalid. This solution takes off the burden of making up the exception message every time and enforces the need for providing argument&rsquo;s current value. If there is a requirement for internationalization, you can easily move the exception message to the resource file (remember about converting string interpolation into <code>string.Format</code>);</p>
-<h3 id="argumentoutofrangeexception---numeric-values">ArgumentOutOfRangeException - numeric values<a href="#argumentoutofrangeexception---numeric-values" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="argumentoutofrangeexception---numeric-values"><a href="#argumentoutofrangeexception---numeric-values">ArgumentOutOfRangeException - numeric values  🔗&#xFE0E;</a></h3>
+
 <p>One of the <code>BCL</code> exceptions that specify the reason for the invalid parameter is <code>ArgumentOutOfRangeException</code>. The situation is a little better than in <code>ArgumentException</code> case because, as we see below, there is a constructor overload that accepts <code>parameterName</code> as well as <code>actualValue</code>:</p>
 <pre><code class="language-csharp">public ArgumentOutOfRangeException()
 public ArgumentOutOfRangeException(string paramName)
@@ -300,7 +303,8 @@ public DateTime(int year, int month, int day, int hour, int minute, int second, 
 </code></pre>
 <p>As we see <code>IRange&lt;&gt;</code> helps us improve code readability, reduce the duplication of information about the allowed range and facilitate throwing the exception. It also enforces consistency in our codebase - a ready recipe for testing and informing about values outside the range.
 Actually, this solution is not limited to the classical numeric ranges. You can have a class that implements <code>IRange&lt;string&gt;</code> and verifies if given value belongs to a predefined set of strings. Just remember to compose appropriate description in <code>GetDescription()</code> method.</p>
-<h2 id="argumentoutofrange---enum-values">ArgumentOutOfRange - enum values<a href="#argumentoutofrange---enum-values" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="argumentoutofrange---enum-values"><a href="#argumentoutofrange---enum-values">ArgumentOutOfRange - enum values  🔗&#xFE0E;</a></h2>
+
 <p>The special situation when we what to use <code>ArgumentOutOfRange</code> is <code>default</code> case in the <code>switch</code> statement for enum values. Here is the default code generated by Resharper for <code>switch</code> over an enum variable:</p>
 <pre><code class="language-csharp">private void DoSomething(SampleEnum option)
 {
@@ -350,7 +354,8 @@ Actual value was null.
     }
 }
 </code></pre>
-<h3 id="filenotfoundexception">FileNotFoundException<a href="#filenotfoundexception" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="filenotfoundexception"><a href="#filenotfoundexception">FileNotFoundException  🔗&#xFE0E;</a></h3>
+
 <pre><code class="language-csharp">public FileNotFoundException()
 public FileNotFoundException(string message)
 public FileNotFoundException(string message, Exception innerException)
@@ -368,7 +373,8 @@ public FileNotFoundException(string message, string fileName, Exception innerExc
     }
 }
 </code></pre>
-<h2 id="missing-context-information">Missing context information<a href="#missing-context-information" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="missing-context-information"><a href="#missing-context-information">Missing context information  🔗&#xFE0E;</a></h2>
+
 <p>Sometimes we don&rsquo;t have enough information in given context to create a comprehensive error message. We can pass the missing information from the outside but this has a few disadvantages: additional parameters pollute our API and bound our method to given invocation context making it less reusable. Let&rsquo;s make an example: in our application, we want to load data stored in multiple <code>XML</code> files. The method that is responsible for loading data loops through the list of files, reads the content and passes it to the component responsible for parsing <code>XML</code>:</p>
 <pre><code class="language-csharp">
 public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
@@ -420,24 +426,56 @@ public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; file
 }
 </code></pre>
 <p>Of course, from the performance point of view, the first approach is much better, especially when we want to collect error information from all files and forward a complete summary. Unfortunately, sometimes the contract is enforced by the third party library and the <code>try-catch-throw</code> is the only possible option to handle this scenario.</p>
-<h2 id="pure-attribute">[Pure] attribute<a href="#pure-attribute" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="pure-attribute"><a href="#pure-attribute">[Pure] attribute  🔗&#xFE0E;</a></h2>
+
 <p>All of my exception factory methods are decorated with <code>[Pure]</code> attribute. This attribute comes from <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> NuGet package and it is intended to mark <a href="https://en.wikipedia.org/wiki/Pure_function">pure functions</a> - the functions which have no side effects. If you are using <code>Resharper</code> and have enabled <code>Solution-wide analysis</code> this attribute can save you a lot of trouble when you forget to add <code>throw</code> keyword before exception factory method invocation:</p>
 <p>
 <a href="missing_throw.jpg"><img  src="missing_throw.jpg" alt="missing throw keyword example"></a>
 </p>
 <p>You can read more about <code>Resharper code annotations</code> in my &ldquo;<a href="../../post/hunt-your-bugs-design-time/">Hunt your bugs in design time</a>&rdquo; article.</p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>Every time you are writing <code>throw</code> statement think about people who could find this exception in logs and what question they could ask. The good exception message is the one that explains in a comprehensive way what exact conditions occured and caused this exceptional situation. There is no need to ask any questions to figure out what happened. An appropriate exception design allows saving a lot of time to consumers of your libraries, people who take over the support or even you, too.</p>
-<h3 id="call-for-action">Call for action<a href="#call-for-action" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="call-for-action"><a href="#call-for-action">Call for action  🔗&#xFE0E;</a></h3>
+
 <p>I am curious <strong>what was the most mysterious exception that you have ever encountered</strong> and how much time did it take to solve the riddle? Please share your experience in the comment section down below.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -489,34 +527,6 @@ public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; file
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

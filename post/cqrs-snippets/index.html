@@ -171,9 +171,11 @@
 			<br />
 		
 		<p>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned <code>CQRS</code> and <code>CQS</code> patterns. I heard about them many times before but I&rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects. There are existing libraries which facilitate building application with CQRS pattern but I wanted to implement it by myself from the scratch, in order to better understand the concept. I based my implementation on <a href="https://www.future-processing.pl/blog/cqrs-simple-architecture/">CQRS – Simple architecture</a> article but the idea is also pretty clearly explained by Greg Young in his famous presentation <a href="https://www.infoq.com/presentations/8-lines-code-refactoring">8 Lines of Code </a></p>
-<h2 id="its-not-all-light-and-bright">It&rsquo;s not all light and bright<a href="#its-not-all-light-and-bright" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="its-not-all-light-and-bright"><a href="#its-not-all-light-and-bright">It&rsquo;s not all light and bright  🔗&#xFE0E;</a></h2>
+
 <p>The CQRS/CQS pattern works great, I immediately found a lot of benefits. It helps me to enforce separation of concerns, single responsibility and consistency in my codebase, as well as eliminate all that AOP magic with restoring full control over the code execution. Unfortunately, there is also a boring side of implementing CQRS - <strong>THE TYPING</strong>. Every time I want to add new command, I need to add 2 classes (<code>Command</code> and <code>CommandHandler</code>) and for every new query 3 classes (<code>Query</code>, <code>QueryResult</code> and <code>QueryHandler</code>). There is a lot of <code>copy&amp;paste</code> work to keep the naming consistency which is very important because <code>CommandDispatcher</code> and <code>QueryDispatcher</code> make it hard to navigate through the codebase. I prepared a couple of snippets with Resharper&rsquo;s <code>LiveTemplates</code> which help to create, consume and test commands and queries to make this tedious part of CQRS more convenient.</p>
-<h2 id="creating-commands-and-queries">Creating Commands and Queries<a href="#creating-commands-and-queries" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="creating-commands-and-queries"><a href="#creating-commands-and-queries">Creating Commands and Queries  🔗&#xFE0E;</a></h2>
+
 <p>I started by creating templates for commands and queries definition. For building them I used multi-file template option which is available at <code>File Template</code> tab in <code>Templates Explorer</code>.</p>
 <p>For <code>New Command</code> template we need to create two files: one for <code>Command</code> and one for <code>CommandHandler</code>. Each file shares two placeholders: <code>$CommandName$</code> with the macro set to <code>Current file name without extension</code> and <code>$namespace$</code> with <code>Default namespace for current file</code> macro. You can see the complete configuration on the following screenshot:</p>
 <p>
@@ -191,7 +193,8 @@
 <p>
 <a href="quicklist.jpg"><img  src="quicklist.jpg" alt="quick list"></a>
 </p>
-<h2 id="dispatching">Dispatching<a href="#dispatching" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="dispatching"><a href="#dispatching">Dispatching  🔗&#xFE0E;</a></h2>
+
 <p>Next set of snippets which could be helpful in CQRS codebase is one that allows dispatching commands and queries in controller&rsquo;s actions. It is an inline template which could be prepared using &ldquo;Template Explorer -&gt; Live Templates&rdquo; tab. The definition of such template can looks as follows:</p>
 <p>
 <a href="command_action_definition.jpg"><img  src="command_action_definition.jpg" alt="command dispatching template"></a>
@@ -204,7 +207,8 @@
 <a href="dispatch_command_and_query.gif"><img  src="dispatch_command_and_query.gif" alt="Dispatch command and query"></a>
 </p>
 <p>As you can see, these templates save me a lot of typing and ensure that I don&rsquo;t forget to decorate my actions with necessary attributes (<code>[HttpPost]</code> and <code>[FromBody]</code> for commands and <code>[HttpGet]</code> for queries).</p>
-<h2 id="testing">Testing<a href="#testing" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="testing"><a href="#testing">Testing  🔗&#xFE0E;</a></h2>
+
 <p>The last template that I needed to work with CQRS was one that helps me with creating Unit Tests for commands and queries. The template definitions look as below:</p>
 <p>
 <a href="command_test_template.jpg"><img  src="command_test_template.jpg" alt="Command test template"></a>
@@ -216,16 +220,46 @@
 <p>
 <a href="insert_command_and_query_tests.gif"><img  src="insert_command_and_query_tests.gif" alt="Insert command and query tests"></a>
 </p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>Resharper LiveTemplates is a powerful mechanism that can easily relieve you of boring typing, help to enforce code consistency and allow to focus on implementing what is important - the business requirements. All snippets presented in this blog post are available at Github <a href="https://github.com/cezarypiatek/CQRSsnippets">here</a>. You can import them as a separate layer in your Resharper configuration and easily adjust to your CQRS framework of choice. If you are interested in how to configure and consume your own templates, I recommend you to read my article <a href="../../post/livetemplates/">Don&rsquo;t write dull code - Resharper Live Templates</a> I&rsquo;m curious if you have any other ideas for snippets that could help with CQRS apps. If you do, I would appreciate if you could share them in the comment section below.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -277,34 +311,6 @@
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

@@ -81,7 +81,7 @@
       
       <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
       <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
-The Problem One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
+The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
     </item>
     
     <item>
@@ -289,7 +289,7 @@ The Problem One of the first problems that I came across was that I had a lot of
       <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</guid>
-      <description>The challenge Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:</description>
+      <description>The challenge 🔗&amp;#xFE0E;Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
     </item>
     
     <item>
@@ -398,7 +398,7 @@ The Problem One of the first problems that I came across was that I had a lot of
       
       <guid>https://cezarypiatek.github.io/post/livetemplates/</guid>
       <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
-Template Explorer You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
+Template Explorer 🔗&amp;#xFE0E;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
     </item>
     
   </channel>

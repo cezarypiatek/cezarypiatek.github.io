@@ -169,7 +169,8 @@
 			<br />
 		
 		<p>The new <code>csproj</code> format introduces two major changes that are important from the artifact metadata management perspective. First of all, a NuGet package definition was moved into the project file which allows sharing common attributes between NuGet package manifest and assembly info. Secondly, a new mechanism for generating source code of assembly metadata attributes was added, which shares some benefits from the first feature as well as simplify how these values can be overridden during the build process. However, it&rsquo;s still a common thing that tools like <code>regex</code> and <code>string replace</code> are used for this purpose, which is definitely against the original intentions. In this blog post, I will show you what project&rsquo;s metadata should we set, how they relate to each other and how they affect the build&rsquo;s artifacts, and - the most important thing - how to set them correctly during the CI build.</p>
-<h2 id="version-versionprefix-and-versionsuffix">Version, VersionPrefix and VersionSuffix<a href="#version-versionprefix-and-versionsuffix" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="version-versionprefix-and-versionsuffix"><a href="#version-versionprefix-and-versionsuffix">Version, VersionPrefix and VersionSuffix  🔗&#xFE0E;</a></h2>
+
 <p>The
 <a href="https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.DefaultAssemblyInfo.targets">Microsoft.NET.DefaultAssemblyInfo.targets</a>, which is by default included in the <code>SDK</code> projects, provides a mechanism for setting assembly related metadata. Thanks to that we can set the assembly version without using string manipulation over <code>AssemblyInfo.cs</code> file. For this purpose, we have <code>Version</code>, <code>VersionPrefix</code> and <code>VersionSuffix</code> properties on our disposal and the relation between them is defined by the following excerpt from the aforementioned targets file:</p>
 <pre><code class="language-xml">&lt;PropertyGroup Condition=&quot; '$(Version)' == '' &quot;&gt;
@@ -258,7 +259,8 @@
     &lt;GenerateAssemblyVersionAttribute&gt;false&lt;/GenerateAssemblyVersionAttribute&gt;
 &lt;/PropertyGroup&gt;
 </code></pre>
-<h2 id="repository-info">Repository info<a href="#repository-info" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="repository-info"><a href="#repository-info">Repository info  🔗&#xFE0E;</a></h2>
+
 <p>A question that we come across very often is how we can correlate dotnet assembly with the specific commit, that was used to produce given assembly. When I was working with the <code>SVN</code> repositories, I met with the practice of embedding commit sequence number into the <code>Version</code> attribute. This works very well, however with <code>git</code> repositories it&rsquo;s not possible anymore - commits are identified by unique hash rather than by sequence number. I also saw a couple of desperate attempts of calculating some sort of <code>pseudo-sequence-number</code> for git revision base on the commit timestamp and some other factors with very fancy algorithms. Happily, there is no need for something like that because <code>MSBuild</code> contains properties that are intended for marking Nuget package and assembly with repository information. <code>AddSourceRevisionToInformationalVersion</code> target from<a href="">Microsoft.NET.GenerateAssemblyInfo.targets</a> allows us to add commit number (whatever format it has) into <code>System.Reflection.AssemblyInformationalVersionAttribute</code> by defining <code>SourceRevisionId</code> property. As I&rsquo;ve mentioned before in this blog post, this information can be found in the file&rsquo;s properties as a segment of <code>Product version</code> (after <code>+</code> sign):</p>
 <p>
 <a href="CommitInProductVersion.jpg"><img  src="CommitInProductVersion.jpg" alt="Commit in product version"></a>
@@ -282,7 +284,8 @@
 &lt;/package&gt;
 </code></pre>
 <p>Besides setting all those repository-related metadata for assemblies and NuGet packages, it&rsquo;s also a good practice to always push a tag with version number after every successful release build.</p>
-<h2 id="how-to-set-it-up-properly">How to set it up properly<a href="#how-to-set-it-up-properly" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="how-to-set-it-up-properly"><a href="#how-to-set-it-up-properly">How to set it up properly  🔗&#xFE0E;</a></h2>
+
 <p>Before .NET Core SDK-projects era, the only way of setting assembly attributes dynamically during the CI build was to do some string-base manipulations on <code>AssemblyInfo.cs</code> file which contains assembly-related attributes. Now the things are simpler because the source code responsible for adding assembly attributes is automatically generated during the build by <code>CreateGeneratedAssemblyInfoInputsCacheFile</code> target using MSBuild properties. Dotnet CLI has dedicated parameter only for setting <code>VersionSuffix</code> property via <code>--version-suffix</code> parameter but there is an option for setting any MSBuild attribute with <code>-p</code> option. For example, we can set up <code>VersionPrefix</code> and <code>VersionSuffix</code> separately, as well as repository info in the following way:</p>
 <pre><code class="language-shell">dotnet build SmartCodeGenerator.sln -p:VersionPrefix=1.0.3 -p:VersionSuffix=beta -p:SourceRevisionId=7aab58c9171921460aa495a335e1474f4861649c -p:RepositoryUrl=https://github.com/cezarypiatek/SmartCodeGenerator -p:RepositoryType=git -p:RepositoryBranch=develop
 </code></pre>
@@ -301,9 +304,38 @@
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -355,34 +387,6 @@
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

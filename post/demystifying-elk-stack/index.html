@@ -174,7 +174,8 @@
 		
 		<p>Let&rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&rsquo;s quite a challenge. If it still sounds like your current job you should definitely adopt ELK stack.</p>
 <p>ELK stands for <code>ElasticSearch-Logstash-Kibana</code> and it&rsquo;s a set of services which helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data. Because of its modular nature, for a basic solution, you have to install and configure four applications: Filebeat, Logstash, Elasticsearch, and Kibana. At first, it may sound overwhelming. The first time I tried to do that it took me a few days. In the last project (it was the fourth time) I was able to make it work in three hours. My application is built with ASP.NET framework hosted on IIS and logging with <code>log4net</code>, but it doesn&rsquo;t matter because ELK is able to collect, process, store and present logs which come in any format and from any source. The purpose of this blog post is to summarize my knowledge about setting up ELK stack. I hope you can find this note valuable and that it helps you save some time. I&rsquo;m going to show you step by step how to implement ELK in your existing project without making any changes in your code base.</p>
-<h2 id="elk-stack-quick-overview">ELK Stack quick overview<a href="#elk-stack-quick-overview" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="elk-stack-quick-overview"><a href="#elk-stack-quick-overview">ELK Stack quick overview  🔗&#xFE0E;</a></h2>
+
 <p>
 <a href="elk_overview.jpg"><img  src="elk_overview.jpg" alt="ELK data flow"></a>
 </p>
@@ -184,14 +185,16 @@
 <li>ElasticSearch - storage for log data</li>
 <li>Kibana - web application that presents log data (searching and visualization)</li>
 </ul>
-<h2 id="setting-up-elk-stack-server">Setting up ELK Stack server<a href="#setting-up-elk-stack-server" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="setting-up-elk-stack-server"><a href="#setting-up-elk-stack-server">Setting up ELK Stack server  🔗&#xFE0E;</a></h2>
+
 <p>At first, you need a Linux server which will be responsible for processing and storing log data. You have to install there ElasticSearch, Logstash, and Kibana. You can do it manually by yourself or you can save a lot of time and use preconfigured docker images. In the docker path we have two options:</p>
 <ul>
 <li>Single image <a href="https://elk-docker.readthedocs.io/">https://elk-docker.readthedocs.io/</a> All services are packed into the single image. This is not an official release but the documentation is excellent.</li>
 <li>Docker compose <a href="https://github.com/deviantony/docker-elk">https://github.com/deviantony/docker-elk</a> Every service comes as a separate official docker image combine together with docker compose file.</li>
 </ul>
 <p>Because both solutions are very well documented it&rsquo;s needles to duplicate it here.</p>
-<h2 id="collecting-logs-with-filebeat">Collecting logs with Filebeat<a href="#collecting-logs-with-filebeat" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="collecting-logs-with-filebeat"><a href="#collecting-logs-with-filebeat">Collecting logs with Filebeat  🔗&#xFE0E;</a></h2>
+
 <p>Filebeat is responsible for collecting log data from files and sending it to Logstash (it watches designated files for changes and sends new entries forward). Thanks to this tool you can add ELK stack to your existing project without the need to make any changes in your code base. In order to install Filebeat, download appropriate archive with binaries from <a href="https://www.elastic.co/downloads/beats/filebeat">https://www.elastic.co/downloads/beats/filebeat</a> and extract it on the server where your logs are stored. I don&rsquo;t recommend choosing <code>c:\Program Files\</code> or <code>c:\Program Files (x86)\</code> paths because <code>user access control</code> makes it hard to update configuration file. After extracting archive, open <code>PowerShell</code> console, go to the directory with FileBeat binaries and execute the following script</p>
 <pre><code class="language-powershell">./install-service-filebeat.ps1
 </code></pre>
@@ -225,7 +228,8 @@ output.logstash:
 <p>Filebat configuration is in the <code>yaml</code> format which is sensible for whitespace. I used <code>VisualStudioCode</code> with <a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">yaml plugin</a> to avoid potential problems caused by invalid indentation.
 After updating Filebeat configuration, restart the service using <code>Restart-Service filebeat</code> powershell command. If you are not sure that Filebeat is working as expected, stop Filebeat service with <code>Stop-Service filebat</code> and run it in the debug mode using command <code>filebeat -e -d &quot;publish&quot;</code> where all events will be printed in the console. <a href="https://www.elastic.co/guide/en/beats/filebeat/1.1/enable-filebeat-debugging.html">Here</a> you can read more about filebeat debugging.</p>
 <p>Until you install ELK on production enviroment, you can set up Filbeat to watch one extra directory where you can put log files which ship from production. With this simple trick you get benefits immediately.</p>
-<h2 id="processing-logs-with-logstash">Processing logs with Logstash<a href="#processing-logs-with-logstash" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="processing-logs-with-logstash"><a href="#processing-logs-with-logstash">Processing logs with Logstash  🔗&#xFE0E;</a></h2>
+
 <p>Another piece of our logging stack is Logstash. This service is responsible for processing log entries. Its configuration consists of three parts:</p>
 <ul>
 <li>input</li>
@@ -277,9 +281,11 @@ output {
 <p>Save your logstash config in <code>MyApp.conf</code> file and put under <code>/etc/logstash/conf.d</code> path (if you are using docker copy to the directory that is mapped to this volume). To copy files between Windows and Linux machine I use <a href="https://winscp.net/eng/download.php">WinScp</a></p>
 <p>After updating logstash configuration you have to restart this service with command <code>systemctl restart logstash</code>. If there is a problem with restarting logstash you can check its logs in <code>/var/log/logstash</code> directory.</p>
 <p>It&rsquo;s a good practice to keep ELK config files (Filebeat and Logstash) under version control.</p>
-<h2 id="presenting-logs-with-kibana">Presenting logs with Kibana<a href="#presenting-logs-with-kibana" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="presenting-logs-with-kibana"><a href="#presenting-logs-with-kibana">Presenting logs with Kibana  🔗&#xFE0E;</a></h2>
+
 <p>The last thing that left to do is to configure log presentation in Kibana. At first, we have to configure index pattern. Open Kibana in a web browser (type your ELK server address with port 5601) and go to <code>Management -&gt; Index Patterns -&gt; Create Index Patter</code>. In the <code>Step 1</code> provide your index name with the date replaced by a wildcard (this is the value defined in logstash configuration for <code>output.elasticsearch.index</code>). You need to inject data into elasticsearch before being able to configure it. If there is no index matching your pattern, make sure that the filebeat and logstash are working correctly. In the <code>Step 2</code> select <code>@timestamp</code> field for <code>Time Filter field name</code>. After successfully creating the index, you can go to <code>Discover</code> tab and start querying your new index.</p>
-<h3 id="brief-overview-of-kibana-discovery">Brief overview of Kibana Discovery<a href="#brief-overview-of-kibana-discovery" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="brief-overview-of-kibana-discovery"><a href="#brief-overview-of-kibana-discovery">Brief overview of Kibana Discovery  🔗&#xFE0E;</a></h3>
+
 <p>
 <a href="kibana_discovery_anathomy.jpg"><img  src="kibana_discovery_anathomy.jpg" alt="Kibana discovery"></a>
 </p>
@@ -295,7 +301,8 @@ output {
 <li>Create a link for current filter results (always remember about Time filter, it&rsquo;s best to switch it into absolute mode)</li>
 <li>Manage your filter configuration (you can save or load predefined discovery configuration)</li>
 </ol>
-<h2 id="maintenance">Maintenance<a href="#maintenance" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="maintenance"><a href="#maintenance">Maintenance  🔗&#xFE0E;</a></h2>
+
 <p>ElasticSearch has a requirement for disk free space. If this limit is exceeded, ElasticSearch stops working and you get this screen in Kibana:</p>
 <p>
 <a href="elastic_is_down.jpg"><img  src="elastic_is_down.jpg" alt="Elastic is not working"></a>
@@ -316,7 +323,8 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 <pre><code>/etc/init.d# ./elasticsearch restart
 /etc/init.d# ./kibana restart
 </code></pre>
-<h2 id="the-key-to-success">The key to success<a href="#the-key-to-success" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="the-key-to-success"><a href="#the-key-to-success">The key to success  🔗&#xFE0E;</a></h2>
+
 <p>The Number-One rule of successful implementation of ELK in your project is:</p>
 <pre><code class="language-plaintext">Make sure that everyone in your team knows that you have ELK, where it's accessible and HOW TO USE IT.
 </code></pre>
@@ -326,9 +334,38 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -380,34 +417,6 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

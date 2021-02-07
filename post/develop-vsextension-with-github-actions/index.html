@@ -171,10 +171,13 @@
 			<br />
 		
 		<p>I discovered the power of Roslyn over three years ago and since then I&rsquo;ve developed <a href="https://marketplace.visualstudio.com/publishers/54748ff9-45fc-43c2-8ec5-cf7912bc3b84">three Visual Studio extensions</a> and <a href="https://github.com/cezarypiatek?tab=repositories&amp;q=analyzer&amp;type=source&amp;language=">a couple of code analyzers</a>. Because I work on those tools only in my free time, the word &ldquo;time&rdquo; is a key here, so automation really matters. So far I&rsquo;ve been using <a href="https://www.appveyor.com/">AppVeyor</a> for building and testing my extensions. However, I&rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</p>
-<h2 id="automate-cicd-for-vsix">Automate CI/CD for VSIX<a href="#automate-cicd-for-vsix" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="automate-cicd-for-vsix"><a href="#automate-cicd-for-vsix">Automate CI/CD for VSIX  🔗&#xFE0E;</a></h2>
+
 <p>The official <a href="https://docs.github.com/en/free-pro-team@latest/actions">GithubActions documentation</a> together with <a href="https://github.com/actions/starter-workflows/">actions/starter-workflows</a> repository are really good starting points. Unfortunately, I didn&rsquo;t find there a complete example workflow for building an publishing Visual Studio extensions. After around 10 hours of googling and experimenting, I managed to assemble two complete workflows: one for Pull Request verification and one for automatic release.</p>
-<h2 id="problems">Problems<a href="#problems" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-<h3 id="you-cant-build-with-dotnet-build">You can&rsquo;t build with <code>dotnet build</code><a href="#you-cant-build-with-dotnet-build" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h2 id="problems"><a href="#problems">Problems  🔗&#xFE0E;</a></h2>
+
+<h3 id="you-cant-build-with-dotnet-build"><a href="#you-cant-build-with-dotnet-build">You can&rsquo;t build with <code>dotnet build</code>  🔗&#xFE0E;</a></h3>
+
 <p>After a few hours of struggling with the compilation, I discovered that you can&rsquo;t build a solution that contains VSIX project with <code>dotnet build</code> even if all your projects are in the new <code>csproj2017</code> format (<a href="https://github.com/dotnet/sdk/issues/12421">Issue#12421</a>). This kind of solution needs to be built with the <code>msbuild</code> directly. The windows based virtual environment for Github Actions has pre-installed msbuild. Unfortunately, the path to <code>msbuild</code> is not added automatically to the PATH environment variable and we need to somehow figure out where it is installed. This can be solved with a little bit of scripting and <a href="https://docs.microsoft.com/en-us/visualstudio/install/tools-for-managing-visual-studio-instances?view=vs-2019">vswhere</a> or we can use a dedicated Github Action for that:</p>
 <pre><code class="language-yml">- name: Setup MSBuild.exe
   uses: microsoft/setup-msbuild@v1.0.2
@@ -188,7 +191,8 @@
     DeployExtension: False
 </code></pre>
 <p>I also passed <code>DeployExtension</code> environment variable to the build step. Without it, the build might take quite long or even timeout while executing <code>DeployVsixExtensionFiles</code> build task.</p>
-<h3 id="whats-the-next-version">What&rsquo;s the next version<a href="#whats-the-next-version" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="whats-the-next-version"><a href="#whats-the-next-version">What&rsquo;s the next version  🔗&#xFE0E;</a></h3>
+
 <p>When I was building my extension using <code>AppVeyor</code> service, I hardcoded extension version in the build script using the <code>{Major}.{Minor}.{BuildNumber}</code> format. So my first approach was to move that mechanism to GithubActions and it was quite easy to implement by taking leverage of environment variables (you can read more about in <a href="../../post/setting-assembly-and-package-metadata/">Setting assembly and nuget package metadata in .NET Core</a>):</p>
 <pre><code class="language-yml">build-extension:
   runs-on: windows-latest
@@ -204,7 +208,8 @@
     patch-pattern: '.*'
     output-to-env-variable: 'Version'
 </code></pre>
-<h3 id="how-to-set-the-version-for-vsix-file">How to set the version for VSIX file<a href="#how-to-set-the-version-for-vsix-file" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="how-to-set-the-version-for-vsix-file"><a href="#how-to-set-the-version-for-vsix-file">How to set the version for VSIX file  🔗&#xFE0E;</a></h3>
+
 <p>The version of VSIX file is not taken from the build configuration because it is defined in external file <code>source.extension.vsixmanifest</code> and it must be set separately. We can update version number in manifest file using <code>PowerShell</code> script step:</p>
 <pre><code class="language-yml">- name: Set version for VSIX
   run: |
@@ -221,7 +226,8 @@
     vsix-manifest-file: 'src\MappingGenerator.Vsix\source.extension.vsixmanifest'
 </code></pre>
 <p>The source code for the action is available on Github <a href="https://github.com/cezarypiatek/VsixVersionAction">cezarypiatek/VsixVersionAction</a></p>
-<h3 id="how-to-publish-extension-to-the-marketplace">How to publish extension to the Marketplace<a href="#how-to-publish-extension-to-the-marketplace" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="how-to-publish-extension-to-the-marketplace"><a href="#how-to-publish-extension-to-the-marketplace">How to publish extension to the Marketplace  🔗&#xFE0E;</a></h3>
+
 <p>So far I was publishing my extensions by manually downloading artifact with VSIX file from the build server to my disc and then uploading it to the Marketplace via <a href="https://marketplace.visualstudio.com/">marketplace.visualstudio.com</a> website. That operation is also time-consuming and may raise security concerns. Happily, this can be automated with <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line?view=vs-2019">VsixPublisher</a> which is also pre-installed on the Windows based virtual environment for Github Actions. However, with <code>VsixPublisher</code> we have the same problem as with <code>msbuild</code> - the tool&rsquo;s executable path is not available in the <code>PATH</code> environment variable and we need to hardcode it or write a script that would be able to automatically locate it. To simplify things, I created <a href="https://github.com/cezarypiatek/VsixPublisherAction">VsixPublisherAction</a> which makes the publishing super easy:</p>
 <pre><code class="language-yml">- name: Publish extension to Marketplace
   uses: cezarypiatek/VsixPublisherAction@0.1
@@ -231,7 +237,8 @@
     personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}
 </code></pre>
 <p>Beside the <code>*.vsix</code> file, we need also the <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line?view=vs-2019#publishmanifest-file">publishManifest file</a> and <a href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token">Personal Access Token</a> which should be stored in <a href="https://docs.github.com/en/actions/reference/encrypted-secrets">Repository Encrypted Secrets</a>.</p>
-<h2 id="pr-workflow">PR Workflow<a href="#pr-workflow" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="pr-workflow"><a href="#pr-workflow">PR Workflow  🔗&#xFE0E;</a></h2>
+
 <p>This workflow is responsible for verifying Pull Request. It should build and test code with changes introduced by PR and should produce artifacts that can be used for manual testing - I very often ask the issue reporter to verify if a new proposed version is working according to the expectations. This workflow should be triggered every time a new PR is created, or the existing one is updated with newer changes. My typical workflow for PR looks as follows:</p>
 <ol>
 <li>Set up the build environment
@@ -319,7 +326,8 @@ jobs:
 </li>
 </ol>
 <p>To make it work correctly, the project files can&rsquo;t contain the definition of any of those variables. You can read more about that in <a href="../../post/setting-assembly-and-package-metadata/">Setting assembly and NuGet package metadata in .NET Core</a>.</p>
-<h2 id="release-workflow">Release Workflow<a href="#release-workflow" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="release-workflow"><a href="#release-workflow">Release Workflow  🔗&#xFE0E;</a></h2>
+
 <p>I needed another workflow that would be triggered when the PR is merged, or the commit is directly pushed to the <code>master</code> branch. Release workflow is an extended version of the PR-Verification, and beside building and testing my extension, it should also publish the extension to the Visual Studio Marketplace and the Nuget feed:</p>
 <ol>
 <li>Set up the build environment
@@ -462,9 +470,38 @@ jobs:
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -516,34 +553,6 @@ jobs:
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

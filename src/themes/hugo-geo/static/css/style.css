@@ -99,8 +99,36 @@ ins.play-gif{
     color: white!important;
 }
 #content{
-    border-top: 0px!important;    
+    border-top: 0px!important;
+    background-color: #292a2d;    
+    color: white;
 }
+
+#content h1, #content h2, #content h3, #content h4, #content h5, #content h6{
+ color: wheat!important;   
+}
+
+#content h1 a, #content h2 a, #content h3 a, #content h4 a, #content h5 a, #content h6 a{
+    color: wheat!important;   
+   }
+
+#content code {
+    background-color:transparent;
+    color: orange;
+}
+#content pre{
+    border-width: 0px;
+}
+
+#content code.hljs{
+    background-color: black;
+}
+
+#content .card{
+    background-color: transparent;
+    box-shadow: -5px -5px 10px;
+}
+
 #links a{
     color: white;
 }
@@ -158,4 +186,24 @@ ins.play-gif{
 
 #content{
     max-height:100%!important;
+}
+
+#certificats{
+    border-width: 0px;
+    border-color:transparent;
+}
+
+
+#certificats td{
+    border-width: 0px;
+    border-color:transparent;
+}
+#certificats tr{
+    border-width: 0px;
+    border-color:transparent;
+}
+
+.pagination>li>a, .pagination>li>span
+{
+    background:transparent!important;
 }

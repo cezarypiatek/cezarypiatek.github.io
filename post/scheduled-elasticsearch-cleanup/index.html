@@ -178,9 +178,11 @@
 </p>
 <p>In this situation, all Kibana functions are disabled, even the <code>DevTool</code> page. In order to bring it back to life, we have to restart <code>ElasticSearch</code> service and free some disk space by deleting old indices. Because <code>DevTool</code> is not available we have to do this using anything that can issue HTTP <code>POST</code> request (for example <code>curl</code> or <code>Postman</code>). According to Murphy&rsquo;s law, this always happens when you badly need to check something in the logs, so it would be great to have a mechanism that prevents this kind of <code>ELK downtime</code>.</p>
 <p>There is a lesser known tool from Elastic stable called <code>curator</code> which can help with managing ElasticSearch indices. In this post, I will show you how to build a self-maintenance mechanism for <code>ELK</code> stack using <code>curator</code> together with <code>cron</code> scheduler.</p>
-<h2 id="before-we-start">Before we start<a href="#before-we-start" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="before-we-start"><a href="#before-we-start">Before we start  🔗&#xFE0E;</a></h2>
+
 <p>In order to avoid all problems related to insufficient permissions, I&rsquo;ve started from switching to root user with <code>sudo su</code> command.</p>
-<h2 id="installing-curator">Installing curator<a href="#installing-curator" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="installing-curator"><a href="#installing-curator">Installing curator  🔗&#xFE0E;</a></h2>
+
 <p>Before we install <code>curator</code> we have to update package repository path. Without it <code>apt-get</code> will install curator&rsquo;s old version. In order to do that, please add the following line to <code>/etc/apt/sources.list</code> file:</p>
 <pre><code class="language-plaintext">deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main
 </code></pre>
@@ -194,7 +196,8 @@
 <pre><code class="language-shell">curator --version
 </code></pre>
 <p>If you have a version older than 5.X or you experienced any problems during the installation, please check <a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/apt-repository.html">the official installation instruction</a>.</p>
-<h2 id="configure-curator">Configure curator<a href="#configure-curator" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="configure-curator"><a href="#configure-curator">Configure curator  🔗&#xFE0E;</a></h2>
+
 <p>We need to prepare two configuration files:</p>
 <ul>
 <li><code>config.yml</code> - general options related to curator usage</li>
@@ -254,7 +257,8 @@ actions:
 <pre><code class="language-shell">curator --config /opt/curator-config/config.yml /opt/curator-config/action.yml
 </code></pre>
 <p>The output should be logged to <code>/var/log/curator/curator.log</code> file.</p>
-<h2 id="schedule-periodical-clean-up">Schedule periodical clean-up<a href="#schedule-periodical-clean-up" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="schedule-periodical-clean-up"><a href="#schedule-periodical-clean-up">Schedule periodical clean-up  🔗&#xFE0E;</a></h2>
+
 <p>Now we have to schedule the clean-up with <code>cron</code> scheduler. In order to configure <code>cron</code> use the following command:</p>
 <pre><code class="language-shell">crontab -e
 </code></pre>
@@ -274,16 +278,46 @@ Choose 1-4 [2]:
 <pre><code>&lt;time-expression&gt; &lt;command-to-execute&gt;
 </code></pre>
 <p>In my example, I used <code>0 0 * * *</code> as a time-expression which means that my command will run every day at midnight. If you don&rsquo;t know crontab time syntax you can easily generate the desired expression using <a href="https://crontab-generator.org/">https://crontab-generator.org/</a>. After saving crontab config file, if everything was configured correctly, you should get <code>crontab: installing new crontab</code> message. That&rsquo;s all. You can verify if everything is working correctly by examining <code>/var/log/curator/curator.log</code>  log file.</p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>As you saw, thanks to <code>curator</code> and <code>cron</code> scheduler I was able to create the mechanism for automated ELK maintenance. Now I don&rsquo;t need to worry anymore that ELK server will run out of free disk space and bring all logging stack down. I would like to thank Robert Łysoń (<a href="https://twitter.com/RobertLyson">@RobertLyson</a>) who helped me with preparing  <code>curator</code> configuration. Next time the beer is on me ;)</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -335,34 +369,6 @@ Choose 1-4 [2]:
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

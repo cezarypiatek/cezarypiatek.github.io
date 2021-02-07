@@ -173,7 +173,8 @@
 			<br />
 		
 		<p>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&rsquo;s shipped with MVC bootstrapping template and it&rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.NET MVC frontend developer, and how to fix them.</p>
-<h2 id="how-it-works">How it works.<a href="#how-it-works" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="how-it-works"><a href="#how-it-works">How it works.  🔗&#xFE0E;</a></h2>
+
 <p>Before we start, let me briefly remind you how jquery.unobtrusive-ajax.js works. As I&rsquo;ve mentioned in the introduction, this library adds ajax support for forms and hyperlinks. In order to use it you have to provide a set of appropriate data-ajax-* attributes which will be &ldquo;interpreted&rdquo; by the javascript library. You don&rsquo;t need to type these attributes directly - you can use AjaxOptions object accepted by razor helpers and translated into given html attributes. These attributes are responsible for configuring ajax connection, selecting the predefined behavior for handling ajax response and providing custom callbacks for given ajax events. The latter can be entered in the form of javascript method name, but nothing prevents us from typing full javascript expression. A sample usage of AjaxOptions with conjunction of Ajax.BeginForm can look as follows.</p>
 <pre><code class="language-razor">@using (Ajax.BeginForm(&quot;SaveData&quot;, new AjaxOptions { OnSuccess = &quot;alert(\&quot;Data successfuly saved!\&quot;);&quot; }))
 {
@@ -202,7 +203,8 @@ window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot
 </code></pre>
 <p>After analyzing this &ldquo;non-obtrusive&rdquo; version I very much doubt if this works with ajax callbacks provided as a javascript expression (probably the javascript literals are the only valid value).</p>
 <p>In ASP Core there is no longer AjaxHelper and AjaxOptions but you can still use jquery.unobtrusive-ajax.js functionality by providing data-ajax-* attributes manually.</p>
-<h2 id="is-it-truly-unobtrusive">Is it truly unobtrusive?<a href="#is-it-truly-unobtrusive" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="is-it-truly-unobtrusive"><a href="#is-it-truly-unobtrusive">Is it truly unobtrusive?  🔗&#xFE0E;</a></h2>
+
 <p>I think the root of all problems lays in the (miss)understanding of &ldquo;unobtrusive javascript&rdquo; term. According to <a href="https://en.wikipedia.org/wiki/Unobtrusive_JavaScript">Wikipedia</a> the concept of unobtrusive javascript appeared for the very first time in Stuart Langridge&rsquo;s article <a href="https://kryogenix.org/code/browser/aqlists/">Unobtrusive DHTML, and the power of unordered lists</a> from 2002. A better explanation we can find in David Flanagan&rsquo;s book &ldquo;JavaScript: The Definitive Guide&rdquo; which looks as follows:</p>
 <blockquote>
 <p>A programming philosophy known as unobtrusive JavaScript argues that content (HTML) and behavior (JavaScript code) should as much as possible be kept separate. According to this programming philosophy, JavaScript is best embedded in HTML documents using &lt;script&gt; elements with src attributes.</p>
@@ -212,14 +214,16 @@ window.mvcClientValidationMetadata.push({&quot;Fields&quot;:[],&quot;FormId&quot
 <a href="is_it_truly_unobtrusive.jpg"><img  src="is_it_truly_unobtrusive.jpg" alt="mem"></a>
 </p>
 <p>According to this definition jquery.unobtrusive-ajax.js is not even close to unobtrusive approach compliance because it requires providing javascript callbacks inside the html attributes. I think the author(s) of this library was mainly focused on the aspect of Graceful degradation - which nowadays has marginal meaning - and totally forgot about separation of concerns between Javascript and HTML code.</p>
-<h2 id="implications">Implications<a href="#implications" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="implications"><a href="#implications">Implications  🔗&#xFE0E;</a></h2>
+
 <p>The main issue is not the compliance with the definition but the fact that this programming style (I mean messing javascript code with html markup) has some serious ramification. First of all, this code is really hard to maintain. If you put javascript code inside html atttributes you won&rsquo;t be able to refactor it with automatic refactoring tools, debug or verify syntax correctness. This is also  abused sometimes to build javascript dynamically (by concatenating strings) which could result with the potential XSS attack.</p>
 <p>Another disavantage is that when you need to invoke function inside this &ldquo;inline&rdquo; code it requires global accessibility of this function. This means you can&rsquo;t put your function definition inside private context (for example wrapping with immediate invocation of anonymous function). Exposing function globally can have negative effects such as name collisions (which cause method overriding) and it makes it harder to keep contexts separated.</p>
 <p>And the most serious drawback, which can even prevent from releasing our software to the production due to security reasons, is lack of Content-Security-Policy compliance. I&rsquo;ve been developing software for financial sector for the last few years and before we release application to the production server we have to go through the mandatory security audit. Since the CSP became widely supported by the modern browsers it also became one of the checkpoints during those security audits. I&rsquo;ve also met CSP as one of the requirements in RFP documents. For those who don&rsquo;t know, CSP is another security mechanism which prevents against XSS attacks. This is pretty easy to implement - you have to only add &ldquo;Content-Security-Policy&rdquo; header to http response. However, enabling CSP has impact onto how javascript and css are interpreted. Since now you can&rsquo;t use inline scripts and styles and can&rsquo;t evaluate javascript dynamically (expressions such as &ldquo;eval()&rdquo; and &ldquo;new Function()&rdquo; are forbidden). When you add CSP header all your javascript code which is wired by jquery.unobtrusive-ajax stop working.</p>
 <p>
 <a href="csp_error.jpg"><img  src="csp_error.jpg" alt="CSP Error"></a>
 </p>
-<h2 id="how-to-fix-it">How to fix it?<a href="#how-to-fix-it" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="how-to-fix-it"><a href="#how-to-fix-it">How to fix it?  🔗&#xFE0E;</a></h2>
+
 <p>Now we know that the broken part of jquery.unobtrusive-ajax.js is about providing callback for ajax events, so we have to find a different way for creating these subscriptions.
 Unfortunately, I wasn&rsquo;t able to find any solution that wouldn&rsquo;t imply modification of jquery.unobtrusive-ajax.js source code. I&rsquo;m not a huge fan of modifying third party libraries for given project purpose because this has a lot of negative implications (for example you have to manually apply all updates and there is much more). I&rsquo;ve even decided to send PR with fix proposal but it was rejected with not entirely clear reasons, so I&rsquo;ve stucked with private modification of this library.</p>
 <p>After quick analysis of jquery.unobtrusive-ajax.js source code we can easily spot the places where ajax callbacks are invoked (I marked these places with red arrows as you can see below)</p>
@@ -329,16 +333,46 @@ $.extend(AjaxEventAggregator, (function () {
 <li>You don&rsquo;t need to wait until all elements are loaded into DOM in order to subscribe for ajax events.</li>
 <li>You improve the maintainability of your code responsible for handling ajax events.</li>
 </ol>
-<h2 id="final-thought">Final thought<a href="#final-thought" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="final-thought"><a href="#final-thought">Final thought  🔗&#xFE0E;</a></h2>
+
 <p>This fake &ldquo;unobtrusive&rdquo; sense is not only jquery.unobtrusive-ajax.js related problem. You should always check CSP compliance of your javascript library/framework of choice before you start any development. Postponing this verification can generate additional costs and even result with system rewriting.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -390,34 +424,6 @@ $.extend(AjaxEventAggregator, (function () {
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

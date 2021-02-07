@@ -171,7 +171,8 @@
 			<br />
 		
 		<p>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. <strong>This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time</strong>. There are many existing analyzer packages provided by the community (mostly free and open-source) with hundreds of different rules. This abundance raises the following question: <strong>Which analyzer packages should I use and which rules should be reported as errors?</strong> To help answer this question, I decided to start a blog post series that describes different code smells together with analyzers that can detect them. I will start with analyzers related to asynchronous programming. However, this area is full of traps, so this article is the first of two episodes devoted to async/await.</p>
-<h2 id="analyzers-for-asynchronous-programming">Analyzers for asynchronous programming<a href="#analyzers-for-asynchronous-programming" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="analyzers-for-asynchronous-programming"><a href="#analyzers-for-asynchronous-programming">Analyzers for asynchronous programming  🔗&#xFE0E;</a></h2>
+
 <p>If you are looking for analyzers that can help you detect different issues with asynchronous code, you can find them in the following packages:</p>
 <ul>
 <li><a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/">Microsoft.CodeAnalysis.FxCopAnalyzers</a></li>
@@ -789,9 +790,11 @@
 
 	</div>
 </div>
-<h2 id="async-code-smells">Async Code Smells<a href="#async-code-smells" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="async-code-smells"><a href="#async-code-smells">Async Code Smells  🔗&#xFE0E;</a></h2>
+
 <p>Here&rsquo;s my list of the first seven most common issues related to asynchronous programming. For every issue, I provide entries for <code>.editorconfig</code> that configure analyzers that can detect it.</p>
-<h3 id="1-redundant-asyncawait">1. Redundant async/await<a href="#1-redundant-asyncawait" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="1-redundant-asyncawait"><a href="#1-redundant-asyncawait">1. Redundant async/await  🔗&#xFE0E;</a></h3>
+
 <p>Using the <code>async/await</code> keywords results in implicit memory allocation required for the state machine responsible for orchestrating asynchronous invocations. When the awaited expression is the only one or the last statement in the function, it might be skipped. However, there&rsquo;s a couple of concerns around this code optimization of which you should be aware. Before you start applying it, I highly recommend reading an excellent blog post about it from Stephen Cleary <a href="https://blog.stephencleary.com/2016/12/eliding-async-await.html">Eliding Async and Await</a>.</p>
 <p>❌ Wrong</p>
 <pre><code class="language-cs">async Task DoSomethingAsync()
@@ -812,7 +815,8 @@ dotnet_diagnostic.AsyncFixer01.severity = error
 # RCS1174: Remove redundant async/await.
 dotnet_diagnostic.RCS1174.severity = error
 </code></pre>
-<h3 id="2-calling-synchronous-method-inside-the-async-method">2. Calling synchronous method inside the async method<a href="#2-calling-synchronous-method-inside-the-async-method" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="2-calling-synchronous-method-inside-the-async-method"><a href="#2-calling-synchronous-method-inside-the-async-method">2. Calling synchronous method inside the async method  🔗&#xFE0E;</a></h3>
+
 <p>If we are writing asynchronous code then we should always prefer calling asynchronous methods if they exist. Many IO related APIs offer asynchronous counterparts of their well known synchronous methods. They should be our first choice.</p>
 <p>❌ Wrong</p>
 <pre><code class="language-cs">async Task DoAsync(Stream file, byte[] buffer)
@@ -833,7 +837,8 @@ dotnet_diagnostic.AsyncFixer02.severity = error
 # VSTHRD103: Call async methods when in an async method
 dotnet_diagnostic.VSTHRD103.severity = error
 </code></pre>
-<h3 id="3-async-void-method">3. Async Void method<a href="#3-async-void-method" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="3-async-void-method"><a href="#3-async-void-method">3. Async Void method  🔗&#xFE0E;</a></h3>
+
 <p>There are two reasons why Async Void methods are harmful:</p>
 <ul>
 <li>A caller of the method is not able to await asynchronous operation.</li>
@@ -862,7 +867,8 @@ dotnet_diagnostic.VSTHRD100.severity = error
 # ASYNC0003: Avoid void returning asynchronous method
 dotnet_diagnostic.ASYNC0003.severity = error
 </code></pre>
-<h3 id="4-unsupported-async-delegates">4. Unsupported async delegates<a href="#4-unsupported-async-delegates" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="4-unsupported-async-delegates"><a href="#4-unsupported-async-delegates">4. Unsupported async delegates  🔗&#xFE0E;</a></h3>
+
 <p>If we pass the asynchronous lambda function the <code>Action</code> argument, the compiler generates <code>async void</code> method which downsides were described in the previous code smell. There are two solutions for this problem: if it&rsquo;s possible, we should change the parameter type from <code>Action</code> to <code>Func&lt;Task&gt;</code>, otherwise we need to implement that callback delegate synchronously. It&rsquo;s worth mentioning that some APIs already provide counterparts of their methods that accept <code>Func&lt;Task&gt;</code> for the callback parameters.</p>
 <p>❌ Wrong</p>
 <pre><code class="language-cs">void DoSomething()
@@ -894,7 +900,8 @@ void CallbackAsync(Func&lt;Task&gt; action)
 <pre><code># VSTHRD101: Avoid unsupported async delegates
 dotnet_diagnostic.VSTHRD101.severity = error
 </code></pre>
-<h3 id="5-not-awaited-task-within-using-expression">5. Not awaited Task within using expression<a href="#5-not-awaited-task-within-using-expression" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="5-not-awaited-task-within-using-expression"><a href="#5-not-awaited-task-within-using-expression">5. Not awaited Task within using expression  🔗&#xFE0E;</a></h3>
+
 <p><code>System.Threading.Tasks.Task</code> implements <code>IDisposable</code> interface. Calling a method returning task directly in <code>using</code> expressions results in <code>Task</code> disposal at the end of <code>using</code> block which is never an expected behavior.</p>
 <p>❌ Wrong</p>
 <pre><code class="language-cs">using (CreateDisposableAsync()) //Reported diagnostics: VSTHRD107
@@ -912,7 +919,8 @@ dotnet_diagnostic.VSTHRD101.severity = error
 <pre><code># VSTHRD107: Await Task within using expression
 dotnet_diagnostic.VSTHRD107.severity = error
 </code></pre>
-<h3 id="6-not-awaited-task-inside-the-using-block">6. Not awaited Task inside the using block<a href="#6-not-awaited-task-inside-the-using-block" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="6-not-awaited-task-inside-the-using-block"><a href="#6-not-awaited-task-inside-the-using-block">6. Not awaited Task inside the using block  🔗&#xFE0E;</a></h3>
+
 <p>If we skip the <code>await</code> keyword for asynchronous operation inside the <code>using</code> block, then the disposable object could be disposed before the asynchronous invocation finishes. This might result in incorrect behavior and very often ends with a runtime exception notifying that we are trying to operate on the object that is already disposed. This issue has two root causes: either it&rsquo;s done by accident when somebody simply forgot about adding <code>async/await</code> keywords or it&rsquo;s a result of incorrectly applied code optimization described in <code>Redundant async/await</code> code smell.</p>
 <p>❌ Wrong</p>
 <pre><code class="language-cs">private Task&lt;int&gt; DoSomething() // Reported diagnostics: RCS1229
@@ -947,7 +955,8 @@ dotnet_diagnostic.RCS1229.severity = error
 }
 </code></pre>
 <p>In <code>Roslynator</code> this problem has been recently fixed <a href="https://github.com/JosefPihrt/Roslynator/issues/726">issues/726</a> (it&rsquo;s not released yet at the moment of publishing this article).</p>
-<h3 id="7-unobserved-result-of-asynchronous-method">7. Unobserved result of asynchronous method<a href="#7-unobserved-result-of-asynchronous-method" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="7-unobserved-result-of-asynchronous-method"><a href="#7-unobserved-result-of-asynchronous-method">7. Unobserved result of asynchronous method  🔗&#xFE0E;</a></h3>
+
 <p>Missing <code>await</code> keyword before asynchronous operation will result in method completing before given async operation finishes. The method will behave non-deterministically and the outcome will be different from the expectations. What is worse, if the un-awaited expression throws an exception, it goes unnoticed and it doesn&rsquo;t cause the process to crash, which makes it even harder to spot. You should always await asynchronous expression or assign a returned task to a variable and ensure that finally something awaits it.</p>
 <p>❌ Wrong</p>
 <pre><code class="language-cs">async Task DoSomethingAsync()
@@ -973,7 +982,8 @@ dotnet_diagnostic.VSTHRD110.severity = error
 dotnet_diagnostic.CS4014.severity = error
 </code></pre>
 <p>There&rsquo;s also a standard compiler warning <code>CS4014</code> for that issue but it&rsquo;s only able to report un-awaited expressions inside the <code>async</code> methods.</p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <table>
 <thead>
 <tr>
@@ -1051,9 +1061,38 @@ dotnet_diagnostic.CS4014.severity = error
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -1105,34 +1144,6 @@ dotnet_diagnostic.CS4014.severity = error
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

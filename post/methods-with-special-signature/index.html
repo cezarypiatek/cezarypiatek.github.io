@@ -170,7 +170,8 @@
 		
 		<p>There&rsquo;s a certain set of special method signatures in C# which have particular support on the language level.
 Methods with those signatures allow for using a special syntax which has several benefits. For example, we can use them to simplify our code or create <code>DSL</code> to express a solution to our domain-specific problem in a much cleaner way. I came across those methods in different places, so I decided to create a blog post to summarize all my discoveries on this subject.</p>
-<h2 id="collection-initialization-syntax">Collection initialization syntax<a href="#collection-initialization-syntax" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="collection-initialization-syntax"><a href="#collection-initialization-syntax">Collection initialization syntax  🔗&#xFE0E;</a></h2>
+
 <p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers#collection-initializers">Collection initializer</a> is a quite old feature, as it exists in the language since version 3 (released in late 2007). Just as a reminder, <code>Collection initializer</code> allows for pre-populating a list by providing elements inside the block statement:</p>
 <pre><code class="language-csharp">var list = new List&lt;int&gt; { 1, 2, 3};
 </code></pre>
@@ -308,7 +309,8 @@ public void Add(IEnumerable&lt;T&gt; values)
     AddRange(values);
 }
 </code></pre>
-<h2 id="dictionary-initialization-syntax">Dictionary initialization syntax<a href="#dictionary-initialization-syntax" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="dictionary-initialization-syntax"><a href="#dictionary-initialization-syntax">Dictionary initialization syntax  🔗&#xFE0E;</a></h2>
+
 <p>One of the cool features introduced in C# 6 was <a href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6#initialize-associative-collections-using-indexers">Index initializers</a> which simplified syntax for dictionary initialization. Thanks to that we can write dictionary init code in a much more readable way:</p>
 <pre><code class="language-cs">var errorCodes = new Dictionary&lt;int, string&gt;
 {
@@ -346,7 +348,8 @@ class Program
     }
 }
 </code></pre>
-<h2 id="deconstructors">Deconstructors<a href="#deconstructors" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="deconstructors"><a href="#deconstructors">Deconstructors  🔗&#xFE0E;</a></h2>
+
 <p>In C# 7.0, together with tuples, a deconstructor mechanism has been introduced. Deconstructors allow for &ldquo;decomposing&rdquo; a tuple into a set of individual variables as follows:</p>
 <pre><code class="language-cs">var point = (5, 7);
 // decomposing tuple into separated variables
@@ -410,7 +413,8 @@ new Point(2, 4).Deconstruct(out x, out y);
 }
 </code></pre>
 <p><code>KeyValuePair&lt;TKey,TValue&gt;.Deconstruct(TKey, TValue) </code> is available only from <code>netstandard2.1</code>. For previous <code>netstandard</code> versions we need to add it manually using the approach with the extension method.</p>
-<h2 id="custom-awaitable-types">Custom awaitable types<a href="#custom-awaitable-types" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="custom-awaitable-types"><a href="#custom-awaitable-types">Custom awaitable types  🔗&#xFE0E;</a></h2>
+
 <p>C# 5 (released together with Visual Studio 2012) introduced an <code>async/await</code> mechanism which was a real game-changer in the area of asynchronous programming. Before that, handling invocation of asynchronous methods resulted very often in quite a messy code, especially when there was more than one asynchronous invocation:</p>
 <pre><code class="language-cs">void DoSomething()
 {
@@ -463,7 +467,8 @@ class CustomAwaiter: INotifyCompletion
 }
 </code></pre>
 <p>You may wonder what could be a possible scenario of using <code>await</code> syntax with custom awaitable type. If that&rsquo;s the case, I highly recommend reading the article from <a href="https://devblogs.microsoft.com/pfxteam/author/toub/">Stephen Toub</a> entitled &ldquo;<a href="https://devblogs.microsoft.com/pfxteam/await-anything/">await anything</a>&rdquo; which provides plenty of interesting examples.</p>
-<h2 id="the-query-expression-pattern">The query expression pattern<a href="#the-query-expression-pattern" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="the-query-expression-pattern"><a href="#the-query-expression-pattern">The query expression pattern  🔗&#xFE0E;</a></h2>
+
 <p>The best invention of C# 3.0 was definitely <code>Language-Integrated Query</code>, known as <code>LINQ</code>, which allows for collection manipulation using SQL-like syntax.<code>LINQ</code> comes in two variations: SQL-like syntax and Extension method syntax. I prefer the second one because in my opinion it is more readable, but it&rsquo;s probably because I&rsquo;m accustomed to it. An interesting fact about the SQL-like syntax is that it is translated into the Extension method syntax during the compilation because it&rsquo;s a C#, not <code>CLR</code> feature. <code>LINQ</code> was invented in the first place to work with <code>IEnumerable</code>, <code>IEnumerable&lt;T&gt;</code> and <code>IQueryable&lt;T&gt;</code> types but it&rsquo;s not limited to them, we can use it with any type that meets requirements of <a href="https://github.com/dotnet/csharplang/blob/master/spec/expressions.md#the-query-expression-pattern">query expression pattern</a>. The complete set of method signatures used by <code>LINQ</code> looks as follows:</p>
 <pre><code class="language-csharp">class C
 {
@@ -504,7 +509,8 @@ class G&lt;K,T&gt; : C&lt;T&gt;
 }
 </code></pre>
 <p>Of course, we don&rsquo;t need to implement all of those methods to use <code>LINQ</code> syntax with our custom type. The list of <code>LINQ</code> operators and methods required for them can be found <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/query-expression-syntax-for-standard-query-operators">here</a>. <code>LINQ</code> syntax with custom types is very often used to implement monads. A really good explanation how to do it can be found in the article <a href="https://codewithstyle.info/understand-monads-linq/">Understand monads with LINQ</a> by <a href="http://miloszpiechocki.com/">Miłosz Piechocki</a></p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>The purpose of this article was not to encourage you to abuse those syntax tricks but rather to demystify them. On the other hand, they should not be completely avoided. They were invented to be used, and sometimes they can make your code much cleaner. If you are afraid that the resulting code might not be so obvious to your teammates, you should find a way to share your knowledge or at least link to this article ;)
 I&rsquo;m not sure if it&rsquo;s a complete set of those &ldquo;magical methods&rdquo; - if you know any others, I would appreciate you sharing that in the comment section below.</p>
     
@@ -512,9 +518,38 @@ I&rsquo;m not sure if it&rsquo;s a complete set of those &ldquo;magical methods&
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -566,34 +601,6 @@ I&rsquo;m not sure if it&rsquo;s a complete set of those &ldquo;magical methods&
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

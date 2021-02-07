@@ -167,7 +167,8 @@
 			<br />
 		
 		<p>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often the improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The effect of the broken synchronization can be analyzed with various runtime tools, but it would be nice to have an asset that is able to report all those issues in the design time right on the stage of writing code. This blog post continues the series <code>Avoid thread synchronization problems with Roslyn</code> and this part is about the traps related to the usage of synchronization primitives.</p>
-<h2 id="abandoned-locks">Abandoned locks<a href="#abandoned-locks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="abandoned-locks"><a href="#abandoned-locks">Abandoned locks  🔗&#xFE0E;</a></h2>
+
 <p>The <code>lock()</code> statement allows acquiring a lock on the given object with a guarantee of releasing it at the end of the scope. However, sometimes you have to manually manage the scope of locking by directly calling methods responsible for acquiring and releasing, and the burden of ensuring that the release is always executed is on you. The most common trap is the assumption that there is no code between lock acquire and release that could throw an exception. Even if it looks like this at first, it can be misleading. There is a class of exceptions called <code>out-of-band-exceptions</code> which can be thrown from random places. One of those situations we can meet in multithreading applications is when the current thread is aborted by the external code and the <code>ThreadAbortException</code> can be thrown from a place where we don&rsquo;t expect it. You can read more about <code>Out-of-band-exceptions</code> in <a href="https://www.amazon.com/gp/product/B07RQ4ZCJR">.NET Internals Cookbook</a>.
 If you don&rsquo;t have a 100% confidence that the code responsible for the release will be always invoked, you can end up with the <code>abandoned lock</code> which simply causes a deadlock. To avoid that, you should always apply a pattern like that:</p>
 <pre><code class="language-csharp">try{
@@ -191,17 +192,20 @@ finally{
 <li><code>System.Threading.ReaderWriterLockSlim</code></li>
 <li><code>System.Threading.ReaderWriterLock</code></li>
 </ul>
-<h2 id="spinlock-traps">SpinLock traps<a href="#spinlock-traps" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="spinlock-traps"><a href="#spinlock-traps">SpinLock traps  🔗&#xFE0E;</a></h2>
+
 <p>.NET 4.0 introduced a <code>SpinLock</code> which is a new synchronization primitive intended for the critical section with low contention. In certain situation, from the performance perspective, a <code>SpinLock</code> could be a better choice, but before we decide to change <code>lock/Monitor</code> to <code>SpinLock</code> there is a couple of things about the <code>SpinLock</code> that we should be aware of. The first most important information is that  <strong>SpinLock is a struct</strong> so all the rules of value types semantics apply to it. The most obvious effect is that creating a method that accepts <code>SpinLock</code> by value (without the <code>ref</code> modifier) makes it useless - the method always receives a copy of the <code>SpinLock</code> instance and there will be no synchronization between the consumers of <code>SpinLock</code>. We can face a similar but less obvious problem with using <code>SpinLock</code> as a <code>readonly</code> field, because every time we invoke an instance method from a <code>readonly</code> value type field, a copy of it is returned and all invocations of <code>Enter()</code> result with acquiring a lock. There is a <code>Resharper</code>'s inspection called <a href="https://www.jetbrains.com/help/resharper/ImpureMethodCallOnReadonlyValueField.html">Impure method is called for readonly field of value type</a> which can save us from this issue but setting the severity of this rule for <code>Error</code> could end up with reporting a lot of false positives. In order to address both problems with <code>SpinLock</code>, I&rsquo;ve created  Roslyn analyzers that can report those dangerous situations:</p>
 <ul>
 <li><code>MT1014: Passed by value SpinLock is useless</code></li>
 <li><code>MT1015: Readonly SpinLock is useless</code></li>
 </ul>
 <p>There is one more thing that we should know about <code>SpinLock</code>: unlike <code>Monitor</code>, it doesn&rsquo;t support recursive locking - so If we call <code>Enter()</code> method twice on a single thread, we end up with a nasty deadlock. Creating an analyzer that tracks acquiring and releasing lock seems to be quite a complex problem, but we could detect those deadlock situations by setting constructor parameter <code>enableThreadOwnerTracking</code> to <code>true</code>. When the reentrance occurs, we get a <code>System.Threading.LockRecursionException</code> exception.</p>
-<h2 id="avoid-readerwriterlock">Avoid ReaderWriterLock<a href="#avoid-readerwriterlock" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="avoid-readerwriterlock"><a href="#avoid-readerwriterlock">Avoid ReaderWriterLock  🔗&#xFE0E;</a></h2>
+
 <p>Since .NET 3.5 there are two synchronization primitives that implement a reader-writer lock pattern: <code>ReaderWriterLock</code> and <code>ReaderWriterLockSlim</code>. The first one, according to <a href="https://docs.microsoft.com/en-US/dotnet/api/system.threading.readerwriterlock?view=netframework-4.8#remarks">MSDN documentation</a> is discouraged in favor of the slim-version. <code>ReaderWriterLockSlim</code> is characterized by better performance (<a href="https://blogs.msdn.microsoft.com/pedram/2007/10/07/a-performance-comparison-of-readerwriterlockslim-with-readerwriterlock/">check the benchmark</a>) and by default has disabled recursion locking which tends to complicate the code and cause potential deadlocks. I was able to cause a deadlock situation with <code>ReaderWriterLock</code> when called <code>AcquireWriterLock(Timeout.Infinite)</code> on the thread that already was holding a read lock. The same scenario applied to the ReaderWriterLockSlim ending with <code>System.Threading.LockRecursionException</code> exception. To build awareness about the existence of <code>ReaderWriterLockSlim</code>, I&rsquo;ve created a Roslyn analyzer that can detect usage of the <code>ReaderWriterLock</code> and recommend replacement with his successor.</p>
 <p>-<code>MT1016: Replace ReaderWriterLock with ReaderWriterLockSlim</code></p>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>All my propositions of Roslyn analyzers are available on Github <a href="https://github.com/smartanalyzers/MultithreadingAnalyzer">MultithreadingAnalyzer</a> and can be added to your projects with NuGet package <a href="https://www.nuget.org/packages/SmartAnalyzers.MultithreadingAnalyzer/">SmartAnalyzers.MultithreadingAnalyzer</a>. I would appreciate if you could try it out and let me know if it was able to spot real problems in your codebase or all those reported diagnostics were wrong. A lot of stuff presented here I leaned from the following resources:</p>
 <ul>
 <li>[FREE EBOOK] <a href="https://www.microsoft.com/en-us/download/details.aspx?id=19222">Patterns for Parallel Programming: Understanding and Applying Parallel Patterns with the .NET Framework 4</a> by Stephen Toub</li>
@@ -214,9 +218,38 @@ finally{
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -268,34 +301,6 @@ finally{
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

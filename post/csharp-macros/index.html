@@ -171,7 +171,8 @@
 			<br />
 		
 		<p>I&rsquo;m a programmer but I don&rsquo;t like to write code. OK, it&rsquo;s not the whole truth. I don&rsquo;t like to write the code that is repeatable. Whenever I need to do something more than twice, I start thinking about automation. Hopefully, this problem can be addressed with <code>code snippets</code>. Visual Studio provides a predefined set of <a href="https://docs.microsoft.com/en-US/visualstudio/ide/visual-csharp-code-snippets?view=vs-2019">snippets</a> that can be extended, but if you are a Resharper user you should definitely get to know <a href="https://www.jetbrains.com/help/resharper/Templates__Index.html">LiveTemplates</a> because it&rsquo;s more powerful and easier to configure. For an easier start with <code>LiveTemplates</code>, I recommend reading my articles about practical usages of this tool <a href="../../tags/livetemplates/">here</a>. However, sometimes snippets are not enough, especially when you need to insert them many times for repeatable code, or complete placeholders manually when they could be automatically calculated. To solve those issues, I came up with the idea of C# macros that could be executed during the design time right in the code editor. I created a simple POC with Roslyn API and happily confirmed that it was feasible. In this blog post, I will describe what I&rsquo;ve achieved so far and what are the perspectives for the extension.</p>
-<h2 id="what-is-the-csharp-macro">What is the CSharp macro?<a href="#what-is-the-csharp-macro" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="what-is-the-csharp-macro"><a href="#what-is-the-csharp-macro">What is the CSharp macro?  🔗&#xFE0E;</a></h2>
+
 <p>The idea is very simple. It&rsquo;s a system that allows repeating and completing a given template for all values from a given set. The main advantage over snippets is the ability to repeat the template and define the function that generates the input set. Here&rsquo;s how the macro looks like:</p>
 <p>
 <a href="anatomy.jpg"><img  src="anatomy.jpg" alt="macro anatomy"></a>
@@ -192,7 +193,8 @@
 <li><code>values</code> - returns values from the set defined as macro parameters</li>
 </ul>
 <p>For detailed descriptions and usage examples please check the <a href="https://github.com/cezarypiatek/CsharpMacros">CsharpMacros</a> project site at Github.</p>
-<h2 id="macros-in-action">Macros in action<a href="#macros-in-action" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="macros-in-action"><a href="#macros-in-action">Macros in action  🔗&#xFE0E;</a></h2>
+
 <p>C# macro can be used for example to scaffold assertions for all object properties</p>
 <p>
 <img  src="generate_assertions_animated.png" alt="generate assertions">
@@ -202,21 +204,24 @@
 <img  src="generate_sqlread_animated.png" alt="generate sql read">
 </p>
 <p>There is also an option to transform the value of the attributes by applying filters like: <code>lowercase</code>, <code>uppercase</code>, <code>camelcase</code>, and <code>pascalcase</code>. The syntax for the placeholder with filter is the following: <code>${attribute_name | filter_name}</code>. The filters can be combined together by chaining them with <code>|</code> operator.</p>
-<h2 id="supported-ide">Supported IDE<a href="#supported-ide" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="supported-ide"><a href="#supported-ide">Supported IDE  🔗&#xFE0E;</a></h2>
+
 <p>CSharp Macros mechanism consists of two parts: Roslyn analyzer and Roslyn codefix; so it should work with any IDE that supports analyzers and codefixes. I&rsquo;ve tested it on <code>Visual Studio</code>, <code>JetBrains Rider</code> and <code>VSCode</code> and everything works in the same way. For Visual Studio the preferred way of usage is Visual Studio extension which can be downloaded and installed from the marketplace; you can also use it as a Nuget package. For <code>Rider</code> and <code>VSCode</code> the only option is to install it as a Nuget package - the downside is that you need to install it to every solution where you want to use it. To use Roslyn analyzers and VSCode, you need to unlock it in the editor settings - there is an option called <code>Enable support for Roslyn analyzers, code fixes and rulesets</code>.</p>
 <ul>
 <li><a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.csharpmacros2">Link to VisualStudio extension</a></li>
 <li><a href="https://www.nuget.org/packages/CsharpMacros">Link to Nuget package</a></li>
 <li><a href="https://github.com/cezarypiatek/CsharpMacros">Link to project site</a></li>
 </ul>
-<h2 id="ideas-for-improvement-and-extension">Ideas for improvement and extension<a href="#ideas-for-improvement-and-extension" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="ideas-for-improvement-and-extension"><a href="#ideas-for-improvement-and-extension">Ideas for improvement and extension  🔗&#xFE0E;</a></h2>
+
 <ul>
 <li>Add system for informing about errors in the macro definition.</li>
 <li>Implement some sort of stash or catalog of reusable macros.</li>
 <li>Implement <code>eval</code> macro function that evaluate function from the current solution or given DLL.</li>
 <li>Add intellisense for macro syntax.</li>
 </ul>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>I am very curious about your thoughts regarding <code>CSharp Macro</code>. Do you like it? Do you find it useful? Do you have any ideas for improvement/extension?  I&rsquo;ve had a couple of opportunities to use them in an action and they do simplify my work.  By having a tool that generates the code, you can avoid potential mistakes that can occur during <code>copy&amp;paste&amp;modify</code> process and focus on more important things.</p>
 <p><strong>UPDATE 2019-09-21</strong>: To facilitate usage of CsharpMacros I created a couple of Resharper&rsquo;s LiveTemplates. You can read more about that on the project&rsquo;s <a href="https://github.com/cezarypiatek/CsharpMacros/tree/master/snippets">snippets sub-page</a>.</p>
 <p>
@@ -227,9 +232,38 @@
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -281,34 +315,6 @@
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>

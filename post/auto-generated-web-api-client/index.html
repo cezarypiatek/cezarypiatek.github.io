@@ -177,7 +177,8 @@
 <li><a href="https://github.com/RicoSuter/NSwag">NSwag</a>.</li>
 </ul>
 <p><code>swagger-codegen</code> and <code>openapi-generator</code> are Java based CLI tools, so they require <code>JVM</code> to run but they allow to generate Rest API clients in a verity of programming languages. <code>NSwag</code> is built with dotnet but supports only <code>C#</code> and <code>TypeScript</code> clients generation. Anyway, I decided to use <code>NSwag</code> because it was the easiest one to integrate with <code>MsBuild</code> and allows for generating clients directly from WebAPI server assembly. Although there&rsquo;s plenty of articles about generating C# client using NSwag, it took me a whole day to put all the necessary pieces together, so I decided to write my own description for future reference.</p>
-<h2 id="project-organization">Project organization<a href="#project-organization" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="project-organization"><a href="#project-organization">Project organization  🔗&#xFE0E;</a></h2>
+
 <ul>
 <li><code>SampleService</code> - this is AspCore WebAPI project providing REST endpoints</li>
 <li><code>SampleService.ApiClient</code> - responsible for producing <code>dll</code> as well as <code>nuget package</code> with REST client based on the SampleService project&rsquo;s output assembly</li>
@@ -186,8 +187,10 @@
 <p>
 <a href="architecture.jpg"><img  src="architecture.jpg" alt="Project dependency diagram"></a>
 </p>
-<h2 id="steps-to-configure-automated-client-generation">Steps to configure automated client generation<a href="#steps-to-configure-automated-client-generation" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-<h3 id="prepare-nswagjson-manifest">Prepare <code>nswag.json</code> manifest<a href="#prepare-nswagjson-manifest" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h2 id="steps-to-configure-automated-client-generation"><a href="#steps-to-configure-automated-client-generation">Steps to configure automated client generation  🔗&#xFE0E;</a></h2>
+
+<h3 id="prepare-nswagjson-manifest"><a href="#prepare-nswagjson-manifest">Prepare <code>nswag.json</code> manifest  🔗&#xFE0E;</a></h3>
+
 <p><code>nswag.json</code> defines a set of parameters required by NSwag for generating client code like input assembly and output file path, as well as other different options allowing to adjust the shape of output code to our needs. The easiest way to generate the manifest file is to use Windows UI application called <a href="https://github.com/RicoSuter/NSwag/wiki/NSwagStudio">NSwag Studio</a>.
 Here&rsquo;s the minimal configuration required to correctly generate C# client:</p>
 <p>
@@ -211,7 +214,8 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
   }
 }
 </code></pre>
-<h3 id="configure-build-of-apiclient-project">Configure build of ApiClient project<a href="#configure-build-of-apiclient-project" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+<h3 id="configure-build-of-apiclient-project"><a href="#configure-build-of-apiclient-project">Configure build of ApiClient project  🔗&#xFE0E;</a></h3>
+
 <p>Having <code>nswag.json</code> manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with <a href="https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild">NSwag.MSBuild</a> package and a little bit of <code>MsBuild</code> scripting. Here&rsquo;s a content of <code>SampleService.ApiClient.csproj</code> file:</p>
 <pre><code class="language-xml">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
   &lt;PropertyGroup&gt;
@@ -284,16 +288,46 @@ We can also extend generated client by inheritance or with extension methods:</p
         =&gt; client.GetAsync(7, cancellationToken);
 }
 </code></pre>
-<h2 id="summary">Summary<a href="#summary" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
 <p>Thanks to <code>NSwag</code> tooling we can very easily configure automatic WebAPI client generation. A basic setup presented in this blog post is available as a <a href="https://github.com/cezarypiatek/SampleWebApiClientGeneration">Sample Project</a> on my Github.</p>
     
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	
 		<div class="addthis_inline_share_toolbox"></div>
+		<hr/>
 		
 	</article>
 	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
 	
 	<h3>See Also</h3>
 	<div class="row">
@@ -345,34 +379,6 @@ We can also extend generated client by inheritance or with extension methods:</p
 		
 	</div>
 	<br />
-	
-</main>
-
-<div id="bottom-nav" class="text-center center-block">
-	<a href=" https://cezarypiatek.github.io/" class="btn btn-default"><i class="fa fa-home"></i> Home</a>
-</div>
-  
-	
-	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 	
 
 						  </div>
