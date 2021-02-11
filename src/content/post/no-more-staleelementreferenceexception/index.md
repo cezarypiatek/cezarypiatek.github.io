@@ -192,6 +192,9 @@ This little trick allows us to introduce `StableWebElement` almost transparently
 
 > **UPDATE 2020-10-08:** I do not change the logic of `FindElements` method (the one that search for all elements that match a given locator because it could not guarantee the unambiguity during the "regeneration" process)
 
+> **UPDATE 2021-02-11:** I refactored the `StableWebElement` functionality in `Tellurium` project and extracted it into the separated project [Tellurium.StableElements](https://github.com/cezarypiatek/Tellurium.StableElements). You can used it now in your tests without the need to use `Tellurium` framework by simply installing [this nuget](https://www.nuget.org/packages/Tellurium.StableElements/).
+
+
 
 ## Summary
 

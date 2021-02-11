@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2018-08-12",
-          "dateModified" : "2020-10-11",
+          "dateModified" : "2021-02-11",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/no-more-staleelementreferenceexception\/splashscreen.jpg",
           "description": "How to globally handle the problem of StaleElementReferenceException in UI tests"
         }
@@ -320,6 +320,9 @@ private void Execute(Action action)
 <p>This little trick allows us to introduce <code>StableWebElement</code> almost transparently into existing codebase with minimal effort. I said &ldquo;almost&rdquo; because we still  need to use <code>FindStableElement</code> extension method on search context which is <code>WebDriver</code> (alternatively, we can create a wrapper for <code>WebDriver</code> that uses the same trick as StableWebElement).</p>
 <blockquote>
 <p><strong>UPDATE 2020-10-08:</strong> I do not change the logic of <code>FindElements</code> method (the one that search for all elements that match a given locator because it could not guarantee the unambiguity during the &ldquo;regeneration&rdquo; process)</p>
+</blockquote>
+<blockquote>
+<p><strong>UPDATE 2021-02-11:</strong> I refactored the <code>StableWebElement</code> functionality in <code>Tellurium</code> project and extracted it into the separated project <a href="https://github.com/cezarypiatek/Tellurium.StableElements">Tellurium.StableElements</a>. You can used it now in your tests without the need to use <code>Tellurium</code> framework by simply installing <a href="https://www.nuget.org/packages/Tellurium.StableElements/">this nuget</a>.</p>
 </blockquote>
 <h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
