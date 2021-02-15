@@ -2,7 +2,7 @@
 title: "How to simulate AutoMapper that works during the build time"
 description: "Generate mapping code on build with Roslyn"
 date: 2019-12-01T00:09:00+02:00
-tags : ["dotnet", "C#", "roslyn", "AutoMapper", "code generation", "mapping"]
+tags : ["dotnet", "csharp", "roslyn", "AutoMapper", "code generation", "mapping"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
