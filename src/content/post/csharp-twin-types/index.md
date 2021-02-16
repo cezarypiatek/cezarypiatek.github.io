@@ -2,7 +2,7 @@
 title: "Twin types - properties synchronization without inheritance"
 description: "How to keep two different types in synchronization using roslyn analyzers"
 date: 2020-06-14T00:11:45+02:00
-tags : ["roslyn", "productivity", "C#", "code generation"]
+tags : ["dotnet", "csharp", "roslyn", "code analysis", "code generation"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
