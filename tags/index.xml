@@ -6,17 +6,53 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Jan 2021 10:00:45 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 16 Feb 2021 10:00:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>code analysis</title>
+      <link>https://cezarypiatek.github.io/tags/code-analysis/</link>
+      <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/code-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>csharp</title>
+      <link>https://cezarypiatek.github.io/tags/csharp/</link>
+      <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/csharp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>dotnet</title>
       <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
+      <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>resharper</title>
+      <link>https://cezarypiatek.github.io/tags/resharper/</link>
+      <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>roslyn</title>
+      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
+      <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -71,24 +107,6 @@
       <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/async/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>csharp</title>
-      <link>https://cezarypiatek.github.io/tags/csharp/</link>
-      <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/csharp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>roslyn</title>
-      <link>https://cezarypiatek.github.io/tags/roslyn/</link>
-      <pubDate>Sun, 18 Oct 2020 16:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
       <description></description>
     </item>
     
@@ -183,15 +201,6 @@
     </item>
     
     <item>
-      <title>productivity</title>
-      <link>https://cezarypiatek.github.io/tags/productivity/</link>
-      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/productivity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>non-nullable</title>
       <link>https://cezarypiatek.github.io/tags/non-nullable/</link>
       <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
@@ -255,15 +264,6 @@
     </item>
     
     <item>
-      <title>resharper</title>
-      <link>https://cezarypiatek.github.io/tags/resharper/</link>
-      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/resharper/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>visual studio</title>
       <link>https://cezarypiatek.github.io/tags/visual-studio/</link>
       <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
@@ -287,6 +287,15 @@
       <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/livetemplates/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>productivity</title>
+      <link>https://cezarypiatek.github.io/tags/productivity/</link>
+      <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/productivity/</guid>
       <description></description>
     </item>
     

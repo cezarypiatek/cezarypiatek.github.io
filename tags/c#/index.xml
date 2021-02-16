@@ -30,16 +30,6 @@
     </item>
     
     <item>
-      <title>Twin types - properties synchronization without inheritance</title>
-      <link>https://cezarypiatek.github.io/post/csharp-twin-types/</link>
-      <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
-      <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
-The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
-    </item>
-    
-    <item>
       <title>Immutable types in C# with Roslyn</title>
       <link>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</link>
       <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
@@ -49,30 +39,12 @@ The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was th
     </item>
     
     <item>
-      <title>How to simulate AutoMapper that works during the build time</title>
-      <link>https://cezarypiatek.github.io/post/generate-mappings-on-build/</link>
-      <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/generate-mappings-on-build/</guid>
-      <description>Almost two years ago I created the very first version of MappingGenerator. Since then, I&amp;rsquo;ve put a lot of work in this project, adding new functions and improving the mapping generation algorithm with 14 releases (43 issues/feature requests closed) in the meantime. With over 5.5k downloads from the marketplace and 380 stars on Github, it looks like there is quite a market demand for this kind of tool (even though my coffee button statistics indicate something different).</description>
-    </item>
-    
-    <item>
       <title>Managing output in the .NET SDK projects</title>
       <link>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</link>
       <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</guid>
       <description>With the new SDK format for .NET projects, it&amp;rsquo;s much easier to manage with the project&amp;rsquo;s dependencies. In most scenarios references added with standard mechanism (Visual Studio or dotnet cli) result in sufficient content in the output directory. However, sometimes we want to do something non-standard that requires a slightly different set of components in the output dir - simply speaking we expect to see there either more or fewer files.</description>
-    </item>
-    
-    <item>
-      <title>Non-nullable references with C# 8 and .NET Core 3.0</title>
-      <link>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</link>
-      <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</guid>
-      <description>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available here on the MSDN, but the one that deserves special attention is Nullable reference types. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference nullability on the compilation stage.</description>
     </item>
     
     <item>

@@ -1,7 +1,7 @@
 ---
 title: "Pure functions and unused return values"
-description: "How to completely automate continuous integration and release management of visual studio extensions."
-date: 2021-02-15T10:00:45+02:00
+description: "Enforcing explicit discard of unused return values with Roslyn analyzer"
+date: 2021-02-16T10:00:45+02:00
 tags : ["dotnet", "csharp", "roslyn", "code analysis", "ReSharper"]
 highlight: true
 highlightLang: ["yaml", "powershell","fsharp"]
@@ -9,7 +9,7 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-A while ago I came across on ["Quick notes on a rant"](https://gist.github.com/dsyme/32de0d1bb0799ca438477c34205c3531) authored by Don Syme. This rant criticizes the C# language for the lack of few important features. The first point is `Implicitly discarding information is so 20th Century` which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you those troubles. 
+A while ago I came across ["Quick notes on a rant"](https://gist.github.com/dsyme/32de0d1bb0799ca438477c34205c3531) authored by Don Syme. This rant criticizes the C# language for the lack of a few important features. The first point is `"Implicitly discarding information is so 20th Century"` which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you the trouble. 
 
 
 ## Other .NET languages
@@ -29,7 +29,7 @@ let main argv =
 
 > warning FS0020: The result of this expression has type 'string' and is implicitly ignored. Consider using 'ignore' to discard this value explicitly, e.g. 'expr |> ignore', or 'let' to bind the result to a name, e.g. 'let result = expr'.
 
-However, in `PowerShell` unconsumed values are treated as the function results. For example, the function presented below returns two values: a `System.IO.FileSystemInfo` object representing a newly created directory and an integer with a value 0.
+However, in `PowerShell` unconsumed values are treated as function results. For example, the function presented below returns two values: a `System.IO.FileSystemInfo` object representing a newly created directory and an integer with a value 0.
 
 ```powershell
 function Do-Something
@@ -46,7 +46,7 @@ value
 return
 ```
 
-If your function has only one exit point you probably don't need to use the `return` keyword at all. Very often our custom `PowerShell` functions return more than we expected. To fix that we need to find a line that produces an unbound value and discard it by piping it to `Out-Null`
+If your function has only one exit point, you probably don't need to use the `return` keyword at all. Very often our custom `PowerShell` functions return more than we expected. To fix that, we need to find a line that produces an unbound value and discard it by piping it to `Out-Null`
 
 ```powershell
 function Do-Something
@@ -58,7 +58,7 @@ function Do-Something
 
 
 ## How to protect C# code
-Those were examples from other `dotnet` languages, but in `C#`, the unused return values are simply ignored which might result in accidental bugs like this:
+Those were examples from other `dotnet` languages, but in `C#` the unused return values are simply ignored which might result in accidental bugs like this:
 
 ```cs
 public int Calculate()
@@ -72,7 +72,7 @@ public int Calculate()
 }
 ```
 
-We are also susceptible to this kind of mistakes especially while working with types from `System.Collections.Immutable` namespace:
+We are also susceptible to this kind of mistakes, especially while working with types from `System.Collections.Immutable` namespace:
 
 ```cs
 public ImmutableArray<int> GetCoefficient()
@@ -87,19 +87,19 @@ public ImmutableArray<int> GetCoefficient()
 
 
 
-So what can we do with the lack of support on the language level and protect our `C#` codebase from this kind of bug? As Don Syme mentioned in his notes, we can use some sort of static code analyzers. This market need was spotted years ago by `JetBrains` company that released [JetBrains.Annotations](https://www.nuget.org/packages/JetBrains.Annotations/2021.1.0-eap01) NuGet package containing various attributes that extend static code analysis performed by their products (originally only by the `ReSharper`, and later also by the `Rider`). This package contains [[PureAttribute]](https://www.jetbrains.com/help/resharper/Reference__Code_Annotation_Attributes.html#PureAttribute) which is intended to mark the functions that can be classified as [Pure Function](https://en.wikipedia.org/wiki/Pure_function). Based on the configuration, all unbound calls to those methods are appropriately reported by the [Solution Wide Analysis](https://www.jetbrains.com/help/resharper/Code_Analysis__Solution-Wide_Analysis.html) module. 
+So what can we do with the lack of support on the language level and how to protect our `C#` codebase from this kind of bug? As Don Syme mentioned in his notes, we can use some sort of static code analyzers. This market need was spotted years ago by `JetBrains` company that released [JetBrains.Annotations](https://www.nuget.org/packages/JetBrains.Annotations/2021.1.0-eap01) NuGet package containing various attributes that extend static code analysis performed by their products (originally only by the `ReSharper`, and later also by the `Rider`). This package contains [[PureAttribute]](https://www.jetbrains.com/help/resharper/Reference__Code_Annotation_Attributes.html#PureAttribute) which is intended to mark the functions that can be classified as [Pure Function](https://en.wikipedia.org/wiki/Pure_function). Based on the configuration, all unbound calls to those methods are appropriately reported by the [Solution Wide Analysis](https://www.jetbrains.com/help/resharper/Code_Analysis__Solution-Wide_Analysis.html) module. 
 
 ![](solution_wide_errors.png)
 
-`BCL` also contains [PureAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.pureattribute?view=netframework-4.7.2) which is a part of CodeContracts framework and unused calls to methods with that attribute can be reported as [CA1806: Do not ignore method results](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1806) with [Microsoft.CodeAnalysis.NetAnalyzers](https://www.nuget.org/packages/Microsoft.CodeAnalysis.NetAnalyzers) analyzers package. Unfortunately, `CodeContracts` is dead, and `[System.Diagnostics.Contracts.Pure]` annotations are gradually abandoned - you can read more about this attribute here [The Pure Attribute in .NET Core](https://www.infoq.com/news/2019/01/pure-attribute-net-core/).
+`BCL` also contains [PureAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.pureattribute?view=netframework-4.7.2) which is part of CodeContracts framework. Unused calls to methods with that attribute can be reported as [CA1806: Do not ignore method results](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1806) with [Microsoft.CodeAnalysis.NetAnalyzers](https://www.nuget.org/packages/Microsoft.CodeAnalysis.NetAnalyzers) package. Unfortunately, `CodeContracts` is dead, and `[System.Diagnostics.Contracts.Pure]` annotations are gradually abandoned - you can read more about this attribute here [The Pure Attribute in .NET Core](https://www.infoq.com/news/2019/01/pure-attribute-net-core/).
 
 
 However, not every return-value-purpose function can be classified as `Pure Function` because of the side effects caused by the fact of using `IO` - for example, methods that read data from external storage like file or database. `JetBrains.Annotations` package contains another attribute for that purpose called [[MustUseReturnValueAttribute]](https://www.jetbrains.com/help/resharper/Reference__Code_Annotation_Attributes.html#MustUseReturnValueAttribute)
 
 
-## Brig C# to the next level
+## Bring C# to the next level
 
-This attribute base approach requires additional attention during the function authoring and the lack of those attributes in existing libraries still might be a source of troubles. `JetBrains` offers something called [External Annotations](https://www.jetbrains.com/help/resharper/Code_Analysis__External_Annotations.html#creating) that should solve the problem with the lack of annotations in third-party libraries but this is still extra work to do. How about reversing that approach and shifting the burden of deciding if a returned value is needed from method author to the method consumer - just like it's in a language like `F#`. To do that I extended my analyzers page [CSharpExtensions](https://github.com/cezarypiatek/CSharpExtensions) with a dedicated diagnostic `CSE005: Return value unused` that can find and report every unused result from a method call, await expression, or object creation. By default, all violations are reported as a warning, but this can be easily changed with an appropriate entry in the `ruleset` file or `.editorconfig`:
+This attribute base approach requires additional attention during the function authoring and the lack of those attributes in existing libraries still might be a source of troubles. `JetBrains` offers something called [External Annotations](https://www.jetbrains.com/help/resharper/Code_Analysis__External_Annotations.html#creating) that should solve the problem with the lack of annotations in third-party libraries, but this is still extra work to do. How about reversing that approach and shifting the burden of deciding if a returned value is needed from method author to method consumer - just like it is in a language like `F#`. To do that I extended my analyzers page [CSharpExtensions](https://github.com/cezarypiatek/CSharpExtensions) with a dedicated diagnostic `CSE005: Return value unused` that can find and report every unused result from a method call, await expression, or object creation. By default, all violations are reported as a warning, but this can be easily changed with an appropriate entry in the `ruleset` file or `.editorconfig`:
 
 ```ini
 [*.cs]
@@ -114,7 +114,7 @@ _ = MethodWithRedundantResult();
 
 ## Sloppy Fluent API
 
-After running the first version of my analyzer on one of my ASP.Core projects, I got a lot of warnings. Almost all of them were caused by the different fluent APIs, which are quite popular in objects that implement builder pattern. Lots of warnings in classes responsible for configuring different aspects of ASP.Core like web host configuration, `dependency injection`, or the HTTP pipelines. Another hive was located in components using `FluentValidator`. 
+After running the first version of my analyzer on one of my ASP.Core projects, I got a lot of warnings. Almost all of them were caused by different fluent APIs, which are quite popular in objects that implement builder pattern. Lots of warnings in classes responsible for configuring different aspects of ASP.Core like web host configuration, `dependency injection`, or the HTTP pipelines. Another hive was located in components using `FluentValidator`. 
 
 This is how the template `Startup` class looks like after scanning it with `CSE005`:
 
@@ -185,9 +185,9 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ```
 
 
-Honestly, I'm not a fan of those fluent builders because they are very confusing. I always need to check if a given function returns a new instance or the same one on which I operate. This approach makes only sense for immutable types, adding it in other situation only for the sake of methods call chaining seems to be real abuse. 
+Honestly, I'm not a fan of those fluent builders because they are very confusing. I always need to check if a given function returns a new instance or the same one on which I operate. This approach only makes sense for immutable types, adding it in other situation only for the sake of methods call chaining seems to be real abuse. 
 
-To allow easies introduction of `CSE005` analyzer to existing projects, without the need to rewrite all those config classes, I added an option to exclude given return types from the analysis:
+To allow easier introduction of `CSE005` analyzer to existing projects, without the need to rewrite all those config classes, I added an option to exclude given return types from the analysis:
 
 ```json
 {

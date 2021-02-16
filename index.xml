@@ -6,10 +6,19 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Jan 2021 10:00:45 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 16 Feb 2021 10:00:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pure functions and unused return values</title>
+      <link>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</link>
+      <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</guid>
+      <description>A while ago I came across &amp;ldquo;Quick notes on a rant&amp;rdquo; authored by Don Syme. This rant criticizes the C# language for the lack of a few important features. The first point is &amp;quot;Implicitly discarding information is so 20th Century&amp;quot; which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you the trouble.</description>
+    </item>
     
     <item>
       <title>Github Actions for Visual Studio Extension developers</title>
