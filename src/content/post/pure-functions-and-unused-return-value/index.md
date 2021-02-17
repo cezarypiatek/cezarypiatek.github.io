@@ -212,3 +212,11 @@ To make it work you need to save this config as `CSharpExtensions.json` add incl
 ## Call to action
 
 I'm really interested what do you think about adding this new feature to C#? Do you like it? Are you going to use it in your project? Have you found any real issues after scanning your current codebase? Any ideas for improving `CSE005` rule? Please let me know in the comment section below.
+
+> **UPDATE 2021-02-17:** As [Prod_Is_For_Testing](https://www.reddit.com/user/Prod_Is_For_Testing/) from Reddit pointed out, there's an existing rule [IDE0058: Remove unnecessary expression value](https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0058) which works exactly like `CSE005`. Formerly, all `IDE*` rules were available only in Visual Studio but now they can be used also outside the editor (with `dotnet build` or `msbuild`) after adding [Microsoft.CodeAnalysis.CSharp.CodeStyle](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.CodeStyle) package. This package also offers an automatic code fix for that issue. Sample `.editorconfig` configuration for this diagnostic:
+
+```ini
+[*.cs]
+dotnet_diagnostic.IDE0058.severity = error
+csharp_style_unused_value_expression_statement_preference = discard_variable
+```

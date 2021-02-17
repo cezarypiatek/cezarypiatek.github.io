@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2021-02-16",
-          "dateModified" : "2021-02-15",
+          "dateModified" : "2021-02-16",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/pure-functions-and-unused-return-value\/splashscreen.jpg",
           "description": "Enforcing explicit discard of unused return values with Roslyn analyzer"
         }
@@ -325,6 +325,13 @@ dotnet_diagnostic.CSE005.severity = error
 <h2 id="call-to-action"><a href="#call-to-action">Call to action  🔗&#xFE0E;</a></h2>
 
 <p>I&rsquo;m really interested what do you think about adding this new feature to C#? Do you like it? Are you going to use it in your project? Have you found any real issues after scanning your current codebase? Any ideas for improving <code>CSE005</code> rule? Please let me know in the comment section below.</p>
+<blockquote>
+<p><strong>UPDATE 2021-02-17:</strong> As <a href="https://www.reddit.com/user/Prod_Is_For_Testing/">Prod_Is_For_Testing</a> from Reddit pointed out, there&rsquo;s an existing rule <a href="https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0058">IDE0058: Remove unnecessary expression value</a> which works exactly like <code>CSE005</code>. Formerly, all <code>IDE*</code> rules were available only in Visual Studio but now they can be used also outside the editor (with <code>dotnet build</code> or <code>msbuild</code>) after adding <a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.CodeStyle">Microsoft.CodeAnalysis.CSharp.CodeStyle</a> package. This package also offers an automatic code fix for that issue. Sample <code>.editorconfig</code> configuration for this diagnostic:</p>
+</blockquote>
+<pre><code class="language-ini">[*.cs]
+dotnet_diagnostic.IDE0058.severity = error
+csharp_style_unused_value_expression_statement_preference = discard_variable
+</code></pre>
     
 		
 		<hr/>  
