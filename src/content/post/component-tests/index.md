@@ -6,7 +6,7 @@ tags : ["CQRS", "CQS", "architecture", "resharper", "LiveTemplates" ]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
-isDraft: true
+draft: true
 ---
 
 

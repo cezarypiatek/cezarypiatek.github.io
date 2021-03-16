@@ -3,48 +3,68 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
+    <loc>https://cezarypiatek.github.io/tags/approvaltest/</loc>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cezarypiatek.github.io/tags/code-analysis/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
+    <loc>https://cezarypiatek.github.io/</loc>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/csharp/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/</loc>
-    <lastmod>2021-02-16T21:27:47+01:00</lastmod>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/testing/</loc>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</loc>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/webapi/</loc>
+    <lastmod>2021-03-14T23:34:28+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/code-analysis/</loc>
+    <lastmod>2021-02-17T17:00:39+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</loc>
+    <lastmod>2021-02-17T17:00:39+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
+    <lastmod>2021-02-17T17:00:39+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
+    <lastmod>2021-02-17T17:00:39+01:00</lastmod>
   </url>
   
   <url>
@@ -119,11 +139,6 @@
   
   <url>
     <loc>https://cezarypiatek.github.io/tags/rest/</loc>
-    <lastmod>2020-09-06T17:54:29+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/webapi/</loc>
     <lastmod>2020-09-06T17:54:29+02:00</lastmod>
   </url>
   
@@ -270,11 +285,6 @@
   <url>
     <loc>https://cezarypiatek.github.io/post/effective-mocking/</loc>
     <lastmod>2019-07-31T23:44:16+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cezarypiatek.github.io/tags/testing/</loc>
-    <lastmod>2021-02-11T08:00:07+01:00</lastmod>
   </url>
   
   <url>
