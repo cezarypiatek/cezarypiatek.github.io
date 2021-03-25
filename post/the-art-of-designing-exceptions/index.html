@@ -47,7 +47,7 @@
     
     <meta property="og:tags" content="architecture">
     
-    <meta property="og:tags" content="CoreCLR">
+    <meta property="og:tags" content="coreclr">
     
     <meta property="og:tags" content="best practices">
     
@@ -59,8 +59,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="All that stuff before you catch them all.">
 
-	<meta name="keywords" value="dotnet, c#, exceptions, architecture, CoreCLR, best practices, clean code" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="dotnet, c#, exceptions, architecture, coreclr, best practices, clean code" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>The art of designing exceptions &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -133,7 +133,7 @@
 			
 				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
 			
 				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
@@ -174,36 +174,44 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>Have you ever been in a situation when you discovered an exception in the logs that forced you to spend the next couple of minutes - or even hours - figuring out what exactly went wrong? The message was very cryptic and the only useful information that guided you to the crime scene was a stack trace. And after arriving there, you still had no idea what had really happened and what was the culprit. The most frustrating part is that in many cases the reason is very trivial and could be diagnosed immediately if the error message contained sufficient information. Sounds familiar? I was in such situation many times before, especially when I was working with 3rd party libraries. In this blog post, I would like to share with you my thoughts and experience related to designing exception.</p>
-<h2 id="official-guidelines"><a href="#official-guidelines">Official guidelines  🔗&#xFE0E;</a></h2>
+		
+
+<p>Have you ever been in a situation when you discovered an exception in the logs that forced you to spend the next couple of minutes - or even hours - figuring out what exactly went wrong? The message was very cryptic and the only useful information that guided you to the crime scene was a stack trace. And after arriving there, you still had no idea what had really happened and what was the culprit. The most frustrating part is that in many cases the reason is very trivial and could be diagnosed immediately if the error message contained sufficient information. Sounds familiar? I was in such situation many times before, especially when I was working with 3rd party libraries. In this blog post, I would like to share with you my thoughts and experience related to designing exception.</p>
+
+<h2 id="official-guidelines">Official guidelines</h2>
 
 <p>First of all, there is a chapter in <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/index">Framework Design Guideline</a> devoted to <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions">Design Guidelines for Exceptions</a> which every .net developer should get familiar with. There are three main sections which cover the subject of:</p>
+
 <ul>
-<li>
-<p><a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exception-throwing">Exception Throwing</a></p>
-</li>
-<li>
-<p><a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/using-standard-exception-types">Using Standard Exception Types</a></p>
-</li>
-<li>
-<p><a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions-and-performance">Exceptions and Performance</a></p>
-</li>
+<li><p><a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exception-throwing">Exception Throwing</a></p></li>
+
+<li><p><a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/using-standard-exception-types">Using Standard Exception Types</a></p></li>
+
+<li><p><a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions-and-performance">Exceptions and Performance</a></p></li>
 </ul>
+
 <p>On top of that, it&rsquo;s worth to read the <a href="https://docs.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions">Best practices for exceptions</a> page in <a href="https://docs.microsoft.com/en-us/dotnet/standard/index">.NET Guide</a> too.</p>
+
 <p>Following those guidelines should at some point make our life easier but there are also areas for more improvements, especially in terms of information which should be included in the exception.</p>
-<h2 id="argumentexception"><a href="#argumentexception">ArgumentException  🔗&#xFE0E;</a></h2>
+
+<h2 id="argumentexception">ArgumentException</h2>
 
 <p>Let&rsquo;s take a look at <code>ArgumentException</code> which comes from the standard library and is used for notifying about invalid parameters.  We have the following constructors at our disposal:</p>
+
 <pre><code class="language-csharp">public ArgumentException()
 public ArgumentException(string message, Exception innerException)
 public ArgumentException(string message, string paramName)
 public ArgumentException(string message, string paramName, Exception innerException)
 </code></pre>
+
 <p>and the most useful overloads are those which accept <code>parameterName</code>. When we try to throw this exception we get the following message:</p>
+
 <pre><code class="language-plaintext">&lt;message&gt;
 Parameter name: &lt;parameterName&gt;
 </code></pre>
+
 <p>Despite the <code>message</code> parameter value, the first question that comes to our mind is <strong>What was the value of invalid argument?</strong>. Now it&rsquo;s our responsibility to provide a comprehensive explanation that contains current value every time when we throw an exception using the aforementioned constructor. A better approach would be to own a helper function in our codebase that enforces providing the argument value and produces the exception with a message that explains current situation:</p>
+
 <pre><code class="language-csharp">public class Fail
 {
     [Pure]
@@ -213,22 +221,29 @@ Parameter name: &lt;parameterName&gt;
     }
 }
 </code></pre>
+
 <p>Where the <code>XXX</code> part in the helper name is the reason why the argument was invalid. This solution takes off the burden of making up the exception message every time and enforces the need for providing argument&rsquo;s current value. If there is a requirement for internationalization, you can easily move the exception message to the resource file (remember about converting string interpolation into <code>string.Format</code>);</p>
-<h3 id="argumentoutofrangeexception---numeric-values"><a href="#argumentoutofrangeexception---numeric-values">ArgumentOutOfRangeException - numeric values  🔗&#xFE0E;</a></h3>
+
+<h3 id="argumentoutofrangeexception-numeric-values">ArgumentOutOfRangeException - numeric values</h3>
 
 <p>One of the <code>BCL</code> exceptions that specify the reason for the invalid parameter is <code>ArgumentOutOfRangeException</code>. The situation is a little better than in <code>ArgumentException</code> case because, as we see below, there is a constructor overload that accepts <code>parameterName</code> as well as <code>actualValue</code>:</p>
+
 <pre><code class="language-csharp">public ArgumentOutOfRangeException()
 public ArgumentOutOfRangeException(string paramName)
 public ArgumentOutOfRangeException(string paramName, string message)
 public ArgumentOutOfRangeException(string message, Exception innerException)
 public ArgumentOutOfRangeException(string paramName, object actualValue, string message)
 </code></pre>
+
 <p>The message produced by this overload looks as follows:</p>
+
 <pre><code class="language-plaintext">&lt;message&gt;
 Parameter name: &lt;parameterName&gt;
 Actual value was &lt;actualValue&gt;.
 </code></pre>
+
 <p>Seeing this message, we immediately start asking the question: <strong>&ldquo;What are the limitation for this value&rdquo;?</strong> Of course, this information could be included in <code>message</code> parameter but constructing the message using the same pattern everytime would be very tedious. Let&rsquo;s take a look at one of the <a href="https://github.com/dotnet/coreclr/blob/57f8358221a3c4ad7f1608f625bc3c5936618505/src/System.Private.CoreLib/shared/System/DateTime.cs#L228">DateTime constructor</a>:</p>
+
 <pre><code class="language-csharp">public DateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
 {
     if (millisecond &lt; 0 || millisecond &gt;= MillisPerSecond)
@@ -242,8 +257,11 @@ Actual value was &lt;actualValue&gt;.
     _dateData = (ulong)ticks;
 }
 </code></pre>
+
 <p>As we see, there is a validation for <code>millisecond</code> parameter. If the value doesn&rsquo;t belong to <code>[0, MillisPerSecond)</code> range then the <code>ArgumentOutOfRangeException</code> exception is thrown. The exception message is constructed using <code>SR.Format(SR.ArgumentOutOfRange_Range, 0, MillisPerSecond - 1)</code> statement. In order to compose the message, somebody had to know that he must use a special <code>SR.Format()</code> function with a dedicated constant <code>SR.ArgumentOutOfRange_Range</code> and he had to duplicate the values of range endpoints from the if statement. In terms of duplication - the same validation logic is repeated four times in <code>DateTime</code> struct. I also found the statement <code>SR.Format(SR.ArgumentOutOfRange_Range, MIN, MAX)</code> in 28 files in CoreCLR source code!!! (There was a <code>string.Format(CultureInfo.CurrentCulture, SR.ArgumentOutOfRange_Range,  MIN, MAX)</code> variation too).</p>
+
 <p>For me there are two issues: range info duplication and error message composition logic duplication. These problems can be solved by introducing an interface that represents the range. An object that implements this interface can be used to verify given value correctness and also can be passed to exception factory in case we want to inform about exceeding the allowed range:</p>
+
 <pre><code class="language-csharp">
 public interface IRange&lt;in T&gt;
 {
@@ -265,7 +283,9 @@ public class Fail
     }
 }
 </code></pre>
+
 <p>A sample implementation of <code>IRange&lt;&gt;</code> can look as follows:</p>
+
 <pre><code class="language-csharp">public class OpenRange&lt;T&gt;:IRange&lt;T&gt; where T:IComparable&lt;T&gt;
 {
     private readonly T min;
@@ -282,7 +302,9 @@ public class Fail
     public string GetDescription() =&gt; $&quot;({min}) - {max})&quot;
 }
 </code></pre>
+
 <p>Using our new range facility we can rewrite <code>DateTime</code> constructor in the following way:</p>
+
 <pre><code class="language-csharp">private static IRange&lt;int&gt; allowedMilisecondRange = new LeftClosedRightOpenRange&lt;int&gt;(0, MillisPerSecond);
 private static IRange&lt;long&gt; allowedTicksRange = new ClosedRange&lt;long&gt;(MinTicks, MaxTicks);
 
@@ -301,11 +323,14 @@ public DateTime(int year, int month, int day, int hour, int minute, int second, 
     _dateData = (ulong)ticks;
 }
 </code></pre>
+
 <p>As we see <code>IRange&lt;&gt;</code> helps us improve code readability, reduce the duplication of information about the allowed range and facilitate throwing the exception. It also enforces consistency in our codebase - a ready recipe for testing and informing about values outside the range.
 Actually, this solution is not limited to the classical numeric ranges. You can have a class that implements <code>IRange&lt;string&gt;</code> and verifies if given value belongs to a predefined set of strings. Just remember to compose appropriate description in <code>GetDescription()</code> method.</p>
-<h2 id="argumentoutofrange---enum-values"><a href="#argumentoutofrange---enum-values">ArgumentOutOfRange - enum values  🔗&#xFE0E;</a></h2>
+
+<h2 id="argumentoutofrange-enum-values">ArgumentOutOfRange - enum values</h2>
 
 <p>The special situation when we what to use <code>ArgumentOutOfRange</code> is <code>default</code> case in the <code>switch</code> statement for enum values. Here is the default code generated by Resharper for <code>switch</code> over an enum variable:</p>
+
 <pre><code class="language-csharp">private void DoSomething(SampleEnum option)
 {
     switch (option)
@@ -319,17 +344,23 @@ Actually, this solution is not limited to the classical numeric ranges. You can 
     }
 }
 </code></pre>
+
 <p>When we run this function with enum value that is not covered in <code>case</code> section, we get the exception with following message:</p>
+
 <pre><code class="language-plaintext">Exception of type 'System.ArgumentOutOfRangeException' was thrown.
 Parameter name: option
 Actual value was Option3.
 </code></pre>
+
 <p>At first glance, it is not so obvious what went wrong. It could be even more cryptic when the value was a nullable type:</p>
+
 <pre><code class="language-plaintext">Exception of type 'System.ArgumentOutOfRangeException' was thrown.
 Parameter name: option
 Actual value was null.
 </code></pre>
+
 <p>In order to make it much easier to diagnose we can add a dedicated helper that constructs exception about what really happened:</p>
+
 <pre><code class="language-csharp">public class Fail
 {
     [Pure]
@@ -341,6 +372,7 @@ Actual value was null.
     }
 }
 </code></pre>
+
 <pre><code class="language-csharp">private void DoSomething(SampleEnum option)
 {
     switch (option)
@@ -354,7 +386,8 @@ Actual value was null.
     }
 }
 </code></pre>
-<h3 id="filenotfoundexception"><a href="#filenotfoundexception">FileNotFoundException  🔗&#xFE0E;</a></h3>
+
+<h3 id="filenotfoundexception">FileNotFoundException</h3>
 
 <pre><code class="language-csharp">public FileNotFoundException()
 public FileNotFoundException(string message)
@@ -362,7 +395,9 @@ public FileNotFoundException(string message, Exception innerException)
 public FileNotFoundException(string message, string fileName)
 public FileNotFoundException(string message, string fileName, Exception innerException)
 </code></pre>
+
 <p>Those are the public constructors for <code>FileNotFoundException</code>. The three first should be forbidden. The only useful versions are the ones which accept <code>fileName</code> parameter but there is still crucial information missing - <strong>Where were we looking for the file?</strong>. In order to make diagnostic less painful we can introduce a helper which accepts <code>fileName</code> as well as the list of potential locations and produce exception with comprehensive message:</p>
+
 <pre><code class="language-csharp">public static class Fail
 {
     [Pure]
@@ -373,9 +408,11 @@ public FileNotFoundException(string message, string fileName, Exception innerExc
     }
 }
 </code></pre>
-<h2 id="missing-context-information"><a href="#missing-context-information">Missing context information  🔗&#xFE0E;</a></h2>
+
+<h2 id="missing-context-information">Missing context information</h2>
 
 <p>Sometimes we don&rsquo;t have enough information in given context to create a comprehensive error message. We can pass the missing information from the outside but this has a few disadvantages: additional parameters pollute our API and bound our method to given invocation context making it less reusable. Let&rsquo;s make an example: in our application, we want to load data stored in multiple <code>XML</code> files. The method that is responsible for loading data loops through the list of files, reads the content and passes it to the component responsible for parsing <code>XML</code>:</p>
+
 <pre><code class="language-csharp">
 public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
 {
@@ -389,7 +426,9 @@ public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; file
     return result;
 }
 </code></pre>
+
 <p>If there are any parsing errors we would like to be informed why the structure is invalid and also which file contains this corrupted content. Content verification logic is a part of the parser but it&rsquo;s totally unaware of the content physical source. We have two solutions: we can design the parser to return a structure that contains, besides the data, also a detailed information about errors if any occur:</p>
+
 <pre><code class="language-csharp">public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
 {
     var result = new List&lt;SampleData&gt;();
@@ -406,7 +445,9 @@ public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; file
     return result;
 }
 </code></pre>
+
 <p>or we can catch the exception thrown by the parser and wrap it in new exception that provides the context information.</p>
+
 <pre><code class="language-csharp">public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; files)
 {
     var result = new List&lt;SampleData&gt;();
@@ -425,18 +466,22 @@ public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; file
     return result;
 }
 </code></pre>
+
 <p>Of course, from the performance point of view, the first approach is much better, especially when we want to collect error information from all files and forward a complete summary. Unfortunately, sometimes the contract is enforced by the third party library and the <code>try-catch-throw</code> is the only possible option to handle this scenario.</p>
-<h2 id="pure-attribute"><a href="#pure-attribute">[Pure] attribute  🔗&#xFE0E;</a></h2>
+
+<h2 id="pure-attribute">[Pure] attribute</h2>
 
 <p>All of my exception factory methods are decorated with <code>[Pure]</code> attribute. This attribute comes from <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> NuGet package and it is intended to mark <a href="https://en.wikipedia.org/wiki/Pure_function">pure functions</a> - the functions which have no side effects. If you are using <code>Resharper</code> and have enabled <code>Solution-wide analysis</code> this attribute can save you a lot of trouble when you forget to add <code>throw</code> keyword before exception factory method invocation:</p>
-<p>
-<a href="missing_throw.jpg"><img  src="missing_throw.jpg" alt="missing throw keyword example"></a>
-</p>
+
+<p><img src="missing_throw.jpg" alt="missing throw keyword example" /></p>
+
 <p>You can read more about <code>Resharper code annotations</code> in my &ldquo;<a href="../../post/hunt-your-bugs-design-time/">Hunt your bugs in design time</a>&rdquo; article.</p>
-<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
+<h2 id="summary">Summary</h2>
 
 <p>Every time you are writing <code>throw</code> statement think about people who could find this exception in logs and what question they could ask. The good exception message is the one that explains in a comprehensive way what exact conditions occured and caused this exceptional situation. There is no need to ask any questions to figure out what happened. An appropriate exception design allows saving a lot of time to consumers of your libraries, people who take over the support or even you, too.</p>
-<h3 id="call-for-action"><a href="#call-for-action">Call for action  🔗&#xFE0E;</a></h3>
+
+<h3 id="call-for-action">Call for action</h3>
 
 <p>I am curious <strong>what was the most mysterious exception that you have ever encountered</strong> and how much time did it take to solve the riddle? Please share your experience in the comment section down below.</p>
     
@@ -582,7 +627,7 @@ public IReadonlyList&lt;SampleData&gt; LoadData(IReadonlyList&lt;string&gt; file
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "dotnet,csharp,exceptions,architecture,CoreCLR,bestpractices,cleancode"
+				hashtags: "dotnet,csharp,exceptions,architecture,coreclr,bestpractices,cleancode"
 			}
 		}
 	}

@@ -27,7 +27,7 @@ enableGitInfo = true
 		
 	[[params.socialbuttons]]
 	faicon = "linkedin"
-	url = "https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/"
+	url = "https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/"
 	title = "Follow me on LinkedIn"
 
 	[[params.socialbuttons]]

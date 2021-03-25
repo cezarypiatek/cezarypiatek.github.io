@@ -39,15 +39,15 @@
     <meta property="og:description" content="How to easily implement centralized logging system based on ELK stack.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="Kibana">
+    <meta property="og:tags" content="kibana">
     
-    <meta property="og:tags" content="Logstash">
+    <meta property="og:tags" content="logstash">
     
-    <meta property="og:tags" content="ElasticSearch">
+    <meta property="og:tags" content="elasticsearch">
     
-    <meta property="og:tags" content="ELK">
+    <meta property="og:tags" content="elk">
     
-    <meta property="og:tags" content="Filebeat">
+    <meta property="og:tags" content="filebeat">
     
     <meta property="og:tags" content="logging">
     
@@ -57,8 +57,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to easily implement centralized logging system based on ELK stack.">
 
-	<meta name="keywords" value="Kibana, Logstash, ElasticSearch, ELK, Filebeat, logging" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="kibana, logstash, elasticsearch, elk, filebeat, logging" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Demystifying ELK stack &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -131,7 +131,7 @@
 			
 				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
 			
 				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
@@ -172,33 +172,43 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>Let&rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&rsquo;s quite a challenge. If it still sounds like your current job you should definitely adopt ELK stack.</p>
-<p>ELK stands for <code>ElasticSearch-Logstash-Kibana</code> and it&rsquo;s a set of services which helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data. Because of its modular nature, for a basic solution, you have to install and configure four applications: Filebeat, Logstash, Elasticsearch, and Kibana. At first, it may sound overwhelming. The first time I tried to do that it took me a few days. In the last project (it was the fourth time) I was able to make it work in three hours. My application is built with ASP.NET framework hosted on IIS and logging with <code>log4net</code>, but it doesn&rsquo;t matter because ELK is able to collect, process, store and present logs which come in any format and from any source. The purpose of this blog post is to summarize my knowledge about setting up ELK stack. I hope you can find this note valuable and that it helps you save some time. I&rsquo;m going to show you step by step how to implement ELK in your existing project without making any changes in your code base.</p>
-<h2 id="elk-stack-quick-overview"><a href="#elk-stack-quick-overview">ELK Stack quick overview  🔗&#xFE0E;</a></h2>
+		
 
-<p>
-<a href="elk_overview.jpg"><img  src="elk_overview.jpg" alt="ELK data flow"></a>
-</p>
+<p>Let&rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&rsquo;s quite a challenge. If it still sounds like your current job you should definitely adopt ELK stack.</p>
+
+<p>ELK stands for <code>ElasticSearch-Logstash-Kibana</code> and it&rsquo;s a set of services which helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data. Because of its modular nature, for a basic solution, you have to install and configure four applications: Filebeat, Logstash, Elasticsearch, and Kibana. At first, it may sound overwhelming. The first time I tried to do that it took me a few days. In the last project (it was the fourth time) I was able to make it work in three hours. My application is built with ASP.NET framework hosted on IIS and logging with <code>log4net</code>, but it doesn&rsquo;t matter because ELK is able to collect, process, store and present logs which come in any format and from any source. The purpose of this blog post is to summarize my knowledge about setting up ELK stack. I hope you can find this note valuable and that it helps you save some time. I&rsquo;m going to show you step by step how to implement ELK in your existing project without making any changes in your code base.</p>
+
+<h2 id="elk-stack-quick-overview">ELK Stack quick overview</h2>
+
+<p><img src="elk_overview.jpg" alt="ELK data flow" /></p>
+
 <ul>
 <li>Filebeat - responsible for collecting logs from files and forwarding it to Logstash</li>
 <li>Logstash - parse and transform log data that comes from different sources in different format</li>
 <li>ElasticSearch - storage for log data</li>
 <li>Kibana - web application that presents log data (searching and visualization)</li>
 </ul>
-<h2 id="setting-up-elk-stack-server"><a href="#setting-up-elk-stack-server">Setting up ELK Stack server  🔗&#xFE0E;</a></h2>
+
+<h2 id="setting-up-elk-stack-server">Setting up ELK Stack server</h2>
 
 <p>At first, you need a Linux server which will be responsible for processing and storing log data. You have to install there ElasticSearch, Logstash, and Kibana. You can do it manually by yourself or you can save a lot of time and use preconfigured docker images. In the docker path we have two options:</p>
+
 <ul>
 <li>Single image <a href="https://elk-docker.readthedocs.io/">https://elk-docker.readthedocs.io/</a> All services are packed into the single image. This is not an official release but the documentation is excellent.</li>
 <li>Docker compose <a href="https://github.com/deviantony/docker-elk">https://github.com/deviantony/docker-elk</a> Every service comes as a separate official docker image combine together with docker compose file.</li>
 </ul>
+
 <p>Because both solutions are very well documented it&rsquo;s needles to duplicate it here.</p>
-<h2 id="collecting-logs-with-filebeat"><a href="#collecting-logs-with-filebeat">Collecting logs with Filebeat  🔗&#xFE0E;</a></h2>
+
+<h2 id="collecting-logs-with-filebeat">Collecting logs with Filebeat</h2>
 
 <p>Filebeat is responsible for collecting log data from files and sending it to Logstash (it watches designated files for changes and sends new entries forward). Thanks to this tool you can add ELK stack to your existing project without the need to make any changes in your code base. In order to install Filebeat, download appropriate archive with binaries from <a href="https://www.elastic.co/downloads/beats/filebeat">https://www.elastic.co/downloads/beats/filebeat</a> and extract it on the server where your logs are stored. I don&rsquo;t recommend choosing <code>c:\Program Files\</code> or <code>c:\Program Files (x86)\</code> paths because <code>user access control</code> makes it hard to update configuration file. After extracting archive, open <code>PowerShell</code> console, go to the directory with FileBeat binaries and execute the following script</p>
+
 <pre><code class="language-powershell">./install-service-filebeat.ps1
 </code></pre>
+
 <p>This should install <code>filebeat</code> as a Windows service. Use <code>Get-Service filebeat</code> to verify the current status of filebeat service. In the next step, you have to configure filebeat to harvest log data produced by your application. Filebeat harvesting configuration is located in <code>filebeat.yml</code> file and minimal configuration that works for me looks as follows:</p>
+
 <pre><code class="language-yaml">filebeat.prospectors:
 - input_type: log
   paths:
@@ -218,36 +228,50 @@ output.logstash:
   hosts: [&quot;10.0.2.12:5044&quot;]
   bulk_max_size: 1024
 </code></pre>
+
 <p>To make it work with your log data you should modify the following options:</p>
+
 <ul>
 <li><code>paths</code> should point to the location where your app is producing files with logs. Directory paths are accepted and concrete files as well (wildcards are accepted too).</li>
 <li><code>multiline.pattern</code> - regex pattern that matches the beginning of the new log entry inside the log file. In my case, I expect a line that starts with a date in the following format yyyy-MM-dd.</li>
 <li><code>fields</code> - a set of additional attributes that will be added to each log entry. I use it later to build ElasticSearch index name and identify the logs source.</li>
-<li><code>output.logstash</code> - <code>hosts</code> this is IP and port where the logstash is installed and listening.</li>
+<li><code>output.logstash</code> - <code>hosts</code> this is IP and port where the logstash is installed and listening.<br /></li>
 </ul>
+
 <p>Filebat configuration is in the <code>yaml</code> format which is sensible for whitespace. I used <code>VisualStudioCode</code> with <a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">yaml plugin</a> to avoid potential problems caused by invalid indentation.
 After updating Filebeat configuration, restart the service using <code>Restart-Service filebeat</code> powershell command. If you are not sure that Filebeat is working as expected, stop Filebeat service with <code>Stop-Service filebat</code> and run it in the debug mode using command <code>filebeat -e -d &quot;publish&quot;</code> where all events will be printed in the console. <a href="https://www.elastic.co/guide/en/beats/filebeat/1.1/enable-filebeat-debugging.html">Here</a> you can read more about filebeat debugging.</p>
+
 <p>Until you install ELK on production enviroment, you can set up Filbeat to watch one extra directory where you can put log files which ship from production. With this simple trick you get benefits immediately.</p>
-<h2 id="processing-logs-with-logstash"><a href="#processing-logs-with-logstash">Processing logs with Logstash  🔗&#xFE0E;</a></h2>
+
+<h2 id="processing-logs-with-logstash">Processing logs with Logstash</h2>
 
 <p>Another piece of our logging stack is Logstash. This service is responsible for processing log entries. Its configuration consists of three parts:</p>
+
 <ul>
 <li>input</li>
 <li>filter</li>
 <li>output</li>
 </ul>
+
 <p>In the <code>input</code> section we have to configure plugin that allows us to receive data from filebeat. The <code>filter</code> section is responsible for parsing and transforming log entries.
 The <code>output</code> section allows to set up a plugin that sends structural logs to target storage (ElasticSearch in our case)</p>
+
 <p>In order to parse logs, you have to use <a href="https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html">Grok filter</a>. <code>Grok</code> is DSL that can be described as a regular expression on the steroids. It allows using standard <code>regexp</code> as well as predefined patterns (there is even an option to create your own patterns). A list of default patterns is available <a href="https://github.com/elastic/logstash/blob/v1.4.2/patterns/grok-patterns">here</a>. A pattern that handles multiline entries should start with <code>(?m)</code>. Sample multiline pattern can looks as follows:</p>
+
 <pre><code class="language-plaintext">(?m)%{TIMESTAMP_ISO8601:timestamp}~~\[%{NUMBER:thread}\]~~\[%{USERNAME:user}\]~~\[%{DATA:ipAddress}\]~~\[%{DATA:requestUrl}\]~~\[%{DATA:requestId}\]~~%{DATA:level}~~%{DATA:logger}~~%{DATA:message}~~%{GREEDYDATA:exception}\|\|
 </code></pre>
+
 <p>To test your grok pattern you can use the followings on-line grok debuggers:</p>
+
 <ul>
 <li><a href="http://grokdebug.herokuapp.com/">http://grokdebug.herokuapp.com/</a> - Works with multiline but handles only single entry</li>
 <li><a href="http://grokconstructor.appspot.com/do/match">http://grokconstructor.appspot.com/do/match</a> - Works with multiple log entries but unfortunately doesn&rsquo;t accept <code>(?m)</code> at the beginnig (multiline switch can be used for subpatterns, check out this <a href="http://grokconstructor.appspot.com/do/match?example=0">example</a>)</li>
 </ul>
+
 <p>Grok debbugger is also a part of Kibana X-Pack (<a href="https://www.elastic.co/guide/en/kibana/current/grokdebugger-getting-started.html">Grok debugger in X-Pack</a>).</p>
+
 <p>Sample logstash configuration with input listening to filebeat and output set to elasticsearch:</p>
+
 <pre><code>input {
   beats {
     port =&gt; 5044
@@ -277,18 +301,23 @@ output {
   }
 }
 </code></pre>
+
 <p>Please note that besides the grok filter I&rsquo;ve also used <code>date</code> filter to set date type for the field containing our timestamp (thanks to that Kibana will be able to use it for time filter).</p>
+
 <p>Save your logstash config in <code>MyApp.conf</code> file and put under <code>/etc/logstash/conf.d</code> path (if you are using docker copy to the directory that is mapped to this volume). To copy files between Windows and Linux machine I use <a href="https://winscp.net/eng/download.php">WinScp</a></p>
+
 <p>After updating logstash configuration you have to restart this service with command <code>systemctl restart logstash</code>. If there is a problem with restarting logstash you can check its logs in <code>/var/log/logstash</code> directory.</p>
+
 <p>It&rsquo;s a good practice to keep ELK config files (Filebeat and Logstash) under version control.</p>
-<h2 id="presenting-logs-with-kibana"><a href="#presenting-logs-with-kibana">Presenting logs with Kibana  🔗&#xFE0E;</a></h2>
+
+<h2 id="presenting-logs-with-kibana">Presenting logs with Kibana</h2>
 
 <p>The last thing that left to do is to configure log presentation in Kibana. At first, we have to configure index pattern. Open Kibana in a web browser (type your ELK server address with port 5601) and go to <code>Management -&gt; Index Patterns -&gt; Create Index Patter</code>. In the <code>Step 1</code> provide your index name with the date replaced by a wildcard (this is the value defined in logstash configuration for <code>output.elasticsearch.index</code>). You need to inject data into elasticsearch before being able to configure it. If there is no index matching your pattern, make sure that the filebeat and logstash are working correctly. In the <code>Step 2</code> select <code>@timestamp</code> field for <code>Time Filter field name</code>. After successfully creating the index, you can go to <code>Discover</code> tab and start querying your new index.</p>
-<h3 id="brief-overview-of-kibana-discovery"><a href="#brief-overview-of-kibana-discovery">Brief overview of Kibana Discovery  🔗&#xFE0E;</a></h3>
 
-<p>
-<a href="kibana_discovery_anathomy.jpg"><img  src="kibana_discovery_anathomy.jpg" alt="Kibana discovery"></a>
-</p>
+<h3 id="brief-overview-of-kibana-discovery">Brief overview of Kibana Discovery</h3>
+
+<p><img src="kibana_discovery_anathomy.jpg" alt="Kibana discovery" /></p>
+
 <ol>
 <li>Selected index</li>
 <li>List of available fields from your log entries</li>
@@ -301,33 +330,43 @@ output {
 <li>Create a link for current filter results (always remember about Time filter, it&rsquo;s best to switch it into absolute mode)</li>
 <li>Manage your filter configuration (you can save or load predefined discovery configuration)</li>
 </ol>
-<h2 id="maintenance"><a href="#maintenance">Maintenance  🔗&#xFE0E;</a></h2>
+
+<h2 id="maintenance">Maintenance</h2>
 
 <p>ElasticSearch has a requirement for disk free space. If this limit is exceeded, ElasticSearch stops working and you get this screen in Kibana:</p>
-<p>
-<a href="elastic_is_down.jpg"><img  src="elastic_is_down.jpg" alt="Elastic is not working"></a>
-</p>
+
+<p><img src="elastic_is_down.jpg" alt="Elastic is not working" /></p>
+
 <p>To prevent this situation you have to regularly remove old indices (be carefull not to drop <code>.kibana</code> index). You can manage existing indices through <code>Dev Tools</code> Kibana module (this is simple rest client).</p>
-<p>
-<a href="kibana_dev_tools.jpg"><img  src="kibana_dev_tools.jpg" alt="Kibana dev tools"></a>
-</p>
+
+<p><img src="kibana_dev_tools.jpg" alt="Kibana dev tools" /></p>
+
 <p>Unfortunately, when <code>ElastiSeach plugin is read</code> Kibana goes down too and the <code>Dev Tools</code> tab is not available.
 In this situation, you have to interact directly with ElasticSeach API using REST client such as <a href="https://www.getpostman.com/">postman</a> or even PowerShell <code>Invoke-RestMethod</code> cmdlet.</p>
+
 <p>Gettting list of all indices:</p>
+
 <pre><code class="language-powershell">Invoke-RestMethod -Method Get -Uri http://your-elk.domain.com:9200/_cat/indices
 </code></pre>
+
 <p>Delete indices which match given pattern</p>
+
 <pre><code class="language-powershell">Invoke-RestMethod -Method Delete -Uri http://your-elk.domain.com:9200/my_index_pattern-*
 </code></pre>
+
 <p>In order to bring back to life Kibana and ElasticSearch, after removing redundant indices, you have to restart Kibana and ElasticSearch services</p>
+
 <pre><code>/etc/init.d# ./elasticsearch restart
 /etc/init.d# ./kibana restart
 </code></pre>
-<h2 id="the-key-to-success"><a href="#the-key-to-success">The key to success  🔗&#xFE0E;</a></h2>
+
+<h2 id="the-key-to-success">The key to success</h2>
 
 <p>The Number-One rule of successful implementation of ELK in your project is:</p>
+
 <pre><code class="language-plaintext">Make sure that everyone in your team knows that you have ELK, where it's accessible and HOW TO USE IT.
 </code></pre>
+
 <p>This sounds very obvious but I&rsquo;ve met a team where somebody devoted a lot of time to configure ELK, but there were no profits from this because he forgot to teach his colleges how to use it. So after you run ELK in your team, make a meeting and show everybody how to access and use it. I can guarantee you that if they know how to effectively use Kibana, they will quickly become addictied and never want to go back to manually searching through log files.</p>
     
 		
@@ -476,7 +515,7 @@ In this situation, you have to interact directly with ElasticSeach API using RES
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "Kibana,Logstash,ElasticSearch,ELK,Filebeat,logging"
+				hashtags: "kibana,logstash,elasticsearch,elk,filebeat,logging"
 			}
 		}
 	}

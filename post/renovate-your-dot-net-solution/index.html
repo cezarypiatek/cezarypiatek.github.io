@@ -39,7 +39,7 @@
     <meta property="og:description" content="Why you should definitely convert your C# projects to VS2017 format.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="C#">
+    <meta property="og:tags" content="c#">
     
     <meta property="og:tags" content="dotnet">
     
@@ -51,8 +51,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="Why you should definitely convert your C# projects to VS2017 format.">
 
-	<meta name="keywords" value="C#, dotnet, visual studio" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="c#, dotnet, visual studio" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Renovate your .NET solution &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -125,7 +125,7 @@
 			
 				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
 			
 				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
@@ -166,61 +166,84 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>In the early days of dotnet core, there was an attempt of changing the C# project file format. The old &ldquo;csproj&rdquo; based on <code>XML</code> format was replaced with  <code>.xproj/project.json</code>. However, after releasing <code>dotnet core 1.0</code> the authors decided to get back to <code>XML</code> file.  The format stayed the same but the specification went through a major change. With the new schema, a lot of improvements come into .net development and they are not restricted only to dotnet core projects.</p>
-<h2 id="changes"><a href="#changes">Changes  🔗&#xFE0E;</a></h2>
+		
 
-<h3 id="files-information-diet"><a href="#files-information-diet">Files information diet  🔗&#xFE0E;</a></h3>
+<p>In the early days of dotnet core, there was an attempt of changing the C# project file format. The old &ldquo;csproj&rdquo; based on <code>XML</code> format was replaced with  <code>.xproj/project.json</code>. However, after releasing <code>dotnet core 1.0</code> the authors decided to get back to <code>XML</code> file.  The format stayed the same but the specification went through a major change. With the new schema, a lot of improvements come into .net development and they are not restricted only to dotnet core projects.</p>
 
-<p>In <code>VS2007</code> format the <code>csproj</code> is not a ledger of all project files anymore. This decision has a few benefits. The first one is that we have much fewer conflict situations during committing changes into VCS. Two people can simultaneously add files into the same project and not to worry about the need for merging conflicts. The second one is related to the order in the codebase. I used to work with people who have a bad habit of excluding files from the project instead of deleting them completely. This results in polluting codebase with unnecessary files and causes a lot of confusion (a lot of questions, such as: &ldquo;Is it still necessary?&rdquo;, &ldquo;Why this is not included into the project?&quot;). With the new csproj format this problem disappeared almost completely. Of course, there is still an option of excluding files from the project but the result is an additional entry in csproj and - thanks to that - it is much easier to spot it during code review.</p>
-<h3 id="nuget"><a href="#nuget">Nuget  🔗&#xFE0E;</a></h3>
+<h2 id="changes">Changes</h2>
+
+<h3 id="files-information-diet">Files information diet</h3>
+
+<p>In <code>VS2007</code> format the <code>csproj</code> is not a ledger of all project files anymore. This decision has a few benefits. The first one is that we have much fewer conflict situations during committing changes into VCS. Two people can simultaneously add files into the same project and not to worry about the need for merging conflicts. The second one is related to the order in the codebase. I used to work with people who have a bad habit of excluding files from the project instead of deleting them completely. This results in polluting codebase with unnecessary files and causes a lot of confusion (a lot of questions, such as: &ldquo;Is it still necessary?&rdquo;, &ldquo;Why this is not included into the project?&rdquo;). With the new csproj format this problem disappeared almost completely. Of course, there is still an option of excluding files from the project but the result is an additional entry in csproj and - thanks to that - it is much easier to spot it during code review.</p>
+
+<h3 id="nuget">Nuget</h3>
 
 <p>With the new <code>csproj</code> format a few changes also come to the nuget. At first, the <code>packages.config</code> has been abandoned and the information about referenced NuGet packages was moved into <code>csproj</code> file - all NuGet dependencies are now listed as <code>PackageReference</code> nodes. The next change is related to creating your own NuGet packages. You don&rsquo;t need <code>nuspec</code> file anymore to generate a NuGet package from your project - all the package metadata is inside the project file. And the most important information: working with NuGet is much nicer because it&rsquo;s finally fast. There is a tremendous difference in NuGet performance between projects in the old and new format. In the old format, even the simplest actions such as install or update a single package were painfully slow. The issue is described here: <a href="https://github.com/NuGet/Home/issues/5805">Why is everything related to NuGet package restore/upgrade so slow</a> and the only working solution is a migration to new csproj format.</p>
-<h3 id="project-references"><a href="#project-references">Project references  🔗&#xFE0E;</a></h3>
+
+<h3 id="project-references">Project references</h3>
 
 <p>The new project format also changed the way how the information about dependencies is stored. First of all, the <code>ProjectReference</code> node has been simplified and we only need a <code>csproj</code> path to reference other project.</p>
+
 <p><strong>Old project reference style:</strong></p>
+
 <pre><code class="language-xml">&lt;ProjectReference Include=&quot;..\..\Domain.Invoice\Domain.Invoice.csproj&quot;&gt;
     &lt;Project&gt;{f7cc9baa-c366-4652-b1e6-a96a82bceb1f}&lt;/Project&gt;
     &lt;Name&gt;Domain.Invoice&lt;/Name&gt;
 &lt;/ProjectReference&gt;
 </code></pre>
+
 <p><strong>New project reference style:</strong></p>
+
 <pre><code class="language-xml">&lt;ProjectReference Include=&quot;..\..\Domain.Invoice\Domain.Invoice.csproj&quot; /&gt;
 </code></pre>
+
 <p>The way of referencing NuGet packages has also been changed. As I&rsquo;ve mentioned before there is no <code>package.config</code> anymore and the information about NuGet references from the <code>package.config</code> and project file was merged and simplified. Currently, in order to add NuGet package, we only need a <code>PackageReference</code> entry in <code>csproj</code> with appropriate attributes pointing to the right package id and version. The information about location of downloaded libraries was removed. Those changes solved the problem of potential inconsistency between the information about the package in <code>package.config</code> and csproj file - in the past, I came across the situation when somebody upgraded the package and forgot to commit one of those two files. With new csproj format this is not possible anymore.</p>
+
 <p><strong>Old NuGet reference style:</strong></p>
+
 <pre><code class="language-xml">&lt;Reference Include=&quot;Castle.Core, Version=4.3.1, Culture=neutral, processorArchitecture=MSIL&quot;&gt;
     &lt;HintPath&gt;..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll&lt;/HintPath&gt;
 &lt;/Reference&gt;
 </code></pre>
+
 <p><strong>New NuGet reference style:</strong></p>
+
 <pre><code class="language-xml"> &lt;PackageReference Include=&quot;Castle.Core&quot; Version=&quot;4.3.1&quot; /&gt;
 </code></pre>
+
 <p>All project references are very clearly presented now in the <code>Solution Explorer</code> in the form of a tree, divided into categories based on the dependency source:</p>
-<p>
-<a href="project_references.jpg"><img  src="project_references.jpg" alt="Project references"></a>
-</p>
-<h2 id="benefits-for-everyone"><a href="#benefits-for-everyone">Benefits for everyone  🔗&#xFE0E;</a></h2>
+
+<p><img src="project_references.jpg" alt="Project references" /></p>
+
+<h2 id="benefits-for-everyone">Benefits for everyone</h2>
 
 <p>I&rsquo;ve encountered an opinion that the new c# project format is uniquely associated with dotnet core on numerous occasions. This is probably caused by the fact that the Visual Studio template <code>Class Library (.NET Framework)</code> is still based on the old csproj format. The truth is that the new format can be used not only for dotnet core and dotnet standard but for the .NET Framework projects, too. If you are using Visual Studio 2017, you can even migrate existing projects into the new format. In order to create a C# project with .NET Framework that utilizes the new format, you have to select <code>Class Library (.NET standard)</code> template and after that change manually the value of <code>&lt;TargetFramework&gt;</code> node inside the csproj file to the appropriate <a href="https://docs.microsoft.com/en-us/dotnet/standard/frameworks">Target Framework Moniker (TFM)</a>. For example, for <code>.NET Framework 4.7.2</code> you have to use <code>&lt;TargetFramework&gt;net472&lt;/TargetFramework&gt;</code>. The video below shows how to do that correctly:</p>
+
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/QlIZ056vYjw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-<h2 id="migration"><a href="#migration">Migration  🔗&#xFE0E;</a></h2>
+
+<h2 id="migration">Migration</h2>
 
 <p>As I&rsquo;ve mentioned before, you can migrate existing .NET solution into the new csproj format and take advantage of all the new features. The migration is very easy thanks to the <a href="https://github.com/hvanbakel/CsprojToVs2017">CsprojToVs2017</a> command line tool. You just need to download and run the tool with the path to the <code>sln</code> file as the parameter. However, if your codebase is polluted with unnecessary <code>cs</code> files that have been detached from the project, you have to perform cleanup before you make a migration. For that occasion, I&rsquo;ve prepared a couple of <code>PowerShell</code> cmdlets that help to spot all unused files within the source code. This code should be run directly from the <code>Package Manager Console</code> in the Visual Studio.</p>
+
 <script src="https://gist.github.com/cezarypiatek/4881ceef6fc8c439ab7611c41133144b.js"></script>
+
 <p>In order to perform cleanup, you have to execute the following steps:</p>
+
 <ol>
 <li>Save the code from the gist above into <code>ProjectOrphanScouter.ps1</code> file</li>
 <li>Load the script into <code>Package Manager Console</code> by invoking <code>.  full_path_to_script/ProjectOrphanScouter.ps1</code> (the dot at the begging is important)</li>
 <li>Invoke <code>Find-OrphanFilesInSolution</code> to get the complete list of unused C# files</li>
 <li>Invoke <code>Find-OrphanFilesInSolution | Remove-Item</code> in order to delete unused C# files</li>
 </ol>
-<p>The only thing that caused an issue for me during the migration was the resource files because they still need to be explicitly referenced inside the csproj file. At the time when I was performing the migration on my solution (over a year ago), this scenario was not supported by the <code>CsprojToVs2017</code> tool, so if you have <code>resx</code> files in your project you have to pay attention to them and fix them manually in case this is still an issue.</p>
-<h2 id="reusing-project-configuration"><a href="#reusing-project-configuration">Reusing project configuration  🔗&#xFE0E;</a></h2>
 
-<p>After migrating projects into the new format it&rsquo;s good to extract common projects configuration into <code>Directory.Build.props</code> file and put into the solution root directory. This will save you a lot of time in the future when there is a need to change common properties for all projects such as a framework or C# language version. This mechanism is very well described by <a href="https://www.thomaslevesque.com/">Thomas Levesque</a> in his article  <a href="https://www.thomaslevesque.com/2017/09/18/common-msbuild-properties-and-items-with-directory-build-props/">COMMON MSBUILD PROPERTIES AND ITEMS WITH DIRECTORY.BUILD.PROPS</a>.  My ``Directory.Build.props` file looks as follows:</p>
+<p>The only thing that caused an issue for me during the migration was the resource files because they still need to be explicitly referenced inside the csproj file. At the time when I was performing the migration on my solution (over a year ago), this scenario was not supported by the <code>CsprojToVs2017</code> tool, so if you have <code>resx</code> files in your project you have to pay attention to them and fix them manually in case this is still an issue.</p>
+
+<h2 id="reusing-project-configuration">Reusing project configuration</h2>
+
+<p>After migrating projects into the new format it&rsquo;s good to extract common projects configuration into <code>Directory.Build.props</code> file and put into the solution root directory. This will save you a lot of time in the future when there is a need to change common properties for all projects such as a framework or C# language version. This mechanism is very well described by <a href="https://www.thomaslevesque.com/">Thomas Levesque</a> in his article  <a href="https://www.thomaslevesque.com/2017/09/18/common-msbuild-properties-and-items-with-directory-build-props/">COMMON MSBUILD PROPERTIES AND ITEMS WITH DIRECTORY.BUILD.PROPS</a>.  My `<code>Directory.Build.props</code> file looks as follows:</p>
+
 <pre><code class="language-xml">&lt;Project&gt;
     &lt;PropertyGroup&gt;
         &lt;TargetFramework&gt;netstandard2.0&lt;/TargetFramework&gt;
@@ -230,15 +253,19 @@
     &lt;/PropertyGroup&gt;
 &lt;/Project&gt;
 </code></pre>
-<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
+<h2 id="summary">Summary</h2>
 
 <p>The new csproj format comes with a lot of benefits. The project file is much cleaner than before and many well known issues related to dotnet development were solved with the new schema. And the most important information: this new format is not reserved only for dotnet core - you can utilize it no matter what kind of .net framework you are using - it works event with Full .NET Framework. You should definitely start using it if it hasn&rsquo;t happen so far.</p>
+
 <p><strong>UPDATE 2019-02-12:</strong>  The new csproj format still isn&rsquo;t supported with .NET Framework&rsquo;s ASP.NET MVC. You can track the issue on github <a href="https://github.com/dotnet/project-system/issues/2670">#2670</a>. However, until the issue is resolved, you can have a mix of projects in old and new format inside a single solution.</p>
+
 <p><strong>UPDATE 2019-02-21:</strong>   If you want to go even further with the renovation I highly recommend checking the <a href="https://github.com/sharpenrocks/Sharpen">Sharpen</a> project. <code>Thanks to that extension  you can easily start introducing new C# features into your codebase.</code></p>
-<p>
-<a href="https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png"><img  src="https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png" alt=""></a>
-</p>
+
+<p><img src="https://raw.githubusercontent.com/ironcev/sharpen/master/images/code-refactoring-on-arbitrary-scale.png" alt="" /></p>
+
 <p><strong>UPDATE 2019-09-30:</strong>  <code>CsprojToVs2017</code> can be easily installed and used as a dotnet cli global tool:</p>
+
 <pre><code class="language-shell"> dotnet tool install --global Project2015To2017.Migrate2019.Tool
  dotnet-migrate-2019 migrate
 </code></pre>
@@ -387,7 +414,7 @@
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "Csharp,dotnet,visualstudio"
+				hashtags: "csharp,dotnet,visualstudio"
 			}
 		}
 	}
