@@ -102,8 +102,9 @@ public class UserServiceMapper{
 ```
 
 ## Final thought
-AutoMapper is probably good for really small, short-lived projects or proof of concepts, but when you start to care about your code quality, you should definitely rethink all pros and cons regarding using AutoMapper. When you observe problems like the ones described in this blog post, you should consider abandoning AutoMapper and start to write your mappings explicitly (it really doesn't hurt). If you encountered other problems which arised from using AutoMapper I would be really appreciate if you could share your experience in the comment section down below.
+AutoMapper is probably good for really small, short-lived projects or proof of concepts, but when you start to care about your code quality, you should definitely rethink all pros and cons regarding using AutoMapper. When you observe problems like the ones described in this blog post, you should consider abandoning AutoMapper and start to write your mappings explicitly (it really doesn't hurt). If you encountered other problems which arise from using AutoMapper I would be really appreciate if you could share your experience in the comment section down below.
 
+----
+**UPDATE 2021-04-08:** The best option to avoid all those problems is writing mapping code explicitly. However, this is very boring and tedious job. To solve that problem I created a Visual Studio plugin which is able to scaffold mapping code in design time. You can download [MappingGenerator](https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator) directly from the Visual Studio Marketplace using this link [https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator](https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator)
 
-
-
+![](https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method_newone.gif)
