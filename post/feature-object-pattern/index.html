@@ -39,7 +39,7 @@
     <meta property="og:description" content="Creating maintainable UI test with Feature Object Pattern.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="selenium">
+    <meta property="og:tags" content="Selenium">
     
     <meta property="og:tags" content="testing">
     
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="Creating maintainable UI test with Feature Object Pattern.">
 
-	<meta name="keywords" value="selenium, testing, ui-tests, webdriver" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="Selenium, testing, ui-tests, webdriver" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Feature Object Pattern &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -168,35 +168,25 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>When it comes to writing maintainable UI test there always appears the term of <code>Page Object Pattern</code>. For those who are not familiar with <code>Page Object</code>, it&rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler <a href="https://martinfowler.com/bliki/PageObject.html">here</a>.</p>
-
+		<p>When it comes to writing maintainable UI test there always appears the term of <code>Page Object Pattern</code>. For those who are not familiar with <code>Page Object</code>, it&rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler <a href="https://martinfowler.com/bliki/PageObject.html">here</a>.</p>
 <p>Page Objects can be prepared by programmers who participate in development of tested application. This approach is very efficient because the programmer knows best the implementation details, how particular elements were built and how to interact with them. Such Page Object can be then used by testers to automate test cases. I think this is the most effective way of preparing automatic UI tests because everybody does what they know best. A testing person is excused from the need of getting to know how the tested app is built, how the used technology works and they can focus entirely on automatig test cases using high level testing api.</p>
-
-<h2 id="introduction-of-feature-object">Introduction of Feature Object</h2>
+<h2 id="introduction-of-feature-object"><a href="#introduction-of-feature-object">Introduction of Feature Object  🔗&#xFE0E;</a></h2>
 
 <blockquote>
 <p>A page object wraps a HTML page, or fragment, with an application-specific API, allowing you to manipulate page elements without digging around in the HTML.</p>
 </blockquote>
-
 <p>This is a quote from Martin Fowler&rsquo;s Page Object description. We can take it a little further by applying the <code>divide and conquer</code> rule and introduce a new kind of object that represents a single type of building element appearing repeatedly in tested application. These can be objects such as lists, tables, trees, forms etc. I call this kind of wrapper a <code>Feature Object Pattern</code>. This approach has a few benefits. It allows to program interaction with given type of element only once and reuse it everywhere in the tests. We can use <code>Feature Object</code> to compose Page Object of them by adding contextual integration. When a given type of element changes, it only requires modificaion in one place. One of the positive side effects is that it enforces on the programmers to build the application in a consistent way (all list, tables, forms etc should be constructed and behave consistently). This is a counterpart of the component approach in application development. Each component (or set of components) should be reflected by <code>Feature Object</code>. Before we start writing a UI test, we should perform analysis by identifying the application building elements and prepare the appropriate <code>Feature Object</code> for them. Similar to Page Object, in order to make the process more efficient, they should be prepared by the developer.</p>
-
-<h2 id="implementing-feature-objects">Implementing Feature Objects</h2>
+<h2 id="implementing-feature-objects"><a href="#implementing-feature-objects">Implementing Feature Objects  🔗&#xFE0E;</a></h2>
 
 <p>I&rsquo;ve made an attempt of implementing generic <code>Feature Objects</code> for elements such as forms, lists, tables and trees in my Selenium wrapper called <a href="https://github.com/cezarypiatek/Tellurium">Tellurium</a> which is available on Github.  A sample usage of these <code>Feature Objects</code> is described on the project&rsquo;s wiki in the following sections:</p>
-
 <ul>
 <li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-lists">Working with lists</a></li>
 <li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-tables">Working with tables</a></li>
 <li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-trees">Working with trees</a></li>
 <li><a href="https://github.com/cezarypiatek/Tellurium/wiki/Working-with-forms">Working with forms</a></li>
 </ul>
-
 <p>If you are interested in implementation details, please inspect source code of the following classes: <a href="https://github.com/cezarypiatek/Tellurium/blob/6bd0673a04464f67ea6a41700c5d3419a9e028ce/Src/MvcPages/WebPages/WebTree.cs">WebTree</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebList.cs">WebList</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebTable.cs">WebTable</a> and <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebForms/WebForm.cs">WebForm</a>. This project is written in C#, but I&rsquo;m pretty sure that these classes can be easily ported to your programming language of choice.</p>
-
 <p>Let&rsquo;s look how we can handle tables using <code>WebTable</code> wrapper from <code>Tellurium</code> project:</p>
-
 <pre><code class="language-csharp">var table = browserAdapter.GetTableWithId(&quot;SampleTable&quot;);
 table[1] //access second row
 table[1][0].Text //access second row, first column
@@ -208,19 +198,15 @@ table.First().First() //access first row, first column
 table.Last().Last() //access last row, last column
 table.FindItemWithText(&quot;Example row&quot;)[1] //access row with text &quot;Example row&quot;, second colum
 </code></pre>
-
 <p>As we see, this is a very simple, elegant, intuitive and readable way of interacting with tables. We don&rsquo;t need to know how the table was built, what the underlying markup looks like and what do particular tags mean. Another interesting example shows how easily we can work with forms using <code>WebForm</code> wrapper:</p>
-
 <pre><code class="language-csharp">var loginForm = browserAdapter.GetForm(&quot;RegistrationForm&quot;);
 loginForm.SetFieldValueByLabel(&quot;First name&quot;, &quot;John&quot;);
 loginForm.SetFieldValueByLabel(&quot;Last name&quot;, &quot;Doe&quot;);
 loginForm.ClickOnElementWithText(&quot;Register&quot;);
 </code></pre>
-
-<h2 id="building-page-object-from-feature-objects">Building Page Object from Feature Objects</h2>
+<h2 id="building-page-object-from-feature-objects"><a href="#building-page-object-from-feature-objects">Building Page Object from Feature Objects  🔗&#xFE0E;</a></h2>
 
 <p>Having <code>Feature Objects</code>representing forms and lists, we can use them to build <code>Page Object</code> for user list with filters:</p>
-
 <pre><code class="language-csharp">public class UserListPage()
 {
   private readonly Lazy&lt;WebForm&gt; filterForm;
@@ -254,17 +240,13 @@ loginForm.ClickOnElementWithText(&quot;Register&quot;);
   }
 }
 </code></pre>
-
 <p>In this example <code>Feature Objects</code> were used to handle the following page elements:</p>
-
 <ul>
 <li>filter form</li>
 <li>list of users</li>
 <li>pagination bar (list of page numbers).</li>
 </ul>
-
 <p>With our <code>Page Object</code> we can easily create a test that is very concise and readable:</p>
-
 <pre><code class="language-csharp">[Test]
 public void should_be_able_to_filter_users()
 {  
@@ -282,8 +264,7 @@ public void should_be_able_to_filter_users()
   Assert.AreEquals(5, userList.GetNumberOfUsers())
 }
 </code></pre>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>If you want to create maintainable UI Tests, you should definitely utilize <code>Page Object Pattern</code> in conjunction with <code>Feature Object Pattern</code>. In order to make the process of preparing UI Tests more effective, the people responsible for automating test cases should be supported by programmers developing tested application and building appropriate Page Objects and Feature Objects. If you don&rsquo;t know how to start building Feature Objects you can check the implementations of <a href="https://github.com/cezarypiatek/Tellurium/blob/6bd0673a04464f67ea6a41700c5d3419a9e028ce/Src/MvcPages/WebPages/WebTree.cs">WebTree</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebList.cs">WebList</a>, <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebTable.cs">WebTable</a> and <a href="https://github.com/cezarypiatek/Tellurium/blob/4b3e8188f65d39a996621538823f876a68b8d4a3/Src/MvcPages/WebPages/WebForms/WebForm.cs">WebForm</a> from <a href="https://github.com/cezarypiatek/Tellurium">Tellurium</a> Project. I used it to automate tests for the application that consist of 100+ forms and it works like a charm.</p>
     
@@ -429,7 +410,7 @@ public void should_be_able_to_filter_users()
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "selenium,testing,ui-tests,webdriver"
+				hashtags: "Selenium,testing,ui-tests,webdriver"
 			}
 		}
 	}

@@ -39,15 +39,15 @@
     <meta property="og:description" content="How to configure dotnet core solutions to automatically generate client packages for WebAPI projects">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="nswag">
+    <meta property="og:tags" content="NSwag">
     
-    <meta property="og:tags" content="aspcore">
+    <meta property="og:tags" content="AspCore">
     
-    <meta property="og:tags" content="c#">
+    <meta property="og:tags" content="C#">
     
-    <meta property="og:tags" content="webapi">
+    <meta property="og:tags" content="WebAPI">
     
-    <meta property="og:tags" content="rest">
+    <meta property="og:tags" content="Rest">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/auto-generated-web-api-client/splashscreen.jpg">
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to configure dotnet core solutions to automatically generate client packages for WebAPI projects">
 
-	<meta name="keywords" value="nswag, aspcore, c#, webapi, rest" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="NSwag, AspCore, C#, WebAPI, Rest" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Auto generated WebAPI client library with NSwag &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -170,41 +170,34 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>In the era of microservices and distributed systems, web browser applications written in <code>JavaScript</code> are not the only consumers of the <code>REST API</code>. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price. At the end of the day, we always need to write some set of classes that act as a client proxy, and if there is more than one consumer of a given service, we need to repeat that work in every one of them. Another problem is with propagating information about changes in the API and adjusting all clients to those changes. Taking into account those disadvantages, it&rsquo;s worth considering publishing a client proxy alongside the service itself, especially if it&rsquo;s possible to generate it automatically. There&rsquo;s a couple of existing projects on the market that allow generating C# client from <code>OpenAPI</code> (<code>Swagger</code>) specification like:</p>
-
+		<p>In the era of microservices and distributed systems, web browser applications written in <code>JavaScript</code> are not the only consumers of the <code>REST API</code>. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price. At the end of the day, we always need to write some set of classes that act as a client proxy, and if there is more than one consumer of a given service, we need to repeat that work in every one of them. Another problem is with propagating information about changes in the API and adjusting all clients to those changes. Taking into account those disadvantages, it&rsquo;s worth considering publishing a client proxy alongside the service itself, especially if it&rsquo;s possible to generate it automatically. There&rsquo;s a couple of existing projects on the market that allow generating C# client from <code>OpenAPI</code> (<code>Swagger</code>) specification like:</p>
 <ul>
 <li><a href="https://swagger.io/tools/swagger-codegen/">swagger-codegen</a></li>
 <li><a href="https://github.com/OpenAPITools/openapi-generator">openapi-generator</a></li>
 <li><a href="https://github.com/RicoSuter/NSwag">NSwag</a>.</li>
 </ul>
-
 <p><code>swagger-codegen</code> and <code>openapi-generator</code> are Java based CLI tools, so they require <code>JVM</code> to run but they allow to generate Rest API clients in a verity of programming languages. <code>NSwag</code> is built with dotnet but supports only <code>C#</code> and <code>TypeScript</code> clients generation. Anyway, I decided to use <code>NSwag</code> because it was the easiest one to integrate with <code>MsBuild</code> and allows for generating clients directly from WebAPI server assembly. Although there&rsquo;s plenty of articles about generating C# client using NSwag, it took me a whole day to put all the necessary pieces together, so I decided to write my own description for future reference.</p>
-
-<h2 id="project-organization">Project organization</h2>
+<h2 id="project-organization"><a href="#project-organization">Project organization  🔗&#xFE0E;</a></h2>
 
 <ul>
 <li><code>SampleService</code> - this is AspCore WebAPI project providing REST endpoints</li>
 <li><code>SampleService.ApiClient</code> - responsible for producing <code>dll</code> as well as <code>nuget package</code> with REST client based on the SampleService project&rsquo;s output assembly</li>
 <li><code>SampleService.ComponentTest</code> - contains components test for SampleService using <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.testhost.testserver?view=aspnetcore-3.0">in-memory test server</a>. Tested API is always called via client generated by <code>SampleService.ApiClient</code> project</li>
 </ul>
+<p>
+<a href="architecture.jpg"><img  src="architecture.jpg" alt="Project dependency diagram"></a>
+</p>
+<h2 id="steps-to-configure-automated-client-generation"><a href="#steps-to-configure-automated-client-generation">Steps to configure automated client generation  🔗&#xFE0E;</a></h2>
 
-<p><img src="architecture.jpg" alt="Project dependency diagram" /></p>
-
-<h2 id="steps-to-configure-automated-client-generation">Steps to configure automated client generation</h2>
-
-<h3 id="prepare-nswag-json-manifest">Prepare <code>nswag.json</code> manifest</h3>
+<h3 id="prepare-nswagjson-manifest"><a href="#prepare-nswagjson-manifest">Prepare <code>nswag.json</code> manifest  🔗&#xFE0E;</a></h3>
 
 <p><code>nswag.json</code> defines a set of parameters required by NSwag for generating client code like input assembly and output file path, as well as other different options allowing to adjust the shape of output code to our needs. The easiest way to generate the manifest file is to use Windows UI application called <a href="https://github.com/RicoSuter/NSwag/wiki/NSwagStudio">NSwag Studio</a>.
 Here&rsquo;s the minimal configuration required to correctly generate C# client:</p>
-
-<p><img src="nswag_studio.jpg" alt="Nswag Studio sample configuration" /></p>
-
+<p>
+<a href="nswag_studio.jpg"><img  src="nswag_studio.jpg" alt="Nswag Studio sample configuration"></a>
+</p>
 <p><code>Generate Outputs</code> button allows us to preview the generated client source code. After achieving the desired output, we should save the current configuration as <code>nswag.json</code> file directly in <code>SampleService.ApiClient</code> project&rsquo;s directory - <code>NSwag</code> should automatically convert all paths (assembly and references) to the relative form.</p>
-
 <p>In addition to options selected on the screenshot I also use the following settings to customize client proxy code:</p>
-
 <pre><code class="language-json">{
   &quot;codeGenerators&quot;: {
     &quot;openApiToCSharpClient&quot;: {      
@@ -221,11 +214,9 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
   }
 }
 </code></pre>
-
-<h3 id="configure-build-of-apiclient-project">Configure build of ApiClient project</h3>
+<h3 id="configure-build-of-apiclient-project"><a href="#configure-build-of-apiclient-project">Configure build of ApiClient project  🔗&#xFE0E;</a></h3>
 
 <p>Having <code>nswag.json</code> manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with <a href="https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild">NSwag.MSBuild</a> package and a little bit of <code>MsBuild</code> scripting. Here&rsquo;s a content of <code>SampleService.ApiClient.csproj</code> file:</p>
-
 <pre><code class="language-xml">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
   &lt;PropertyGroup&gt;
     &lt;TargetFramework&gt;netcoreapp3.1&lt;/TargetFramework&gt;
@@ -257,9 +248,7 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
   &lt;/Target&gt;
 &lt;/Project&gt;
 </code></pre>
-
 <p>In the <code>GenerateApiClientSourceCode</code> build target we are passing additional values with <code>/variables</code> parameter to NSwag CLI. Those values can be accessed in <code>nswag.json</code> manifest using <code>$()</code> notation, as shown on the following excerpt:</p>
-
 <pre><code class="language-json">{
   &quot;runtime&quot;: &quot;NetCore31&quot;,
   &quot;defaultVariables&quot;: &quot;Configuration=Debug,Output=./ApiClient.generated.cs&quot;,
@@ -280,22 +269,16 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
   }
 }
 </code></pre>
-
 <p>Defaults can be defined with <code>&quot;defaultVariables&quot;</code> - this is very useful if we are going to edit this file in <code>NSwag Studio</code> in the future.</p>
-
 <p>Since now, on every build, NSwag should generate automatically the source code of API client which is later compiled into <code>SampleService.ClientApi.dll</code> library and packed as a nuget.</p>
-
 <p>Here are the benefits of configuring automatic client generation in this way:</p>
-
 <ul>
 <li>The client code is continuously synchronized with the API.</li>
 <li>We can easily examine client source code because it&rsquo;s saved in <code>IntermediateOutputPath</code> (in most cases it&rsquo;s just <code>obj</code> directory).</li>
 <li>We can add an additional code which is using generated client api directly in the <code>SampleService.ApiClient</code> project.</li>
 </ul>
-
 <p>The last fact can be used for providing an implementation of partial methods defined in generated client class like: <code>UpdateJsonSerializerSettings</code>, <code>PrepareRequest</code>, and <code>ProcessResponse</code>.
 We can also extend generated client by inheritance or with extension methods:</p>
-
 <pre><code class="language-cs">public static class WeatherForecastClientExtensions
 {
     public static Task&lt;IReadOnlyList&lt;WeatherForecast&gt;?&gt; GetForTodayAsync(this IWeatherForecastClient client, CancellationToken cancellationToken = default) 
@@ -305,8 +288,7 @@ We can also extend generated client by inheritance or with extension methods:</p
         =&gt; client.GetAsync(7, cancellationToken);
 }
 </code></pre>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>Thanks to <code>NSwag</code> tooling we can very easily configure automatic WebAPI client generation. A basic setup presented in this blog post is available as a <a href="https://github.com/cezarypiatek/SampleWebApiClientGeneration">Sample Project</a> on my Github.</p>
     
@@ -452,7 +434,7 @@ We can also extend generated client by inheritance or with extension methods:</p
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "nswag,aspcore,csharp,webapi,rest"
+				hashtags: "NSwag,AspCore,Csharp,WebAPI,Rest"
 			}
 		}
 	}

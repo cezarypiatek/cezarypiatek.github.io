@@ -39,7 +39,7 @@
     <meta property="og:description" content="How to globally handle the problem of StaleElementReferenceException in UI tests">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="selenium">
+    <meta property="og:tags" content="Selenium">
     
     <meta property="og:tags" content="testing">
     
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to globally handle the problem of StaleElementReferenceException in UI tests">
 
-	<meta name="keywords" value="selenium, testing, ui-tests, webdriver" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="Selenium, testing, ui-tests, webdriver" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>No more StaleElementReferenceException &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -168,22 +168,16 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p><code>StaleElementReferenceException</code> can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:</p>
-
+		<p><code>StaleElementReferenceException</code> can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:</p>
 <ul>
 <li>an element was removed in the meantime</li>
 <li>an element was replaced with newer content (for example by <code>Ajax</code>)</li>
 <li>an element was re-rendered by JavaScript view/template framework</li>
 </ul>
-
 <p>In the first case, <code>StaleElementReferenceException</code> indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&rsquo;t affect our UI test. All of the solutions that I&rsquo;ve found in the network are based on applying try-catch-retry pattern around the places where the problem occurs. However, this could degrade readability and maintainability. So how to get rid of <code>StaleElementReferenceException</code> without introducing technical debt and changing the way we interact with web elements?</p>
-
-<h2 id="stablewebelement-to-the-rescue">StableWebElement to the rescue!</h2>
+<h2 id="stablewebelement-to-the-rescue"><a href="#stablewebelement-to-the-rescue">StableWebElement to the rescue!  🔗&#xFE0E;</a></h2>
 
 <p>I got the idea of <code>StableWebElement</code> – a wrapper for <code>IWebElement</code> which could detect the situation of stale reference and try to find a new reference to the original element (all this happening behind the scenes). The key element of this wrapper is memoization of searching context (parent element) and locator.  Let&rsquo;s see how it works on example. We have a user list which is a collection of list elements and each list element contains a button to deactivate the user. In order to perform user deactivation, we have to find user list, next find list element that represents given user and at the end, locate deactivation button inside the list element. The code for automating it with <code>Selenium</code> can look as follows:</p>
-
 <pre><code class="language-csharp">[Test]
 publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
 {
@@ -193,28 +187,22 @@ publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
     deactivationButton.Click();
 }
 </code></pre>
-
 <p>The mapping between UI elements and objects which represent them is showed in the diagram below:</p>
-
-<p><img src="stable_element_diagram.jpg" alt="stable element relation diagram" /></p>
-
+<p>
+<a href="stable_element_diagram.jpg"><img  src="stable_element_diagram.jpg" alt="stable element relation diagram"></a>
+</p>
 <p>The problem of stale reference can occur at any level of object hierarchy: our deactivate button can be re-rendered or either list element or the whole user list can be replaced with the newer version of HTML. No matter which element was refreshed, StableObjectElement should be able to restore all references necessary to perform intended action.</p>
-
-<h3 id="implementing-stablewebelement">Implementing StableWebElement</h3>
+<h3 id="implementing-stablewebelement"><a href="#implementing-stablewebelement">Implementing StableWebElement  🔗&#xFE0E;</a></h3>
 
 <p>I started with defining <code>IStableWebElement</code> that enriches <code>IWebElement</code> with two additional methods: <code>IsStale</code> which detects if the element is affected by stale reference and  <code>RegenerateElement</code> which restores the reference to the original element.</p>
-
 <pre><code class="language-csharp">public interface IStableWebElement : IWebElement, ILocatable, ITakesScreenshot, IWrapsElement, IWrapsDriver
 {
     bool IsStale();
     void RegenerateElement();
 }
 </code></pre>
-
 <p>At first, I thought that extending <code>IWebElement</code> would be enough, but after running my test suit I encountered a few methods from Selenium that accept <code>IWebElement</code> and perform casting to different interfaces that are not in the IWebElement inheritance hierarchy.</p>
-
 <p>Now we can create an implementation of our <code>IStableWebElement</code> interface:</p>
-
 <pre><code class="language-csharp">public class StableWebElement: IStableWebElement
 {
     private readonly ISearchContext parent;
@@ -229,9 +217,7 @@ publicv void should_be_able_to_deactivate_user(RemoteWebDriver webDriver)
     }
 }
 </code></pre>
-
 <p>All the methods and properties from the interfaces extended by <code>IStableWebElement</code> should be implemented as a proxy for original methods on the <code>element</code> object in the following manner:</p>
-
 <pre><code class="language-csharp">public void SendKeys(string text)
 {
     Execute(() =&gt; element.SendKeys(text));
@@ -250,9 +236,7 @@ public bool Displayed
     } 
 }
 </code></pre>
-
 <p>All original methods were wrapped in the <code>Execute</code> method which is responsible for detecting of <code>StaleElementReferenceException</code> during original method invocation. When the exception occurs, we try to restore element reference by invoking <code>RegenerateElement</code> and retry the operation. There are two <code>Execute</code> methods because we have to wrap methods and functions with them (notice that one returns generic element and the second one returns void):</p>
-
 <pre><code class="language-cs">private T Execute&lt;T&gt;(Func&lt;T&gt; function)
 {
     T result = default (T);
@@ -281,9 +265,7 @@ private void Execute(Action action)
     }
 }
 </code></pre>
-
 <p>And the most interesting part is the <code>RegenerateElement</code> method:</p>
-
 <pre><code class="language-csharp">public void RegenerateElement()
 {
     var stableParent = parent as IStableWebElement;
@@ -301,9 +283,7 @@ private void Execute(Action action)
     }
 }
 </code></pre>
-
 <p>At first, we check if our parent (which is our search context) is also affected by stale reference. If this is the case, we perform <code>RegenerateElement</code> method on the parent. This creates recursion call and we are able to restore references to the root element (no matter how many parents are in the dependency chain). After we retrieve the reference to the parent, we also need to find a fresh version of the current element using new parent and memorized locator. If any exception occurs during searching for the current element, that means the element truly disappeared and the StaleReferenceException was an indicator of the true problem. The last missing part is the method that detects if the element has a stale reference.</p>
-
 <pre><code class="language-cs">public bool IsStale()
 {
     try
@@ -318,11 +298,9 @@ private void Execute(Action action)
     }
 }
 </code></pre>
-
-<h3 id="applying-stablewebelement">Applying StableWebElement</h3>
+<h3 id="applying-stablewebelement"><a href="#applying-stablewebelement">Applying StableWebElement  🔗&#xFE0E;</a></h3>
 
 <p>In order to use StableWebElement we need to add extension method for <code>ISearchContext</code> that searches for given element and wraps it into our StableWebElement proxy:</p>
-
 <pre><code class="language-csharp">static class StableElementExtensions
 {
     public static IStableWebElement FindStableElement(this ISearchContext context, By locator)
@@ -332,25 +310,21 @@ private void Execute(Action action)
     }    
 }
 </code></pre>
-
 <p>Now we have to replace all invocation of <code>FindElement</code> with our new extension method. If we don&rsquo;t need to be explicit about using this new approach, we can tweak <code>FindElement</code> method from our <code>StableWebElement</code> wrapper to intercept the real result and wrap it into StableWebElement:</p>
-
 <pre><code class="language-cs">public IWebElement FindElement(By locator)
 {
     var foundElement = Execute(() =&gt; element.FindElement(locator));
     return new StableWebElement(this.parent, foundElement, locator);
 }
 </code></pre>
-
 <p>This little trick allows us to introduce <code>StableWebElement</code> almost transparently into existing codebase with minimal effort. I said &ldquo;almost&rdquo; because we still  need to use <code>FindStableElement</code> extension method on search context which is <code>WebDriver</code> (alternatively, we can create a wrapper for <code>WebDriver</code> that uses the same trick as StableWebElement).</p>
-
 <blockquote>
 <p><strong>UPDATE 2020-10-08:</strong> I do not change the logic of <code>FindElements</code> method (the one that search for all elements that match a given locator because it could not guarantee the unambiguity during the &ldquo;regeneration&rdquo; process)</p>
-
+</blockquote>
+<blockquote>
 <p><strong>UPDATE 2021-02-11:</strong> I refactored the <code>StableWebElement</code> functionality in <code>Tellurium</code> project and extracted it into the separated project <a href="https://github.com/cezarypiatek/Tellurium.StableElements">Tellurium.StableElements</a>. You can used it now in your tests without the need to use <code>Tellurium</code> framework by simply installing <a href="https://www.nuget.org/packages/Tellurium.StableElements/">this nuget</a>.</p>
 </blockquote>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>After applying <code>StableWebElement</code> in my UI Test the problem of <code>StaleObjectReferenceException</code> was completely eliminated. Utilizing the proxy pattern allowed me to introduce the <code>StableWebElement</code> with minimal effort, preserving standard Selenium API and keeping the readability of my test code. An attempt of implementation of <code>StableWebElement</code> can be found in <code>Tellurium</code> project <a href="https://github.com/cezarypiatek/Tellurium/blob/6f3754060f4386e115b40e13ffed5303bd98fc39/Src/MvcPages/SeleniumUtils/StableWebElement.cs">here</a>.</p>
     
@@ -496,7 +470,7 @@ private void Execute(Action action)
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "selenium,testing,ui-tests,webdriver"
+				hashtags: "Selenium,testing,ui-tests,webdriver"
 			}
 		}
 	}

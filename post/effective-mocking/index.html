@@ -52,7 +52,7 @@
 	<meta property="twitter:description" content="How to avoid common mocking issues with the help of Roslyn.">
 
 	<meta name="keywords" value="roslyn, testing, productivity" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Effective mocking &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -166,54 +166,46 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>Recently, I&rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with <code>NSubstitute</code>. Of course, my answer was <code>&quot;Yes&quot;</code> but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked <a href="https://nuget.org">nuget.org</a> and <a href="https://marketplace.visualstudio.com">Visual Studio extensions marketplace</a>, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for <code>NSubstitute</code> but for other mocking frameworks, just like <code>Moq</code> or <code>Fake It Easy</code>, too.  In this blog post, I will show you how these tools are helping to avoid common problems with mocking and boost your productivity by saving you a lot of typing. Presented examples will be mostly based on the <code>Moq</code> library because it&rsquo;s my favoring mocking package.</p>
-
-<h2 id="moving-runtime-problems-to-design-time">Moving runtime problems to design time</h2>
+		<p>Recently, I&rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with <code>NSubstitute</code>. Of course, my answer was <code>&quot;Yes&quot;</code> but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked <a href="https://nuget.org">nuget.org</a> and <a href="https://marketplace.visualstudio.com">Visual Studio extensions marketplace</a>, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for <code>NSubstitute</code> but for other mocking frameworks, just like <code>Moq</code> or <code>Fake It Easy</code>, too.  In this blog post, I will show you how these tools are helping to avoid common problems with mocking and boost your productivity by saving you a lot of typing. Presented examples will be mostly based on the <code>Moq</code> library because it&rsquo;s my favoring mocking package.</p>
+<h2 id="moving-runtime-problems-to-design-time"><a href="#moving-runtime-problems-to-design-time">Moving runtime problems to design time  🔗&#xFE0E;</a></h2>
 
 <p>The idea behind mocking is to create in runtime a type that inherits from the mocked type and behaves in a way that we specify in mock configuration. The most common problem with mocking is that not everything related to mock preparation can be verified in design time, and we need to compile and run our test in order to verify if the mock was constructed correctly. For example, from the semantical and syntactical point of view, it&rsquo;s possible to write a code that creates mock of sealed class or for a non-overridable method (sealed or non-abstract, or non-virtual). However, when we run a test that uses such kind of mock we&rsquo;ve got the exception:</p>
-
-<p><img src="non_overridable_exception.jpg" alt="Exception when non-overridable used in setup" /></p>
-
+<p>
+<a href="non_overridable_exception.jpg"><img  src="non_overridable_exception.jpg" alt="Exception when non-overridable used in setup"></a>
+</p>
 <p>With <a href="https://www.nuget.org/packages/Moq.Analyzers/">Moq.Analyzers</a> we can detect these problems in design time, right at the moment when we type the code that violates these rules.</p>
-
-<p><img src="setup_for_overridable_error.jpg" alt="Roslyn error when non-overridable used in setup" /></p>
-
+<p>
+<a href="setup_for_overridable_error.jpg"><img  src="setup_for_overridable_error.jpg" alt="Roslyn error when non-overridable used in setup"></a>
+</p>
 <p>Another problem with defining expected behavior for the mocked method is that the delegate provided for <code>Returns()</code> should match the signature of the mocked method. There is no way to express such kind of constraint with <code>C#</code> syntax, so this code will compile but won&rsquo;t work:</p>
-
-<p><img src="invalid_return_lambda_signature_without_roslyn.jpg" alt="Example of invalid lambda passed to return method" /></p>
-
+<p>
+<a href="invalid_return_lambda_signature_without_roslyn.jpg"><img  src="invalid_return_lambda_signature_without_roslyn.jpg" alt="Example of invalid lambda passed to return method"></a>
+</p>
 <p>Thanks to Roslyn analyzer, the feedback loop can be shortened by moving this verification from runtime to design time:</p>
-
-<p><img src="invalid_return_lambda_signature_roslyn.jpg" alt="Roslyn error when invalid lambda passed to return method" /></p>
-
+<p>
+<a href="invalid_return_lambda_signature_roslyn.jpg"><img  src="invalid_return_lambda_signature_roslyn.jpg" alt="Roslyn error when invalid lambda passed to return method"></a>
+</p>
 <p>The violations described here always result with runtime exception so it&rsquo;s good to set up the severity level of corresponding verification rules to <code>ERROR</code>:</p>
-
-<p><img src="sonfigure_severity_level.jpg" alt="Configure roslyn rule severity level" /></p>
-
+<p>
+<a href="sonfigure_severity_level.jpg"><img  src="sonfigure_severity_level.jpg" alt="Configure roslyn rule severity level"></a>
+</p>
 <p>If the <code>Moq</code> is not your mocking framework of choice don&rsquo;t worry, there&rsquo;s certainly a similar analyzer for your library. I was able to also find analyzers such as <a href="https://www.nuget.org/packages/NSubstitute.Analyzers.CSharp/">NSubstitute.Analyzers.CSharp</a> and <a href="https://www.nuget.org/packages/FakeItEasy.Analyzer.CSharp/">FakeItEasy.Analyzer.CSharp</a></p>
-
-<h2 id="less-typing-to-create-a-mock">Less typing to create a mock</h2>
+<h2 id="less-typing-to-create-a-mock"><a href="#less-typing-to-create-a-mock">Less typing to create a mock  🔗&#xFE0E;</a></h2>
 
 <p>Besides all those traps with mocking rules, preparing mocks involves a lot of typing which is a dummy work. For example, to mock a method with three parameters (without carrying for their values) we need to write a code like this:</p>
-
 <pre><code class="language-csharp">var mock = new Mock&lt;ISampleInterface&gt;();
 mock.Setup(m =&gt; m.DoSomething(It.IsAny&lt;int&gt;(), It.IsAny&lt;decimal&gt;(), It.IsAny&lt;string&gt;()))
     .Returns((p1, p2, p3)=&gt;  EXPECT_VALUE);
 </code></pre>
-
 <p>Typing repeatable <code>It.IsAny&lt;&gt;()</code> and trying to match the method signature in <code>Returns()</code> is quite boring and error-prone. Happily, these issues can be solved with Visual Studio extension - <a href="https://marketplace.visualstudio.com/items?itemName=AndreyLipatkin.moqautocomplete">Moq.Autocomplete</a> that can propose and insert the whole code for us.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/cTZR66mgt8Y?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 <p>If the suggestions are not appearing after pressing <code>ctr+space</code> you should try to press <code>ctr+j</code> (yes, I lost a couple of hours before I discovered that). <a href="https://marketplace.visualstudio.com/items?itemName=AndreyLipatkin.moqautocomplete">Moq.Autocomplete</a> works only for <code>Moq</code> and Visual Studio 2019. However, if you are using other mocking frameworks or still working on Visual Studio 2017, you can try <a href="https://marketplace.visualstudio.com/items?itemName=mrluje.mocking-helpers">Mocking.Helpers</a> extension - it works for <code>NSubstitute</code>, <code>FakeItEasy</code> and <code>Moq</code> too but only provides suggestions for mocked method parameters.</p>
-
 <p>If you need to return from the mock a sample object that has many properties that should be initialized with sample values, you can use <a href="https://github.com/cezarypiatek/MappingGenerator">MappingGenerator</a> that can easily scaffold object initialization:</p>
-
-<p><img src="object_scaffolding.gif" alt="Automate object scaffolding with Roslyn extension" /></p>
+<p>
+<a href="object_scaffolding.gif"><img  src="object_scaffolding.gif" alt="Automate object scaffolding with Roslyn extension"></a>
+</p>
     
 		
 		<hr/>  

@@ -39,11 +39,11 @@
     <meta property="og:description" content="A couple of tricks which simplify database access code while using Dapper library">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="dapper">
+    <meta property="og:tags" content="Dapper">
     
-    <meta property="og:tags" content="sqlserver">
+    <meta property="og:tags" content="SqlServer">
     
-    <meta property="og:tags" content="c#">
+    <meta property="og:tags" content="C#">
     
     <meta property="og:tags" content="dotnet">
     
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="A couple of tricks which simplify database access code while using Dapper library">
 
-	<meta name="keywords" value="dapper, sqlserver, c#, dotnet" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="Dapper, SqlServer, C#, dotnet" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Working efficiently with legacy database using Dapper &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -168,33 +168,25 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use <a href="https://github.com/StackExchange/Dapper">Dapper</a> to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to <a href="https://docs.microsoft.com/en-us/dotnet/api/system.data.idbconnection?view=netcore-3.1">IDbConnection</a>, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing <code>SQL queries</code> directly in the C# code, because I got used to relying always on ORMs (<code>NHibernate</code> in particular). Throughout the year, <code>Dapper</code> has proven to be the right tool for the job. In the meantime, I also discovered a couple of features and tricks that allow me to write quite concise and easy to maintain database access code, and I think it&rsquo;s worth sharing them here.</p>
-
+		<p>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use <a href="https://github.com/StackExchange/Dapper">Dapper</a> to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to <a href="https://docs.microsoft.com/en-us/dotnet/api/system.data.idbconnection?view=netcore-3.1">IDbConnection</a>, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing <code>SQL queries</code> directly in the C# code, because I got used to relying always on ORMs (<code>NHibernate</code> in particular). Throughout the year, <code>Dapper</code> has proven to be the right tool for the job. In the meantime, I also discovered a couple of features and tricks that allow me to write quite concise and easy to maintain database access code, and I think it&rsquo;s worth sharing them here.</p>
 <blockquote>
 <p>Key Takeaways:</p>
-
 <ul>
 <li>Always define aliases in SQL queries using <code>nameof()</code> operator</li>
 <li>Use C# consts and enums in SQL queries instead of magic numbers</li>
 <li>Use <code>FOR JSON PATH</code> to simplify fetching complex objects from database</li>
 </ul>
 </blockquote>
-
-<h2 id="resilient-to-refactoring">Resilient to refactoring</h2>
+<h2 id="resilient-to-refactoring"><a href="#resilient-to-refactoring">Resilient to refactoring  🔗&#xFE0E;</a></h2>
 
 <p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns&rsquo; names match object fields&rsquo; name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
-
 <pre><code class="language-sql">SELECT 
     UserID AS [Id], 
     UserName AS [Name]
 FROM 
     Users
 </code></pre>
-
 <p>However, the naming convention approach is fragile to rename refactoring. Changing the object field&rsquo;s name will break your code and it can be hard to detect without an appropriate test suite. Fortunately, there&rsquo;s a way to shorten this feedback loop and solve this issue in the design time. We can make our code more resilient by defining aliases using <code>string interpolation</code> and <code>nameof()</code> operator:</p>
-
 <pre><code class="language-cs">private static readonly string GetUsersListQuery = @$&quot;
 SELECT 
     UserID AS [{nameof(UserDBO.Id)}], 
@@ -203,25 +195,22 @@ FROM
     Users
 &quot;
 </code></pre>
-
 <p>This not only takes away the threat of breaking the code while renaming <code>DBO</code> fields but also gives better discoverability and navigability in the code. Using <code>find usage</code> option, we can also find where a given field is used in the SQL queries. And there&rsquo;s no performance penalty because the compiler can evaluate this string interpolation during the compilation, because all of the parameters are const. You can verify it by yourself with this <a href="https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6aD2gYYAlCOgD2yUTE8IAT3k9enQEUQA3WEsSCgA2eiQoGU9cABsg2IAGegBxFWYcZAAZUWQYAEU4HCCAXiESABIAIloAZQBRYo6AYQAVehCmFgQpVnoAQTb6AG0eXHMITzAACkKEDk4AOlkASm0AXQAaQZpBYZxTC0npuYWLZbWRza2riH2D2gAxV04AWVO53WyFozVUtG0QA">Sharplab.io example</a></p>
-
 <p>But what if we want to get the result of the string interpolation without the need to run the whole program in debug mode? This is often needed when there&rsquo;s a bug in the query and we want to copy it and test in the <code>Management Studio</code>. This can be easily archived with <code>Immediate window</code> - yes, that&rsquo;s right, you can use <code>Immediate window</code> to evaluate the code in the design time. To evaluate the string, just enter fully qualified field name that holds the query into the <code>Immediate window</code>:</p>
-
-<p><img src="evaluated_string_interpolation.jpg" alt="" /></p>
-
+<p>
+<a href="evaluated_string_interpolation.jpg"><img  src="evaluated_string_interpolation.jpg" alt=""></a>
+</p>
 <p>Unfortunately, the output is not well-formatted and contains additional characters for line endings. We can fix it by adding <code>nq</code> (no quote) suffix:</p>
-
-<p><img src="evaluated_string_interpolation_with_nq.jpg" alt="" /></p>
-
+<p>
+<a href="evaluated_string_interpolation_with_nq.jpg"><img  src="evaluated_string_interpolation_with_nq.jpg" alt=""></a>
+</p>
 <p>If you are using <code>Resharper</code> then you can avoid typing long <code>FQN</code> and copy it with a special option for this purpose:</p>
-
-<p><img src="resharper_copy_FQN.jpg" alt="" /></p>
-
-<h2 id="no-magic-numbers">No magic numbers</h2>
+<p>
+<a href="resharper_copy_FQN.jpg"><img  src="resharper_copy_FQN.jpg" alt=""></a>
+</p>
+<h2 id="no-magic-numbers"><a href="#no-magic-numbers">No magic numbers  🔗&#xFE0E;</a></h2>
 
 <p>Sometimes there is a need to use some sort of constant values in the SQL query (especially in the conditions). Queries with those cryptic values are very hard to review or even can cause a problem with understanding for the author himself after a while:</p>
-
 <pre><code class="language-cs">public class Repository {
    private static readonly string GetActiveUsersListQuery = @$&quot;
 SELECT 
@@ -234,9 +223,7 @@ WHERE
 &quot;;
 }
 </code></pre>
-
 <p>This is a classical example of well known code smell called <code>magic numbers</code>. We can solve this problem again with string interpolation. <strong>It&rsquo;s tempting to introduce an enum that represents a set of available values but unfortunately using an enum as a parameter for the interpolated string will prevent the compiler from evaluating expression during the compilation. The evaluation will occur in the runtime and will result in creating a new string in the memory whenever the code is executed.</strong> This can hurt the application performance especially when you define SQL queries as local variables. You can check it on this <a href="https://sharplab.io/#v2:EYLgZgpghgLgrgJwgZwLQAdYwggdsgZgB8ABAJgEYBYAKHIAIBVZHAEQCEB5Wgb1voH0SBegEtcMegEkAJvR70A5hBgBueizX0Avv0HCxE+gDkoAWwjylK9ZvW6ag+rQe0IuOGaYsEAFQCe6BC8egIAggDGMKIAbpYAvPQUBACsADSh0rhQUbEJSQQAbC60tAYMAEoQ6AD2yKIwNQj+8qHoCLGwliQUhfRIUDI1uAA2LT0ADPQA4irMOMgAMqLIMACKcDgtiSQkACQARLQAygCii6cAwr7OjoLzCFKsabdOD6YWtABiFZwAsq97j5kLQAOoACVOFVOmQeASC9ESPDhgQgADpItE4g4DqoXEA">Sharplab.io example</a> If you need to keep strings with SQL queries as local variables then it&rsquo;s better to define those magic values as const:</p>
-
 <pre><code class="language-cs">public class Repository {
     
     static class UserType
@@ -256,13 +243,10 @@ WHERE
 &quot;;
 }
 </code></pre>
-
 <p>Those constants must be a string type even if they are numeric values, otherwise the compiler generates invocation of <code>System.String.Format()</code> instead of creating a single string.</p>
-
-<h2 id="bridge-the-gap-between-relational-and-object-oriented-models">Bridge the gap between relational and object-oriented models</h2>
+<h2 id="bridge-the-gap-between-relational-and-object-oriented-models"><a href="#bridge-the-gap-between-relational-and-object-oriented-models">Bridge the gap between relational and object-oriented models  🔗&#xFE0E;</a></h2>
 
 <p>Very often posts advertising micro ORMs present fairly simple examples where database data structures match almost 1-1 the C# structures. However, the reality is quite different and the discrepancy between relational and object-oriented model might be expensive and result with a large amount of code responsible for fetching and transforming data.</p>
-
 <pre><code class="language-cs">public class User
 {
     public int Id {get; set;}
@@ -280,11 +264,8 @@ public class Address
     public string BuildingNo { get; set; }
 }
 </code></pre>
-
 <p>In order to fetch complete user data we can use one of the following approaches:</p>
-
 <p>We can introduce some sort of intermediate type for fetching a result of the SQL query and then map it to the destination type in the memory. I call those intermediate types <code>DBO - DataBase Object</code>:</p>
-
 <pre><code class="language-cs">public class UserDBO
 {
     public int Id {get; set;}
@@ -326,17 +307,13 @@ public class UserRepository
     }
 }
 </code></pre>
-
 <p>This solution has several disadvantages:</p>
-
 <ul>
 <li>It requires an intermediate DBO type.</li>
 <li>It requires additional mapping code to adjust fetched data to the desired structure</li>
 <li>If we change the relation between User and Address from one-to-one to one-to-many, it will result in data duplication.</li>
 </ul>
-
 <p>Another option is to fetch direct attributes (Id, FirstName, LastName) with one query, fetch address data with another one and merge user with address in memory:</p>
-
 <pre><code class="language-cs">public class UserRepository
 {
     static readonly string GetUserBasicDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching user basic data*/
@@ -354,9 +331,7 @@ public class UserRepository
     }
 }
 </code></pre>
-
 <p>This approach requires two calls to a database, but it can be reduced by merging those two queries into a single string and executing it with <code>SqlMapper.GridReader</code>:</p>
-
 <pre><code class="language-cs">public class UserRepository
 {
     static readonly string GetUserBasicDataSqlQuery = &quot;&quot;; /*TODO: Here comes query for fetching user basic data*/
@@ -383,9 +358,7 @@ public class UserRepository
     }
 }
 </code></pre>
-
 <p>Looks like this solution is much cleaner and requires less code than the option with the intermediate DBO object, but things can get really messy when we want to fetch data for more than one user and the relation between user and address is one-to-many:</p>
-
 <pre><code class="language-cs">public async Task&lt;IReadOnlyCollection&lt;User&gt;&gt; GetAllUsers(IDbConnection connection)
 {
     using var gridReader = await connection.QueryMultipleAsync(GetUserCompleteDataSqlQuery);
@@ -403,9 +376,7 @@ public class UserRepository
     return users;
 }
 </code></pre>
-
 <p>We can simplify it by taking leverage of JSON support in SQL Server. For the relation 1-1 between the <code>User</code> and <code>Address</code> our SQL query can look as follows:</p>
-
 <pre><code class="language-sql">SELECT
     u.UserId AS [Id],
     u.FirstName AS [FirstName],
@@ -420,9 +391,7 @@ FROM
     LEFT JOIN Addresses a ON a.UserId = u.UserID
 FOR JSON PATH
 </code></pre>
-
 <p>or we can rewrite it to handle one-to-many relation using sub-query:</p>
-
 <pre><code class="language-sql">SELECT
     u.UserId as [Id],
     u.FirstName as [FirstName],
@@ -443,9 +412,7 @@ FOR JSON PATH
 FROM
     Users u 
 </code></pre>
-
 <p>But how can we fetch this JSON SQL query result using Dapper? The most common solution that we can come across on the internet is to create a custom type handler for our SQL query result:</p>
-
 <pre><code class="language-cs">public class JsonTypeHandler&lt;TResult&gt;: SqlMapper.TypeHandler&lt;TResult&gt;
 {
     public override void SetValue(IDbDataParameter parameter, TResult value) =&gt; 
@@ -462,21 +429,15 @@ FROM
     }
 }
 </code></pre>
-
 <p>After registering type handler with:</p>
-
 <pre><code class="language-cs">SqlMapper.AddTypeHandler(new JsonTypeHandler&lt;User&gt;());
 </code></pre>
-
 <p>we can query our data with <code>Dapper</code> query extension methods as usual. However, this approach with custom type handler has two disadvantages:</p>
-
 <ul>
 <li>We need to register <code>JsonTypeHandler&lt;&gt;</code> for every most outer type which we are querying</li>
 <li><strong>This won&rsquo;t work for larger objects</strong> because the SQL Server will split long JSON string across multiple rows. You can read more about that on MSDN in the section <a href="https://docs.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server?view=sql-server-ver15#output-of-the-for-json-clause">Output of the FOR JSON clause</a></li>
 </ul>
-
 <p>We can solve both problems by executing SQL queries with the following extension method:</p>
-
 <pre><code class="language-cs">public static class SqlQueryExtensions
 {
     public static async Task&lt;TResult&gt; QueryFromJson&lt;TResult&gt;(this IDbConnection connection, string sqlQuery, object param)
@@ -487,11 +448,8 @@ FROM
     }
 }
 </code></pre>
-
 <p>With this JSON SQL query approach I was able to very easily fetch quite complex object from the database. The only limitation I came across was lack of ability to fetch properties which are a list of primitive times. SQL Server always wraps sub-queries result in the object, even if they are based on a single column.</p>
-
 <p>As you might notice - in SQL queries formatted as a JSON it&rsquo;s possible to define aliases with a dot notation like <code>[MainAddress.City]</code>. Unfortunately, there&rsquo;s no operator in C# like <code>nameof</code> which could return full member path, but we can simulate that with the following method that accepts expression tree:</p>
-
 <pre><code class="language-cs">public static class TypeExtensions&lt;TType&gt;
 {
     public static string MemberPath&lt;TMember&gt;(Expression&lt;Func&lt;TType, TMember&gt;&gt; member)
@@ -501,9 +459,7 @@ FROM
     }
 }
 </code></pre>
-
 <p>With this helper method we can rewrite our query to be resilient to refactoring in the following way:</p>
-
 <pre><code class="language-cs">public class UserRepository
 {
         public static readonly string Query = @$&quot;
@@ -524,7 +480,6 @@ FOR JSON PATH
 &quot;;
 }
 </code></pre>
-
 <p>The necessity to provide <code>TypeExtensions&lt;User&gt;</code> for every <code>MemberPath</code> invocation can make our query a little noisy. This can be simplified with <code>using static</code> or by defining short alias for generic type. We also have to keep in mind that the invocation of <code>MemberPath</code> function is evaluated in the runtime.</p>
     
 		
@@ -669,7 +624,7 @@ FOR JSON PATH
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "dapper,sqlserver,csharp,dotnet"
+				hashtags: "Dapper,SqlServer,Csharp,dotnet"
 			}
 		}
 	}

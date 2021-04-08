@@ -47,7 +47,7 @@
     
     <meta property="og:tags" content="code analysis">
     
-    <meta property="og:tags" content="resharper">
+    <meta property="og:tags" content="ReSharper">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/splashscreen.jpg">
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="Enforcing explicit discard of unused return values with Roslyn analyzer">
 
-	<meta name="keywords" value="dotnet, csharp, roslyn, code analysis, resharper" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="dotnet, csharp, roslyn, code analysis, ReSharper" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Pure functions and unused return values &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -170,14 +170,10 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>A while ago I came across <a href="https://gist.github.com/dsyme/32de0d1bb0799ca438477c34205c3531">&ldquo;Quick notes on a rant&rdquo;</a> authored by Don Syme. This rant criticizes the C# language for the lack of a few important features. The first point is <code>&quot;Implicitly discarding information is so 20th Century&quot;</code> which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you the trouble.</p>
-
-<h2 id="other-net-languages">Other .NET languages</h2>
+		<p>A while ago I came across <a href="https://gist.github.com/dsyme/32de0d1bb0799ca438477c34205c3531">&ldquo;Quick notes on a rant&rdquo;</a> authored by Don Syme. This rant criticizes the C# language for the lack of a few important features. The first point is <code>&quot;Implicitly discarding information is so 20th Century&quot;</code> which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you the trouble.</p>
+<h2 id="other-net-languages"><a href="#other-net-languages">Other .NET languages  🔗&#xFE0E;</a></h2>
 
 <p>There are programming languages where returned values need to be explicitly handled. For example in <code>F#</code> we have to use the returned value or discard it with the <code>ignore</code> function. The following example code will result in a compilation warning:</p>
-
 <pre><code class="language-fsharp">open System
 
 [&lt;EntryPoint&gt;]
@@ -186,39 +182,30 @@ let main argv =
     printfn &quot;Hello World from F#!&quot;
     0
 </code></pre>
-
 <blockquote>
 <p>warning FS0020: The result of this expression has type &lsquo;string&rsquo; and is implicitly ignored. Consider using &lsquo;ignore&rsquo; to discard this value explicitly, e.g. &lsquo;expr |&gt; ignore&rsquo;, or &lsquo;let&rsquo; to bind the result to a name, e.g. &lsquo;let result = expr&rsquo;.</p>
 </blockquote>
-
 <p>However, in <code>PowerShell</code> unconsumed values are treated as function results. For example, the function presented below returns two values: a <code>System.IO.FileSystemInfo</code> object representing a newly created directory and an integer with a value 0.</p>
-
 <pre><code class="language-powershell">function Do-Something
 {
   New-Item -ItemType Directory -Path $([System.Guid]::NewGuid())
   return 0;
 }
 </code></pre>
-
 <p>At first, it might be surprising for people who come from different programming languages, but the purpose of the <code>return</code> keyword is not to return the value but rather to mark the exit point. The <code>return value</code> syntax is a shorthand for:</p>
-
 <pre><code class="language-powershell">value
 return
 </code></pre>
-
 <p>If your function has only one exit point, you probably don&rsquo;t need to use the <code>return</code> keyword at all. Very often our custom <code>PowerShell</code> functions return more than we expected. To fix that, we need to find a line that produces an unbound value and discard it by piping it to <code>Out-Null</code></p>
-
 <pre><code class="language-powershell">function Do-Something
 {
   New-Item -ItemType Directory -Path $([System.Guid]::NewGuid()) | Out-Null
   return 0;
 }
 </code></pre>
-
-<h2 id="how-to-protect-c-code">How to protect C# code</h2>
+<h2 id="how-to-protect-c-code"><a href="#how-to-protect-c-code">How to protect C# code  🔗&#xFE0E;</a></h2>
 
 <p>Those were examples from other <code>dotnet</code> languages, but in <code>C#</code> the unused return values are simply ignored which might result in accidental bugs like this:</p>
-
 <pre><code class="language-cs">public int Calculate()
 {
   if(ShouldCalculateA())
@@ -229,9 +216,7 @@ return
   return CalculateB()
 }
 </code></pre>
-
 <p>We are also susceptible to this kind of mistakes, especially while working with types from <code>System.Collections.Immutable</code> namespace:</p>
-
 <pre><code class="language-cs">public ImmutableArray&lt;int&gt; GetCoefficient()
 {
     var result = new ImmutableArray&lt;int&gt;();
@@ -241,34 +226,25 @@ return
     return result;
 }
 </code></pre>
-
 <p>So what can we do with the lack of support on the language level and how to protect our <code>C#</code> codebase from this kind of bug? As Don Syme mentioned in his notes, we can use some sort of static code analyzers. This market need was spotted years ago by <code>JetBrains</code> company that released <a href="https://www.nuget.org/packages/JetBrains.Annotations/2021.1.0-eap01">JetBrains.Annotations</a> NuGet package containing various attributes that extend static code analysis performed by their products (originally only by the <code>ReSharper</code>, and later also by the <code>Rider</code>). This package contains <a href="https://www.jetbrains.com/help/resharper/Reference__Code_Annotation_Attributes.html#PureAttribute">[PureAttribute]</a> which is intended to mark the functions that can be classified as <a href="https://en.wikipedia.org/wiki/Pure_function">Pure Function</a>. Based on the configuration, all unbound calls to those methods are appropriately reported by the <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__Solution-Wide_Analysis.html">Solution Wide Analysis</a> module.</p>
-
-<p><img src="solution_wide_errors.png" alt="" /></p>
-
+<p>
+<a href="solution_wide_errors.png"><img  src="solution_wide_errors.png" alt=""></a>
+</p>
 <p><code>BCL</code> also contains <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.contracts.pureattribute?view=netframework-4.7.2">PureAttribute</a> which is part of CodeContracts framework. Unused calls to methods with that attribute can be reported as <a href="https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1806">CA1806: Do not ignore method results</a> with <a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.NetAnalyzers">Microsoft.CodeAnalysis.NetAnalyzers</a> package. Unfortunately, <code>CodeContracts</code> is dead, and <code>[System.Diagnostics.Contracts.Pure]</code> annotations are gradually abandoned - you can read more about this attribute here <a href="https://www.infoq.com/news/2019/01/pure-attribute-net-core/">The Pure Attribute in .NET Core</a>.</p>
-
 <p>However, not every return-value-purpose function can be classified as <code>Pure Function</code> because of the side effects caused by the fact of using <code>IO</code> - for example, methods that read data from external storage like file or database. <code>JetBrains.Annotations</code> package contains another attribute for that purpose called <a href="https://www.jetbrains.com/help/resharper/Reference__Code_Annotation_Attributes.html#MustUseReturnValueAttribute">[MustUseReturnValueAttribute]</a></p>
-
-<h2 id="bring-c-to-the-next-level">Bring C# to the next level</h2>
+<h2 id="bring-c-to-the-next-level"><a href="#bring-c-to-the-next-level">Bring C# to the next level  🔗&#xFE0E;</a></h2>
 
 <p>This attribute base approach requires additional attention during the function authoring and the lack of those attributes in existing libraries still might be a source of troubles. <code>JetBrains</code> offers something called <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__External_Annotations.html#creating">External Annotations</a> that should solve the problem with the lack of annotations in third-party libraries, but this is still extra work to do. How about reversing that approach and shifting the burden of deciding if a returned value is needed from method author to method consumer - just like it is in a language like <code>F#</code>. To do that I extended my analyzers page <a href="https://github.com/cezarypiatek/CSharpExtensions">CSharpExtensions</a> with a dedicated diagnostic <code>CSE005: Return value unused</code> that can find and report every unused result from a method call, await expression, or object creation. By default, all violations are reported as a warning, but this can be easily changed with an appropriate entry in the <code>ruleset</code> file or <code>.editorconfig</code>:</p>
-
 <pre><code class="language-ini">[*.cs]
 dotnet_diagnostic.CSE005.severity = error
 </code></pre>
-
 <p>Since now every unnecessary return value must be explicitly ignored with a <a href="https://docs.microsoft.com/en-us/dotnet/csharp/discards">discard operator</a>:</p>
-
 <pre><code class="language-cs">_ = MethodWithRedundantResult();
 </code></pre>
-
-<h2 id="sloppy-fluent-api">Sloppy Fluent API</h2>
+<h2 id="sloppy-fluent-api"><a href="#sloppy-fluent-api">Sloppy Fluent API  🔗&#xFE0E;</a></h2>
 
 <p>After running the first version of my analyzer on one of my ASP.Core projects, I got a lot of warnings. Almost all of them were caused by different fluent APIs, which are quite popular in objects that implement builder pattern. Lots of warnings in classes responsible for configuring different aspects of ASP.Core like web host configuration, <code>dependency injection</code>, or the HTTP pipelines. Another hive was located in components using <code>FluentValidator</code>.</p>
-
 <p>This is how the template <code>Startup</code> class looks like after scanning it with <code>CSE005</code>:</p>
-
 <pre><code class="language-cs">namespace WebApplication3
 {
     public class Startup
@@ -312,9 +288,7 @@ dotnet_diagnostic.CSE005.severity = error
     }
 }
 </code></pre>
-
 <p>To clean that up, we need to discard almost every line or compact the code with call chaining (I guess that was the original intention) and discard only the final values:</p>
-
 <pre><code class="language-cs">public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
     if (env.IsDevelopment())
@@ -331,11 +305,8 @@ dotnet_diagnostic.CSE005.severity = error
         });
 }
 </code></pre>
-
 <p>Honestly, I&rsquo;m not a fan of those fluent builders because they are very confusing. I always need to check if a given function returns a new instance or the same one on which I operate. This approach only makes sense for immutable types, adding it in other situation only for the sake of methods call chaining seems to be real abuse.</p>
-
 <p>To allow easier introduction of <code>CSE005</code> analyzer to existing projects, without the need to rewrite all those config classes, I added an option to exclude given return types from the analysis:</p>
-
 <pre><code class="language-json">{
   &quot;CSE005&quot;: {
     &quot;IgnoredReturnTypes&quot;: [ 
@@ -346,22 +317,17 @@ dotnet_diagnostic.CSE005.severity = error
   } 
 }
 </code></pre>
-
 <p>To make it work you need to save this config as <code>CSharpExtensions.json</code> add include it in your project file as follows:</p>
-
 <pre><code class="language-xml">&lt;ItemGroup&gt;
     &lt;AdditionalFiles Include=&quot;CSharpExtensions.json&quot; /&gt;
 &lt;/ItemGroup&gt;
 </code></pre>
-
-<h2 id="call-to-action">Call to action</h2>
+<h2 id="call-to-action"><a href="#call-to-action">Call to action  🔗&#xFE0E;</a></h2>
 
 <p>I&rsquo;m really interested what do you think about adding this new feature to C#? Do you like it? Are you going to use it in your project? Have you found any real issues after scanning your current codebase? Any ideas for improving <code>CSE005</code> rule? Please let me know in the comment section below.</p>
-
 <blockquote>
 <p><strong>UPDATE 2021-02-17:</strong> As <a href="https://www.reddit.com/user/Prod_Is_For_Testing/">Prod_Is_For_Testing</a> from Reddit pointed out, there&rsquo;s an existing rule <a href="https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0058">IDE0058: Remove unnecessary expression value</a> which works exactly like <code>CSE005</code>. Formerly, all <code>IDE*</code> rules were available only in Visual Studio but now they can be used also outside the editor (with <code>dotnet build</code> or <code>msbuild</code>) after adding <a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.CodeStyle">Microsoft.CodeAnalysis.CSharp.CodeStyle</a> package. This package also offers an automatic code fix for that issue. Sample <code>.editorconfig</code> configuration for this diagnostic:</p>
 </blockquote>
-
 <pre><code class="language-ini">[*.cs]
 dotnet_diagnostic.IDE0058.severity = error
 csharp_style_unused_value_expression_statement_preference = discard_variable
@@ -515,7 +481,7 @@ csharp_style_unused_value_expression_statement_preference = discard_variable
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "dotnet,csharp,roslyn,codeanalysis,resharper"
+				hashtags: "dotnet,csharp,roslyn,codeanalysis,ReSharper"
 			}
 		}
 	}

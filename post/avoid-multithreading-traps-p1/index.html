@@ -43,7 +43,7 @@
     
     <meta property="og:tags" content="multithreading">
     
-    <meta property="og:tags" content="c#">
+    <meta property="og:tags" content="C#">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/splashscreen.jpg">
@@ -51,8 +51,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to avoid thread synchronization problems caused by improperly chosen lock object">
 
-	<meta name="keywords" value="roslyn, multithreading, c#" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="roslyn, multithreading, C#" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Avoid multithreading traps with Roslyn: Lock object selection &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -166,27 +166,20 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The infamous deadlocks can be detected in runtime thanks to tools like <a href="https://docs.microsoft.com/en-US/visualstudio/profiling/concurrency-visualizer?view=vs-2019">Concurrency Visualizer</a>, <a href="https://docs.microsoft.com/en-us/visualstudio/debugger/walkthrough-debugging-a-parallel-application?view=vs-2019#using-the-parallel-tasks-window-and-the-tasks-view-of-the-parallel-stacks-window">Parallel Tasks Window</a> or with <a href="https://blogs.msdn.microsoft.com/mohamedg/2010/01/28/how-to-debug-deadlocks-using-windbg/">WinDBG !dlk command</a>. However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce the feedback loop and detect these issues in design time. I&rsquo;ve decided to create a series of blog posts where I will present what I&rsquo;ve recently learned about the traps related to the multithreading in <code>C#</code>. I will also show you my proposition of Roslyn analyzers that can possibly help to avoid those issues right at the stage of writing the code. This part is about choosing a suitable object for locking.</p>
-
-<h2 id="do-not-lock-on-publicly-accessible-members">DO NOT lock on publicly accessible members</h2>
+		<p>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The infamous deadlocks can be detected in runtime thanks to tools like <a href="https://docs.microsoft.com/en-US/visualstudio/profiling/concurrency-visualizer?view=vs-2019">Concurrency Visualizer</a>, <a href="https://docs.microsoft.com/en-us/visualstudio/debugger/walkthrough-debugging-a-parallel-application?view=vs-2019#using-the-parallel-tasks-window-and-the-tasks-view-of-the-parallel-stacks-window">Parallel Tasks Window</a> or with <a href="https://blogs.msdn.microsoft.com/mohamedg/2010/01/28/how-to-debug-deadlocks-using-windbg/">WinDBG !dlk command</a>. However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce the feedback loop and detect these issues in design time. I&rsquo;ve decided to create a series of blog posts where I will present what I&rsquo;ve recently learned about the traps related to the multithreading in <code>C#</code>. I will also show you my proposition of Roslyn analyzers that can possibly help to avoid those issues right at the stage of writing the code. This part is about choosing a suitable object for locking.</p>
+<h2 id="do-not-lock-on-publicly-accessible-members"><a href="#do-not-lock-on-publicly-accessible-members">DO NOT lock on publicly accessible members  🔗&#xFE0E;</a></h2>
 
 <p>Using publicly accessible members for locking can result in deadlock because there&rsquo;s no guarantee that any external code won&rsquo;t use them for synchronizing something else, too. If the type encapsulates the access to a resource that requires synchronization, then the synchronization should be also fully encapsulated. As a reminder about that, I created a Roslyn rule called <code>MT1000: Lock on publicly accessible member</code> which verifies the accessibility of the member used to acquire lock onto.</p>
-
-<h2 id="do-not-lock-on-this-reference">DO NOT lock on this reference</h2>
+<h2 id="do-not-lock-on-this-reference"><a href="#do-not-lock-on-this-reference">DO NOT lock on this reference  🔗&#xFE0E;</a></h2>
 
 <p>A particular example of locking on <em>something that is publicly accessible</em> is acquiring a lock on the <code>this</code> reference, which can also end with a deadlock for the same reason. Even if there is no explicitly written code like <code>lock(this)</code>, the lock on current instance could be acquired. There is a less common way for synchronizing every invocation of a given method by decorating it with <code>[MethodImpl(MethodImplOptions.Synchronized)]</code>. This causes wrapping the whole method body into the lock on <code>this</code> reference for instance methods and lock on <code>typeof()</code> for static methods.  If you are not convinced that <code>lock(this)</code> is a bad idea, here&rsquo;s the real-life example: <a href="https://github.com/Azure/amqpnetlite/issues/357">Azure/amqpnetlite#357</a>. To protect the codebase from these potentially dangerous statements, I created the following analyzers:</p>
-
 <ul>
 <li><code>MT1001: Lock on this reference</code></li>
 <li><code>MT1010: Method level synchronization</code></li>
 </ul>
-
-<h2 id="do-not-lock-on-objects-with-weak-identity">DO NOT lock on objects with weak identity</h2>
+<h2 id="do-not-lock-on-objects-with-weak-identity"><a href="#do-not-lock-on-objects-with-weak-identity">DO NOT lock on objects with weak identity  🔗&#xFE0E;</a></h2>
 
 <p>Another common mistake related to choosing synchronization object is locking on <code>typeof()</code> expression. This should be avoided because instances of the <code>Type</code> are implicitly shared across the application. After reading <a href="https://www.amazon.com/gp/product/0990583457">Writing High-Performance .NET Code</a> I learned that not only <code>Type</code> but also <code>strings</code> and instances of types that inherit from <code>MarshalByRefObject</code> should be avoided for locking. I dug a little deeper and I discovered that those types belong to a group called <code>types with a weak identity</code> and the complete list of them is much longer:</p>
-
 <ul>
 <li><code>System.String</code></li>
 <li>Arrays of value types</li>
@@ -198,21 +191,16 @@
 <li><code>System.Reflection.ParameterInfo</code></li>
 <li><code>System.Threading.Thread</code></li>
 </ul>
-
 <p>There is a <a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/">FxCop</a> rule <a href="https://github.com/MicrosoftDocs/visualstudio-docs/blob/master/docs/code-quality/ca2002-do-not-lock-on-objects-with-weak-identity.md">CA2002: Do not lock on objects with weak identity</a> that should protect us from this issue. However, current implementations verify only <code>lock()</code> statement, so if we are using <code>Monitor.Enter</code> or <code>Monitor.TryEnter</code> to acquire a lock we are still exposed to the risk of deadlock. I&rsquo;m planning to create a PR with a fix for that <a href="https://github.com/dotnet/roslyn-analyzers/issues/2744">roslyn-analyzers#2744</a>, but in the meantime, I implemented the whole diagnostic as a separate analyzer: <code>MT1002: Lock on object with weak identity</code>. I&rsquo;ve also realized that there are types on the list which are not directly inherited from the <code>System.Object</code> - all the <code>exceptions</code> and <code>Thread</code>. This could possibly lead to the situation when the lock is acquired on the reference of base type but it points to the instance of type marked as a weak identity. To increase our confidence, it would be wise to completely ban <code>System.Exception</code> and <code>System.Runtime.ConstrainedExecution.CriticalFinalizerObject</code> (base class for <code>Thread</code>) as a candidate for locking object.</p>
-
-<h2 id="do-not-lock-on-non-readonly-fields">DO NOT lock on non-readonly fields</h2>
+<h2 id="do-not-lock-on-non-readonly-fields"><a href="#do-not-lock-on-non-readonly-fields">DO NOT lock on non-readonly fields  🔗&#xFE0E;</a></h2>
 
 <p>The <code>readonly</code> keyword is very important because without it, we can&rsquo;t be sure that between invocations of <code>Monitor.Enter</code> and <code>Monitor.Exit</code> the <code>lockObject</code> reference won&rsquo;t be overwritten. This situation is called <code>abandoned lock</code> and it ends up with a deadlock because the lock acquired on the object originally referenced by <code>lockObject</code> will never be released. To detect this issue in design time, I&rsquo;ve created an analyzer called <code>MT1003: Lock on non-readonly member</code></p>
-
-<h2 id="do-not-lock-on-value-types">DO NOT lock on value types</h2>
+<h2 id="do-not-lock-on-value-types"><a href="#do-not-lock-on-value-types">DO NOT lock on value types  🔗&#xFE0E;</a></h2>
 
 <p>The explanation for this is quite straightforward - value types don&rsquo;t have an <code>object header</code> where the information about the acquired lock could be stored. If we write a lock statement over a value object, we get the <code>CS0185</code> compiler error. However, if we use <code>Monitor.Enter</code> or <code>Monitor.TryEnter</code> instead of <code>lock()</code> statement, the code will compile but it will also crush in the runtime with <code>System.Threading.SynchronizationLockException</code>, when we try to release the lock. This happens because when we pass a value object to <code>Monitor.Enter</code> and <code>Monitor.Exit</code>, every method gets a different instance because of the <code>boxing</code>. The lock statement as well as <code>Monitor</code> usages will be monitored with <code>MT1004: Lock on value type instance</code> rule.</p>
-
-<h2 id="best-practice-for-locking">Best practice for locking</h2>
+<h2 id="best-practice-for-locking"><a href="#best-practice-for-locking">Best practice for locking  🔗&#xFE0E;</a></h2>
 
 <p>The best practice to avoid all these problems with selecting suitable object to lock onto, is to create a <code>private</code> and <code>readonly</code> instance of <code>object</code> type dedicated exclusively for locking purpose:</p>
-
 <pre><code class="language-csharp">private readonly object lockObject = new object();
 
 public void DoSomething()
@@ -223,17 +211,14 @@ public void DoSomething()
     }
 }
 </code></pre>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>All my propositions of Roslyn analyzers are available on Github <a href="https://github.com/smartanalyzers/MultithreadingAnalyzer">MultithreadingAnalyzer</a> and can be added to your projects with NuGet package <a href="https://www.nuget.org/packages/SmartAnalyzers.MultithreadingAnalyzer/">SmartAnalyzers.MultithreadingAnalyzer</a>. I would appreciate if you could try it out and let me know if it was able to spot real problems in your codebase or all those reported diagnostics were wrong. A lot of stuff presented here I leaned from the following resources:</p>
-
 <ul>
 <li>[FREE EBOOK] <a href="https://www.microsoft.com/en-us/download/details.aspx?id=19222">Patterns for Parallel Programming: Understanding and Applying Parallel Patterns with the .NET Framework 4</a> by Stephen Toub</li>
 <li><a href="https://www.amazon.com/gp/product/1430229675">Pro .NET 4 Parallel Programming in C# </a> by Adam Freeman</li>
 <li><a href="http://www.albahari.com/threading/">Threading in C#</a> by Joseph Albahari</li>
 </ul>
-
 <p>For those who want to gain knowledge of parallel programming in C#, I highly recommend reading them.</p>
     
 		
@@ -378,7 +363,7 @@ public void DoSomething()
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "roslyn,multithreading,csharp"
+				hashtags: "roslyn,multithreading,Csharp"
 			}
 		}
 	}

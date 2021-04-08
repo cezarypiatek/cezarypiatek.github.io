@@ -13,7 +13,7 @@
             "@type":"WebPage",
             "@id":"https:\/\/cezarypiatek.github.io\/post\/livetemplates\/"
             },
-          "headline" : "Don\x27t write dull code - Resharper Live Templates",
+          "headline" : "Don\u0027t write dull code - Resharper Live Templates",
           "author" : {
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
@@ -50,7 +50,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="resharper, livetemplates" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Don&#39;t write dull code - Resharper Live Templates &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -162,48 +162,43 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.</p>
-
-<h2 id="template-explorer">Template Explorer</h2>
+		<p>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.</p>
+<h2 id="template-explorer"><a href="#template-explorer">Template Explorer  🔗&#xFE0E;</a></h2>
 
 <p>You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&gt; Template Explorer&hellip;).</p>
-
-<p><img src="image003.png" alt="" /></p>
-
+<p>
+<a href="image003.png"><img  src="image003.png" alt=""></a>
+</p>
 <p>Templates Explorer window contains three tabs that allow you to manage three different kinds of templates: Live Templates, Surround Templates and File Templates. The first one – Live Templates – allows you to browse, add and delete inline code snippets. Surround templates allow you to manage code transformation to selected code. The last one - File Templates – as the name indicates, allows you to create templates for whole files. Each kind of template has predefined scopes that allows to filter templates depending on context in which we are currently working (file extension or Solution type). Next to Scopes we have also User Categories that allow us to define custom categories for each scope. In the right column of the Templates Explorer we have a list of shortcuts of defined templates with names of categories (if any was defined). After clicking on given shortcut we can see a definition of template in the bottom of Templates Explorer. After double-click we run edition of given template.</p>
-
-<p><img src="image005.png" alt="" /></p>
-
+<p>
+<a href="image005.png"><img  src="image005.png" alt=""></a>
+</p>
 <p>In edition mode we have an editor to define body of our template and panel to configure template behavior. We should define a Shortcut for our templates – it’s a string that identifies our template and allows us to apply template in code fast (we type only shortcut then press Tab key and resharper immediately inserts our template and begins code completion). We can simply defined parameter for template by starting and ending parameter name with $ sign. There is one predefined parameter $END$ that serves to mark place where the cursor will be moved after code completion. For each parameter we can assign a macro that simplifies a code completion with smart restriction. To assign or change macro, simply click a link below parameter name in Parameters section (if no macro was assigned there should be text “Choose macro”, otherwise there should be name of chosen macro)</p>
-
-<p><img src="image007.png" alt="" /></p>
-
+<p>
+<a href="image007.png"><img  src="image007.png" alt=""></a>
+</p>
 <p>We have a rich list of predefined macros. After we have defined a parameter, we can reuse it in the template. The parameter definition is surrounded with red border (this may vary due to color theme selected). We can set which occurrence is the parameter definition (that occurrence will be editable during code completion) using the M-OX dropdown in parameter configuration (remaining parameter occurrences will repeat inserted value)</p>
-
-<p><img src="image009.png" alt="" /></p>
-
+<p>
+<a href="image009.png"><img  src="image009.png" alt=""></a>
+</p>
 <p>We can also control the order in which the parameters will be completed, simply by using up and down arrows (the arrows are active when you select given parameter)</p>
-
-<p><img src="image011.png" alt="" /></p>
-
+<p>
+<a href="image011.png"><img  src="image011.png" alt=""></a>
+</p>
 <p>Ok. Let’s go back to Template Explorer. On the top of the explorer we’ve got a menu that allows us to manage the templates.</p>
-
-<p><img src="image013.png" alt="" /></p>
-
+<p>
+<a href="image013.png"><img  src="image013.png" alt=""></a>
+</p>
 <p>We can find there buttons to create new template, create new category, edit existing template, delete existing template and import/export templates. There’s also a combo that allow as to select a resharper layer in which the templates will be placed. That simply helps us to hide or share our templates.</p>
+<h2 id="about-layers"><a href="#about-layers">About Layers  🔗&#xFE0E;</a></h2>
 
-<h2 id="about-layers">About Layers</h2>
-
-<p><img src="resharper_layers.png" alt="" /></p>
-
+<p>
+<a href="resharper_layers.png"><img  src="resharper_layers.png" alt=""></a>
+</p>
 <p>Resharper introduces four layers: &ldquo;Smart&rdquo;, &ldquo;Solution personal&rdquo;, &ldquo;Solution team-shared&rdquo; and &ldquo;This computer&rdquo;. This four layers help you organize your templates. They are especially helpful when you want to have some common templates  for all project or different templates for particular projects. Settings (and templates definition as well) for the ‘Solution “XXX” team-shared’ layer are persisted in &lsquo;XXX.DotSettings&rsquo; file, settings of ‘Solution “XXX” personal’ are in &lsquo;XXX.DotSettings.user&rsquo; (where XXX is the solution name). The files are in your solution folder. All the templates that you want to share with your project mates should be placed in “team-shared” layer and the &lsquo;XXX.DotSettings&rsquo; file should be managed by version control system (if you use one). Templates localized in person layer are available only for you, and file &lsquo;XXX.DotSettings.user&rsquo; should be ignored by version control system (otherwise you override you team mates&rsquo; private settings). &ldquo;This computer&rdquo; contains templates available for all solutions developed on your machine. &ldquo;Smart&rdquo; layer presents effective templates set. It’s a union of all templates from all layers filtered by priority (the highest priority has &ldquo;personal&rdquo; layer, and the lowest priority has &ldquo;this computer&rdquo; layer). You can find more about resharper layers in reshareper doc (Reference: <a href="http://www.jetbrains.com/resharper/webhelp/Reference__Settings_Layers.html">Settings Layers</a> and <a href="http://www.jetbrains.com/resharper/webhelp/Sharing_Configuration_Options.html">Sharing Configuration Options</a>).</p>
-
-<h2 id="template-inserting">Template inserting</h2>
+<h2 id="template-inserting"><a href="#template-inserting">Template inserting  🔗&#xFE0E;</a></h2>
 
 <p>Using Live Templates is pretty easy. In order to insert an inline Live Template you just need to write  a shortcut of given template in the code and press the Tab key. To wrap a code in Surround Template select a code that you wan to wrap, press alt+enter and select from the &ldquo;Surround with..&rdquo; menu a template that you want to use. The table below shows some useful shortcuts that helps you with template inserting:</p>
-
 <table>
 <thead>
 <tr>
@@ -212,20 +207,17 @@
 <th>IntelliJ IDEA/ReSharper</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>Insert live template</td>
 <td>Ctr+E,L</td>
 <td>Ctr+J</td>
 </tr>
-
 <tr>
 <td>Surround with template</td>
 <td>Ctr+E,U</td>
 <td>Ctr+Alt+J</td>
 </tr>
-
 <tr>
 <td>Create file from template</td>
 <td>Ctr+Alt+Insert</td>
@@ -233,49 +225,45 @@
 </tr>
 </tbody>
 </table>
+<h2 id="create-own-templates"><a href="#create-own-templates">Create own templates  🔗&#xFE0E;</a></h2>
 
-<h2 id="create-own-templates">Create own templates</h2>
-
-<h3 id="example-1-inline-live-template">Example 1: Inline Live Template</h3>
+<h3 id="example-1-inline-live-template"><a href="#example-1-inline-live-template">Example 1: Inline Live Template  🔗&#xFE0E;</a></h3>
 
 <p>It’s time to show you how you can define your own live template. I’ll start with live template for inline completion. I want to create a template that speeds up creating a jquery widget using widget factory. Without live template, every time I created widget I had to start with writing the following code:</p>
-
-<p><img src="widget_factory.png" alt="" /></p>
-
+<p>
+<a href="widget_factory.png"><img  src="widget_factory.png" alt=""></a>
+</p>
 <p>It’s just a little boring to type that code over and over again. To create a template first of all we have to choose scope. I want to use that template only in *.js files, so I select “JavaScript” scope and click new template Next we should complete Shortcut (and optionaly Description) fields.</p>
-
-<p><img src="widget_factory_template_config.png" alt="" /></p>
-
+<p>
+<a href="widget_factory_template_config.png"><img  src="widget_factory_template_config.png" alt=""></a>
+</p>
 <p>My template has one custom parameter – widget name. After saving the changes templates should be ready to use. You can test it by typing keyword ‘widget’ and pressing tab key inside javascript file. To move between parameters press the tab key again. That’s all. Pretty easy, isn’t it?</p>
-
-<h3 id="example-2-surround-template">Example 2: Surround Template</h3>
+<h3 id="example-2-surround-template"><a href="#example-2-surround-template">Example 2: Surround Template  🔗&#xFE0E;</a></h3>
 
 <p>Now we create a surround template. It will be a template to insert MiniProfiler section inside existing code. Every time I want to use Miniprofiler I have to wrap my code in using section as the following code shows:</p>
-
-<p><img src="mini_profiler.png" alt="" /></p>
-
+<p>
+<a href="mini_profiler.png"><img  src="mini_profiler.png" alt=""></a>
+</p>
 <p>To create template select Surround Templates tab in Templates Explorer, select C# scope and click New Template button. Surround Templates does not have shortcut, only description field. In template editor type the following code:</p>
-
-<p><img src="mini_profiler_template.png" alt="" /></p>
-
+<p>
+<a href="mini_profiler_template.png"><img  src="mini_profiler_template.png" alt=""></a>
+</p>
 <p>Our template has two parameters: one custom and one predefined. $SELECTION$ parameter is predefined and represents code that is selected during template inserting. To insert our template we should select some code that we want to wrap by our template and press alt+enter.</p>
-
-<p><img src="surround_template_usage.png" alt="" /></p>
-
+<p>
+<a href="surround_template_usage.png"><img  src="surround_template_usage.png" alt=""></a>
+</p>
 <p>Resharper context menu should be displayed. In ‘Surround with…’ submenu we see all available Surround Templates but there is a lack of our new template. We should select “More…” option form submenu.</p>
-
-<p><img src="image022.png" alt="" /></p>
-
+<p>
+<a href="image022.png"><img  src="image022.png" alt=""></a>
+</p>
 <p>In ‘Choose Template’ window select ‘Mini profiler section’ and check ‘Add to quicklist’ option. Click ‘Ok’ and our template will be inserted. From now, ‘Mini profiler section’ option should be available in ‘Surround with…’ submenu.</p>
-
-<h3 id="example-3-file-template">Example 3: File Template</h3>
+<h3 id="example-3-file-template"><a href="#example-3-file-template">Example 3: File Template  🔗&#xFE0E;</a></h3>
 
 <p>Let’s say we have a web application and all edit forms are displayed in popup. Every time we want to create edit form we have to previously create file and write the same constant code construction, for example something like the following code:</p>
-
-<p><img src="edit_form_example.png" alt="" /></p>
-
+<p>
+<a href="edit_form_example.png"><img  src="edit_form_example.png" alt=""></a>
+</p>
 <p>All edit forms have the following parts:</p>
-
 <ol>
 <li>Popup title</li>
 <li>Include popup layout</li>
@@ -283,22 +271,20 @@
 <li>Hidden fields for Id and Version</li>
 <li>Submit button</li>
 </ol>
-
 <p>Typing that code every time is a total waste of time. We can create File template that will help us to create edit forms. In Templates Explorer on File Templates tab select “Razor (C#)” scope and click “New Template” button. In template editor we change “Default file name” file extension to “cshtml”. Our template has the following structure:</p>
-
-<p><img src="image024.png" alt="" /></p>
-
+<p>
+<a href="image024.png"><img  src="image024.png" alt=""></a>
+</p>
 <p>We have four custom parameters and one predefined. For $model$, $action$ and $controller$ I am going to set macro that make completion easier. In Parameters section under model parameter click “Choose macro”. In “Choose Macro” window, from “Available macros” list choose “Execute type completion” option and click ok. For “action” parameter choose “ASP.NET MVC Action” macro, and for “controller” parameter set “ASP.NET MVC Controller” macro.</p>
-
-<p><img src="image026.png" alt="" /></p>
-
+<p>
+<a href="image026.png"><img  src="image026.png" alt=""></a>
+</p>
 <p>In order to use our new template click on view folder and from the context menu select Add-&gt;New from template -&gt; More…</p>
-
-<p><img src="image028.png" alt="" /></p>
-
+<p>
+<a href="image028.png"><img  src="image028.png" alt=""></a>
+</p>
 <p>In “Choose Template” window select “Razor C#” scope and our new template should be visible on templates list. Select “Add to quicklist” and click “Ok” button. From now on our template should be available in “New from Template” menu list.</p>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>As you have seen above, Live Templates is a very powerful tool that is easy to configure and use . It allows you to save some time and makes coding more fun. Additionally, using templates makes it easier to keep naming and code structure conventions as well as avoid copy&amp;paste mistakes.</p>
     
