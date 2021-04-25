@@ -181,9 +181,10 @@
 <p>After a few hours of struggling with the compilation, I discovered that you can&rsquo;t build a solution that contains VSIX project with <code>dotnet build</code> even if all your projects are in the new <code>csproj2017</code> format (<a href="https://github.com/dotnet/sdk/issues/12421">Issue#12421</a>). This kind of solution needs to be built with the <code>msbuild</code> directly. The windows based virtual environment for Github Actions has pre-installed msbuild. Unfortunately, the path to <code>msbuild</code> is not added automatically to the PATH environment variable and we need to somehow figure out where it is installed. This can be solved with a little bit of scripting and <a href="https://docs.microsoft.com/en-us/visualstudio/install/tools-for-managing-visual-studio-instances?view=vs-2019">vswhere</a> or we can use a dedicated Github Action for that:</p>
 <pre><code class="language-yml">- name: Setup MSBuild.exe
   uses: microsoft/setup-msbuild@v1.0.2
-  with:
-    vs-version: '[16.8,16.9)'
 </code></pre>
+<blockquote>
+<p><em>UPDATE 2021-04-25</em>: <code>microsoft/setup-msbuild</code> action allows to specify required Visual Studio version with <code>vs-version</code> parameter. However, if you are using hosted agents, you should avoid specifying it as there is always only one version of VS and any update of the runner environment can break your pipeline. More details can be found in<a href="https://github.com/microsoft/setup-msbuild/issues/50">#50 Error: Unable to find MSBuild</a></p>
+</blockquote>
 <p>After that you can invoke <code>msbuild</code> without providing a path for it:</p>
 <pre><code class="language-yml">- name: Build extension
   run: msbuild $env:SolutionPath /t:Rebuild
@@ -284,8 +285,6 @@ jobs:
         dotnet-version: '3.1.x'
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
-      with:
-        vs-version: '[16.8,16.9)'
     - name: Restore NuGet Packages
       run: nuget restore $env:SolutionPath
     - name: Calculate next version
@@ -388,8 +387,6 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
       id: MsBuildSetup
-      with:
-        vs-version: '[16.8,16.9)'
     - name: Restore NuGet Packages
       run: nuget restore $env:SolutionPath
     - name: Calculate next version

@@ -25,9 +25,9 @@ After a few hours of struggling with the compilation, I discovered that you can'
 ```yml
 - name: Setup MSBuild.exe
   uses: microsoft/setup-msbuild@v1.0.2
-  with:
-    vs-version: '[16.8,16.9)'
 ```
+
+> *UPDATE 2021-04-25*: `microsoft/setup-msbuild` action allows to specify required Visual Studio version with `vs-version` parameter. However, if you are using hosted agents, you should avoid specifying it as there is always only one version of VS and any update of the runner environment can break your pipeline. More details can be found in[#50 Error: Unable to find MSBuild](https://github.com/microsoft/setup-msbuild/issues/50)
 
 After that you can invoke `msbuild` without providing a path for it:
 
@@ -143,8 +143,6 @@ jobs:
         dotnet-version: '3.1.x'
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
-      with:
-        vs-version: '[16.8,16.9)'
     - name: Restore NuGet Packages
       run: nuget restore $env:SolutionPath
     - name: Calculate next version
@@ -238,8 +236,6 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
       id: MsBuildSetup
-      with:
-        vs-version: '[16.8,16.9)'
     - name: Restore NuGet Packages
       run: nuget restore $env:SolutionPath
     - name: Calculate next version
