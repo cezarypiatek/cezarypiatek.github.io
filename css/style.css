@@ -212,3 +212,8 @@ ins.play-gif{
 {
     color: white;
 }
+
+#poster{
+    width: 100%;
+    margin-top:20px;
+}
