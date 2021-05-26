@@ -39,13 +39,13 @@
     <meta property="og:description" content="How to build your CI/CD with TeamCity and PowerShell and avoid common pitfalls.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="PowerShell">
+    <meta property="og:tags" content="powershell">
     
-    <meta property="og:tags" content="TeamCity">
+    <meta property="og:tags" content="teamcity">
     
     <meta property="og:tags" content="continuous integration">
     
-    <meta property="og:tags" content="VSCode">
+    <meta property="og:tags" content="vscode">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/splashscreen.jpg">
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to build your CI/CD with TeamCity and PowerShell and avoid common pitfalls.">
 
-	<meta name="keywords" value="PowerShell, TeamCity, continuous integration, VSCode" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="powershell, teamcity, continuous integration, vscode" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Best practices for using PowerShell with TeamCity &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -123,15 +123,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -149,7 +149,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -173,18 +173,22 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>In the last few projects that I&rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results. For the more complicated and non-standard activities, I&rsquo;ve been using <code>PowerShell</code> scripts. TeamCity has really good support for running <code>PowerShell</code> thanks to dedicated build step. However, it can cause some troubles if it&rsquo;s not configured correctly. After coming across the same mistakes and issues over and over again, I finally decided to write this article that shows how to use <code>PowerShell</code> properly, together with <code>TeamCity</code>. I hope you will find it useful.</p>
-<h2 id="proper-error-handling"><a href="#proper-error-handling">Proper error handling  🔗&#xFE0E;</a></h2>
+		
+
+<p>In the last few projects that I&rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results. For the more complicated and non-standard activities, I&rsquo;ve been using <code>PowerShell</code> scripts. TeamCity has really good support for running <code>PowerShell</code> thanks to dedicated build step. However, it can cause some troubles if it&rsquo;s not configured correctly. After coming across the same mistakes and issues over and over again, I finally decided to write this article that shows how to use <code>PowerShell</code> properly, together with <code>TeamCity</code>. I hope you will find it useful.</p>
+
+<h2 id="proper-error-handling">Proper error handling</h2>
 
 <p>The most common problem is that TeamCity disallows Powershell errors, at least with the default configuration. Event if PowerShell script fails, it&rsquo;s still considered as successful by TeamCity. This can have a serious ramification because the errors can occur unnoticed for months and can cost you a lot when you finally spot them. This is caused by default setting for <code>Format stderr output as</code> in PowerShell build step template, which is set to <code>warning</code>.  In order to propagate PowerShell errors to the TeamCity UI (mark the build step as failed), this should be set to <code>error</code> as the following screenshot shows.</p>
-<p>
-<a href="error_handling_for_ps.jpg"><img  src="error_handling_for_ps.jpg" alt=""></a>
-</p>
+
+<p><img src="error_handling_for_ps.jpg" alt="" /></p>
+
 <p>However, after changing <code>Format stderr output as</code> option we can still observe the strange effect that can be a kind of surprise: event if the PowerShell build failed, the whole pipeline is reported as successful. To fix that and make it work according to the expectations, we need to adjust the build <code>Failure Conditions</code> by checking <code>an error message is logged by build runner</code> option as follows:</p>
-<p>
-<a href="teamcity_failure_condition.jpg"><img  src="teamcity_failure_condition.jpg" alt=""></a>
-</p>
+
+<p><img src="teamcity_failure_condition.jpg" alt="" /></p>
+
 <p>Since now all PowerShell errors will be properly reported and will affect build status. Besides these two configuration options in TeamCity, there is one more thing related to the PowerShell errors to keep in mind - PowerShell error model. Powershell errors can be dived into two categories: terminating (mostly syntax errors) and non-terminating. The latter is not obvious and causes a lot of troubles for people without strong PowerShell foundations. Even if the <code>non-terminating</code> error occurs, the script execution is continued. This effect can be highly unwanted for scripts performing interlinked operations dependent on each other. Of course, we can change this behavior and turn all &lsquo;non-terminating&rsquo; errors into &lsquo;terminating&rsquo; ones by setting <code>$ErrorActionPreference</code> variable at the begging of our scripts:</p>
+
 <pre><code class="language-powershell">#Error Action Preference:
 #
 #PowerShell halts execution on terminating errors, as mentioned before. For non-terminating errors we have the option to tell PowerShell how to handle these situations. 
@@ -200,10 +204,13 @@
 # Example: Set the preference at the script scope to Stop, place the following near the top of the script file:
 $ErrorActionPreference = &quot;Stop&quot;
 </code></pre>
+
 <p>This can also be configured for each CmdLet separately without the need to setup it globally. You can read more about CmdLet common parameters <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_commonparameters?view=powershell-6">here</a></p>
-<h2 id="protect-yourself-from-accidental-errors"><a href="#protect-yourself-from-accidental-errors">Protect yourself from accidental errors  🔗&#xFE0E;</a></h2>
+
+<h2 id="protect-yourself-from-accidental-errors">Protect yourself from accidental errors</h2>
 
 <p>Besides the error handling, it&rsquo;s good to write your scripts in a manner that protects you from accidental errors that can be very hard to detect. At first, you should turn all your functions into real <code>Cmdlets</code>. In order to do that, you should always define parameters with <code>param()</code> block and decorate it with <code>[CmdletBinding()]</code> parameter:</p>
+
 <pre><code class="language-powershell">function Verb-Noun {
     [CmdletBinding()]
     param (
@@ -211,29 +218,42 @@ $ErrorActionPreference = &quot;Stop&quot;
     )    
 }
 </code></pre>
+
 <p><code>[CmdletBinding()]</code> parameter protects your methods from invoking them with an undefined parameter. Every time when somebody uses undefined (or deleted) parameter or makes a typo in parameter name, this fact will be reported as PowerShell error.  If the method is not CmdLet the parameter names are not validated, making the problem hard to detect.</p>
+
 <p>We can also detect potential errors caused by violation of best practices and coding rules by enabling strict mode. In order to do that, add the following code at the beginning of your script:</p>
+
 <pre><code class="language-powershell">Set-StrictMode -Version Latest
 </code></pre>
+
 <p>After turning on strict mode, PowerShell will report all uninitialized variables and properties with terminating error. You can read about all consequences of using strict mode <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/set-strictmode?view=powershell-6">here</a></p>
+
 <p>And here&rsquo;s one more advice that should help you avoid dummy mistakes:</p>
+
 <blockquote>
 <p>Always use a decent IDE to create and edit your PowerShell scripts.</p>
 </blockquote>
+
 <p>I&rsquo;m currently working in VSCode with PowerShell plugin which seems to be more powerful than <code>PowerShell ISE</code>. It ships with a rich set of snippets, it is able to detect unused variables, allows to track method usages and provides a really nice experience in terms of debugging scripts. It also has integrated <code>PSScriptAnalyzer</code> module which helps to detect many issues related to the code correctness and quality. You can read about all features <a href="https://code.visualstudio.com/docs/languages/powershell">here</a>.</p>
-<h2 id="using-scrips"><a href="#using-scrips">Using scrips  🔗&#xFE0E;</a></h2>
+
+<h2 id="using-scrips">Using scrips</h2>
 
 <p>The TeamCity PowerShell build step allows to run PowerShell scripts provided as inline source code as well as script files. For project specific scripts you should always use script file options. This allows you to keep your script under version control system together with the project source code and make it easier to edit your scripts (any IDE is better than textarea on the build configuration step page). Of course, you can keep your &lsquo;inline-scripts&rsquo; versioned when you are using <a href="https://confluence.jetbrains.com/display/TCD10/Storing+Project+Settings+in+Version+Control">Versioned settings</a> but it&rsquo;s very tedious to edit PowerShell scripts embedded inside the <code>XML files</code>.</p>
+
 <p>For project non-specific scripts, when you want to re-use scripts between different projects, you have at least two options:</p>
+
 <ul>
 <li>put common scripts in a separate repository and share them via git sub-modules</li>
 <li>use an inline script and extract common meta-runner</li>
 </ul>
+
 <p>The second option allows you to create a nice configuration UI for your scripts. However, versioning will be not possible anymore (as far as I know). You can find an example how to create meta-runner in my <a href="../../post/integrating-teamcity-with-msteams/">previous article</a>.</p>
-<h2 id="always-remember-about-clean-code"><a href="#always-remember-about-clean-code">Always remember about Clean Code  🔗&#xFE0E;</a></h2>
+
+<h2 id="always-remember-about-clean-code">Always remember about Clean Code</h2>
 
 <p>You should always treat your CI/CD scripts equally as your project source code in terms of quality. <strong>They should be versioned, reviewed and automatically tested</strong>. It doesn&rsquo;t matter that these scripts are not run on production. They are helping you to properly prepare production artifacts and if they are of poor quality, you cannot expect good quality outcomes. Even if the code is written using scripting language - you should always remember about obeying <a href="https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM">Clean Code</a> rules. For PowerShell, there is a really good <a href="https://github.com/PoshCode/PowerShellPracticeAndStyle">Best Practices and Style Guide</a> which you can find as an invaluable source of knowledge how to create scripts that are easy to read, understand and maintain. That may be surprising for some people, but CI/CD scripts can be unit-tested. PowerShell has its own unit test framework - <a href="https://github.com/pester/Pester">Pester</a> which is very well supported by <a href="https://code.visualstudio.com/docs/languages/powershell#_pester">VSCode</a>. Pester helps to quickly create tests with <code>BDD</code> approach which can also serve as living documentation. By applying these rules, you will avoid a lot of problems and you will make your CI/CD more bulletproof.</p>
-<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
+<h2 id="summary">Summary</h2>
 
 <p>Together with TeamCity and PowerSHell you can build very powerful and flexible CI/CD system but without understanding basic concepts and mechanisms you can&rsquo;t obtain maximum benefits. Default configuration can be a trap, especially in terms of error handling and reporting. Besides the proper configuration there are additional tools and guidelines for PowerShell that you can leverage in order to make your process highly maintainable and less error-prone. Using decent IDE and applying programming rules and best practices for script development can save you a lot of troubles.</p>
     
@@ -332,28 +352,7 @@ $ErrorActionPreference = &quot;Stop&quot;
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -381,7 +380,7 @@ $ErrorActionPreference = &quot;Stop&quot;
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "PowerShell,TeamCity,continuousintegration,VSCode"
+				hashtags: "powershell,teamcity,continuousintegration,vscode"
 			}
 		}
 	}
@@ -398,6 +397,41 @@ $ErrorActionPreference = &quot;Stop&quot;
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>

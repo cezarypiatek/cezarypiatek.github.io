@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cezary Piątek Blog</title>
@@ -53,7 +53,7 @@
       <pubDate>Sun, 18 Oct 2020 16:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p2/</guid>
-      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
+      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;rdquo;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
     </item>
     
     <item>
@@ -80,7 +80,7 @@
       <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</guid>
-      <description>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&amp;rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing SQL queries directly in the C# code, because I got used to relying always on ORMs (NHibernate in particular).</description>
+      <description>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&amp;rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects.</description>
     </item>
     
     <item>
@@ -99,7 +99,7 @@
       
       <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
       <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
-The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
+The Problem One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
     </item>
     
     <item>
@@ -117,7 +117,7 @@ The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was th
       <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</guid>
-      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;quot; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
+      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;rdquo; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
     </item>
     
     <item>
@@ -225,8 +225,8 @@ The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was th
       <pubDate>Sat, 09 Feb 2019 19:59:11 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/public-speaking/</guid>
-      <description>Upcoming 🔗&amp;#xFE0E;currently nothing in the bucket list
-Past 🔗&amp;#xFE0E; [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 124. spotkanie Warszawskiej Grupy .NET [2019-02-19] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 115. spotkanie Wrocławskiej Grupy .NET [2019-01-15] &amp;quot;Tworzenie łatwych w utrzymaniu oraz stabilnych testów UI&amp;quot; - KraQA #36 [2018-12-04] &amp;quot;Programisto, rozwijaj się!&amp;quot; - Dzień IT Politechniki Krakowskiej [2018-11-07] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn.</description>
+      <description>Upcoming currently nothing in the bucket list
+Past  [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 124. spotkanie Warszawskiej Grupy .NET [2019-02-19] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn&amp;quot; - 115. spotkanie Wrocławskiej Grupy .NET [2019-01-15] &amp;quot;Tworzenie łatwych w utrzymaniu oraz stabilnych testów UI&amp;quot; - KraQA #36 [2018-12-04] &amp;quot;Programisto, rozwijaj się!&amp;quot; - Dzień IT Politechniki Krakowskiej [2018-11-07] &amp;quot;Jak usprawnić proces wytwarzania oprogramowania przy pomocy Roslyn.&amp;quot; - 114.</description>
     </item>
     
     <item>
@@ -317,7 +317,7 @@ Past 🔗&amp;#xFE0E; [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania 
       <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</guid>
-      <description>The challenge 🔗&amp;#xFE0E;Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
+      <description>The challenge Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
     </item>
     
     <item>
@@ -407,9 +407,9 @@ Past 🔗&amp;#xFE0E; [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania 
       <pubDate>Tue, 03 Oct 2017 20:17:23 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/projects/</guid>
-      <description>Mapping Generator 🔗&amp;#xFE0E;&amp;ldquo;AutoMapper&amp;rdquo; like, Roslyn based, code fix provider that allows to generate mapping code in design time.
- Article: Generate mapping code with Roslyn code fix provider. Repository: cezarypiatek/MappingGenerator Nuget: MappingGenerator Visual Studio Extension: MappingGenerator   CsharpMacros 🔗&amp;#xFE0E;A simple template base system of macros for C# that can be executed in design time.
- Article: CSharp Macros - let the Roslyn type for you Repository: cezarypiatek/CsharpMacros Nuget: CsharpMacros Visual Studio Extension: CsharpMacros   Tellurium 🔗&amp;#xFE0E;A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.</description>
+      <description>Mapping Generator &amp;ldquo;AutoMapper&amp;rdquo; like, Roslyn based, code fix provider that allows to generate mapping code in design time.
+ Article: Generate mapping code with Roslyn code fix provider. Repository: cezarypiatek/MappingGenerator Nuget: MappingGenerator Visual Studio Extension: MappingGenerator   CsharpMacros A simple template base system of macros for C# that can be executed in design time.
+ Article: CSharp Macros - let the Roslyn type for you Repository: cezarypiatek/CsharpMacros Nuget: CsharpMacros Visual Studio Extension: CsharpMacros   Tellurium A utility pack to create maintainable and reliable UI tests using Selenium with additional support for ASP.</description>
     </item>
     
     <item>
@@ -446,7 +446,7 @@ Past 🔗&amp;#xFE0E; [2019-03-21] &amp;quot;Jak usprawnić proces wytwarzania 
       
       <guid>https://cezarypiatek.github.io/post/livetemplates/</guid>
       <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
-Template Explorer 🔗&amp;#xFE0E;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
+Template Explorer You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
     </item>
     
   </channel>

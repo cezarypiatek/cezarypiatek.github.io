@@ -45,7 +45,7 @@
     
     <meta property="og:tags" content="webdriver">
     
-    <meta property="og:tags" content="ElementNotInteractableException">
+    <meta property="og:tags" content="elementnotinteractableexception">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/splashscreen.jpg">
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="">
 
-	<meta name="keywords" value="selenium, ui-tests, webdriver, ElementNotInteractableException" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="selenium, ui-tests, webdriver, elementnotinteractableexception" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Why clicking with Selenium is so hard. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -123,15 +123,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -149,7 +149,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -175,6 +175,7 @@
 		
 		<p>When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements.
 It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in  &ldquo;Interactable&rdquo; state. There is a lot of different factors that can cause that situation:</p>
+
 <ol>
 <li>Element has zero dimension (width or height is equals to zero).</li>
 <li>Element is invisible (transparent or hidden).</li>
@@ -182,14 +183,18 @@ It seems to be one of the most trivial tasks, but can cause a lot of problems. V
 <li>Element is behind other.</li>
 <li>&hellip;</li>
 </ol>
+
 <p>There is <strong>ExpectedConditions.ElementToBeClickable</strong> method in Selenium.Support library which at the first glance should solve the problem. So we wait for certain condition to be met before we perform click action.</p>
+
 <pre><code class="language-cs">internal static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
     driver.WaitUntil((d) =&gt; ExpectedConditions.ElementToBeClickable(expectedElement));
     expectedElement.Click();
 }
 </code></pre>
+
 <p>But sometimes we still get the exception. So lets check how ExpectedConditions.ElementToBeClickable method works:</p>
+
 <pre><code class="language-cs">public static Func&lt;IWebDriver, IWebElement&gt; ElementToBeClickable(IWebElement element)
 {
 	return (driver) =&gt;
@@ -212,14 +217,20 @@ It seems to be one of the most trivial tasks, but can cause a lot of problems. V
 	};
 }
 </code></pre>
+
 <p><a href="https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/support/UI/ExpectedConditions.cs">https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/support/UI/ExpectedConditions.cs</a></p>
+
 <p>The interesting part is checking element.Displayed flag. What does &ldquo;Displayed&rdquo; really mean? Reading webdriver specification (<a href="https://w3c.github.io/webdriver/webdriver-spec.html#dfn-element-displayed">https://w3c.github.io/webdriver/webdriver-spec.html#dfn-element-displayed</a>) we can find this definition</p>
+
 <pre><code class="language-plaintext">The element displayed algorithm is a boolean state where true signifies that the element is displayed and false signifies that the element is not displayed. To compute the state on element, invoke the Call(bot.dom.isShown, null, element). If doing so does not produce an error, return the return value from this function call. Otherwise return an error with error code unknown error.
 </code></pre>
+
 <p>This doesn&rsquo;t explain exactly what &ldquo;Displayed&rdquo; means, but gives us another clue. We have to check <strong>bot.dom.isShown</strong> implementation.
 <a href="https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L437">https://github.com/SeleniumHQ/selenium/blob/e09e28f016c9f53196cf68d6f71991c5af4a35d4/javascript/atoms/dom.js#L437</a></p>
+
 <p>Even thought the code is pretty clear, there is a lot of comments which can help us understand how complex the problem is.
 The method documentation comment explains general rules of testing if element is &ldquo;Displayed&rdquo;</p>
+
 <pre><code class="language-plaintext">/**
  * Determines whether an element is what a user would call &quot;shown&quot;. This means
  * that the element is shown in the viewport of the browser, and only has
@@ -240,24 +251,28 @@ The method documentation comment explains general rules of testing if element is
  */
  bot.dom.isShown = function(elem, opt_ignoreOpacity)
 </code></pre>
+
 <p>And everything seems so true, except that I was unable to find code which is responsible for checking if element is inside current viewport (maybe there is another layer of proxy methods specific to given driver implementation). Another problem is that this code doesn&rsquo;t cover the scenario when our click target element is placed behind others. This could be easily detected with javascript</p>
+
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
-   return (bool)driver.ExecuteScript(@&quot;
-       return (function(element)
-       {
-           function belongsToElement(subElement)
-           {
-               return element == subElement || element.contains(subElement);
-           }
-           var rec = element.getBoundingClientRect();                        
-           var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-           return belongsToElement(elementAtPosition);
-       })(arguments[0]);                    
-   &quot;, element);
+	return (bool)driver.ExecuteScript(@&quot;
+		return (function(element)
+		{
+			function belongsToElement(subElement)
+			{
+				return element == subElement || element.contains(subElement);
+			}
+			var rec = element.getBoundingClientRect();                        
+			var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+			return belongsToElement(elementAtPosition);
+		})(arguments[0]);                    
+	&quot;, element);
 }
 </code></pre>
+
 <p>Unfortunately, some drivers have problem with <strong>document.elementFromPoint</strong> and inline elements so I&rsquo;ve added checks of additional two points</p>
+
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
 	return (bool)driver.ExecuteScript(@&quot;
@@ -276,8 +291,11 @@ The method documentation comment explains general rules of testing if element is
 	&quot;, element);
 }
 </code></pre>
+
 <p>It seems that <em>document.elementFromPoint(rec.left, rec.top)</em> should solve the problem by itself, but it doesn&rsquo;t work when element has rounded corners. This implementation is not perfect but gives a high level of confidence.</p>
+
 <p>All right, when we put this altogether and handle also the scenario when element is outside the viewport (some browser can handle this automatically) we can end up with implementation as follows</p>
+
 <pre><code class="language-cs">static void ClickOn(this RemoteWebDriver driver, IWebElement expectedElement)
 {
 	try
@@ -308,7 +326,9 @@ The method documentation comment explains general rules of testing if element is
 	}
 }
 </code></pre>
+
 <p>&hellip; and the supporting methods</p>
+
 <pre><code class="language-csharp"> 
 public static TResult WaitUntil&lt;TResult&gt;(this RemoteWebDriver driver, Func&lt;IWebDriver, TResult&gt; waitPredictor, int timeout=SeleniumFinderExtensions.SearchElementDefaultTimeout)
 {
@@ -450,28 +470,7 @@ public class ViewPortPosition
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -497,7 +496,7 @@ public class ViewPortPosition
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "selenium,ui-tests,webdriver,ElementNotInteractableException"
+				hashtags: "selenium,ui-tests,webdriver,elementnotinteractableexception"
 			}
 		}
 	}
@@ -514,6 +513,41 @@ public class ViewPortPosition
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>

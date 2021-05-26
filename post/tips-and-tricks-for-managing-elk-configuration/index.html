@@ -39,13 +39,13 @@
     <meta property="og:description" content="My last discoveries which help me work more effectively with ELK.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="Logstash">
+    <meta property="og:tags" content="logstash">
     
-    <meta property="og:tags" content="ElasticSearch">
+    <meta property="og:tags" content="elasticsearch">
     
-    <meta property="og:tags" content="ELK">
+    <meta property="og:tags" content="elk">
     
-    <meta property="og:tags" content="Filebeat">
+    <meta property="og:tags" content="filebeat">
     
     <meta property="og:tags" content="logging">
     
@@ -57,8 +57,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="My last discoveries which help me work more effectively with ELK.">
 
-	<meta name="keywords" value="Logstash, ElasticSearch, ELK, Filebeat, logging, powershell" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="logstash, elasticsearch, elk, filebeat, logging, powershell" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Tips and Tricks for managing ELK configuration &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -127,15 +127,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -153,7 +153,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -178,9 +178,11 @@
 			<br />
 		
 		<p>A few months ago I published &ldquo;<a href="../../post/demystifying-elk-stack/">Demystifying ELK stack</a>&rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&rsquo;re worth sharing.</p>
-<h2 id="shrinking-filebeat-configuration"><a href="#shrinking-filebeat-configuration">Shrinking Filebeat configuration  🔗&#xFE0E;</a></h2>
+
+<h2 id="shrinking-filebeat-configuration">Shrinking Filebeat configuration</h2>
 
 <p>I use <code>Filebeat</code> to collect data from log files and send them to <code>Logstash</code> for further processing and analyzing. <code>Filebeat</code> configuration is in <code>YAML</code> format and the most important part of it is the section <code>filebeat.prospectors</code> which is responsible for configuring harvesting data. A sample configuration looks as follows:</p>
+
 <pre><code class="language-yaml">filebeat.prospectors:
 - input_type: log
   paths:
@@ -196,7 +198,9 @@
     app_name: client
     type: web
 </code></pre>
+
 <p>Currently, I have 10 internal environments for different purposes (manual testing, automated UI testing, load testing, presentations for different customers etc.). Each environment consists of two web applications and each of them produces 2 log files (diagnostic and performance data). That gives me <code>10 * 2 * 2 = 40</code> log files and for every single one of them, I have to configure a separate prospector. I can&rsquo;t use a single prospector with a wildcard in the <code>path</code> attribute because there is a need to add additional metadata, such as environment name, app name and log type (attributes defined in the <code>fields</code> node).  However, some of the attributes are the same for every prospector which causes a massive configuration duplication and makes it harder to modify those common values. I was even thinking about preparing some kind of template for prospector configuration with custom <code>PowerShell</code> script that could facilitate creating a config for the entire environment. Instead of rushing to develop an in-house solution though, I started from browsing <code>YAML</code> specification and I found <a href="http://yaml.org/type/merge.html">Merge Key Language-Independent Type</a> which seemed to be a solution to my problem. The <code>!!merge</code> feature together with <code>Anchors and Aliases</code> allows to define and reuse keys of the map - simply speaking it&rsquo;s a kind of variables in YAML files. In the following example, I&rsquo;ve defined a common configuration with anchor <code>&amp;PROSPECTOR_COMMON_OPTIONS</code> and merge it into any prospector configuration with <code>&lt;&lt; :</code> operator.</p>
+
 <pre><code class="language-yaml">PROSPECTOR_COMMON_OPTIONS : &amp;PROSPECTOR_COMMON_OPTIONS
     scan_frequency: 10
     encoding: utf-8
@@ -224,10 +228,13 @@ filebeat.prospectors:
     app_name: office
     type: web
 </code></pre>
+
 <p>Thanks to this little trick I was able to reduce the number of entries in my <code>Filebeat</code> configuration and improve its maintainability. A lot of people criticize <code>YAML</code> for being hard to read and edit - in comparizon to <code>JSON</code> format - but it has some less known features which give it more possibilities than <code>JSON</code> has.</p>
-<h2 id="temporary-variables-in-logstash-configuration"><a href="#temporary-variables-in-logstash-configuration">Temporary variables in Logstash configuration  🔗&#xFE0E;</a></h2>
+
+<h2 id="temporary-variables-in-logstash-configuration">Temporary variables in Logstash configuration</h2>
 
 <p>In the <a href="../../post/be-the-first-to-know-of-the-bug/">Be the first to know of the bug</a> article I described how we can easily integrate <code>Logstash</code> with <code>Microsoft Teams</code> to create some kind of early-warning system. In the proposed solution I used <code>mutate</code> filter  to create extra fields which hold additional data consumed only by the <code>output</code> section, for example URL for Kibana filter, Jira create issue link or <code>Microsft Teams</code> webhook. After a while, I&rsquo;ve realized that this additional data is unnecessarily stored in <code>ElasticSearch</code> index and consumes a lot of space. Thankfully, the authors of Filebeat foresaw the need for temporal variables and introduced <a href="https://www.elastic.co/blog/logstash-metadata">Logstash Metadata</a>. Now, instead of adding fields to events only for processing purpose, we can store them in the dedicated <code>@metadata</code> field:</p>
+
 <pre><code class="language-js"> mutate
  {
     add_field =&gt;
@@ -236,9 +243,11 @@ filebeat.prospectors:
     }
 }
 </code></pre>
-<h2 id="automating-the-configuration-update"><a href="#automating-the-configuration-update">Automating the configuration update  🔗&#xFE0E;</a></h2>
+
+<h2 id="automating-the-configuration-update">Automating the configuration update</h2>
 
 <p>Every time I changed <code>Logstash</code> or <code>Filebeat</code> configuration I had to log in to the appropriate server, replace the old config with the new one, restart the service and examine the service log file if the whole operation was successful. If something failed, I needed to correct the config file and repeat the whole routine. It was a very tedious process and nobody in the team besides me knew to how to do it. I even wrote the whole instruction down but the number of steps or the need to log into <code>Linux</code> server repealed others. A better solution than creating manual instruction is to automate the process. The easiest part was to create the script that updates <code>Filebeat</code> configuration because it resides on the Windows server:</p>
+
 <pre><code class="language-powershell">function Update-FilebeatConfig
 {
     [CmdletBinding()]
@@ -258,26 +267,35 @@ filebeat.prospectors:
     Remove-PSSession -Session $session
 }
 </code></pre>
+
 <p>Now everybody can easily update Filebeat configuration by invoking this function as follows:</p>
+
 <pre><code class="language-powershell">Update-FilebeatConfig -ComputerName &quot;app.server.lan&quot; -Credentials (Get-Credential) -FilebeatSrcFile &quot;./filebeat.yml&quot; -Verbose
 </code></pre>
-<h3 id="powershell-core-on-linux"><a href="#powershell-core-on-linux">PowerShell Core on Linux  🔗&#xFE0E;</a></h3>
+
+<h3 id="powershell-core-on-linux">PowerShell Core on Linux</h3>
 
 <p>However, the real challenge for me was to automate the same process for <code>Logstash</code> configuration that lives on the <code>Linux</code> server. I started by installing <code>PowerShell Core</code> on my Linux server with the following commands:</p>
+
 <pre><code class="language-bash">sudo apt-get install libunwind8 libicu55 liblttng-ust0
 wget https://github.com/PowerShell/PowerShell/releases/download/v6.1.0/powershell_6.1.0-1.ubuntu.16.04_amd64.deb
 sudo dpkg -i powershell_6.1.0-1.ubuntu.16.04_amd64.deb
 sudo apt-get install -f
 </code></pre>
+
 <p>Depending on your Linux distribution and version you might need to use a different package of <a href="https://github.com/PowerShell/PowerShell/releases"><code>PowerShell Core</code></a>
 If you are working on <code>Ubuntu</code>, you can check your current version with <code>lsb_release -a</code> command. If everything went well, you should be able to enter the <code>PowerShell</code> console with <code>pwsh</code> command.</p>
+
 <p>Beside installing <code>PowerShell</code> I also needed to enable <code>PowerShell Remoting</code>. This can be accomplished by installing <code>OMI PSRP</code> packages:</p>
+
 <pre><code class="language-bash">wget https://github.com/PowerShell/psl-omi-provider/releases/download/v1.4.1-28/psrp-1.4.1-28.universal.x64.deb
 wget https://github.com/Microsoft/omi/releases/download/v1.4.2-5/omi-1.4.2-5.ssl_100.ulinux.x64.deb
 sudo dpkg -i omi-1.4.2-5.ssl_100.ulinux.x64.deb
 sudo dpkg -i psrp-1.4.1-28.universal.x64.deb
 </code></pre>
+
 <p>Despise all my concerns the installation went pretty smoothly (I only needed to adjust the version of package responsible for <code>SSL</code>) and I was able to remotely invoke command on the Linux server from my Windows workstation with <code>Invoke-Command</code> cmdlet.  Then I was able to easily automate the process of updating <code>Logstash</code> config:</p>
+
 <pre><code class="language-powershell">$sharedContext = {
     function Watch-File {
         [CmdletBinding()]
@@ -347,11 +365,15 @@ function Update-LogstashConfig
     Remove-PSSession -Session $session
 }
 </code></pre>
+
 <p>I&rsquo;ve enriched my script with <code>Watch-File</code> function that forwards <code>Logstash</code> logs and blocks the process until the restart is finished. Thanks to that we have a live stream of what is going on during the restart. The Logstash config update can be performed with the command:</p>
+
 <pre><code class="language-powershell">Update-LogstashConfig -ComputerName 'elk.server.lan' -Credentials (Get-Credential) -LogstashSrcFile &quot;./logstash/App.conf&quot; -Verbose
 </code></pre>
+
 <p>I&rsquo;ve put all of the above scripts together with the config files in the source control so everybody in the team can easily modify and deploy new ELK configuration.</p>
-<h2 id="tldr"><a href="#tldr">TL;DR  🔗&#xFE0E;</a></h2>
+
+<h2 id="tl-dr">TL;DR</h2>
 
 <p>Thanks to <code>!!merge, Anchors and Aliases</code> I can simulate variables in <code>YAML</code> and create reusable parts of <code>Filebeat</code> configuration. The  Logstash <code>@metadata</code> field allows me to create variables needed only for processing logic without polluting <code>ElasticSeach</code> indices. With <code>PowerShell Core</code> I can easily manage Linux servers directly from my Windows workstation and automatically deploy <code>ELK</code> configuration.</p>    
 		
@@ -449,28 +471,7 @@ function Update-LogstashConfig
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -500,7 +501,7 @@ function Update-LogstashConfig
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "Logstash,ElasticSearch,ELK,Filebeat,logging,powershell"
+				hashtags: "logstash,elasticsearch,elk,filebeat,logging,powershell"
 			}
 		}
 	}
@@ -517,6 +518,41 @@ function Update-LogstashConfig
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>

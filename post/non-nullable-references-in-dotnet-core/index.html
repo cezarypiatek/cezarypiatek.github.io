@@ -45,7 +45,7 @@
     
     <meta property="og:tags" content="visual studio">
     
-    <meta property="og:tags" content="Resharper">
+    <meta property="og:tags" content="resharper">
     
     <meta property="og:tags" content="non-nullable">
     
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="Catching NullReferenceException in design time using new language features and how to deal with it in previous versions.">
 
-	<meta name="keywords" value="dotnetcore, csharp, visual studio, Resharper, non-nullable" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="dotnetcore, csharp, visual studio, resharper, non-nullable" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Non-nullable references with C# 8 and .NET Core 3.0 &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -125,15 +125,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -151,7 +151,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -175,14 +175,20 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8">here</a> on the MSDN, but the one that deserves special attention is <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8#nullable-reference-types">Nullable reference types</a>. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference <code>nullability</code> on the compilation stage. In this blog post, I will show you how to use this new language feature and how to achieve similar benefits if you still cannot use .NET Core 3.0 in your projects.</p>
-<h2 id="how-to-use-non-nullable-references"><a href="#how-to-use-non-nullable-references">How to use Non-nullable references  🔗&#xFE0E;</a></h2>
+		
+
+<p>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8">here</a> on the MSDN, but the one that deserves special attention is <a href="https://docs.microsoft.com/en-US/dotnet/csharp/whats-new/csharp-8#nullable-reference-types">Nullable reference types</a>. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference <code>nullability</code> on the compilation stage. In this blog post, I will show you how to use this new language feature and how to achieve similar benefits if you still cannot use .NET Core 3.0 in your projects.</p>
+
+<h2 id="how-to-use-non-nullable-references">How to use Non-nullable references</h2>
 
 <p>If our project is targeting .NET Core 3.0 or higher, we can start using non-nullable references. However, when we add <code>?</code> annotation to the reference type we get the following warning:</p>
+
 <blockquote>
 <p><code>CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.</code></p>
 </blockquote>
+
 <p>Our code will compile but all the rules related to the non-nullable references will be ignored (our code will be interpreted as it was before C# 8). Because this feature is a breaking change in the language, it should be explicitly enabled. To test it in a single file, add <code>#nullable enable</code> directive. In order to enable it for the whole project, add <code>&lt;Nullable&gt;enable&lt;/Nullable&gt;</code> to your <code>csproj</code> definition.  If you are serious about using non-nullable references, I would recommend enabling it for the whole solution by adding <code>Directory.Build.props</code> file in the root directory of your source code with the following content:</p>
+
 <pre><code class="language-xml">&lt;Project&gt;
  &lt;PropertyGroup&gt;
     &lt;Nullable&gt;enable&lt;/Nullable&gt;
@@ -191,7 +197,9 @@
  &lt;/PropertyGroup&gt;
 &lt;/Project&gt;
 </code></pre>
+
 <p>Since now all the references to the reference types are treated as <code>non-nullable</code> unless they are explicitly marked as nullable with <code>?</code> annotation. These new rules are verified by the Roslyn analyzers from <code>Microsoft.CodeAnalysis.CSharp</code> package (which is added implicitly to all C# projects). There are over 40 rules related to the <code>nullability</code> and the complete list is presented below:</p>
+
 <table>
 <thead>
 <tr>
@@ -199,190 +207,237 @@
 <th>Title</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td><code>CS8073</code></td>
 <td>The result of the expression is always the same since a value of this type is never equal to &lsquo;null&rsquo;</td>
 </tr>
+
 <tr>
 <td><code>CS8597</code></td>
 <td>Thrown value may be null.</td>
 </tr>
+
 <tr>
 <td><code>CS8600</code></td>
 <td>Converting null literal or possible null value to non-nullable type.</td>
 </tr>
+
 <tr>
 <td><code>CS8601</code></td>
 <td>Possible null reference assignment.</td>
 </tr>
+
 <tr>
 <td><code>CS8602</code></td>
 <td>Dereference of a possibly null reference.</td>
 </tr>
+
 <tr>
 <td><code>CS8603</code></td>
 <td>Possible null reference return.</td>
 </tr>
+
 <tr>
 <td><code>CS8604</code></td>
 <td>Possible null reference argument.</td>
 </tr>
+
 <tr>
 <td><code>CS8605</code></td>
 <td>Unboxing a possibly null value.</td>
 </tr>
+
 <tr>
 <td><code>CS8606</code></td>
 <td>Possible null reference assignment to iteration variable</td>
 </tr>
+
 <tr>
 <td><code>CS8607</code></td>
 <td>A possible null value may not be passed to a target marked with the [DisallowNull] attribute</td>
 </tr>
+
 <tr>
 <td><code>CS8608</code></td>
 <td>Nullability of reference types in type doesn&rsquo;t match overridden member.</td>
 </tr>
+
 <tr>
 <td><code>CS8609</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match overridden member.</td>
 </tr>
+
 <tr>
 <td><code>CS8610</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match overridden member.</td>
 </tr>
+
 <tr>
 <td><code>CS8611</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match partial method declaration.</td>
 </tr>
+
 <tr>
 <td><code>CS8612</code></td>
 <td>Nullability of reference types in type doesn&rsquo;t match implicitly implemented member.</td>
 </tr>
+
 <tr>
 <td><code>CS8613</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match implicitly implemented member.</td>
 </tr>
+
 <tr>
 <td><code>CS8614</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match implicitly implemented member.</td>
 </tr>
+
 <tr>
 <td><code>CS8615</code></td>
 <td>Nullability of reference types in type doesn&rsquo;t match implemented member.</td>
 </tr>
+
 <tr>
 <td><code>CS8616</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match implemented member.</td>
 </tr>
+
 <tr>
 <td><code>CS8617</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match implemented member.</td>
 </tr>
+
 <tr>
 <td><code>CS8618</code></td>
 <td>Non-nullable field is uninitialized. Consider declaring as nullable.</td>
 </tr>
+
 <tr>
 <td><code>CS8619</code></td>
 <td>Nullability of reference types in value doesn&rsquo;t match target type.</td>
 </tr>
+
 <tr>
 <td><code>CS8620</code></td>
 <td>Argument cannot be used for parameter due to differences in the nullability of reference types.</td>
 </tr>
+
 <tr>
 <td><code>CS8621</code></td>
 <td>Nullability of reference types in return type doesn&rsquo;t match the target delegate.</td>
 </tr>
+
 <tr>
 <td><code>CS8622</code></td>
 <td>Nullability of reference types in type of parameter doesn&rsquo;t match the target delegate.</td>
 </tr>
+
 <tr>
 <td><code>CS8624</code></td>
 <td>Argument cannot be used as an output for parameter due to differences in the nullability of reference types.</td>
 </tr>
+
 <tr>
 <td><code>CS8625</code></td>
 <td>Cannot convert null literal to non-nullable reference type.</td>
 </tr>
+
 <tr>
 <td><code>CS8626</code></td>
 <td>The &lsquo;as&rsquo; operator may produce a null value for a type parameter.</td>
 </tr>
+
 <tr>
 <td><code>CS8629</code></td>
 <td>Nullable value type may be null.</td>
 </tr>
+
 <tr>
 <td><code>CS8631</code></td>
 <td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match constraint type.</td>
 </tr>
+
 <tr>
 <td><code>CS8632</code></td>
 <td>The annotation for nullable reference types should only be used in code within a &lsquo;#nullable&rsquo; annotations context.</td>
 </tr>
+
 <tr>
 <td><code>CS8633</code></td>
 <td>Nullability in constraints for type parameter doesn&rsquo;t match the constraints for type parameter in implicitly implemented interface method&rsquo;.</td>
 </tr>
+
 <tr>
 <td><code>CS8634</code></td>
 <td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match &lsquo;class&rsquo; constraint.</td>
 </tr>
+
 <tr>
 <td><code>CS8638</code></td>
 <td>Conditional access may produce a null value for a type parameter.</td>
 </tr>
+
 <tr>
 <td><code>CS8643</code></td>
 <td>Nullability of reference types in explicit interface specifier doesn&rsquo;t match interface implemented by the type.</td>
 </tr>
+
 <tr>
 <td><code>CS8644</code></td>
 <td>Type does not implement interface member. Nullability of reference types in interface implemented by the base type doesn&rsquo;t match.</td>
 </tr>
+
 <tr>
 <td><code>CS8645</code></td>
 <td>Interface is already listed in the interface list with different nullability of reference types.</td>
 </tr>
+
 <tr>
 <td><code>CS8653</code></td>
 <td>A default expression introduces a null value for a type parameter.</td>
 </tr>
+
 <tr>
 <td><code>CS8654</code></td>
 <td>A null literal introduces a null value for a type parameter.</td>
 </tr>
+
 <tr>
 <td><code>CS8655</code></td>
 <td>The switch expression does not handle some null inputs.</td>
 </tr>
+
 <tr>
 <td><code>CS8667</code></td>
 <td>Partial method declarations have inconsistent nullability in constraints for type parameter</td>
 </tr>
+
 <tr>
 <td><code>CS8714</code></td>
 <td>The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn&rsquo;t match &lsquo;notnull&rsquo; constraint.</td>
 </tr>
 </tbody>
 </table>
+
 <p>By default, all these rules are reported as <code>WARNING</code>, which means even if they are violated the code will compile and work. My advice is to go through this list carefully and increase the severity to <code>ERROR</code> level for most of them. In order to change the way these rules are treated, you have to at first add <code>*.ruleset</code> file to your project/solution by clicking on the project&rsquo;s (or solution&rsquo;s) context menu <code>Add -&gt; New Item</code> and creating a file from <code>Code Analysis Rule Set</code> template:</p>
-<p>
-<a href="2019-10-05-23-42-23.png"><img  src="2019-10-05-23-42-23.png" alt=""></a>
-</p>
+
+<p><img src="2019-10-05-23-42-23.png" alt="" /></p>
+
 <p>In the next step, you have to reference this ruleset file in your <code>*.csproj</code> or <code>Directory.Build.props</code> file with the following entry:</p>
+
 <pre><code class="language-xml"> &lt;CodeAnalysisRuleSet&gt;$(MSBuildThisFileDirectory)MyRules.ruleset&lt;/CodeAnalysisRuleSet&gt;
 </code></pre>
+
 <p>Do not forget to add this file to your source control system in order to enforce all these rules across your teammates and CI.</p>
+
 <p>Now you can start configuring severity level for individual rules.  After double clicking on your ruleset file, Visual Studio should open it in <code>Ruleset editor</code>. As I&rsquo;ve mentioned before, entries related to <code>Nullable reference types</code> should be available under <code>Microsoft.CodeAnalysis.CSharp</code> branch. You can find them all by writing a <code>null</code> keyword in the search field.</p>
-<p>
-<a href="configure_ruleset.jpg"><img  src="configure_ruleset.jpg" alt="Ruleset editor"></a>
-</p>
+
+<p><img src="configure_ruleset.jpg" alt="Ruleset editor" /></p>
+
 <p>If you are using <code>JetBrains Rider</code> you have to configure ruleset by manually editing xml inside <code>*.ruleset</code> file - there is no graphical editor for this. The file&rsquo;s format looks as follows:</p>
+
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;RuleSet Name=&quot;New Rule Set&quot; Description=&quot; &quot; ToolsVersion=&quot;16.0&quot;&gt;
   &lt;Rules AnalyzerId=&quot;Microsoft.CodeAnalysis.CSharp&quot; RuleNamespace=&quot;Microsoft.CodeAnalysis.CSharp&quot;&gt;
@@ -390,65 +445,81 @@
   &lt;/Rules&gt;
 &lt;/RuleSet&gt;
 </code></pre>
+
 <p>After increasing the severity level to <code>ERROR</code>, all the violations of a given rule will be reported in a more noticeable manner and will block the compilation.</p>
-<p>
-<a href="cs8604_violation.jpg"><img  src="cs8604_violation.jpg" alt="cs8604 violation"></a>
-</p>
-<h2 id="the-era-before-c-8"><a href="#the-era-before-c-8">The era before C# 8  🔗&#xFE0E;</a></h2>
+
+<p><img src="cs8604_violation.jpg" alt="cs8604 violation" /></p>
+
+<h2 id="the-era-before-c-8">The era before C# 8</h2>
 
 <p>Although the <code>Nullable reference types</code> are a very new language feature, I&rsquo;ve been working with this concept for quite some time. To simulate similar behavior in the previous language versions, I&rsquo;ve been using the following attributes from <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> package:</p>
+
 <ul>
 <li><code>[NotNull]</code></li>
 <li><code>[CanBeNull]</code></li>
 <li><code>[ItemNotNull]</code></li>
 <li><code>[ItemCanBeNull]</code></li>
 </ul>
+
 <p>In order to start using these attributes you need to perform the following steps:</p>
+
 <ol>
 <li>Install aforementioned <a href="https://www.nuget.org/packages/JetBrains.Annotations/">JetBrains.Annotations</a> nuget package</li>
 <li>Increase severity level for rules related to these attributes in Resharper&rsquo;s configuration. Go to <code>Resharper -&gt; Options -&gt; Code Inspection -&gt; Inspection Severity</code> and review rules associated with nullability.</li>
 <li>Enable <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__Solution-Wide_Analysis.html">Solution Wide Analysis</a></li>
 </ol>
+
 <p>Since now you can start annotating your code with <code>[*Null]</code> attributes:</p>
-<p>
-<a href="resharper_code_annotations.jpg"><img  src="resharper_code_annotations.jpg" alt="Resharper annotations in action"></a>
-</p>
+
+<p><img src="resharper_code_annotations.jpg" alt="Resharper annotations in action" /></p>
+
 <p>These inspections work only in Visual Studio and rule violations don&rsquo;t affect the compilation process. However, you can enforce all the checks in your <code>CI</code> pipelines using Resharper&rsquo;s <a href="https://www.jetbrains.com/help/resharper/InspectCode.html">InspectCode Command-Line Tool</a>. If the <code>design time</code> check is not enough for you, you can bring these validations to runtime by using <a href="https://github.com/Fody/Fody">Fody</a> together with <a href="https://github.com/Fody/NullGuard">NullGuard</a> plugin. I tried it once and everything worked as expected but there were some <a href="https://github.com/Fody/NullGuard/issues/83">issues with code coverage</a>.</p>
+
 <p>All the attributes from <code>JetBrains.Annotations</code> package are conditional, which means they are not compiled into output assemblies unless you defined <code>JETBRAINS_ANNOTATIONS</code> build constant. You can read more about usage of these attributes in my blog post <a href="../../post/hunt-your-bugs-design-time/#notnull-and-canbenull-and-implicitnotnull">Hunt your bugs in design time</a> or in the <a href="https://www.jetbrains.com/help/resharper/Code_Analysis__Value_Analysis.html">official documentation</a></p>
-<h2 id="there-is-still-room-for-improvement"><a href="#there-is-still-room-for-improvement">There is still room for improvement  🔗&#xFE0E;</a></h2>
+
+<h2 id="there-is-still-room-for-improvement">There is still room for improvement</h2>
 
 <p>I&rsquo;ve played a little with <code>Nullable reference types</code> from C# 8.0 to compare it with <code>JetBrains.Annotations</code> and I&rsquo;ve spotted a few missing bits. Let&rsquo;s take the following code with C# 8.0 annotations</p>
-<p>
-<a href="missing_rules_roslyn.jpg"><img  src="missing_rules_roslyn.jpg" alt=""></a>
-</p>
+
+<p><img src="missing_rules_roslyn.jpg" alt="" /></p>
+
 <p>My expectations:</p>
+
 <ul>
 <li>Line 7: Reported as ERROR - OK</li>
 <li>Line 12: This condition is always evaluated to <code>false</code> so should be somehow reported</li>
 <li>Line 17: This code is OK but the previous condition mislead the analyses and now is reported as ERROR.</li>
 </ul>
+
 <p><strong>UPDATE 2020-02-27:</strong> What we observe in <code>Line 17</code> it&rsquo;s the compiler&rsquo;s intentional behavior. <strong>Bill Wagner</strong> explained it in his presentation <a href="https://www.youtube.com/watch?v=aUbXGs7YTGo&amp;list=PL03Lrmd9CiGeteXRzmn27mnlHKgOEACi2&amp;">Change your habits: Modern techniques for modern C#</a> (Similar example is discussed from <a href="https://youtu.be/aUbXGs7YTGo?list=PL03Lrmd9CiGeteXRzmn27mnlHKgOEACi2&amp;t=1740">29:00</a>)</p>
+
 <p>The same code with <code>JetBrains.Annotations</code> is reported according to expectations:</p>
-<p>
-<a href="missing_rules_resharper.jpg"><img  src="missing_rules_resharper.jpg" alt=""></a>
-</p>
+
+<p><img src="missing_rules_resharper.jpg" alt="" /></p>
+
 <p><strong>UPDATE 2019-10-08 (I):</strong> If you are developing libraries with .NET Core 3.0, there is still a possibility that someone can use it in the project without <code>Null reference types</code>. It would be a good idea to add runtime null-checks in your library API methods. For contract enforcement, I would recommend using <a href="https://www.nuget.org/packages/Synergy.Contracts/">Synergy.Contracts</a> package:</p>
+
 <pre><code class="language-csharp">public void DoSomething(UserEntity user)
 {
     Fail.IfNull(user, nameof(user))
 
 }
 </code></pre>
+
 <p><strong>UPDATE 2019-10-08 (II):</strong> The return value of <code>ToString()</code> method was marked as nullable. This is quite surprising because according to <a href="https://docs.microsoft.com/en-US/dotnet/api/system.object.tostring?view=netframework-4.8#notes-to-inheritors">Notes to Inheritors</a> at MSDN nobody should return null from this method:</p>
+
 <blockquote>
 <p>&ldquo;Your ToString() override should not return Empty or a null string.&rdquo;</p>
 </blockquote>
+
 <p>Here&rsquo;s a  <a href="https://github.com/dotnet/coreclr/pull/23510">PR #23510</a> that add this annotation to <code>ToString()</code> method in coreclr repository. Right now there is a discrepancy between .NET Core and Resharper annotation for this method which can cause an even more confusion:</p>
-<p>
-<a href="to_string.jpg"><img  src="to_string.jpg" alt="discrepancy  in toString annotations"></a>
-</p>
+
+<p><img src="to_string.jpg" alt="discrepancy  in toString annotations" /></p>
+
 <p><strong>UPDATE 2019-10-17:</strong>  I found an interesting article about the possibilities of usage of non-nullable references in projects targeting <code>netstandard2.0</code>: <a href="https://stu.dev/csharp8-doing-unsupported-things/">C# 8.0 and .NET Standard 2.0 - Doing Unsupported Things</a></p>
+
 <p><strong>UPDATE 2019-11-24:</strong> Just discovered, that together with dotnet core 3.0 a couple of other things supporting nullability have been introduced, such as <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-forgiving">! (null-forgiving) operator</a> and extra <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis?view=netcore-3.0">System.Diagnostics.CodeAnalysis attributes</a>.</p>
+
 <p><strong>UPDATE 2020-02-23:</strong> I&rsquo;ve prepared a code snippet for <code>.editorconfig</code> that sets severity level to error for different rules related to the reference nullability. Snippet available as <a href="https://gist.github.com/cezarypiatek/f56c671c6f634aab285a88095488c1de">gist</a>. You can read more about configuring Roslyn analyzers rules via <code>.editorconfig</code> at MSDN <a href="https://docs.microsoft.com/en-US/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2019#set-rule-severity-in-an-editorconfig-file">Set rule severity in an EditorConfig file</a></p>
     
 		
@@ -546,28 +617,7 @@
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -593,7 +643,7 @@
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "dotnetcore,csharp,visualstudio,Resharper,non-nullable"
+				hashtags: "dotnetcore,csharp,visualstudio,resharper,non-nullable"
 			}
 		}
 	}
@@ -610,6 +660,41 @@
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>

@@ -43,9 +43,9 @@
     
     <meta property="og:tags" content="clean code">
     
-    <meta property="og:tags" content="TODO">
+    <meta property="og:tags" content="todo">
     
-    <meta property="og:tags" content="TODOExplorer">
+    <meta property="og:tags" content="todoexplorer">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/splashscreen.jpg">
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="">
 
-	<meta name="keywords" value="resharper, clean code, TODO, TODOExplorer" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="resharper, clean code, todo, todoexplorer" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Get rid of TODOs from your codebase. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -121,15 +121,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -147,7 +147,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -171,17 +171,22 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>I&rsquo;ve recently written an article about <a href="../../post/how-to-manage-todo-in-codebase/">managing TODOs in the codebase with TODOExplorer</a>. I&rsquo;ve also proposed an idea of introducing code snippet for TODOs which helps to keep all TODOs in predefined format as well as provides more information about delayed task (author, receiver, date, issue tracker id). This article was a result of a few discussions with my programmer-colleagues and I hoped that that idea of TODOs snippet was worth sharing (I&rsquo;ve been using it in my project for a while). After publishing this article I received a great feedback that give me a lot to think about. The message was simple - TODOs are a bad practice. And I think all those guys who stated this are god damn right. When we have two sources of requirements - issue tracker and TODOs in code - it&rsquo;s hard to manage and sooner or later those sources will desynchronize. To avoid all the problems which could be the consequence of this desynchronization, we should get rid of the TODOs from the codebase instead of managing them in the nice way. How can we accomplish that? Using TODOExplorer we can locate all the TODOs and convert them into tasks in issue tracker. In the issue tracker we can provide more details and assign the task to a particular person who will be responsible for it. It will also be easier to schedule those tasks. I&rsquo;m not sure if we should totally wipe out TODOs from the codebase or leave them in the following format:</p>
+		
+
+<p>I&rsquo;ve recently written an article about <a href="../../post/how-to-manage-todo-in-codebase/">managing TODOs in the codebase with TODOExplorer</a>. I&rsquo;ve also proposed an idea of introducing code snippet for TODOs which helps to keep all TODOs in predefined format as well as provides more information about delayed task (author, receiver, date, issue tracker id). This article was a result of a few discussions with my programmer-colleagues and I hoped that that idea of TODOs snippet was worth sharing (I&rsquo;ve been using it in my project for a while). After publishing this article I received a great feedback that give me a lot to think about. The message was simple - TODOs are a bad practice. And I think all those guys who stated this are god damn right. When we have two sources of requirements - issue tracker and TODOs in code - it&rsquo;s hard to manage and sooner or later those sources will desynchronize. To avoid all the problems which could be the consequence of this desynchronization, we should get rid of the TODOs from the codebase instead of managing them in the nice way. How can we accomplish that? Using TODOExplorer we can locate all the TODOs and convert them into tasks in issue tracker. In the issue tracker we can provide more details and assign the task to a particular person who will be responsible for it. It will also be easier to schedule those tasks. I&rsquo;m not sure if we should totally wipe out TODOs from the codebase or leave them in the following format:</p>
+
 <pre><code class="language-plaintext">// TODOs:ISSUE_ID
 </code></pre>
+
 <p>I will leave that question open for further conversation.
 I&rsquo;ve checked my project with TODOExplorer and there is 48 TODOs. Probably most of them are out of date - they only cause confusion. I&rsquo;ve decided that I will propose to my team on the next daily scrum the idea of moving all the TODOs into JIRA. If the feedback is positive, we should be able to do that till the end of next week. In order not to be alone in this case and to spread the idea of this best practice I want to make a call for action and challenge you. Let&rsquo;s get rid of the TODOs together. In the comment section or on Twitter, please post info about the initial number of TODOs and declare the due date of moving all the TODOs into issue tracker. My initial state looks like below and I hope I can manage it till the end of next week (2017-12-22) together with my team.</p>
-<p>
-<a href="mytodo.jpg"><img  src="mytodo.jpg" alt="my TODOs"></a>
-</p>
+
+<p><img src="mytodo.jpg" alt="my TODOs" /></p>
+
 <pre><code class="language-csharp">// INFO: We've got only one week till Christmas, and there is a lot of advent calendar challenges in the internet. You can treat this idea of getting rid of TODOs as your advent assignment. Let's celebrate Christmas with clean code in the repository ;)
 </code></pre>
-<h2 id="credits"><a href="#credits">Credits  🔗&#xFE0E;</a></h2>
+
+<h2 id="credits">Credits</h2>
 
 <p>Thanks @Jarosław Stadnicki and @Krzysztof Seroka for your feedback which assured me that it was totally worth to raise the issue.</p>
     
@@ -280,28 +285,7 @@ I&rsquo;ve checked my project with TODOExplorer and there is 48 TODOs. Probably 
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -324,7 +308,7 @@ I&rsquo;ve checked my project with TODOExplorer and there is 48 TODOs. Probably 
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "resharper,cleancode,TODO,TODOExplorer"
+				hashtags: "resharper,cleancode,todo,todoexplorer"
 			}
 		}
 	}
@@ -341,6 +325,41 @@ I&rsquo;ve checked my project with TODOExplorer and there is 48 TODOs. Probably 
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>

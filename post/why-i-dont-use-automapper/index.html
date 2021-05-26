@@ -13,7 +13,7 @@
             "@type":"WebPage",
             "@id":"https:\/\/cezarypiatek.github.io\/post\/why-i-dont-use-automapper\/"
             },
-          "headline" : "The reasons behind why I don\u0027t use AutoMapper.",
+          "headline" : "The reasons behind why I don\x27t use AutoMapper.",
           "author" : {
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
@@ -39,7 +39,7 @@
     <meta property="og:description" content="My list of AutoMapper disadvantages which you should consider before using it in your project.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="AutoMapper">
+    <meta property="og:tags" content="automapper">
     
     <meta property="og:tags" content="orm">
     
@@ -51,7 +51,7 @@
     
     <meta property="og:tags" content="static analysis">
     
-    <meta property="og:tags" content="C#">
+    <meta property="og:tags" content="c#">
     
     <meta property="og:tags" content="dotnet">
     
@@ -61,8 +61,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="My list of AutoMapper disadvantages which you should consider before using it in your project.">
 
-	<meta name="keywords" value="AutoMapper, orm, crud, mapping, clean code, static analysis, C#, dotnet" />
-    <meta name="generator" content="Hugo 0.74.3" />
+	<meta name="keywords" value="automapper, orm, crud, mapping, clean code, static analysis, c#, dotnet" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>The reasons behind why I don&#39;t use AutoMapper. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -131,15 +131,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -157,7 +157,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -181,25 +181,31 @@
 			<img src="social_splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>The idea behind this blog post is pretty old but I haven&rsquo;t had enough motivation to write this down till now. Recently, I&rsquo;ve came across a couple of new articles about AutoMapper and I&rsquo;ve been struck when I saw how people utilize AutoMapper in their projects. I&rsquo;ve encountered cases when AutoMapper transforms simple thing like mapping values from object to other into a really complex problem, which results with highly complicated code only for the price of not writing mappings explicitly. Finally, I&rsquo;ve found a provoking tweet on my timeline that definitely motivated me to materialize my reflections about AutoMapper into the form of this blog post.</p>
-<p>
-<a href="tweet.jpg"><img  src="tweet.jpg" alt="tweet"></a>
-</p>
+		
+
+<p>The idea behind this blog post is pretty old but I haven&rsquo;t had enough motivation to write this down till now. Recently, I&rsquo;ve came across a couple of new articles about AutoMapper and I&rsquo;ve been struck when I saw how people utilize AutoMapper in their projects. I&rsquo;ve encountered cases when AutoMapper transforms simple thing like mapping values from object to other into a really complex problem, which results with highly complicated code only for the price of not writing mappings explicitly. Finally, I&rsquo;ve found a provoking tweet on my timeline that definitely motivated me to materialize my reflections about AutoMapper into the form of this blog post.</p>
+
+<p><img src="tweet.jpg" alt="tweet" /></p>
+
 <p>Over 5 years ago I participated in a project where there was a trial of using AutoMapper but happily we drown back from this idea in time. Bear with me and I&rsquo;ll explain you why this was a good decision.</p>
-<h2 id="misleading-static-analysis"><a href="#misleading-static-analysis">Misleading static analysis  🔗&#xFE0E;</a></h2>
+
+<h2 id="misleading-static-analysis">Misleading static analysis</h2>
 
 <p>The first problem is that static analysis starts to report that some fields from my entity are never used. There is no direct reference in the code because on one side ORM automatically maps those fields into database table columns and on the other side there is AutoMapper. This issue is related to fields which are not involved in any business logic and they are simply read from user input, saved into database and read back only for raw presentation purpose (the business always wants to gather as much information as possible). So when we take advice from static analysis report and we drop those fields, we simply break the system. We could mark those fields with [UsedImplicity] attributes (if you use Resharper static analysis) or disable this inspection completely, but that only hides the problem. We experience the same situation with DTO objects. On one side there&rsquo;s AutoMapper, on the other - some kind of serializer. And again, if we rename or drop the field we silently break the system. We&rsquo;ll get feedback only when we run some kind of test during the runtime.
 For me, the static analysis plays a really important role in managing the project&rsquo;s code quality and when some library starts to undermine the credibility of this report I have to have a really good reason to choose that library. It&rsquo;s the same situation like in the story about a building with a broken window - when we have to ignore some set of errors caused by usage of given library, sooner or later we start to ignore other errors because we are not able to distinguish which one is a real problem. If you are in a situation where you are not burdened with errors that you have to mentally ignore, you can treat static analysis as another type of test for your system. You can run static analysis tool as a part of your continuous integration pipeline and treat all reported errors the same way as you treat failed unit tests.</p>
-<p>
-<a href="failure_condition.jpg"><img  src="failure_condition.jpg" alt="Use inspection error as build failure condition"></a>
-</p>
+
+<p><img src="failure_condition.jpg" alt="Use inspection error as build failure condition" /></p>
+
 <p>This will definitely save your code from really sophisticated bugs. You can read more about problems that can be solved thanks to static analysis in my post devoted to <a href="../../post/hunt-your-bugs-design-time/">Resharper Solution Wide Analysis</a></p>
-<h2 id="helpless-code-navigation"><a href="#helpless-code-navigation">Helpless code navigation  🔗&#xFE0E;</a></h2>
+
+<h2 id="helpless-code-navigation">Helpless code navigation</h2>
 
 <p>Another problem is that it is not possible to find out which field from DTO maps to which field in entity (or entities). When we use tools like &ldquo;show usages&rdquo; it shows us only this single occurrence because there is no explicit mapping in the codebase. The resolution is to explicitly write mapping configuration for all the fields we want to map, but do I really need a heavy reflection mechanism to rewrite value from field in one object to another?</p>
-<h2 id="hard-to-debug"><a href="#hard-to-debug">Hard to debug  🔗&#xFE0E;</a></h2>
+
+<h2 id="hard-to-debug">Hard to debug</h2>
 
 <p>The next important issue is fluent configuration. I&rsquo;m not a huge fan of this code writing approach, actually I don&rsquo;t like it at all. Why? It&rsquo;s very hard to debug this kind of code and sometimes it&rsquo;s even impossible. This is not a code which is evaluated, it&rsquo;s only a declarative description of expected behavior. Your &ldquo;code&rdquo; is processed by third party library which produces real code based on this description. Even if you provide mapping code within <strong>MapFrom&lt;&gt;</strong> method, you can&rsquo;t put there breakpoint and expect that program invocation stops when you call  <strong>Mapper.Map&lt;&gt;()</strong> method. This is due the fact that <strong>MapFrom&lt;&gt;()</strong> is expecting <strong>Expression&lt;Func&lt;TSource, TSourceMember&gt;&gt;</strong> not <strong>Func&lt;TSource, TSourceMember&gt;</strong>.  And if you have a bug in your mapping code you don&rsquo;t get exception in the place where you could potentially expect it. Actually you don&rsquo;t get any exception at all. I observed that AutoMapper is somehow swallowing exception that occurs during the mapping. These reasons makes debugging very hard.</p>
+
 <pre><code class="language-csharp">static void Main(string[] args)
 {
     Mapper.Initialize(cfg =&gt;
@@ -220,24 +226,31 @@ For me, the static analysis plays a really important role in managing the projec
     Console.ReadKey();
 }
 </code></pre>
+
 <p>In the example above I&rsquo;ve been expecting <em>NullReferenceException</em> when I called <em>Mapper.Map<UserDTO>(userEntity)</em> (because x.Address in mapping code is null) but as the result I got the following output on my console:</p>
+
 <pre><code class="language-javascript">{
     FullName : null
 }
 </code></pre>
-<h2 id="broken-code-organization"><a href="#broken-code-organization">Broken code organization  🔗&#xFE0E;</a></h2>
+
+<h2 id="broken-code-organization">Broken code organization</h2>
 
 <p>Some people say that AutoMapper is perfectly fine for simple projects, but believe me - there is no such thing as simple project. Even when it looks simple at the beginning - sooner or later it gets complex. Starting with straigth one-to-one mapping between entities and dtos (or whatever types of objects you need to map) doesn&rsquo;t mean that you won&rsquo;t need to implement the following requirements in further stages of your project development:</p>
+
 <ol>
 <li>Formatting</li>
 <li>Composing one object from few others (ViewModel build with data that comes from couple of different entities)</li>
 <li>Conditional mapping based on business and security rules</li>
 <li>Limited access to given model&rsquo;s attributes based on user permissions.</li>
 </ol>
+
 <p>People tend to put this complex mapping logic inside the AutoMapper configuration because this is the fastest way to achieve expected effect. I think it&rsquo;s a really bad practice to put your business and security logic inside some infrastructure tool configuration. This is the beginning of slippery slope and in the long term it will make the development, testing and maintenance more complicated. You can say ok - if I&rsquo;ve got complex mapping then I write it explicitly. But then you have two ways of implementing one thing - AutoMapper and explicit mapping. And then the question appears: &ldquo;When should I use which?&rdquo;. And the answer is: &ldquo;it depends&hellip;&rdquo;. And you introduce chaos into your codebase.</p>
-<h2 id="how-to-organize-mappings"><a href="#how-to-organize-mappings">How to organize mappings  🔗&#xFE0E;</a></h2>
+
+<h2 id="how-to-organize-mappings">How to organize mappings</h2>
 
 <p>Write your mapping explicitly. If you find this boring you can utilize some kind of snippets or scaffolding tools (such as T4 Scaffolding or something based on Roslyn) to generate this &ldquo;dummy&rdquo; code. You can encapsulate this code inside the new component type responsible for mapping objects. In the project I&rsquo;ve mentioned at the beginning of this article, we introduced a notion of *ServiceMapper components with a set of MapTo* and MapFrom* methods which serve the purpose of mapping objects for given endpoint service. Why not to use extension methods? The reason is again the complexity. Sometimes you need other dependencies to fulfill the mapping logic and the extension method makes it hard to utilize dependency injection to provide these dependencies (you can use only service locator which is considered as an anti-pattern or ambient context). Example service mapper can look like this below:</p>
+
 <pre><code class="language-cs">public class UserServiceMapper{
 
 	private readonly AddressServiceMapper addressServiceMapper;
@@ -265,14 +278,16 @@ For me, the static analysis plays a really important role in managing the projec
 	}
 }
 </code></pre>
-<h2 id="final-thought"><a href="#final-thought">Final thought  🔗&#xFE0E;</a></h2>
+
+<h2 id="final-thought">Final thought</h2>
 
 <p>AutoMapper is probably good for really small, short-lived projects or proof of concepts, but when you start to care about your code quality, you should definitely rethink all pros and cons regarding using AutoMapper. When you observe problems like the ones described in this blog post, you should consider abandoning AutoMapper and start to write your mappings explicitly (it really doesn&rsquo;t hurt). If you encountered other problems which arise from using AutoMapper I would be really appreciate if you could share your experience in the comment section down below.</p>
-<hr>
+
+<hr />
+
 <p><strong>UPDATE 2021-04-08:</strong> The best option to avoid all those problems is writing mapping code explicitly. However, this is very boring and tedious job. To solve that problem I created a Visual Studio plugin which is able to scaffold mapping code in design time. You can download <a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">MappingGenerator</a> directly from the Visual Studio Marketplace using this link <a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator</a></p>
-<p>
-<a href="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method_newone.gif"><img  src="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method_newone.gif" alt=""></a>
-</p>
+
+<p><img src="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method_newone.gif" alt="" /></p>
     
 		
 		<hr/>  
@@ -369,28 +384,7 @@ For me, the static analysis plays a really important role in managing the projec
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -416,7 +410,7 @@ For me, the static analysis plays a really important role in managing the projec
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "AutoMapper,orm,crud,mapping,cleancode,staticanalysis,Csharp,dotnet"
+				hashtags: "automapper,orm,crud,mapping,cleancode,staticanalysis,csharp,dotnet"
 			}
 		}
 	}
@@ -433,6 +427,41 @@ For me, the static analysis plays a really important role in managing the projec
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>

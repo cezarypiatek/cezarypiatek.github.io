@@ -15,7 +15,7 @@
 		{{ end }}
 		<div id="social" class="text-center">
 			{{ range .Site.Params.socialbuttons }}
-				<a href="{{ .url }}" title="{{.title}}"><i class="fa fa-{{ .faicon }} fa-2x"></i></a>
+				<a href="{{ .url }}" title="{{.title}}" data-gtag="{{ .faicon }}" target="_blank"><i class="fa fa-{{ .faicon }} fa-2x"></i></a>
 			{{ end }}
 
 			{{ if isset .Site.Params "email" }}<a href="mailto:{{.Site.Params.email}}"><i class="fa fa-envelope-o fa-2x"></i></a>{{ end }}
@@ -27,7 +27,7 @@
 			{{ end }}
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="{{ .Site.BaseURL }}images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>

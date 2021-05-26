@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>async on Cezary Piątek Blog</title>
@@ -26,7 +26,7 @@
       <pubDate>Sun, 18 Oct 2020 16:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p2/</guid>
-      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
+      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;rdquo;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
     </item>
     
     <item>

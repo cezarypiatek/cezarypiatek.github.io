@@ -25,7 +25,7 @@
           "datePublished" : "2020-03-24",
           "dateModified" : "2020-10-18",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/better-non-nullable-handling\/splashscreen.jpg",
-          "description": "How to improve developer\u0027s experience while working with non-nullable references"
+          "description": "How to improve developer\x27s experience while working with non-nullable references"
         }
         </script>
         
@@ -54,7 +54,7 @@
 	<meta property="twitter:description" content="How to improve developer&#39;s experience while working with non-nullable references">
 
 	<meta name="keywords" value="dotnet, csharp, roslyn, non-nullable" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <title>Improving non-nullable reference types handling &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -123,15 +123,15 @@
 		
 		<div id="social" class="text-center">
 			
-				<a href="https://github.com/cezarypiatek" title="Check my Open Source works"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			
-				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
 			
-				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn"><i class="fa fa-linkedin fa-2x"></i></a>
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
 			
-				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile"><i class="fa fa-stack-overflow fa-2x"></i></a>
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
 			
-				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel"><i class="fa fa-rss fa-2x"></i></a>
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
 			
 
 			
@@ -149,7 +149,7 @@
 			
 		</div>
 		<div>
-			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
 				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
 			</a>
 		</div>
@@ -173,45 +173,51 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>A few weeks ago I started using <a href="../../post/non-nullable-references-in-dotnet-core/">non-nullable reference types</a> - a new C# language feature which was shipped with version 8.0. It wasn&rsquo;t a completely new experience for me, because I was working before on projects that were heavily utilizing <code>[NotNull]</code> and <code>[CanBeNull]</code> <a href="http://localhost:1313/post/hunt-your-bugs-design-time/">Resharper annotations</a>. The way how non-nullable types are handled by Roslyn seems to be a little more complex in comparison to Resharper - there are around <a href="https://gist.github.com/cezarypiatek/f56c671c6f634aab285a88095488c1de">40 different diagnostics</a> related to this area. This large amount of inspections is good because it very often brings your attention to the edge cases that you would probably overlook, but on the other hand, it sometimes makes the development more tedious. The project on which I&rsquo;m working is a greenfield, so I enabled the <code>not-nullable</code> feature on the whole solution scope and set the severity level for all of those rules to <code>error</code>. After a couple of days working with such setup, I got the feeling that I needed to put in much more effort than I was getting out of it.</p>
-<h2 id="problems-with-non-nullable-reference-types"><a href="#problems-with-non-nullable-reference-types">Problems with non-nullable reference types  🔗&#xFE0E;</a></h2>
+		
+
+<p>A few weeks ago I started using <a href="../../post/non-nullable-references-in-dotnet-core/">non-nullable reference types</a> - a new C# language feature which was shipped with version 8.0. It wasn&rsquo;t a completely new experience for me, because I was working before on projects that were heavily utilizing <code>[NotNull]</code> and <code>[CanBeNull]</code> <a href="http://localhost:1313/post/hunt-your-bugs-design-time/">Resharper annotations</a>. The way how non-nullable types are handled by Roslyn seems to be a little more complex in comparison to Resharper - there are around <a href="https://gist.github.com/cezarypiatek/f56c671c6f634aab285a88095488c1de">40 different diagnostics</a> related to this area. This large amount of inspections is good because it very often brings your attention to the edge cases that you would probably overlook, but on the other hand, it sometimes makes the development more tedious. The project on which I&rsquo;m working is a greenfield, so I enabled the <code>not-nullable</code> feature on the whole solution scope and set the severity level for all of those rules to <code>error</code>. After a couple of days working with such setup, I got the feeling that I needed to put in much more effort than I was getting out of it.</p>
+
+<h2 id="problems-with-non-nullable-reference-types">Problems with non-nullable reference types</h2>
 
 <p>The main thing that started getting on my nerves was diagnostic <code>CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.</code> This rule enforces on us mandatory field initialization to guarantee non-nullable value, which can be satisfied by providing the value directly in the field definition or through the containing type&rsquo;s constructor. In most cases, when there are no constraints to guard beside the nullability check, adding such constructor introduces unnecessary complexity to our codebase, especially for large POCO types.</p>
-<p>
-<a href="not_initialized.jpg"><img  src="not_initialized.jpg" alt=""></a>
-</p>
+
+<p><img src="not_initialized.jpg" alt="" /></p>
+
 <p>The situation is especially confusing for generic types because <code>CS8618</code> is reported for generic fields too, even when there is no constraint that suggests the generic type parameter is a reference type.</p>
-<p>
-<a href="generics.jpg"><img  src="generics.jpg" alt=""></a>
-</p>
+
+<p><img src="generics.jpg" alt="" /></p>
+
 <p>There is a way to dismiss this diagnostic by initializing the field with <code>null!</code> for reference types and <code>default!</code> for generics:</p>
-<p>
-<a href="initialization_hack.jpg"><img  src="initialization_hack.jpg" alt=""></a>
-</p>
+
+<p><img src="initialization_hack.jpg" alt="" /></p>
+
 <p>But this is rather a dirty hack that hides the real problem instead of solving it. If we want to go that way, then we might as well completely disable <code>CS8618</code>, for example with the following entry in <code>.editorconfig</code>:</p>
+
 <pre><code class="language-editorconfig">[*.cs]
 
 # CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = none
 </code></pre>
-<h2 id="proposition-of-improvements"><a href="#proposition-of-improvements">Proposition of improvements  🔗&#xFE0E;</a></h2>
+
+<h2 id="proposition-of-improvements">Proposition of improvements</h2>
 
 <p>Recently, I&rsquo;ve been experimenting with Roslyn analyzer that could enforce mandatory initialization via initialization block for members decorated with special attributes. I&rsquo;ve come up with two attributes <code>[InitRequired]</code> and <code>[InitOnly]</code> - you can read about them in my previous blog post <a href="../../post/immutable-types-with-roslyn/">Immutable types in C# with Roslyn</a>. Those attributes basically move the responsibility for field initialization from class creator to class users. Everyone who wants to create a new class instance, is obligated to provide values for all non-nullable reference fields via initialization block. However, using those attributes solves the problem only partially because the compiler still keeps reporting <code>CS8618</code> diagnostic. To solve that issue, I implemented a dedicated <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.diagnostics.diagnosticsuppressor?view=roslyn-dotnet">DiagnosticSuppressor</a> which discards <code>CS8618</code> for fields and properties marked with those properties.</p>
-<p>
-<a href="init_required_improved.jpg"><img  src="init_required_improved.jpg" alt=""></a>
-</p>
+
+<p><img src="init_required_improved.jpg" alt="" /></p>
+
 <p>If we want to use that approach through the entire codebase, adding an additional attribute to every non-nullable reference field could result in unnecessary noise. It seemed to be an imperfect solution, so I decided to take it on the next level and I introduced <code>[InitRequiredForNotNull]</code> attribute. Applying this attribute on the assembly level results with required initialization via init block for all non-nullable reference fields and properties and automatic discard of <code>CS8618</code> for all those members.</p>
-<p>
-<a href="non_nullable_improved.jpg"><img  src="non_nullable_improved.jpg" alt=""></a>
-</p>
+
+<p><img src="non_nullable_improved.jpg" alt="" /></p>
+
 <p>This solution works pretty well also with generics because it enforces mandatory initialization only when the generic parameter is bound to non-nullable reference type:</p>
-<p>
-<a href="generics_improved.jpg"><img  src="generics_improved.jpg" alt=""></a>
-</p>
+
+<p><img src="generics_improved.jpg" alt="" /></p>
+
 <blockquote>
 <p><strong>Important:</strong> If you like the idea of <code>[InitRequiredForNotNull]</code> attribute and you are going to use it in your project, please make sure that all your teammates know about it.</p>
 </blockquote>
-<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
+<h2 id="summary">Summary</h2>
 
 <p>All attributes and analyzers described here are available as a single Nuget package <a href="https://www.nuget.org/packages/SmartAnalyzers.CSharpExtensions.Annotations/">SmartAnalyzers.CSharpExtensions.Annotations</a>. The source code is published on <code>Github</code> under <a href="https://github.com/cezarypiatek/CSharpExtensions">CSharpExtensions</a> project. Please let me know what you think about those extensions to C# language and if you encounter any problems with using it, feel free to report an issue on Github page.</p>
     
@@ -310,28 +316,7 @@ dotnet_diagnostic.CS8618.severity = none
 			</div>
 		</div>
   </div>
-  
-  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
-  <script>
-     if (window.location.hostname === "localhost") {
-		console.log("Analytics not running on local dev.");		
-	}
-	else if(isSpamReferral())
-	{
-		console.log("Sorry, no analytics for spammers");		
-	}
-	else{
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create', 'UA-18735584-9', 'auto');
-		ga('send', 'pageview');
-		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
-	}
-  </script>
-  
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
@@ -374,6 +359,41 @@ dotnet_diagnostic.CS8618.severity = none
   			});
 		});
 	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
 
 </body>
 </html>
