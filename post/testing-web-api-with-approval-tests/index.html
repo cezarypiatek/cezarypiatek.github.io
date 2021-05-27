@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="How to create maintainable tests for WebApi with minimal amount of work.">
 
 	<meta name="keywords" value="dotnet, csharp, WebAPI, ApprovalTest, testing" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Testing WebAPI with ApprovalTests.NET &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -176,17 +176,13 @@
 			<br />
 		
 		<p>In this blog post, I&rsquo;m going to share my experience on testing <code>ASP.NET Core</code> applications by applying an unconventional method called <code>snapshot assertions</code>. In comparison to the classical approach, this method should save you a lot of time and improve assertions maintainability.</p>
-
-<h2 id="setting-up-tests-with-testhost">Setting up tests with TestHost</h2>
+<h2 id="setting-up-tests-with-testhost"><a href="#setting-up-tests-with-testhost">Setting up tests with TestHost  🔗&#xFE0E;</a></h2>
 
 <p>Thanks to <a href="https://www.nuget.org/packages/Microsoft.AspNetCore.TestHost/">Microsoft.AspNetCore.TestHost</a> package, setting up our <code>WebApi</code> application in tests is super easy:</p>
-
 <pre><code class="language-cs">using var applicationFactory = new WebApplicationFactory&lt;Program&gt;();
 var httpClient = applicationFactory.CreateClient();
 </code></pre>
-
 <p>However, this form has some limitations. It doesn&rsquo;t allow for mocking components used by our application - I guess you don&rsquo;t want to run tests against the real infrastructure, at least not when it happens in local development environment. Additionally, there&rsquo;s a bug in the <code>WebApplicationFactory</code> implementation and by default hosted services are not stopped while calling <code>Dispose</code> - this might result in unexpected behaviors if your app is using them. Another thing is that after you create HttpClient instance with <code>CreateClient</code> method, you still can&rsquo;t be sure if the app is fully initialized and ready to operate. We can deal with all those problems by creating a custom class that inherits from <code>WebApplicationFactory&lt;Program&gt;</code>:</p>
-
 <pre><code class="language-cs">class SampleApplicationFactory : WebApplicationFactory&lt;Program&gt;, IAsyncDisposable
 {
     private IHost? _host;
@@ -237,9 +233,7 @@ var httpClient = applicationFactory.CreateClient();
     }
 }
 </code></pre>
-
 <p>Now we can create a sample test as follows:</p>
-
 <pre><code class="language-cs">[Test]
 public async Task should_fetch_newly_created_user()
 {
@@ -270,17 +264,13 @@ public async Task should_fetch_newly_created_user()
     });
 }
 </code></pre>
-
 <p>To simplify things related to serialization and deserialization request payloads, I used <a href="https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client/">Microsoft.AspNet.WebApi.Client</a> NuGet package. This package contains helper extension methods like <code>PostAsJsonAsync</code> and <code>ReadAsAsync</code>.</p>
-
-<h2 id="what-s-wrong-with-the-classical-assertions">What&rsquo;s wrong with the classical assertions?</h2>
+<h2 id="whats-wrong-with-the-classical-assertions"><a href="#whats-wrong-with-the-classical-assertions">What&rsquo;s wrong with the classical assertions?  🔗&#xFE0E;</a></h2>
 
 <p>No matter which one of the classical assertion libraries (<code>NUnit</code>, <code>xUnit</code>, <code>FluentAssertions</code>, <code>Shouldly</code>) we use for writing code responsible for verifying our expectations, it&rsquo;s always a very tedious job. The amount of work is directly proportional to the richness of the returned object. It might be very time-consuming and it could divert our attention from more important things. Very often we end up with a huge assertion block which degrades the readability of our test cases and is hard to maintain. With this classical approach, it&rsquo;s also hard to track additive changes in API. When we add a new field to the API, we need to remember about adding appropriate assertions for that field in all test cases where it&rsquo;s needed.</p>
-
-<h2 id="snapshot-assertions-to-the-rescue">Snapshot assertions to the rescue</h2>
+<h2 id="snapshot-assertions-to-the-rescue"><a href="#snapshot-assertions-to-the-rescue">Snapshot assertions to the rescue  🔗&#xFE0E;</a></h2>
 
 <p>All those problems can be solved with <code>snapshot assertions</code>. The main idea behind this approach is to automatically capture a snapshot of the expected state and use it for later verifications. The snapshot is stored in a separate file alongside the source code and should be kept in the version control system. In <code>dotnet</code> we have a few libraries that facilitate this kind of testing:</p>
-
 <ul>
 <li><a href="https://github.com/approvals/approvaltests.net">ApprovalTests.Net</a></li>
 <li><a href="https://github.com/VerifyTests/Verify">Verify</a></li>
@@ -288,18 +278,13 @@ public async Task should_fetch_newly_created_user()
 <li><a href="https://github.com/theramis/Snapper">Snapper</a>,</li>
 <li><a href="https://github.com/WickedFlame/Polaroider">Polaroider</a></li>
 </ul>
-
 <p><code>ApprovalTests.Net</code> was the first library from this area that I came across and since then I have used it in a few projects with success. <code>Approvals</code> project seems to be quite mature and popular as it provides implementations for a variety of programming languages (Java, C#, C++, PHP, Python, Swift, JavaScript, Perl, Go, Lua, Objective C, and Ruby). Please visit the official website <a href="https://approvaltests.com/">https://approvaltests.com/</a> for more details.</p>
-
-<h2 id="using-approvaltests-net">Using <code>ApprovalTests.Net</code></h2>
+<h2 id="using-approvaltestsnet"><a href="#using-approvaltestsnet">Using <code>ApprovalTests.Net</code>  🔗&#xFE0E;</a></h2>
 
 <p>So how does it work? Before we start using <code>ApprovalTests.Net</code> we need to configure it by adding appropriate attributes on a test class or assembly level. To avoid repetition I always add <code>ApprovalTestsSettings.cs</code> file to the test project with the following content:</p>
-
 <pre><code class="language-cs">[assembly:UseReporter(typeof(NUnitReporter), typeof(DiffReporter))]
 </code></pre>
-
 <p>Now, <code>ApprovalTests.Net</code> is ready to use. In order to write snapshot assertion we need to call <code>Approvals.VerifyJson</code> with a response payload that we want to verify:</p>
-
 <pre><code class="language-cs">// STEP 3: Fetch newly created user
 var getUserResponsePayload = await apiClient.GetStringAsync(&quot;/user/&quot; + createResult.Id);
 
@@ -307,22 +292,16 @@ var getUserResponsePayload = await apiClient.GetStringAsync(&quot;/user/&quot; +
 // STEP 4: Verify the expectations
 Approvals.VerifyJson(getUserResponsePayload);
 </code></pre>
-
 <p>After the first test run, <code>ApprovalTests.Net</code> creates two files:</p>
-
 <ul>
 <li><code>TestClassName.test_method_name.received.json</code>- contains the asserted payload</li>
 <li><code>TestClassName.test_method_name.approved.json</code>- empty file</li>
 </ul>
-
 <p>and executes the default git merge tool comparing those two files. Now it&rsquo;s our turn, we need to verify manually if the payload is ok and approve it. <strong>This is a very important step and we should review the content carefully with appropriate attention - blindly approved snapshots are a recipe for disaster.</strong> The merging tool should copy content from the <code>*.received.json</code> to <code>*.approved.json</code>. After that our snapshot is ready and we can delete <code>*.received.json</code> file as it&rsquo;s no longer needed. With the next test runs, <code>ApprovalTests.Net</code> will compare received payload with the one saved in the <code>*.approved.json</code> file, and if it detects any difference a git merge tool should be executed to present the difference in a readable way and give us an opportunity to adjust the snapshot when the change was expected.</p>
-
 <p>The snapshot files (<code>*.approved.json</code> ) should be added to version control and the temporal files with currently received payload (<code>*.received.json</code>) should be added to the ignored files list.</p>
-
-<h2 id="which-git-merge-tool-to-run">Which git merge tool to run</h2>
+<h2 id="which-git-merge-tool-to-run"><a href="#which-git-merge-tool-to-run">Which git merge tool to run  🔗&#xFE0E;</a></h2>
 
 <p>If we configure <code>ApprovalTests.Net</code> to use <code>DiffReporter</code> then, when it&rsquo;s needed, the library will try to use the first available git merge tool and do it in the following order:</p>
-
 <ul>
 <li>BeyondCompare,</li>
 <li>P4Merge,</li>
@@ -348,16 +327,12 @@ Approvals.VerifyJson(getUserResponsePayload);
 <li>Vim,</li>
 <li>Neovim</li>
 </ul>
-
 <p>This order can be overridden by defining <code>DiffEngine_ToolOrder</code> environment variable or we can explicitly specify reporter implementation that should be used. For example, when we have a few git merge tools installed, we can enforce usage of the specific one as follows:</p>
-
 <pre><code class="language-cs">[assembly:UseReporter(typeof(NUnitReporter), typeof(WinMergeReporter))]
 </code></pre>
-
-<h2 id="non-deterministic-snapshots">Non deterministic snapshots</h2>
+<h2 id="non-deterministic-snapshots"><a href="#non-deterministic-snapshots">Non deterministic snapshots  🔗&#xFE0E;</a></h2>
 
 <p>Sometimes we are not able to create a deterministic snapshot because some of the attributes are changing with every API call like ids or dates. We need to somehow exclude them from the comparison. I do that by obfuscating the values of those attributes with a constant string <code>__IGNORED_VALUE__</code> with the following helper method:</p>
-
 <pre><code class="language-cs">public static class JsonExtensions
 {
     public static string WithIgnores(this string jsonPayload, params string[] ignoredPaths)
@@ -384,18 +359,14 @@ Approvals.VerifyJson(getUserResponsePayload);
     }
 }
 </code></pre>
-
 <p>Now we can easily exclude certain attributes before executing assertion:</p>
-
 <pre><code class="language-cs">// STEP 3: Fetch newly created user
 var getUserResponsePayload = await apiClient.GetStringAsync(&quot;/user/&quot; + createResult.Id);
 
 // STEP 4: Verify the expectations
 Approvals.VerifyJson(getUserResponsePayload.WithIgnores(&quot;$.id&quot;));
 </code></pre>
-
 <p>For declaring ignored fields I&rsquo;m using <a href="https://github.com/json-path/JsonPath">JSONPath</a> notation. Here&rsquo;s my cheat sheet:</p>
-
 <table>
 <thead>
 <tr>
@@ -403,38 +374,31 @@ Approvals.VerifyJson(getUserResponsePayload.WithIgnores(&quot;$.id&quot;));
 <th>Meaning</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>$.X</td>
 <td>Ignore attribute with X name</td>
 </tr>
-
 <tr>
 <td>$.Y[*].X</td>
 <td>Ignore attribute X for every element of Y collection</td>
 </tr>
-
 <tr>
 <td>$.Y[*]</td>
 <td>Ignore every element of Y collection by keeping the number of elements</td>
 </tr>
-
 <tr>
 <td>$.Y</td>
 <td>If Y is collection, then ignore every element as well as the number of elements</td>
 </tr>
 </tbody>
 </table>
-
-<h2 id="massive-snapshot-update">Massive snapshot update</h2>
+<h2 id="massive-snapshot-update"><a href="#massive-snapshot-update">Massive snapshot update  🔗&#xFE0E;</a></h2>
 
 <p>Sometimes we need to make a change in API that affects a lot of existing snapshots. This happens when we add a new field, remove an existing one, change the logic of calculating something, change data format or we are just fixing the bug. When we run the whole test suite after this kind of change, the <code>ApprovalTests.Net</code> will open a git merge tool for every snapshot that should be changed which is quite inconvenient. For this kind of situation, I use a different strategy. I change the <code>ApprovalTests.Net</code> configuration to use <a href="https://stackoverflow.com/a/37604286/876060">auto-approver</a>, letting it override all affected snapshot with current data and review it before committing it to the repository. I use <a href="https://git-fork.com/">GitFork</a> for that purpose, which makes things quite easy. I keep the <code>auto-approver</code> implementation with the required configuration as a git patch and apply it when I need it.</p>
-
-<h2 id="multiple-assertions-in-a-single-test-case">Multiple assertions in a single test case</h2>
+<h2 id="multiple-assertions-in-a-single-test-case"><a href="#multiple-assertions-in-a-single-test-case">Multiple assertions in a single test case  🔗&#xFE0E;</a></h2>
 
 <p><code>ApprovalTests.Net</code> automatically creates snapshot file names based on the tested class and method names. This is some sort of limitation because we can&rsquo;t call <code>Approvals.VerifyJson</code> multiple times in the same test method, as every consecutive invocation will override the same snapshot files causing incorrect behavior. To overcome that limitation, there&rsquo;s a dedicated method <code>ApprovalResults.ForScenario</code> that allows defining sub-scenario scopes within a single test case.</p>
-
 <pre><code class="language-cs">[Test]
 public async Task should_fetch_newly_created_user()
 {
@@ -486,18 +450,17 @@ public async Task should_fetch_newly_created_user()
     }
 }
 </code></pre>
-
 <p>The text passed to <code>ApprovalResults.ForScenario</code> becomes part of the snapshot file name. <code>Approvals.VerifyJson</code> stops the assertion which means when the assertion is not met then the test case is marked as failed and stopped immediately. This behavior combined with the usage of <code>ApprovalResults.ForScenario</code> has the following implications:</p>
-
 <ul>
-<li><p>In order to create initial snapshots for all scenarios within the test case we need to run it as many times as we have scenarios. When a given assertion is reached, the test fails because there is no approved snapshot yet and we need to do the approval. After each approval, the operation needs to be repeated until we approve snapshots for all scenarios.</p></li>
-
-<li><p>If there is an intended change in the application behavior that results in the need to adjust the existing snapshot, we have a similar problem as with initial snapshot creation. To adjust snapshots for all scenarios we need to run our test case as many times as the number of scenarios.</p></li>
+<li>
+<p>In order to create initial snapshots for all scenarios within the test case we need to run it as many times as we have scenarios. When a given assertion is reached, the test fails because there is no approved snapshot yet and we need to do the approval. After each approval, the operation needs to be repeated until we approve snapshots for all scenarios.</p>
+</li>
+<li>
+<p>If there is an intended change in the application behavior that results in the need to adjust the existing snapshot, we have a similar problem as with initial snapshot creation. To adjust snapshots for all scenarios we need to run our test case as many times as the number of scenarios.</p>
+</li>
 </ul>
-
 <p>Running the same test case for every scenario once again is a quite tedious task. I solve this problem with <a href="https://stackoverflow.com/a/37604286/876060">auto-approver</a>.</p>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>A sample WebAPI project with tests presented in this article is available on Github <a href="https://github.com/cezarypiatek/SampleWebApiTestsWithApprovals">SampleWebApiTestsWithApprovals</a>.</p>    
 		
@@ -621,7 +584,7 @@ public async Task should_fetch_newly_created_user()
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "dotnet,csharp,webapi,approvaltest,testing"
+				hashtags: "dotnet,csharp,WebAPI,ApprovalTest,testing"
 			}
 		}
 	}

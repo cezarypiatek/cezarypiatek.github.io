@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="Which analyzer package should I use and how to configure it to avoid most common problems related to async/await.">
 
 	<meta name="keywords" value="dotnet, csharp, async, roslyn, analyzers" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Async code smells and how to track them down with analyzers - Part II &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,19 +175,14 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
+		<p>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&rsquo;m trying to help you answer the question: <strong>&ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&quot;</strong>. In <a href="../../post/async-analyzers-p1/">the previous episode</a>, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area. Lucky you, they can be easily avoided with an appropriate analyzer - for every issue, I provide entries for <code>.editorconfig</code> that configure analyzers that can detect it. Links to NuGet packages, as well as a complete list of analyzers&rsquo; rules, can be found in the previous article.</p>
+<h2 id="async-code-smells"><a href="#async-code-smells">Async Code Smells  🔗&#xFE0E;</a></h2>
 
-<p>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&rsquo;m trying to help you answer the question: <strong>&ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&rdquo;</strong>. In <a href="../../post/async-analyzers-p1/">the previous episode</a>, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area. Lucky you, they can be easily avoided with an appropriate analyzer - for every issue, I provide entries for <code>.editorconfig</code> that configure analyzers that can detect it. Links to NuGet packages, as well as a complete list of analyzers&rsquo; rules, can be found in the previous article.</p>
-
-<h2 id="async-code-smells">Async Code Smells</h2>
-
-<h3 id="8-synchronous-waits">8. Synchronous waits</h3>
+<h3 id="8-synchronous-waits"><a href="#8-synchronous-waits">8. Synchronous waits  🔗&#xFE0E;</a></h3>
 
 <p><code>async/await</code> keywords are viral, which means if you want to await asynchronous expression and you are in the non-asyc method, then you are forced to rewrite the whole call chain to asynchronous. The easier solution seems to be calling <code>Wait</code> or <code>Result</code> on the returned task but it&rsquo;s just asking for trouble. This solution will cost you two threads for that execution, or even result in a deadlock. This problem is more widely described in <a href="https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#avoid-using-taskresult-and-taskwait">
 ASP.NET Core Diagnostic Scenarios - Asynchronous Programming</a>. I highly recommend reading this article - you will find there even more asynchronous code smells.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">void DoSomething()
 {
     Thread.Sleep(1); // Reported diagnostics: MA0045
@@ -198,9 +193,7 @@ ASP.NET Core Diagnostic Scenarios - Asynchronous Programming</a>. I highly recom
     var result3 = unAwaitedResult3.Result; // Reported diagnostics:  VSTHRD002, MA0045, AsyncifyVariable
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task DoSomething()
 {
     await Task.Delay(1);
@@ -209,9 +202,7 @@ ASP.NET Core Diagnostic Scenarios - Asynchronous Programming</a>. I highly recom
     var result2 = await GetAsync();
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># VSTHRD002: Avoid problematic synchronous waits
 dotnet_diagnostic.VSTHRD002.severity = error
 
@@ -225,35 +216,27 @@ dotnet_diagnostic.AsyncifyInvocation.severity = error
 dotnet_diagnostic.AsyncifyVariable.severity = error
 
 </code></pre>
-
 <p><code>Asyncify</code> package has a very simple diagnostic - it only detects usage of <code>Task.Result</code> property. <strong>However, it has a very powerful code fix which can automatically rewrite the whole synchronous call chain to the one that uses <code>async/await</code> keywords:</strong></p>
-
-<p><img src="rewrite_async.jpg" alt="Auto rewrite sync to async" /></p>
-
+<p>
+<a href="rewrite_async.jpg"><img  src="rewrite_async.jpg" alt="Auto rewrite sync to async"></a>
+</p>
 <p><code>vs-threading</code> has a similar code fix, unfortunately right now it is totally broken <a href="https://github.com/microsoft/vs-threading/issues/454">Issue #454</a>.</p>
-
-<h3 id="9-missing-configureawait-bool">9. Missing ConfigureAwait(bool)</h3>
+<h3 id="9-missing-configureawaitbool"><a href="#9-missing-configureawaitbool">9. Missing ConfigureAwait(bool)  🔗&#xFE0E;</a></h3>
 
 <p>By default, when we await asynchronous operation using the <code>await</code> keyword, the continuation is scheduled using captured SynchronizationContext or TaskScheduler. This comes with additional performance cost and might result in a deadlock, depending on the SynchronizationContext/TaskScheduler provided by the environment - especially in <code>WindowsForms</code>, <code>WPF</code> and old <code>ASP.NET</code> application (yes, ASP.NET Core is not using SynchronizationContext). <code>ConfigureAwait</code> method wraps returned task into <code>ConfiguredTaskAwaitable</code> structure which changes the logic of scheduling the continuation. By calling <code>ConfigureAwait(continueOnCapturedContext: false)</code> we are ensuring that the current context (if provided) is ignored while invoking the continuation. Setting <code>continueOnCapturedContext</code> parameter to <code>true</code> doesn&rsquo;t make any sense. If you want to go into the details about this subject, I recommend reading <a href="https://devblogs.microsoft.com/dotnet/configureawait-faq/">ConfigureAwait FAQ</a> by <code>Stephen Toub</code>.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await DoSomethingElse(); //Reported diagnostics: ASYNC0004, MA0004, RCS1090, VSTHRD111, CA2007
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await DoSomethingElse().ConfigureAwait(false);
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># ASYNC0004: Use ConfigureAwait(false) on await expression
 dotnet_diagnostic.ASYNC0004.severity = error
 
@@ -270,17 +253,14 @@ dotnet_diagnostic.VSTHRD111.severity = error
 dotnet_diagnostic.CA2007.severity = error
 
 </code></pre>
-
 <p>All of the above analyzers offer appropriate code fixes. You can easily add &ldquo;ConfigureAwait(false)` to all await expressions in one go:</p>
-
-<p><img src="configure_await_whole_solution_animated.png" alt="Apply code fix to whole solution" /></p>
-
-<h3 id="10-returning-null-from-a-task-returning-method">10. Returning null from a Task-returning method</h3>
+<p>
+<img  src="configure_await_whole_solution_animated.png" alt="Apply code fix to whole solution">
+</p>
+<h3 id="10-returning-null-from-a-task-returning-method"><a href="#10-returning-null-from-a-task-returning-method">10. Returning null from a Task-returning method  🔗&#xFE0E;</a></h3>
 
 <p>Returning <code>null</code> value from a non-async method that declares <code>Task/Task&lt;&gt;</code> as a returning type results in <code>NullReferenceException</code> if somebody awaits the method invocation. To avoid that, you should always return the result from this kind of method using <code>Task.CompletedTask</code> or <code>Task.FromResult&lt;T&gt;(null)</code> helpers.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">Task DoAsync() 
 {
     return null; //Reported diagnostics: MA0022, VSTHRD114
@@ -296,9 +276,7 @@ Task&lt;HttpResponseMessage&gt; TryGetAsync(HttpClient httpClient)
     return httpClient?.GetAsync(&quot;/some/endpoint&quot;); //Reported diagnostics: RCS1210
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">Task DoAsync() 
 {
     return Task.CompletedTask;
@@ -314,9 +292,7 @@ Task&lt;HttpResponseMessage&gt; TryGetAsync(HttpClient httpClient)
     return httpClient?.GetAsync(&quot;/some/endpoint&quot;) ?? Task.FromResult(default(HttpResponseMessage));
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># MA0022: Return Task.FromResult instead of returning null
 dotnet_diagnostic.MA0022.severity = error
 
@@ -326,37 +302,27 @@ dotnet_diagnostic.RCS1210.severity = error
 # VSTHRD114: Avoid returning a null Task
 dotnet_diagnostic.VSTHRD114.severity = error
 </code></pre>
-
 <p>Right now, none of the analyzers is able to detect all three cases, so we should go with one of two combinations: <code>RCS1210</code> with <code>VSTHRD114</code> or <code>RCS1210</code> with <code>MA0022</code>.</p>
-
-<h3 id="11-asynchronous-method-names-should-end-with-async">11. Asynchronous method names should end with Async</h3>
+<h3 id="11-asynchronous-method-names-should-end-with-async"><a href="#11-asynchronous-method-names-should-end-with-async">11. Asynchronous method names should end with Async  🔗&#xFE0E;</a></h3>
 
 <p>I&rsquo;m not a fan of this rule. It adds unnecessary noise and reminds me of the <a href="https://en.wikipedia.org/wiki/Hungarian_notation">hungarian notation</a>. In the description of <a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD200.md">VSTHRD200</a> we can see:</p>
-
 <blockquote>
 <p><code>The .NET Guidelines for async methods includes that such methods should have names that include an &quot;Async&quot; suffix.</code></p>
 </blockquote>
-
 <p>However, I wasn&rsquo;t able to find the original document and there&rsquo;s nothing about it in the <a href="https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines">Framework Design Guidelines - Naming Guidelines</a>. IMHO, this naming convention only makes sense when a class provides both synchronous and asynchronous versions of a given method - this is the case mostly for APIs that were created before the <code>async/await</code> era. Anyway, if this rule belongs to your coding standard, you can easily spot all the violations with the following diagnostics: <code>VSTHRD200</code>, <code>ASYNC0001</code>, <code>RCS1046</code>.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async Task DoSomething() //Reported diagnostics: VSTHRD200, ASYNC0001, RCS1046
 {
     await Task.Yield();
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await Task.Yield();
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># ASYNC0001: Asynchronous method names should end with Async
 dotnet_diagnostic.ASYNC0001.severity = error
 
@@ -366,27 +332,20 @@ dotnet_diagnostic.VSTHRD200.severity = error
 #RCS1046: Asynchronous method name should end with 'Async'.
 dotnet_diagnostic.RCS1046.severity = error
 </code></pre>
-
-<h3 id="12-non-asynchronous-method-names-shouldn-t-end-with-async">12. Non asynchronous method names shouldn&rsquo;t end with Async</h3>
+<h3 id="12-non-asynchronous-method-names-shouldnt-end-with-async"><a href="#12-non-asynchronous-method-names-shouldnt-end-with-async">12. Non asynchronous method names shouldn&rsquo;t end with Async  🔗&#xFE0E;</a></h3>
 
 <p>This rule definitely makes more sense for me than the previous one. Adding <code>Async</code> suffix to the non-asynchronous method might cause confusion. I think this code smell is rather a result of careless refactoring or requirement changes than intended action.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">void DoSomethingAsync() //Reported diagnostics: VSTHRD200, ASYNC0002, CS1047
 {    
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">void DoSomething()
 {    
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># VSTHRD200: Use &quot;Async&quot; suffix for async methods
 dotnet_diagnostic.VSTHRD200.severity = error
 
@@ -397,16 +356,12 @@ dotnet_diagnostic.ASYNC0002.severity = error
 dotnet_diagnostic.RCS1047.severity = error
 
 </code></pre>
-
 <p>It&rsquo;s worth pointing out that <code>VSTHRD200</code> is tracking both naming deviations, it simply checks if the <code>Async</code> suffix is applied correctly. It might be good if you need both rules, but if you just need to check if the <code>Async</code> suffix is not applied to synchronous methods, then you should rather use <code>ASYNC0002</code> or <code>RCS1047</code>.</p>
-
-<h3 id="13-pass-cancellation-token">13. Pass cancellation token</h3>
+<h3 id="13-pass-cancellation-token"><a href="#13-pass-cancellation-token">13. Pass cancellation token  🔗&#xFE0E;</a></h3>
 
 <p>Forgetting about passing the cancellation token might cost you a lot of trouble. Log running operation without a cancellation token can block the action of stopping the application or can result in thread starvation when there&rsquo;s a lot of canceled web requests. To avoid such problems, you should always provide and pass a cancellation token to the methods that accept it, even if it&rsquo;s an optional parameter. <code>Meziantou.Analyzer</code> package implements two diagnostics which can detect missing cancellation token: <code>MA0032</code> is reported always when we skip cancellation token parameter and <code>MA0040</code> is reported only when there&rsquo;s a cancellation token in current scope that can be used. You can find more details about those analyzers in the article from analyzers author <a href="https://www.meziantou.net/detect-missing-cancellationtoken-using-a-roslyn-analyzer.htm">
 Detect missing CancellationToken using a Roslyn Analyzer</a>.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">public async Task&lt;string&gt; GetSomethingA(HttpClient httpClient, CancellationToken cancellationToken)
 {
     var response = await httpClient.GetAsync(new Uri(&quot;/some/endpoint&quot;)); //Reported diagnostics: MA0040
@@ -419,31 +374,24 @@ public async Task&lt;string&gt; GetSomethingB(HttpClient httpClient)
     return await response.Content.ReadAsStringAsync();
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">public async Task&lt;string&gt; GetSomething(HttpClient httpClient, CancellationToken cancellationToken)
 {
     var response = await httpClient.GetAsync(new Uri(&quot;/some/endpoint&quot;), cancellationToken);
     return await response.Content.ReadAsStringAsync();
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># MA0040: Specify a cancellation token
 dotnet_diagnostic.MA0032.severity = error
 
 # MA0040: Flow the cancellation token when available
 dotnet_diagnostic.MA0040.severity = error
 </code></pre>
-
-<h3 id="14-using-cancellation-token-with-iasyncenumerable">14. Using cancellation token with IAsyncEnumerable</h3>
+<h3 id="14-using-cancellation-token-with-iasyncenumerable"><a href="#14-using-cancellation-token-with-iasyncenumerable">14. Using cancellation token with IAsyncEnumerable  🔗&#xFE0E;</a></h3>
 
 <p>This is a similar code smell as the previous one but it&rsquo;s strictly related to the usage of <code>IAsyncEnumerable</code> and can be quite easily overlooked. It might not be so obvious, but passing a cancellation token to an asynchronous enumerator is done by calling <code>WithCancellation()</code> method. In the case of <code>IAsyncEnumerable</code> the <code>Meziantou.Analyzer</code> provides two diagnostics: <code>MA0080</code> for all missing invocation of <code>WithCancellation()</code> method and <code>MA0079</code> only when any <code>CancellationToken</code> is present in the current context.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async Task IterateB(IAsyncEnumerable&lt;string&gt; enumerable, CancellationToken cancellationToken)
 {
     await foreach (var item in enumerable) // Reported diagnostics: MA0079
@@ -458,9 +406,7 @@ async Task IterateA(IAsyncEnumerable&lt;string&gt; enumerable)
     }
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task Iterate(IAsyncEnumerable&lt;string&gt; enumerable, CancellationToken cancellationToken)
 {
     await foreach (var item in enumerable.WithCancellation(cancellationToken)) 
@@ -468,17 +414,14 @@ async Task IterateA(IAsyncEnumerable&lt;string&gt; enumerable)
     }
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># MA0079: Use a cancellation token using .WithCancellation()
 dotnet_diagnostic.MA0079.severity = error
 
 # MA0080: Use a cancellation token using .WithCancellation()
 dotnet_diagnostic.MA0080.severity = error
 </code></pre>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <table>
 <thead>
@@ -493,7 +436,6 @@ dotnet_diagnostic.MA0080.severity = error
 <th>Asyncify</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td align="right">8.</td>
@@ -505,7 +447,6 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 <td>🔎🛠️AsyncifyInvocation, AsyncifyVariable</td>
 </tr>
-
 <tr>
 <td align="right">9.</td>
 <td>Missing <code>ConfigureAwait(bool)</code></td>
@@ -516,7 +457,6 @@ dotnet_diagnostic.MA0080.severity = error
 <td>🔎🛠️CA2007</td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">10.</td>
 <td>Returning null from a Task-returning method</td>
@@ -527,7 +467,6 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">11.</td>
 <td>Asynchronous method names should end with Async</td>
@@ -538,7 +477,6 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">12.</td>
 <td>Non asynchronous method names shouldn&rsquo;t end with Async</td>
@@ -549,7 +487,6 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">13.</td>
 <td>Pass cancellation token</td>
@@ -560,7 +497,6 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">14.</td>
 <td>Using cancellation token with IAsyncEnumerable</td>
@@ -573,9 +509,7 @@ dotnet_diagnostic.MA0080.severity = error
 </tr>
 </tbody>
 </table>
-
 <p>🔎 - Analyzer</p>
-
 <p>🛠️ - CodeFix</p>
     
 		

@@ -41,11 +41,11 @@
     
     <meta property="og:tags" content="data model">
     
-    <meta property="og:tags" content="nhibernate">
+    <meta property="og:tags" content="NHibernate">
     
-    <meta property="og:tags" content="sqlite">
+    <meta property="og:tags" content="SQLite">
     
-    <meta property="og:tags" content="sql server">
+    <meta property="og:tags" content="SQL Server">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/splashscreen.jpg">
@@ -53,8 +53,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to demystify NHibernate exception by detecting invalid fields before committing changes to database">
 
-	<meta name="keywords" value="data model, nhibernate, sqlite, sql server" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="data model, NHibernate, SQLite, SQL Server" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Validating fields of NHibernate model &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -173,31 +173,22 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<h2 id="the-challenge">The challenge</h2>
+		<h2 id="the-challenge"><a href="#the-challenge">The challenge  🔗&#xFE0E;</a></h2>
 
 <p>Recently I&rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation). When there was a discrepancy between declared field length in NHibernate mapping and validation logic (or the validation was missing) I was getting the following exception:</p>
-
 <pre><code class="language-plaintext">NHibernate.Exceptions.GenericADOException: could not execute batch command.[SQL: SQL not available] ---&gt; System.Data.SqlClient.SqlException: String or binary data would be truncated.
 The statement has been terminated.
 </code></pre>
-
 <p>Investigating this kind of error is very hard because the message is quite cryptic. It only says that some data exceeded given length constraints. We have no clue which field or even entity is the source of the problem (especially that the exception occurs only after calling <code>Flush()</code> method). I tried to search for some debugging advices in google but the only suggestion I found was to use <a href="https://github.com/darioquintana/NHibernate-Validator">NHibernate Validator</a> or implement <a href="http://nhibernate.info/doc/nhibernate-reference/events.html">Nhibernate listeners</a> that performs appropriate validation. NHibernate Validator seems to be overwhelming for my requirement (and I don&rsquo;t want to pollute my data model with additional validation attributes) so I&rsquo;ve decided to implement <code>IPreUpdateEventListener</code> and <code>IPreInsertEventListener</code> listeners which will be checking if values used in SQL query don&rsquo;t exceed the maximum length declared in NHibernate mappings.</p>
-
-<h2 id="implementation">Implementation</h2>
+<h2 id="implementation"><a href="#implementation">Implementation  🔗&#xFE0E;</a></h2>
 
 <p>The problem concerns only string and binary fields so there are only two cases that should be handled (if I&rsquo;m missing something please correct me). In order to implement validation I needed to figure out the following things:</p>
-
 <ol>
 <li>How to extract fields which will be used in SQL query</li>
 <li>How to access the length limits from NHibernate model definition</li>
 </ol>
-
 <p>Having this information, I need to check if the field value doesn&rsquo;t exceed the limit and the limit is not infinitive.</p>
-
 <p>Checking if value exceeds the limit which is infinitive seems to be redundant but it makes sense when we know how the infinitive length constrains are defined in NHibernate. Default NHibernate string length limit is 4000 characters. If we need to create a column that holds &lsquo;infinitive&rsquo; string we have to set the length to 4001.</p>
-
 <pre><code class="language-csharp">public static class MappingExtensions
 {
     internal const int MaxNhibernateStringLength = 4001;
@@ -208,13 +199,10 @@ The statement has been terminated.
     }
 }
 </code></pre>
-
 <p>This results in creating a column of type <code>nvarchar(max)</code> (in SQL Server).
 For binary fields, in order to create a column that holds any size of data, we simply need to set the length to <code>int.MaxValue</code> which results with <code>varbinary(max)</code> column type.
 When we try to retrieve field length information from NHibernated metadata, we get exactly the same values as we set, so these costs should be consulted during field length validation.</p>
-
 <p>My final implementation looks as follows:</p>
-
 <pre><code class="language-csharp">public class LengthValidatorListener: IPreUpdateEventListener, IPreInsertEventListener
 {
   private const int InfinityBinaryLength = int.MaxValue;
@@ -301,20 +289,16 @@ When we try to retrieve field length information from NHibernated metadata, we g
   }
 }
 </code></pre>
-
-<h3 id="exception-design">Exception design</h3>
+<h3 id="exception-design"><a href="#exception-design">Exception design  🔗&#xFE0E;</a></h3>
 
 <p>After detecting invalid situation I need to throw exception that contains as much information as is required to efficiently spot the issue source. For this problem class we need the following information</p>
-
 <ol>
 <li>What is the name of the class and the field that contains value exceeding the limit</li>
 <li>What is the value that exceeded the limit</li>
 <li>What is the length of the value that exceeded the limit</li>
 <li>What is the limit</li>
 </ol>
-
 <p>The string that exceeded the limit can be very long and could make the error message hard to analyze, so instead of merging it into error message I decided to put it in Exception field for the debugging purpose (for binary data it&rsquo;s the only reasonable solution). I&rsquo;ve also added two factory methods that create exceptions for issues with string and binary data.</p>
-
 <pre><code class="language-csharp">public class DataModelValidationException:Exception
 {
     [NotNull, Pure]
@@ -348,13 +332,10 @@ When we try to retrieve field length information from NHibernated metadata, we g
     public object PropertyValue { get; }
 }
 </code></pre>
-
 <p>I&rsquo;m using Resharper code annotation to enrich static code analysis. The <code>[Pure]</code> attribute saves us from the situation when somebody invokes exception factory method and by mistake forgets to add <code>throw</code> keyword (believe me, this happens).</p>
-
-<h3 id="listener-registration">Listener registration</h3>
+<h3 id="listener-registration"><a href="#listener-registration">Listener registration  🔗&#xFE0E;</a></h3>
 
 <p>The last thing we need is to register our <code>LengthValidatorListener</code> in Nhibernate configuration.</p>
-
 <pre><code class="language-csharp">protected override Configuration GetConfiguration()
 {
     var configuration = new NHibernate.Cfg.Configuration().Configure();
@@ -364,8 +345,7 @@ When we try to retrieve field length information from NHibernated metadata, we g
     return configuration;
 }
 </code></pre>
-
-<h2 id="profits">Profits</h2>
+<h2 id="profits"><a href="#profits">Profits  🔗&#xFE0E;</a></h2>
 
 <p>Since now every time some field value exceeds the length limitation we get a very descriptive exception that allows us to immediately locate the culprit. And there is one additional positive side effect of this solution - it works independently of database provider. Even if we run our test on SQLite (which doesn&rsquo;t obey the length constraints from NHibernate mappings) we should be able to detect length limit violation.</p>
     
@@ -439,7 +419,7 @@ When we try to retrieve field length information from NHibernated metadata, we g
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "datamodel,nhibernate,sqlite,sqlserver"
+				hashtags: "datamodel,NHibernate,SQLite,SQLServer"
 			}
 		}
 	}

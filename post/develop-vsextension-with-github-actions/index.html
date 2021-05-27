@@ -43,11 +43,11 @@
     
     <meta property="og:tags" content="dotnetcore">
     
-    <meta property="og:tags" content="visualstudio">
+    <meta property="og:tags" content="VisualStudio">
     
-    <meta property="og:tags" content="github">
+    <meta property="og:tags" content="Github">
     
-    <meta property="og:tags" content="githubactions">
+    <meta property="og:tags" content="GithubActions">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/splashscreen.jpg">
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to completely automate continuous integration and release management of visual studio extensions.">
 
-	<meta name="keywords" value="dotnet, dotnetcore, visualstudio, github, githubactions" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="dotnet, dotnetcore, VisualStudio, Github, GithubActions" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Github Actions for Visual Studio Extension developers &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,50 +175,37 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>I discovered the power of Roslyn over three years ago and since then I&rsquo;ve developed <a href="https://marketplace.visualstudio.com/publishers/54748ff9-45fc-43c2-8ec5-cf7912bc3b84">three Visual Studio extensions</a> and <a href="https://github.com/cezarypiatek?tab=repositories&amp;q=analyzer&amp;type=source&amp;language=">a couple of code analyzers</a>. Because I work on those tools only in my free time, the word &ldquo;time&rdquo; is a key here, so automation really matters. So far I&rsquo;ve been using <a href="https://www.appveyor.com/">AppVeyor</a> for building and testing my extensions. However, I&rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</p>
-
-<h2 id="automate-ci-cd-for-vsix">Automate CI/CD for VSIX</h2>
+		<p>I discovered the power of Roslyn over three years ago and since then I&rsquo;ve developed <a href="https://marketplace.visualstudio.com/publishers/54748ff9-45fc-43c2-8ec5-cf7912bc3b84">three Visual Studio extensions</a> and <a href="https://github.com/cezarypiatek?tab=repositories&amp;q=analyzer&amp;type=source&amp;language=">a couple of code analyzers</a>. Because I work on those tools only in my free time, the word &ldquo;time&rdquo; is a key here, so automation really matters. So far I&rsquo;ve been using <a href="https://www.appveyor.com/">AppVeyor</a> for building and testing my extensions. However, I&rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</p>
+<h2 id="automate-cicd-for-vsix"><a href="#automate-cicd-for-vsix">Automate CI/CD for VSIX  🔗&#xFE0E;</a></h2>
 
 <p>The official <a href="https://docs.github.com/en/free-pro-team@latest/actions">GithubActions documentation</a> together with <a href="https://github.com/actions/starter-workflows/">actions/starter-workflows</a> repository are really good starting points. Unfortunately, I didn&rsquo;t find there a complete example workflow for building an publishing Visual Studio extensions. After around 10 hours of googling and experimenting, I managed to assemble two complete workflows: one for Pull Request verification and one for automatic release.</p>
+<h2 id="problems"><a href="#problems">Problems  🔗&#xFE0E;</a></h2>
 
-<h2 id="problems">Problems</h2>
-
-<h3 id="you-can-t-build-with-dotnet-build">You can&rsquo;t build with <code>dotnet build</code></h3>
+<h3 id="you-cant-build-with-dotnet-build"><a href="#you-cant-build-with-dotnet-build">You can&rsquo;t build with <code>dotnet build</code>  🔗&#xFE0E;</a></h3>
 
 <p>After a few hours of struggling with the compilation, I discovered that you can&rsquo;t build a solution that contains VSIX project with <code>dotnet build</code> even if all your projects are in the new <code>csproj2017</code> format (<a href="https://github.com/dotnet/sdk/issues/12421">Issue#12421</a>). This kind of solution needs to be built with the <code>msbuild</code> directly. The windows based virtual environment for Github Actions has pre-installed msbuild. Unfortunately, the path to <code>msbuild</code> is not added automatically to the PATH environment variable and we need to somehow figure out where it is installed. This can be solved with a little bit of scripting and <a href="https://docs.microsoft.com/en-us/visualstudio/install/tools-for-managing-visual-studio-instances?view=vs-2019">vswhere</a> or we can use a dedicated Github Action for that:</p>
-
 <pre><code class="language-yml">- name: Setup MSBuild.exe
   uses: microsoft/setup-msbuild@v1.0.2
 </code></pre>
-
 <blockquote>
 <p><em>UPDATE 2021-04-25</em>: <code>microsoft/setup-msbuild</code> action allows to specify required Visual Studio version with <code>vs-version</code> parameter. However, if you are using hosted agents, you should avoid specifying it as there is always only one version of VS and any update of the runner environment can break your pipeline. More details can be found in<a href="https://github.com/microsoft/setup-msbuild/issues/50">#50 Error: Unable to find MSBuild</a></p>
 </blockquote>
-
 <p>After that you can invoke <code>msbuild</code> without providing a path for it:</p>
-
 <pre><code class="language-yml">- name: Build extension
   run: msbuild $env:SolutionPath /t:Rebuild
   env: 
     DeployExtension: False
 </code></pre>
-
 <p>I also passed <code>DeployExtension</code> environment variable to the build step. Without it, the build might take quite long or even timeout while executing <code>DeployVsixExtensionFiles</code> build task.</p>
-
-<h3 id="what-s-the-next-version">What&rsquo;s the next version</h3>
+<h3 id="whats-the-next-version"><a href="#whats-the-next-version">What&rsquo;s the next version  🔗&#xFE0E;</a></h3>
 
 <p>When I was building my extension using <code>AppVeyor</code> service, I hardcoded extension version in the build script using the <code>{Major}.{Minor}.{BuildNumber}</code> format. So my first approach was to move that mechanism to GithubActions and it was quite easy to implement by taking leverage of environment variables (you can read more about in <a href="../../post/setting-assembly-and-package-metadata/">Setting assembly and nuget package metadata in .NET Core</a>):</p>
-
 <pre><code class="language-yml">build-extension:
   runs-on: windows-latest
   env: 
     Version: '1.21.${{ github.run_number }}'
 </code></pre>
-
 <p>However, this approach has a few disadvantages. Every time before releasing a version with new features I needed to manually modify build script by updating <code>{Major}.{Minor}</code> part, which resulted with additional commit. It was required every single time (yes, I forgot about it a couple of times) and this unnecessarily pollutes the git history. Such disadvantage requires more attention and work during releases, so I started looking for a better solution. There&rsquo;s plenty of different tools that allow bumping up version based on the git tag, but I got a really good inspiration when I discovered the <a href="https://github.com/semantic-release/semantic-release">semantic-release</a> project. Those tools allow for generating next version which obeys <a href="https://semver.org/">semantic versioning specification</a> based on the <a href="https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines">Angular convention commits</a>. I didn&rsquo;t use that notation - and not sure if I want to - but this gave me an idea for a new Github Action that could read the latest version tag from the repository and bump it up based on the predefined message patterns. The outcome is available as <a href="https://github.com/cezarypiatek/NextVersionGeneratorAction">NextVersionGeneratorAction</a> project and it can be easily used and adjusted to our own message conventions as follows:</p>
-
 <pre><code class="language-yml">- name: Calculate next version
   uses: cezarypiatek/NextVersionGeneratorAction@0.4
   with:
@@ -227,11 +214,9 @@
     patch-pattern: '.*'
     output-to-env-variable: 'Version'
 </code></pre>
-
-<h3 id="how-to-set-the-version-for-vsix-file">How to set the version for VSIX file</h3>
+<h3 id="how-to-set-the-version-for-vsix-file"><a href="#how-to-set-the-version-for-vsix-file">How to set the version for VSIX file  🔗&#xFE0E;</a></h3>
 
 <p>The version of VSIX file is not taken from the build configuration because it is defined in external file <code>source.extension.vsixmanifest</code> and it must be set separately. We can update version number in manifest file using <code>PowerShell</code> script step:</p>
-
 <pre><code class="language-yml">- name: Set version for VSIX
   run: |
     $manifestPath = 'src\MappingGenerator.Vsix\bin\Release\MappingGenerator.vsix'
@@ -239,22 +224,17 @@
     $manifestXml.PackageManifest.Metadata.Identity.Version = $env:Version
     $manifestXml.save($manifestPath)
 </code></pre>
-
 <p>However, repeating this script in every repository might be quite tedious, so I created a Github Action dedicated for that job and it can be used as follows:</p>
-
 <pre><code class="language-yml">- name: Set version for Visual Studio Extension
   uses: cezarypiatek/VsixVersionAction@1.0
   with:
     version: ${{ env.Version }}
     vsix-manifest-file: 'src\MappingGenerator.Vsix\source.extension.vsixmanifest'
 </code></pre>
-
 <p>The source code for the action is available on Github <a href="https://github.com/cezarypiatek/VsixVersionAction">cezarypiatek/VsixVersionAction</a></p>
-
-<h3 id="how-to-publish-extension-to-the-marketplace">How to publish extension to the Marketplace</h3>
+<h3 id="how-to-publish-extension-to-the-marketplace"><a href="#how-to-publish-extension-to-the-marketplace">How to publish extension to the Marketplace  🔗&#xFE0E;</a></h3>
 
 <p>So far I was publishing my extensions by manually downloading artifact with VSIX file from the build server to my disc and then uploading it to the Marketplace via <a href="https://marketplace.visualstudio.com/">marketplace.visualstudio.com</a> website. That operation is also time-consuming and may raise security concerns. Happily, this can be automated with <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line?view=vs-2019">VsixPublisher</a> which is also pre-installed on the Windows based virtual environment for Github Actions. However, with <code>VsixPublisher</code> we have the same problem as with <code>msbuild</code> - the tool&rsquo;s executable path is not available in the <code>PATH</code> environment variable and we need to hardcode it or write a script that would be able to automatically locate it. To simplify things, I created <a href="https://github.com/cezarypiatek/VsixPublisherAction">VsixPublisherAction</a> which makes the publishing super easy:</p>
-
 <pre><code class="language-yml">- name: Publish extension to Marketplace
   uses: cezarypiatek/VsixPublisherAction@0.1
   with:
@@ -262,34 +242,29 @@
     publish-manifest-file: 'src\MappingGenerator.Vsix\publishManifest.json'
     personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}
 </code></pre>
-
 <p>Beside the <code>*.vsix</code> file, we need also the <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension-via-command-line?view=vs-2019#publishmanifest-file">publishManifest file</a> and <a href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token">Personal Access Token</a> which should be stored in <a href="https://docs.github.com/en/actions/reference/encrypted-secrets">Repository Encrypted Secrets</a>.</p>
-
-<h2 id="pr-workflow">PR Workflow</h2>
+<h2 id="pr-workflow"><a href="#pr-workflow">PR Workflow  🔗&#xFE0E;</a></h2>
 
 <p>This workflow is responsible for verifying Pull Request. It should build and test code with changes introduced by PR and should produce artifacts that can be used for manual testing - I very often ask the issue reporter to verify if a new proposed version is working according to the expectations. This workflow should be triggered every time a new PR is created, or the existing one is updated with newer changes. My typical workflow for PR looks as follows:</p>
-
 <ol>
 <li>Set up the build environment
-
 <ul>
 <li>Setup .NET Core</li>
 <li>Setup MsBuild</li>
-</ul></li>
+</ul>
+</li>
 <li>Calculate next version number</li>
 <li>Build the extension
-
 <ul>
 <li>Restore NuGet packages</li>
 <li>Set version for VSIX</li>
 <li>Invoke the <code>msbuild</code> to build the solution</li>
-</ul></li>
+</ul>
+</li>
 <li>Execute Test suite</li>
 <li>Collect artifacts to allow manual verification</li>
 </ol>
-
 <p>This workflow can be automated with Github Actions using the following script:</p>
-
 <pre><code class="language-yml">name: pr-verification
 on:
   pull_request:
@@ -345,50 +320,46 @@ jobs:
         name: MappingGenerator-Nugets
         path: '**/MappingGenerator*.nupkg'
 </code></pre>
-
 <p><strong>REMARKS</strong>:</p>
-
 <ol>
-<li><p>Packages generated by the PR builds should be marked as <code>pre-release</code>, so I&rsquo;m storing the next version number in <code>VersionPrefix</code> environment variable, and there&rsquo;s also <code>VersionSuffix</code> variable defined as <code>pr-${{github.event.number}}.${{ github.run_number }}</code>. An example version produced with this approach can be <code>1.22.1-pr-163.55</code>. The <code>msbuild</code> can handle the <code>VersionPrefix</code> and <code>VersionSuffix</code> variables, however in the build step for setting <code>VSIX</code> version we need to define it explicitly <code>'${{env.VersionPrefix}}+${{env.VersionSuffix}}'</code>.</p></li>
-
-<li><p>At the beginning of the build script I defined <code>RepositoryUrl</code>, <code>RepositoryUrl</code>, and <code>SourceRevisionId</code>environment variables. Thanks to that <code>NuGet package</code> and <code>dotnet assemblies</code> will contain information about the repository address, branch name, and commit identifier which was used to produce those artifacts.</p></li>
+<li>
+<p>Packages generated by the PR builds should be marked as <code>pre-release</code>, so I&rsquo;m storing the next version number in <code>VersionPrefix</code> environment variable, and there&rsquo;s also <code>VersionSuffix</code> variable defined as <code>pr-${{github.event.number}}.${{ github.run_number }}</code>. An example version produced with this approach can be <code>1.22.1-pr-163.55</code>. The <code>msbuild</code> can handle the <code>VersionPrefix</code> and <code>VersionSuffix</code> variables, however in the build step for setting <code>VSIX</code> version we need to define it explicitly <code>'${{env.VersionPrefix}}+${{env.VersionSuffix}}'</code>.</p>
+</li>
+<li>
+<p>At the beginning of the build script I defined <code>RepositoryUrl</code>, <code>RepositoryUrl</code>, and <code>SourceRevisionId</code>environment variables. Thanks to that <code>NuGet package</code> and <code>dotnet assemblies</code> will contain information about the repository address, branch name, and commit identifier which was used to produce those artifacts.</p>
+</li>
 </ol>
-
 <p>To make it work correctly, the project files can&rsquo;t contain the definition of any of those variables. You can read more about that in <a href="../../post/setting-assembly-and-package-metadata/">Setting assembly and NuGet package metadata in .NET Core</a>.</p>
-
-<h2 id="release-workflow">Release Workflow</h2>
+<h2 id="release-workflow"><a href="#release-workflow">Release Workflow  🔗&#xFE0E;</a></h2>
 
 <p>I needed another workflow that would be triggered when the PR is merged, or the commit is directly pushed to the <code>master</code> branch. Release workflow is an extended version of the PR-Verification, and beside building and testing my extension, it should also publish the extension to the Visual Studio Marketplace and the Nuget feed:</p>
-
 <ol>
 <li>Set up the build environment
-
 <ul>
 <li>Setup .NET Core</li>
 <li>Setup MsBuild</li>
-</ul></li>
+</ul>
+</li>
 <li>Calculate next version number</li>
 <li>Build the extension
-
 <ul>
 <li>Restore NuGet packages</li>
 <li>Set version for VSIX</li>
 <li>Invoke the <code>msbuild</code> to build the solution</li>
-</ul></li>
+</ul>
+</li>
 <li>Execute Test suite</li>
 <li>Generate release note</li>
 <li>Create github release
-
 <ul>
 <li>Create the new release with git tag</li>
 <li>Upload artifacts (<code>vsix</code> and <code>nupkg</code> files) to the newly create release</li>
-</ul></li>
+</ul>
+</li>
 <li>Upload the Visual Studio Extension to Visual Studio Marketplace</li>
 <li>Upload NuGet packages</li>
 </ol>
-
 <p>This workflow can be automated with Github Actions using the following script:</p>
-
 <pre><code class="language-yml">name: release
 on:
   push:
@@ -484,15 +455,17 @@ jobs:
       run: |
         dotnet nuget push src\MappingGenerator\bin\Release\MappingGenerator.*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 </code></pre>
-
 <p><strong>REMARKS:</strong></p>
-
 <ol>
-<li><p>In the trigger&rsquo;s configuration, I defined the <code>paths</code> option. Thanks to that, the workflow will be triggered only when there are changes that affect the binaries. Updating documentation files (especially <code>README.md</code>) will not result in releasing a new version.</p></li>
-
-<li><p>This workflow creates the official packages, so this time I&rsquo;m storing the next version in the <code>Version</code> environment variable.</p></li>
-
-<li><p>All tokens required for packages publishing are stored in <a href="https://docs.github.com/en/actions/reference/encrypted-secrets">Repository Encrypted Secrets</a>.</p></li>
+<li>
+<p>In the trigger&rsquo;s configuration, I defined the <code>paths</code> option. Thanks to that, the workflow will be triggered only when there are changes that affect the binaries. Updating documentation files (especially <code>README.md</code>) will not result in releasing a new version.</p>
+</li>
+<li>
+<p>This workflow creates the official packages, so this time I&rsquo;m storing the next version in the <code>Version</code> environment variable.</p>
+</li>
+<li>
+<p>All tokens required for packages publishing are stored in <a href="https://docs.github.com/en/actions/reference/encrypted-secrets">Repository Encrypted Secrets</a>.</p>
+</li>
 </ol>
     
 		
@@ -620,7 +593,7 @@ jobs:
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "dotnet,dotnetcore,visualstudio,github,githubactions"
+				hashtags: "dotnet,dotnetcore,VisualStudio,Github,GithubActions"
 			}
 		}
 	}

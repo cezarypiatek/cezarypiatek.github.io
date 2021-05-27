@@ -50,7 +50,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="resharper, codeannotation" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Hunt your bugs in design time &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -167,145 +167,151 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
+		<p>Static analysis is a powerful feature of Visual Studio that helps us to spot syntax and semantic errors in our code. It works very well on currently edited file and runs on the whole solution as one of the compilation stages. But it would be a waste of time to run compilation every time you make changes that affect code outside currently edited file, only to check that you didn&rsquo;t cause any compilation errors. Luckily, Resharper comes to the rescue with Solution Wide Analysis tool. It tracks all issues in solution in a real time. For example if we change signature of method, it will immediately report all places in code which are not valid anymore. To turn on Solution-wide analysis you have to right click on the circle in the right-bottom corner of the Visual Studio window and from the context menu select &ldquo;Analyze Errors in Solution&rdquo;.</p>
+<p>
+<a href="image001.png"><img  src="image001.png" alt=""></a>
 
-<p>Static analysis is a powerful feature of Visual Studio that helps us to spot syntax and semantic errors in our code. It works very well on currently edited file and runs on the whole solution as one of the compilation stages. But it would be a waste of time to run compilation every time you make changes that affect code outside currently edited file, only to check that you didn&rsquo;t cause any compilation errors. Luckily, Resharper comes to the rescue with Solution Wide Analysis tool. It tracks all issues in solution in a real time. For example if we change signature of method, it will immediately report all places in code which are not valid anymore. To turn on Solution-wide analysis you have to right click on the circle in the right-bottom corner of the Visual Studio window and from the context menu select &ldquo;Analyze Errors in Solution&rdquo;.</p>
 
-<p><img src="image001.png" alt="" />
-<img src="image003.png" alt="" /></p>
-
+<a href="image003.png"><img  src="image003.png" alt=""></a>
+</p>
 <p>Resharper will show a confirmation window with additional information about &ldquo;Solution-Wide Analysis&rdquo;.</p>
-
-<p><img src="image005.png" alt="" /></p>
-
+<p>
+<a href="image005.png"><img  src="image005.png" alt=""></a>
+</p>
 <p>Next, Resharper will display summary of found errors on the Visual Studio status bar. To get more information about errors you have to open the &ldquo;Errors in Solution&rdquo; window.</p>
+<p>
+<a href="image007.png"><img  src="image007.png" alt=""></a>
+</p>
+<h2 id="keep-it-green"><a href="#keep-it-green">Keep it green  🔗&#xFE0E;</a></h2>
 
-<p><img src="image007.png" alt="" /></p>
-
-<h2 id="keep-it-green">Keep it green</h2>
-
-<p><img src="image009.png" alt="" /></p>
-
+<p>
+<a href="image009.png"><img  src="image009.png" alt=""></a>
+</p>
 <p>Not all reported issues are compilation errors but it&rsquo;s a good practice to keep that window &ldquo;green&rdquo; (No errors in solution). I&rsquo;ve heard other teams saying: &ldquo;We have this window disabled because it shows so many errors&rdquo;. And they are pretty damn right. If it shows a ton of errors - it is useless. So if you&rsquo;re in the same situation I advise you to start by cleaning all the errors, even if it means devoting 1-2 days of your team&rsquo;s work to this task. After that I guarantee that your development will become more efficient and you will be able to spot bugs in your codebase much faster. It won&rsquo;t be necessary to compile your application so often during refactoring. However, if you are not able to fix some sort of errors and you can live with that you have a few options to turn off reporting those issues:</p>
-
 <ol>
 <li>Mark that position as ignored in &ldquo;Errors in Solution&rdquo; window (use context menu)
-<img src="image011.png" alt="" /></li>
+
+<a href="image011.png"><img  src="image011.png" alt=""></a>
+</li>
 <li>Change severity level for that issue (I&rsquo;ll show you later how to do that)</li>
 <li>Disable single occurrence using Resharper comments
-<img src="image013.png" alt="" />
-<img src="image015.png" alt="" /></li>
+
+<a href="image013.png"><img  src="image013.png" alt=""></a>
+
+
+<a href="image015.png"><img  src="image015.png" alt=""></a>
+</li>
 </ol>
-
 <p>Unfortunately, static analysis is not a silver bullet and will not guarantee that your software will works without any problems.</p>
-
-<h2 id="how-to-setup-code-annotations">How to setup Code Annotations</h2>
+<h2 id="how-to-setup-code-annotations"><a href="#how-to-setup-code-annotations">How to setup Code Annotations  🔗&#xFE0E;</a></h2>
 
 <p>Resharper comes with a set of additional attributes that allow to extend static analysis and help us to find potential issues in code without a need to compile and run the application. Solution-wide analysis with conjunction of additional annotation in your code could spot potential runtime errors. You can add Resharper Annotations to your project in a few ways:</p>
-
 <ol>
 <li>The easies one is to install nuget package JetBrains.Annotations (<a href="https://www.nuget.org/packages/JetBrains.Annotations/">https://www.nuget.org/packages/JetBrains.Annotations/</a>)</li>
 <li>If you don&rsquo;t like nuget (for some reasons) you can manually add reference to JetBrains.Annotations.dll library which you can find in Resharper installation directory (For me c:\Program Files (x86)\JetBrains\ReSharper\v8.2\Bin\JetBrains.Annotations.dll) (If you are using source control system with your project, you should make a copy of JetBrains.Annotations.dll and add it to your project folder structure).</li>
 <li>You can also add Annotation as a source code. To do that go to &ldquo;Code Annotations&rdquo; in Resharper Options and click &ldquo;Copy C# implementation to clipboard&rdquo;. After that paste clipboard content into your source code.</li>
 </ol>
-
-<p><img src="image017.png" alt="" /></p>
-
-<p>However, if you decide to add reference to JetBrains.Annotations.dll you have to deploy it along with your project to the production environment. If it&rsquo;s a problem for you, there is a nice add-in for Fody witch removes all usages of Annotation attributes from compiled assembly <a href="https://github.com/Fody/JetBrainsAnnotations">https://github.com/Fody/JetBrainsAnnotations</a> For new version of JetBrains.Annotations.dll (which comes with R# 10) is not necessary because all attributes are marked with [Conditional] attribute (<a href="https://msdn.microsoft.com/en-us/library/aa664622(v=vs.71).aspx">https://msdn.microsoft.com/en-us/library/aa664622(v=vs.71).aspx</a>). That means all usages of Resharper Annotations attributes are erased from metadata by default. You need to remember to change &ldquo;Copy local&rdquo; property to false on JetBrains.Annotations.dll though - in order to prevent msbuild from copying this assembly to bin directory.</p>
-
-<h2 id="code-annotations-in-action">Code Annotations in action</h2>
+<p>
+<a href="image017.png"><img  src="image017.png" alt=""></a>
+</p>
+<p>However, if you decide to add reference to JetBrains.Annotations.dll you have to deploy it along with your project to the production environment. If it&rsquo;s a problem for you, there is a nice add-in for Fody witch removes all usages of Annotation attributes from compiled assembly <a href="https://github.com/Fody/JetBrainsAnnotations">https://github.com/Fody/JetBrainsAnnotations</a> For new version of JetBrains.Annotations.dll (which comes with R# 10) is not necessary because all attributes are marked with [Conditional] attribute (<a href="https://msdn.microsoft.com/en-us/library/aa664622(v=vs.71).aspx)">https://msdn.microsoft.com/en-us/library/aa664622(v=vs.71).aspx)</a>. That means all usages of Resharper Annotations attributes are erased from metadata by default. You need to remember to change &ldquo;Copy local&rdquo; property to false on JetBrains.Annotations.dll though - in order to prevent msbuild from copying this assembly to bin directory.</p>
+<h2 id="code-annotations-in-action"><a href="#code-annotations-in-action">Code Annotations in action  🔗&#xFE0E;</a></h2>
 
 <p>After you&rsquo;ve successfully added support for code annotation into your project, you can start decorating your classes and functions with the new attributes. You can find description and sample usages of all attributes in Resharper documentation <a href="https://www.jetbrains.com/help/resharper/10.0/Reference__Code_Annotation_Attributes.html">https://www.jetbrains.com/help/resharper/10.0/Reference__Code_Annotation_Attributes.html</a> Now, let me show you a few example usages of the most useful (in my view) attributes from Code Annotation set.</p>
-
-<h3 id="pure">[Pure]</h3>
+<h3 id="pure"><a href="#pure">[Pure]  🔗&#xFE0E;</a></h3>
 
 <p>The PureAttribute is intended to decorate methods which are pure functions (<a href="https://en.wikipedia.org/wiki/Pure_function">https://en.wikipedia.org/wiki/Pure_function</a>) Thanks to this attribute, every time when you invoke pure function without utilizing returned value, Resharper reports that fact. Using PureAttribute helps you to avoid the following mistake:</p>
-
-<p><img src="image019.png" alt="" /></p>
-
+<p>
+<a href="image019.png"><img  src="image019.png" alt=""></a>
+</p>
 <p>I presume that somebody forgot about return keyword in line 25. This code is perfectly fine semantically and it compiles without any errors but definitely won&rsquo;t work correctly. If you decorate &ldquo;Calculate&rdquo; method with PureAttribute, Resharper reports that mistake immediately. (This is not pure academic example- I&rsquo;ve found similar bug in production code)</p>
-
-<h3 id="pathreference">[PathReference]</h3>
+<h3 id="pathreference"><a href="#pathreference">[PathReference]  🔗&#xFE0E;</a></h3>
 
 <p>PathReferenceAttribute is intended to decorate function parameter, which accepts string with path to file. It works only in asp.net projects. PathReferenceAttribute gives you two extra things:</p>
-
 <ol>
 <li>Intellisense with a list of files and directories in given location</li>
 </ol>
-
-<p><img src="image021.png" alt="" /></p>
-
-<ol>
+<p>
+<a href="image021.png"><img  src="image021.png" alt=""></a>
+</p>
+<ol start="2">
 <li>Checking if typed path is pointing to existing file.</li>
 </ol>
-
-<p><img src="image023.png" alt="" /></p>
-
+<p>
+<a href="image023.png"><img  src="image023.png" alt=""></a>
+</p>
 <p>PathReferenceAttribute could be helpful when you create helpers which require path to static content, for example video:</p>
-
-<p><img src="image025.png" alt="" /></p>
-
-<h3 id="usedimplicitly">[UsedImplicitly]</h3>
+<p>
+<a href="image025.png"><img  src="image025.png" alt=""></a>
+</p>
+<h3 id="usedimplicitly"><a href="#usedimplicitly">[UsedImplicitly]  🔗&#xFE0E;</a></h3>
 
 <p>When we use DI Container or other IOC frameworks, which search for a class in our code based on some conventions, Resharper reports that our class is never used (because there is no explicit reference in code). In order to deal with the problem, we can use UsedImplicityAttribute. You can use it to decorate classes, methods and properties which are used in runtime but there is no direct reference to them inside our code. After that, Resharper stops reporting that issue. Additionally, when we use UsedImplicityAttribute with ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature on the class, Resharper starts checking usages of constructor parameters and reports issue if there are unused parameters. When the constructor signature is imposed by IOC framework, you should rather use ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature. If you use that flag, Resharper doesn&rsquo;t report the fact about unused constructor parameter.</p>
+<p>
+<a href="image027.png"><img  src="image027.png" alt=""></a>
 
-<p><img src="image027.png" alt="" />
-<img src="image029.png" alt="" /></p>
 
-<h3 id="localizationrequired">[LocalizationRequired]</h3>
+<a href="image029.png"><img  src="image029.png" alt=""></a>
+</p>
+<h3 id="localizationrequired"><a href="#localizationrequired">[LocalizationRequired]  🔗&#xFE0E;</a></h3>
 
 <p>This attribute should be helpful when we create application which is (or will be) localized. When we decorate string parameter with that attribute, Resharper starts treating that parameter as localizable string. Every time you type value of that parameter directly in the code, Resharper reports issue. To fix that that, we should move value of that variable to a resource file (simply use &ldquo;Move to resource&rdquo; option from Resharper context menu).</p>
+<p>
+<a href="image031.png"><img  src="image031.png" alt=""></a>
 
-<p><img src="image031.png" alt="" />
-<img src="image033.png" alt="" /></p>
 
-<h3 id="notnull-and-canbenull-and-implicitnotnull">[NotNull] and <a href="and [ImplicitNotNull]">CanBeNull</a></h3>
+<a href="image033.png"><img  src="image033.png" alt=""></a>
+</p>
+<h3 id="notnull-and-canbenull-and-implicitnotnull"><a href="#notnull-and-canbenull-and-implicitnotnull">[NotNull] and [CanBeNull] (and [ImplicitNotNull])  🔗&#xFE0E;</a></h3>
 
-<p>These attributes could be useful when you define contracts for your methods. With their help you can define which arguments accept null value and which don’t, as well as if a method can return null value or not. When you use CanBeNullAttribute on parameter, Resharper checks if there is appropriate assertion before accessing members of that parameter. If you use [NotNull], Resharper checks if method doesn&rsquo;t contain redundant assertions that check for null on that attribute. Similarly, when you use that attribute on method, Resharper checks if there’s necessary assertion on returned value or there’s no redundant assertion (depending on a type of used attribute). By default Resharper treats all arguments and returned values as if they were decorated with [CanBeNull]. You can inverse this behavior by using ImplicitNullability Resharper extension (<a href="https://github.com/ulrichb/ImplicitNullability#readme">https://github.com/ulrichb/ImplicitNullability#readme</a>). However, this is not necessary in Resharper 10, as it comes with [ImplicitNotNull] attribute which works the same as the previous extension. We can apply this attribute on class, interface or assembly level.</p>
+<p>These attributes could be useful when you define contracts for your methods. With their help you can define which arguments accept null value and which don’t, as well as if a method can return null value or not. When you use CanBeNullAttribute on parameter, Resharper checks if there is appropriate assertion before accessing members of that parameter. If you use [NotNull], Resharper checks if method doesn&rsquo;t contain redundant assertions that check for null on that attribute. Similarly, when you use that attribute on method, Resharper checks if there’s necessary assertion on returned value or there’s no redundant assertion (depending on a type of used attribute). By default Resharper treats all arguments and returned values as if they were decorated with [CanBeNull]. You can inverse this behavior by using ImplicitNullability Resharper extension (<a href="https://github.com/ulrichb/ImplicitNullability#readme)">https://github.com/ulrichb/ImplicitNullability#readme)</a>. However, this is not necessary in Resharper 10, as it comes with [ImplicitNotNull] attribute which works the same as the previous extension. We can apply this attribute on class, interface or assembly level.</p>
+<h4 id="sample-usages-of-notnull-and-canbenull"><a href="#sample-usages-of-notnull-and-canbenull">Sample usages of [NotNull] and [CanBeNull]  🔗&#xFE0E;</a></h4>
 
-<h4 id="sample-usages-of-notnull-and-canbenull">Sample usages of [NotNull] and [CanBeNull]</h4>
+<p>
+<a href="image035.png"><img  src="image035.png" alt=""></a>
 
-<p><img src="image035.png" alt="" />
-<img src="image037.png" alt="" />
-<img src="image039.png" alt="" /></p>
 
-<h3 id="contractattribute">[ContractAttribute]</h3>
+<a href="image037.png"><img  src="image037.png" alt=""></a>
+
+
+<a href="image039.png"><img  src="image039.png" alt=""></a>
+</p>
+<h3 id="contractattribute"><a href="#contractattribute">[ContractAttribute]  🔗&#xFE0E;</a></h3>
 
 <p>In the set of available attributes there is a very powerful one - ContractAttribute - which allows you to define dependencies between method arguments and returned values (especially useful for assertion methods). Thanks to that you can add additional layer of usage safety and extend Resharper heuristic over your code. You can read more about that on JetBrains Resharper blog <a href="http://blog.jetbrains.com/dotnet/2012/08/15/contract-annotations-in-resharper-7/">http://blog.jetbrains.com/dotnet/2012/08/15/contract-annotations-in-resharper-7/</a></p>
-
-<h2 id="external-annotations">External Annotations</h2>
+<h2 id="external-annotations"><a href="#external-annotations">External Annotations  🔗&#xFE0E;</a></h2>
 
 <p>If you want to add Code Annotations for an existing library (and you don&rsquo;t have access to source code) you can use mechanism of external annotations. The full instruction how to use it can be found in Resharper documentation <a href="https://www.jetbrains.com/resharper/webhelp80/Code_Analysis__External_Annotations.html">https://www.jetbrains.com/resharper/webhelp80/Code_Analysis__External_Annotations.html</a> There is also Resharper extension with a set of annotations for .NET framework and popular libraries. You can install it from Manage Extension window. It&rsquo;s good to keep that extension up to date.</p>
-
-<p><img src="image041.png" alt="" /></p>
-
+<p>
+<a href="image041.png"><img  src="image041.png" alt=""></a>
+</p>
 <p>You can get info about used attributes from Quick documentation window (the shortcut may vary depending on configuration, for me ctr+shif+F1)</p>
-
-<p><img src="image043.png" alt="" /></p>
-
-<h2 id="find-stack-overflow-without-running-program">Find stack overflow without running program</h2>
+<p>
+<a href="image043.png"><img  src="image043.png" alt=""></a>
+</p>
+<h2 id="find-stack-overflow-without-running-program"><a href="#find-stack-overflow-without-running-program">Find stack overflow without running program  🔗&#xFE0E;</a></h2>
 
 <p>All that effort you put in decorating your code with annotations will pay off only if you configure correct severity level for described formerly rules. Without that all violation of given rules goes by unnoticed and will not be reported by &ldquo;Errors in Solution&rdquo; window. To change inspection severity level, find the place where Resharper reports violation of given rule and from the Resharper context menu (alt+enter) select &ldquo;Options for &lsquo;(name of the rule)&rsquo; inspection&rdquo; -&gt; &ldquo;Configure inspection severity&rdquo;.</p>
-
-<p><img src="image045.png" alt="" /></p>
-
+<p>
+<a href="image045.png"><img  src="image045.png" alt=""></a>
+</p>
 <p>Resharper should open &ldquo;Inspection Options&rdquo; window where you can select appropriate severity level for selected rule.</p>
-
-<p><img src="image047.png" alt="" /></p>
-
+<p>
+<a href="image047.png"><img  src="image047.png" alt=""></a>
+</p>
 <p>Only when you select the highest level (Error) Resharper will start to report all violation of given rule in &ldquo;Errors in Solution&rdquo; window. You can also configure desired severity level in &ldquo;Inspection Severity&rdquo; section in Resharper options:</p>
-
-<p><img src="image049.png" alt="" /></p>
-
+<p>
+<a href="image049.png"><img  src="image049.png" alt=""></a>
+</p>
 <p>To make all that attributes I described before work with &ldquo;Errors in solution&rdquo; window you have to setup the following rules on Error level.</p>
-
-<p><img src="image051.png" alt="" /></p>
-
+<p>
+<a href="image051.png"><img  src="image051.png" alt=""></a>
+</p>
 <p>Additionally, setting up the following rules to error level will certainly save you a lot of trouble and help to spot mindless code. For example, the first rule will help you to find the places which can cause stack overflow exception.</p>
-
-<p><img src="image053.png" alt="" /></p>
-
-<h2 id="summary">Summary</h2>
+<p>
+<a href="image053.png"><img  src="image053.png" alt=""></a>
+</p>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>Solution wide analysis in conjunction with code annotations is a very powerful tool. But you have to remember that it is not a silver bulled. It won&rsquo;t make you code bug-less but it will certainly give you a pretty good level of confidence. It makes an error-spot-feedback-loop shorter. A lot of bugs caused by a lack of attention will be reported immediately by Solution Wide Analysis on developing stage without waiting for code review or manual test stage. To makes all that works right you have to also establish some rules in your team. Everybody should remember about the &ldquo;keep it green&rdquo; rule and examining the state of the &ldquo;Errors in solution&rdquo; window before every check into repository (committing with the &ldquo;red&rdquo; state should be forbidden)</p>
     

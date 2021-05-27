@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="Which analyzer package should I use and how to configure it to avoid most common problems related to async/await.">
 
 	<meta name="keywords" value="dotnet, csharp, async, roslyn, analyzers" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Async code smells and how to track them down with analyzers - Part I &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,14 +175,10 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. <strong>This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time</strong>. There are many existing analyzer packages provided by the community (mostly free and open-source) with hundreds of different rules. This abundance raises the following question: <strong>Which analyzer packages should I use and which rules should be reported as errors?</strong> To help answer this question, I decided to start a blog post series that describes different code smells together with analyzers that can detect them. I will start with analyzers related to asynchronous programming. However, this area is full of traps, so this article is the first of two episodes devoted to async/await.</p>
-
-<h2 id="analyzers-for-asynchronous-programming">Analyzers for asynchronous programming</h2>
+		<p>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. <strong>This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time</strong>. There are many existing analyzer packages provided by the community (mostly free and open-source) with hundreds of different rules. This abundance raises the following question: <strong>Which analyzer packages should I use and which rules should be reported as errors?</strong> To help answer this question, I decided to start a blog post series that describes different code smells together with analyzers that can detect them. I will start with analyzers related to asynchronous programming. However, this area is full of traps, so this article is the first of two episodes devoted to async/await.</p>
+<h2 id="analyzers-for-asynchronous-programming"><a href="#analyzers-for-asynchronous-programming">Analyzers for asynchronous programming  🔗&#xFE0E;</a></h2>
 
 <p>If you are looking for analyzers that can help you detect different issues with asynchronous code, you can find them in the following packages:</p>
-
 <ul>
 <li><a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/">Microsoft.CodeAnalysis.FxCopAnalyzers</a></li>
 <li><a href="https://www.nuget.org/packages/Microsoft.VisualStudio.Threading.Analyzers/">Microsoft.VisualStudio.Threading.Analyzers</a></li>
@@ -192,9 +188,7 @@
 <li><a href="https://www.nuget.org/packages/Roslynator.Analyzers/">Roslynator</a></li>
 <li><a href="https://www.nuget.org/packages/Asyncify/">Asyncify</a></li>
 </ul>
-
 <p>Most of those packages are not exclusively devoted to asynchronous programming, so I made an exercise by going through the complete list of offered rules and listed only those related to async code in the following sections:</p>
-
 <div class="tab custom-tabs" role="tabpanel">
 	<ul class="nav nav-tabs" role="tablist">
 
@@ -291,17 +285,44 @@
 
 <div class="tab-pane active" id="tab11" role="tabpanel" aria-labelledby="nav-tabName1">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;- |
-<a href="https://docs.microsoft.com/visualstudio/code-quality/ca2007">CA2007</a> | Consider calling ConfigureAwait on the awaited task | Warning | Yes |
-<a href="https://docs.microsoft.com/visualstudio/code-quality/ca2008">CA2008</a> | Do not create tasks without passing a TaskScheduler |  Warning | No |
-<a href="https://docs.microsoft.com/visualstudio/code-quality/ca2012">CA2012</a> | Use ValueTasks correctly |  Warning | No |
-<a href="https://docs.microsoft.com/visualstudio/code-quality/ca2247">CA2247</a> | Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum|Warning | Yes</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.microsoft.com/visualstudio/code-quality/ca2007">CA2007</a></td>
+<td>Consider calling ConfigureAwait on the awaited task</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/visualstudio/code-quality/ca2008">CA2008</a></td>
+<td>Do not create tasks without passing a TaskScheduler</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/visualstudio/code-quality/ca2012">CA2012</a></td>
+<td>Use ValueTasks correctly</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/visualstudio/code-quality/ca2247">CA2247</a></td>
+<td>Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://github.com/dotnet/roslyn-analyzers/blob/master/src/Microsoft.CodeAnalysis.FxCopAnalyzers/Microsoft.CodeAnalysis.FxCopAnalyzers.md">Full list of supported rules</a></p>
-
 <p>👉 <a href="https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers/">Nuget package</a></p>
-
 <p>👉 <a href="https://github.com/dotnet/roslyn-analyzers#microsoftcodeanalysisfxcopanalyzers">Official website</a></p>
 
 
@@ -317,36 +338,158 @@
 
 <div class="tab-pane" id="tab12" role="tabpanel" aria-labelledby="nav-tabName2">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; |&mdash;- |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD001.md">VSTHRD001</a> | Avoid legacy thread switching methods |  Warning | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD002.md">VSTHRD002</a> | Avoid problematic synchronous waits |  Warning | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD003.md">VSTHRD003</a> | Avoid awaiting foreign Tasks |  Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD004.md">VSTHRD004</a> | Await SwitchToMainThreadAsync |  Error | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD010.md">VSTHRD010</a> | Invoke single-threaded types on Main thread | Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD011.md">VSTHRD011</a> | Use <code>AsyncLazy&lt;T&gt;</code> |  Error | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD012.md">VSTHRD012</a> | Provide JoinableTaskFactory where allowed |  Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD100.md">VSTHRD100</a> | Avoid <code>async void</code> methods | Warning | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD101.md">VSTHRD101</a> | Avoid unsupported async delegates | Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD102.md">VSTHRD102</a> | Implement internal logic asynchronously | Info | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD103.md">VSTHRD103</a> | Call async methods when in an async method | Warning | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD104.md">VSTHRD104</a> | Offer async option | Info | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD105.md">VSTHRD105</a> | Avoid method overloads that assume <code>TaskScheduler.Current</code> |  Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD106.md">VSTHRD106</a> | Use <code>InvokeAsync</code> to raise async events |  Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD107.md">VSTHRD107</a> | Await Task within using expression | Error | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD108.md">VSTHRD108</a> | Assert thread affinity unconditionally | Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD109.md">VSTHRD109</a> | Switch instead of assert in async methods |  Error | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD110.md">VSTHRD110</a> | Observe result of async calls |Warning | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD111.md">VSTHRD111</a> | Use <code>.ConfigureAwait(bool)</code> |  Hidden | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD112.md">VSTHRD112</a> | Implement <code>System.IAsyncDisposable</code> |  Info | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD113.md">VSTHRD113</a> | Check for <code>System.IAsyncDisposable</code> | Info | No |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD114.md">VSTHRD114</a> | Avoid returning null from a <code>Task</code>-returning method. |Warning | Yes |
-<a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD200.md">VSTHRD200</a> | Use <code>Async</code> naming convention |  Warning | Yes |</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD001.md">VSTHRD001</a></td>
+<td>Avoid legacy thread switching methods</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD002.md">VSTHRD002</a></td>
+<td>Avoid problematic synchronous waits</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD003.md">VSTHRD003</a></td>
+<td>Avoid awaiting foreign Tasks</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD004.md">VSTHRD004</a></td>
+<td>Await SwitchToMainThreadAsync</td>
+<td>Error</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD010.md">VSTHRD010</a></td>
+<td>Invoke single-threaded types on Main thread</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD011.md">VSTHRD011</a></td>
+<td>Use <code>AsyncLazy&lt;T&gt;</code></td>
+<td>Error</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD012.md">VSTHRD012</a></td>
+<td>Provide JoinableTaskFactory where allowed</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD100.md">VSTHRD100</a></td>
+<td>Avoid <code>async void</code> methods</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD101.md">VSTHRD101</a></td>
+<td>Avoid unsupported async delegates</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD102.md">VSTHRD102</a></td>
+<td>Implement internal logic asynchronously</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD103.md">VSTHRD103</a></td>
+<td>Call async methods when in an async method</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD104.md">VSTHRD104</a></td>
+<td>Offer async option</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD105.md">VSTHRD105</a></td>
+<td>Avoid method overloads that assume <code>TaskScheduler.Current</code></td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD106.md">VSTHRD106</a></td>
+<td>Use <code>InvokeAsync</code> to raise async events</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD107.md">VSTHRD107</a></td>
+<td>Await Task within using expression</td>
+<td>Error</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD108.md">VSTHRD108</a></td>
+<td>Assert thread affinity unconditionally</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD109.md">VSTHRD109</a></td>
+<td>Switch instead of assert in async methods</td>
+<td>Error</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD110.md">VSTHRD110</a></td>
+<td>Observe result of async calls</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD111.md">VSTHRD111</a></td>
+<td>Use <code>.ConfigureAwait(bool)</code></td>
+<td>Hidden</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD112.md">VSTHRD112</a></td>
+<td>Implement <code>System.IAsyncDisposable</code></td>
+<td>Info</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD113.md">VSTHRD113</a></td>
+<td>Check for <code>System.IAsyncDisposable</code></td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD114.md">VSTHRD114</a></td>
+<td>Avoid returning null from a <code>Task</code>-returning method.</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD200.md">VSTHRD200</a></td>
+<td>Use <code>Async</code> naming convention</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://github.com/microsoft/vs-threading/blob/master/doc/analyzers/index.md">Full list of supported rules</a></p>
-
 <p>👉 <a href="https://www.nuget.org/packages/Microsoft.VisualStudio.Threading.Analyzers/">Nuget package</a></p>
-
 <p>👉 <a href="https://github.com/microsoft/vs-threading">Official website</a></p>
 
 
@@ -362,18 +505,50 @@
 
 <div class="tab-pane" id="tab13" role="tabpanel" aria-labelledby="nav-tabName3">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; |&mdash;- |
-| AsyncFixer01 | Unnecessary async/await usage  | Warning  | Yes |
-| AsyncFixer02 | Long-running or blocking operations inside an async method |  Warning  | Yes |
-| AsyncFixer03 | Fire &amp; forget async void methods |  Warning  | Yes |
-| AsyncFixer04 | Fire &amp; forget async call inside a using block | Warning  | No |
-| AsyncFixer05 | Downcasting from a nested task to an outer task |  Warning  | No |</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AsyncFixer01</td>
+<td>Unnecessary async/await usage</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AsyncFixer02</td>
+<td>Long-running or blocking operations inside an async method</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AsyncFixer03</td>
+<td>Fire &amp; forget async void methods</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AsyncFixer04</td>
+<td>Fire &amp; forget async call inside a using block</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+<tr>
+<td>AsyncFixer05</td>
+<td>Downcasting from a nested task to an outer task</td>
+<td>Warning</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://www.nuget.org/packages/AsyncFixer">Full list of supported rules</a></p>
-
 <p>👉 <a href="https://www.nuget.org/packages/AsyncFixer">Nuget package</a></p>
-
 <p>👉 <a href="http://www.asyncfixer.com/">Official website</a></p>
 
 
@@ -389,17 +564,44 @@
 
 <div class="tab-pane" id="tab14" role="tabpanel" aria-labelledby="nav-tabName4">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; |&mdash;- |
-| <a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/async-method-names-should-be-suffixed-with-async.html#async-method-names-should-be-suffixed-with-async">ASYNC0001</a> |  Asynchronous method names should end with Async | Warning  | Yes |
-| <a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/non-async-method-names-should-not-be-suffixed-with-async.html#non-async-method-names-should-not-be-suffixed-with-async">ASYNC0002</a> |  Non asynchronous method names shouldn&rsquo;t end with Async | Warning |Yes |
-| <a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/avoid-async-void-methods.html#avoid-async-void-methods">ASYNC0003</a> |  Avoid void returning asynchronous method |  Warning | Yes |
-| <a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/use-configure-await-false.html#use-configure-await-false">ASYNC0004</a> |    Use ConfigureAwait(false) on await expression | Warning | Yes |</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/async-method-names-should-be-suffixed-with-async.html#async-method-names-should-be-suffixed-with-async">ASYNC0001</a></td>
+<td>Asynchronous method names should end with Async</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/non-async-method-names-should-not-be-suffixed-with-async.html#non-async-method-names-should-not-be-suffixed-with-async">ASYNC0002</a></td>
+<td>Non asynchronous method names shouldn&rsquo;t end with Async</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/avoid-async-void-methods.html#avoid-async-void-methods">ASYNC0003</a></td>
+<td>Avoid void returning asynchronous method</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://roslyn-analyzers.readthedocs.io/en/latest/analyzers-info/async/use-configure-await-false.html#use-configure-await-false">ASYNC0004</a></td>
+<td>Use ConfigureAwait(false) on await expression</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://roslyn-analyzers.readthedocs.io/en/latest/repository.html#analyzers-in-the-repository">Full list of supported rules</a></p>
-
 <p>👉 <a href="https://www.nuget.org/packages/Roslyn.Analyzers/">Nuget package</a></p>
-
 <p>👉 <a href="https://roslyn-analyzers.readthedocs.io/">Official website</a></p>
 
 
@@ -415,21 +617,68 @@
 
 <div class="tab-pane" id="tab15" role="tabpanel" aria-labelledby="nav-tabName5">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; |&mdash;- |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0004.md">MA0004</a> | Use .ConfigureAwait(false) | Warning | Yes |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0022.md">MA0022</a> | Return Task.FromResult instead of returning null | Info | No |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0032.md">MA0032</a> | Use an overload that have cancellation token | Info | No |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0040.md">MA0040</a> | Flow the cancellation token when available | Info | No |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0042.md">MA0042</a> | Do not use blocking cal| Info | No |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md">MA0045</a> | Do not use blocking call (make method async) | Info | No |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md">MA0079</a> | Flow a cancellation token using .WithCancellation() | Info | No |
-| <a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md">MA0080</a> | Specify a cancellation token using .WithCancellation() | Info | No |</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0004.md">MA0004</a></td>
+<td>Use .ConfigureAwait(false)</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0022.md">MA0022</a></td>
+<td>Return Task.FromResult instead of returning null</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0032.md">MA0032</a></td>
+<td>Use an overload that have cancellation token</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0040.md">MA0040</a></td>
+<td>Flow the cancellation token when available</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0042.md">MA0042</a></td>
+<td>Do not use blocking cal</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0045.md">MA0045</a></td>
+<td>Do not use blocking call (make method async)</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0079.md">MA0079</a></td>
+<td>Flow a cancellation token using .WithCancellation()</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/meziantou/Meziantou.Analyzer/blob/master/docs/Rules/MA0080.md">MA0080</a></td>
+<td>Specify a cancellation token using .WithCancellation()</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://github.com/meziantou/Meziantou.Analyzer/tree/master/docs">Full list of supported rules</a></p>
-
 <p>👉 <a href="https://www.nuget.org/packages/Meziantou.Analyzer/">Nuget package</a></p>
-
 <p>👉 <a href="https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm">Official website</a></p>
 
 
@@ -445,19 +694,56 @@
 
 <div class="tab-pane" id="tab16" role="tabpanel" aria-labelledby="nav-tabName6">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; |&mdash;- |
-| <a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1046.md">RCS1046</a> | Asynchronous method name should end with &lsquo;Async&rsquo; | None | No |
-| <a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1047.md">RCS1047</a> | Non-asynchronous method name should not end with &lsquo;Async&rsquo; | Info | No |
-| <a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090.md">RCS1090</a> | Call &lsquo;ConfigureAwait(false)&rsquo; | Info | Yes |
-| <a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1174.md">RCS1174</a> | Remove redundant async/await | None | Yes |
-| <a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1210.md">RCS1210</a> | Return Task.FromResult instead of returning null | Warning | Yes |
-| <a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md">RCS1229</a> | Use async/await when necessary | Info | Yes |</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1046.md">RCS1046</a></td>
+<td>Asynchronous method name should end with &lsquo;Async&rsquo;</td>
+<td>None</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1047.md">RCS1047</a></td>
+<td>Non-asynchronous method name should not end with &lsquo;Async&rsquo;</td>
+<td>Info</td>
+<td>No</td>
+</tr>
+<tr>
+<td><a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090.md">RCS1090</a></td>
+<td>Call &lsquo;ConfigureAwait(false)&rsquo;</td>
+<td>Info</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1174.md">RCS1174</a></td>
+<td>Remove redundant async/await</td>
+<td>None</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1210.md">RCS1210</a></td>
+<td>Return Task.FromResult instead of returning null</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md">RCS1229</a></td>
+<td>Use async/await when necessary</td>
+<td>Info</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/README.md">Full list of supported rules</a></p>
-
 <p>👉 <a href="https://www.nuget.org/packages/Roslynator.Analyzers/">Nuget package</a></p>
-
 <p>👉 <a href="https://github.com/JosefPihrt/Roslynator">Official website</a></p>
 
 
@@ -473,13 +759,31 @@
 
 <div class="tab-pane" id="tab17" role="tabpanel" aria-labelledby="nav-tabName7">
 
-	<p>| Id | Description | Default Severity | CodeFix |
-| &ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;&mdash;&mdash;&ndash; | &mdash;- |
-| AsyncifyInvocation | This invocation could benefit from the use of Task async. | Warning | Yes |
-| AsyncifyVariable | This variable access could benefit from the use of Task async. | Warning | Yes |</p>
-
+	<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Description</th>
+<th>Default Severity</th>
+<th>CodeFix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AsyncifyInvocation</td>
+<td>This invocation could benefit from the use of Task async.</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AsyncifyVariable</td>
+<td>This variable access could benefit from the use of Task async.</td>
+<td>Warning</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 <p>👉 <a href="https://www.nuget.org/packages/Asyncify/">Nuget package</a></p>
-
 <p>👉 <a href="https://github.com/hvanbakel/Asyncify-CSharp">Official website</a></p>
 
 
@@ -491,95 +795,74 @@
 
 	</div>
 </div>
-
-<h2 id="async-code-smells">Async Code Smells</h2>
+<h2 id="async-code-smells"><a href="#async-code-smells">Async Code Smells  🔗&#xFE0E;</a></h2>
 
 <p>Here&rsquo;s my list of the first seven most common issues related to asynchronous programming. For every issue, I provide entries for <code>.editorconfig</code> that configure analyzers that can detect it.</p>
-
-<h3 id="1-redundant-async-await">1. Redundant async/await</h3>
+<h3 id="1-redundant-asyncawait"><a href="#1-redundant-asyncawait">1. Redundant async/await  🔗&#xFE0E;</a></h3>
 
 <p>Using the <code>async/await</code> keywords results in implicit memory allocation required for the state machine responsible for orchestrating asynchronous invocations. When the awaited expression is the only one or the last statement in the function, it might be skipped. However, there&rsquo;s a couple of concerns around this code optimization of which you should be aware. Before you start applying it, I highly recommend reading an excellent blog post about it from Stephen Cleary <a href="https://blog.stephencleary.com/2016/12/eliding-async-await.html">Eliding Async and Await</a>.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await Task.Yield(); //Reported diagnostics: AsyncFixer01, RCS1174
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">Task DoSomethingAsync()
 {
     return Task.Yield();
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># AsyncFixer01: Unnecessary async/await usage
 dotnet_diagnostic.AsyncFixer01.severity = error
 
 # RCS1174: Remove redundant async/await.
 dotnet_diagnostic.RCS1174.severity = error
 </code></pre>
-
-<h3 id="2-calling-synchronous-method-inside-the-async-method">2. Calling synchronous method inside the async method</h3>
+<h3 id="2-calling-synchronous-method-inside-the-async-method"><a href="#2-calling-synchronous-method-inside-the-async-method">2. Calling synchronous method inside the async method  🔗&#xFE0E;</a></h3>
 
 <p>If we are writing asynchronous code then we should always prefer calling asynchronous methods if they exist. Many IO related APIs offer asynchronous counterparts of their well known synchronous methods. They should be our first choice.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async Task DoAsync(Stream file, byte[] buffer)
 {
     file.Read(buffer, 0, 10); // VSTHRD103 is reported to use ReadAsync
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task DoAsync(Stream file, byte[] buffer)
 {
     await file.ReadAsync(buffer, 0, 10); // VSTHRD103 is reported to use ReadAsync
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># AsyncFixer02: Long-running or blocking operations inside an async method
 dotnet_diagnostic.AsyncFixer02.severity = error
 
 # VSTHRD103: Call async methods when in an async method
 dotnet_diagnostic.VSTHRD103.severity = error
 </code></pre>
+<h3 id="3-async-void-method"><a href="#3-async-void-method">3. Async Void method  🔗&#xFE0E;</a></h3>
 
-<h3 id="3-async-void-method">3. Async Void method</h3>
-
-<p>There are two reasons why Async Void methods are harmful:
-- A caller of the method is not able to await asynchronous operation.
-- There&rsquo;s no way to handle exception thrown by the method. <strong>If the exception occurs, your process crashes!!!</strong></p>
-
+<p>There are two reasons why Async Void methods are harmful:</p>
+<ul>
+<li>A caller of the method is not able to await asynchronous operation.</li>
+<li>There&rsquo;s no way to handle exception thrown by the method. <strong>If the exception occurs, your process crashes!!!</strong></li>
+</ul>
 <p>You should always use <code>async Task</code> instead of <code>async void</code>, unless it&rsquo;s an event handler, but then you should guarantee yourself that the method can&rsquo;t throw an exception.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async void DoSomethingAsync() // Reported diagnostics: VSTHRD100, AsyncFixer03, ASYNC0003
 {
     await Task.Yield();
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await Task.Yield();
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># AsyncFixer03: Fire &amp; forget async void methods
 dotnet_diagnostic.AsyncFixer03.severity = error
 
@@ -589,13 +872,10 @@ dotnet_diagnostic.VSTHRD100.severity = error
 # ASYNC0003: Avoid void returning asynchronous method
 dotnet_diagnostic.ASYNC0003.severity = error
 </code></pre>
-
-<h3 id="4-unsupported-async-delegates">4. Unsupported async delegates</h3>
+<h3 id="4-unsupported-async-delegates"><a href="#4-unsupported-async-delegates">4. Unsupported async delegates  🔗&#xFE0E;</a></h3>
 
 <p>If we pass the asynchronous lambda function the <code>Action</code> argument, the compiler generates <code>async void</code> method which downsides were described in the previous code smell. There are two solutions for this problem: if it&rsquo;s possible, we should change the parameter type from <code>Action</code> to <code>Func&lt;Task&gt;</code>, otherwise we need to implement that callback delegate synchronously. It&rsquo;s worth mentioning that some APIs already provide counterparts of their methods that accept <code>Func&lt;Task&gt;</code> for the callback parameters.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">void DoSomething()
 { 
     Callback(async () =&gt; // Reported diagnostics: VSTHRD101
@@ -608,9 +888,7 @@ void Callback(Action action)
 {
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">void DoSomething()
 {  
     CallbackAsync(async () =&gt;
@@ -623,45 +901,33 @@ void CallbackAsync(Func&lt;Task&gt; action)
 {
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># VSTHRD101: Avoid unsupported async delegates
 dotnet_diagnostic.VSTHRD101.severity = error
 </code></pre>
-
-<h3 id="5-not-awaited-task-within-using-expression">5. Not awaited Task within using expression</h3>
+<h3 id="5-not-awaited-task-within-using-expression"><a href="#5-not-awaited-task-within-using-expression">5. Not awaited Task within using expression  🔗&#xFE0E;</a></h3>
 
 <p><code>System.Threading.Tasks.Task</code> implements <code>IDisposable</code> interface. Calling a method returning task directly in <code>using</code> expressions results in <code>Task</code> disposal at the end of <code>using</code> block which is never an expected behavior.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">using (CreateDisposableAsync()) //Reported diagnostics: VSTHRD107
 {
     
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">using (await CreateDisposableAsync())
 {
     
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># VSTHRD107: Await Task within using expression
 dotnet_diagnostic.VSTHRD107.severity = error
 </code></pre>
-
-<h3 id="6-not-awaited-task-inside-the-using-block">6. Not awaited Task inside the using block</h3>
+<h3 id="6-not-awaited-task-inside-the-using-block"><a href="#6-not-awaited-task-inside-the-using-block">6. Not awaited Task inside the using block  🔗&#xFE0E;</a></h3>
 
 <p>If we skip the <code>await</code> keyword for asynchronous operation inside the <code>using</code> block, then the disposable object could be disposed before the asynchronous invocation finishes. This might result in incorrect behavior and very often ends with a runtime exception notifying that we are trying to operate on the object that is already disposed. This issue has two root causes: either it&rsquo;s done by accident when somebody simply forgot about adding <code>async/await</code> keywords or it&rsquo;s a result of incorrectly applied code optimization described in <code>Redundant async/await</code> code smell.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">private Task&lt;int&gt; DoSomething() // Reported diagnostics: RCS1229
 {
     using (var service = CreateService())
@@ -670,9 +936,7 @@ dotnet_diagnostic.VSTHRD107.severity = error
     }
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">private async Task&lt;int&gt; DoSomething()
 {
     using (var service = CreateService())
@@ -681,33 +945,25 @@ dotnet_diagnostic.VSTHRD107.severity = error
     }
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># AsyncFixer04: Fire &amp; forget async call inside a using block
 dotnet_diagnostic.AsyncFixer04.severity = error
 
 # RCS1229: Use async/await when necessary.
 dotnet_diagnostic.RCS1229.severity = error
 </code></pre>
-
 <p>There is a small difference between those two analyzers. <code>RCS1229</code> is reported on the method level and <code>AsyncFixer04</code> is reported in the return statement line which is IMHO more intuitive. I also observed that those diagnostics are not able to report the issue while using a new <code>using var</code> syntax:</p>
-
 <pre><code class="language-cs">private Task&lt;int&gt; DoSomething(CancellationToken cancellationToken)
 {
     using var service = CreateService();
     return service.GetAsync(cancellationToken); // THIS SHOULD BE REPORTED!!!
 }
 </code></pre>
-
 <p>In <code>Roslynator</code> this problem has been recently fixed <a href="https://github.com/JosefPihrt/Roslynator/issues/726">issues/726</a> (it&rsquo;s not released yet at the moment of publishing this article).</p>
-
-<h3 id="7-unobserved-result-of-asynchronous-method">7. Unobserved result of asynchronous method</h3>
+<h3 id="7-unobserved-result-of-asynchronous-method"><a href="#7-unobserved-result-of-asynchronous-method">7. Unobserved result of asynchronous method  🔗&#xFE0E;</a></h3>
 
 <p>Missing <code>await</code> keyword before asynchronous operation will result in method completing before given async operation finishes. The method will behave non-deterministically and the outcome will be different from the expectations. What is worse, if the un-awaited expression throws an exception, it goes unnoticed and it doesn&rsquo;t cause the process to crash, which makes it even harder to spot. You should always await asynchronous expression or assign a returned task to a variable and ensure that finally something awaits it.</p>
-
 <p>❌ Wrong</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await DoSomethingAsync1(); 
@@ -715,9 +971,7 @@ dotnet_diagnostic.RCS1229.severity = error
     await DoSomethingAsync3(); 
 }
 </code></pre>
-
 <p>✔️ Correct</p>
-
 <pre><code class="language-cs">async Task DoSomethingAsync()
 {
     await DoSomethingAsync1(); 
@@ -725,19 +979,15 @@ dotnet_diagnostic.RCS1229.severity = error
     await DoSomethingAsync3();
 }
 </code></pre>
-
 <p>🛠️ Configuration</p>
-
 <pre><code># VSTHRD110: Observe result of async calls
 dotnet_diagnostic.VSTHRD110.severity = error
 
 # CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
 dotnet_diagnostic.CS4014.severity = error
 </code></pre>
-
 <p>There&rsquo;s also a standard compiler warning <code>CS4014</code> for that issue but it&rsquo;s only able to report un-awaited expressions inside the <code>async</code> methods.</p>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <table>
 <thead>
@@ -750,7 +1000,6 @@ dotnet_diagnostic.CS4014.severity = error
 <th>Roslynator</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td align="right">1.</td>
@@ -760,7 +1009,6 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 <td>🔎🛠️  RCS1174</td>
 </tr>
-
 <tr>
 <td align="right">2.</td>
 <td>Call sync methods inside async method</td>
@@ -769,7 +1017,6 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">3.</td>
 <td>Async void methods</td>
@@ -778,7 +1025,6 @@ dotnet_diagnostic.CS4014.severity = error
 <td>🔎🛠️  ASYNC0003</td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">4.</td>
 <td>Unsupported async delegates</td>
@@ -787,7 +1033,6 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">5.</td>
 <td>Not awaited Task within using expression</td>
@@ -796,7 +1041,6 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td align="right">6.</td>
 <td>Not awaited Task inside the using block</td>
@@ -805,7 +1049,6 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 <td>🔎🛠️ RCS1229</td>
 </tr>
-
 <tr>
 <td align="right">7.</td>
 <td>Unobserved result of asynchronous method</td>
@@ -816,9 +1059,7 @@ dotnet_diagnostic.CS4014.severity = error
 </tr>
 </tbody>
 </table>
-
 <p>🔎 - Analyzer</p>
-
 <p>🛠️ - CodeFix</p>
     
 		

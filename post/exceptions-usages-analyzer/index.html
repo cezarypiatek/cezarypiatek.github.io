@@ -58,7 +58,7 @@
 	<meta property="twitter:description" content="Detecting violation of best practices in exception usage">
 
 	<meta name="keywords" value="dotnet, c#, exceptions, architecture, clean code, roslyn" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Exception usage analyzer &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -177,91 +177,76 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>Over a year ago I wrote a blog post about <a href="../../post/the-art-of-designing-exceptions/">designing exceptions</a>. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&rsquo;s almost impossible to expect that, after reading the recommended resource, anybody would start to apply described rules immediately and remember about them all the time. It&rsquo;s a learning process and it takes some time. A while ago I got interested with Roslyn (I even delivered a public presentation about it - <a href="https://www.youtube.com/watch?v=wi1XHpUhx1Y">polish recording available here</a>) and there is a really cool thing about Roslyn analyzers that can solve this problem - they help to actively introduce best practices into your codebase. Besides detecting all violations of a given rule, Roslyn analyzers are able to provide a detailed explanation of why given code can be harmful and - thanks to associated <code>CodeFix</code> - can automatically rewrite suspicious code into the proper one. By adding Roslyn analyzers into your solution, you are helping your team to gain knowledge about best practices as well as to avoid potential code quality issues they are not aware of. All of that happens via the shortest feedback loop - just in time of writing code. There are plenty of already implemented rules (mostly free and open-sourced) such as:</p>
-
+		<p>Over a year ago I wrote a blog post about <a href="../../post/the-art-of-designing-exceptions/">designing exceptions</a>. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&rsquo;s almost impossible to expect that, after reading the recommended resource, anybody would start to apply described rules immediately and remember about them all the time. It&rsquo;s a learning process and it takes some time. A while ago I got interested with Roslyn (I even delivered a public presentation about it - <a href="https://www.youtube.com/watch?v=wi1XHpUhx1Y">polish recording available here</a>) and there is a really cool thing about Roslyn analyzers that can solve this problem - they help to actively introduce best practices into your codebase. Besides detecting all violations of a given rule, Roslyn analyzers are able to provide a detailed explanation of why given code can be harmful and - thanks to associated <code>CodeFix</code> - can automatically rewrite suspicious code into the proper one. By adding Roslyn analyzers into your solution, you are helping your team to gain knowledge about best practices as well as to avoid potential code quality issues they are not aware of. All of that happens via the shortest feedback loop - just in time of writing code. There are plenty of already implemented rules (mostly free and open-sourced) such as:</p>
 <ul>
 <li><a href="https://github.com/JosefPihrt/Roslynator">Roslynator</a></li>
 <li><a href="http://vsrefactoringessentials.com/">Refactoring Essentials</a></li>
 <li><a href="http://code-cracker.github.io/">Code Cracker</a></li>
 <li><a href="https://github.com/DotNetAnalyzers">DotNetAnalyzers</a></li>
 </ul>
-
 <p>If there is no analyzer that meets your expectations, you can always create one of your own. You can easily find many tutorials on the web that teach how to start your journey as an analyzer creator. If you need a comprehensive introduction, I highly recommend to read  <a href="https://www.amazon.com/Roslyn-Cookbook-Compiler-Service-Analysis-ebook/dp/B0719Q2KHT/">Roslyn Cookbook</a> by <code>Manish Vasani</code>
 (I used this book for preparing my talk about Roslyn analyzers and I also use it as a reference when I create my own analyzers.)</p>
-
 <p>I wanted to automate my advice from the article about the exception designs by creating Roslyn analyzers. I also asked on Twitter in <a href="https://twitter.com/cezary_piatek/status/1116270781254852613">this thread</a> what kind of automatic verifications related to the exceptions would be useful and I got a few inspirations from <a href="https://twitter.com/dhermyt">@dhermyt</a> and <a href="https://twitter.com/marcinwachulski">@marcinwachulski</a>. In this article, I describe all those ideas as well as the implementation of Roslyn analyzers for detecting issues with the exception usage.</p>
-
-<h2 id="be-more-specific">Be more specific</h2>
+<h2 id="be-more-specific"><a href="#be-more-specific">Be more specific  🔗&#xFE0E;</a></h2>
 
 <p>The first remark related to the exception usage was about the exception types. <code>Throw</code> statements should not directly use types such as <code>Exception</code>, <code>SystemException</code> and <code>ApplicationException</code> because they are too vague and don&rsquo;t have information about the failure reason. The actual role of the <code>ApplicationException</code> is not clear and should be completely avoided. According to the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.applicationexception?redirectedfrom=MSDN&amp;view=netframework-4.8">msdn documentation</a> it was originally intended as a base class for application&rsquo;s custom exceptions but there are <a href="https://docs.microsoft.com/en-us/dotnet/api/system.applicationexception?redirectedfrom=MSDN&amp;view=netframework-4.8#remarks">additional remarks</a> that advice to derive custom exceptions directly from the <code>Exception</code> class. Throwing and catching <code>SystemException</code> is also discouraged by the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.systemexception?view=netframework-4.8#remarks">msdn</a>. You should always use more specific types of exceptions from <code>BCL</code> or create your own that represents given exceptional situation. It&rsquo;s a common practice to persist the type of exception in logs, so having a specific types for all types of failures makes logs filtering and aggregating much easier. Custom exception types allow also to convey in semantic form more contextual information inside the exception object.
 To guard a codebase against using generic types of exceptions I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/UseMoreSpecificExceptionType/UseMoreSpecificExceptionTypeAnalyzer.cs">UseMoreSpecificExceptionTypeAnalyzer</a> which enforces using more specific types of exceptions in <code>throw</code> statements and expressions.</p>
-
-<p><img src="use_more_specific_exception.jpg" alt="use more specific exception example" /></p>
-
+<p>
+<a href="use_more_specific_exception.jpg"><img  src="use_more_specific_exception.jpg" alt="use more specific exception example"></a>
+</p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/gitextensions/gitextensions">gitextensions</a>. The generic type of exception with a totally meaningless error message. No way to investigate this problem without digging into the source code.</p>
-
-<h2 id="context-will-save-you">Context will save you</h2>
+<h2 id="context-will-save-you"><a href="#context-will-save-you">Context will save you  🔗&#xFE0E;</a></h2>
 
 <p>The huge problem with the exceptions is that they very often don&rsquo;t contain enough information for investigating a failure. I guess you saw a code when somebody throws an exception with a very vague or even meaningless message at least once. This lack of proper attention focused on the message can cause a lot of problems and can be very expensive. After finding that exception in the logs, it&rsquo;s highly probable that it will be necessary to add additional logging and redeploy the application in order to collect crucial information that allows solving the problem. In order to avoid that and save a lot of time, it&rsquo;s worth to think every time when we are writing <code>throw</code> statements - what information about the current context could be necessary to investigate this problem when it occurs. For this kind of affliction I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/UseContextAwareConstructor/UseContextAwareConstructorAnalyzer.cs">UseContextAwareConstructorAnalyzer</a> which enforces using context-aware constructors in throw statements by forbidding constructors with the following signatures:</p>
-
 <ul>
 <li>()</li>
 <li>(<code>String message</code>)</li>
 <li>(<code>String message</code>, <code>Exception innerException</code>)</li>
 <li>(<code>SerializationInfo info</code>, <code>StreamingContext context</code>)</li>
 </ul>
-
 <p>In order to obey this rule, you have to mark constructor that accepts <code>message</code> as private and add public constructor (or static factory method) that accepts contextual information which can be used for constructing appropriate error message. This information can also be added as exception object members - it can be helpful for testing purposes (help to avoid writing assertions based on the error message). This constructor signature restriction should force you to think about what will be necessary to investigate potential failure - to make it obvious even for a person who didn&rsquo;t develop this part of the application. It should also simplify error message management in your codebase because you don&rsquo;t need to think error message up every time you throw given exception.</p>
-
-<p><img src="use_context_aware_constructor.jpg" alt="use context aware constructor example" /></p>
-
+<p>
+<a href="use_context_aware_constructor.jpg"><img  src="use_context_aware_constructor.jpg" alt="use context aware constructor example"></a>
+</p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/gitextensions/gitextensions">gitextensions</a>. The <code>ArgumentOutOfRangeException</code> is created without any parameter giving no clue to the method consumer what went wrong. Besides this method (property) has no argument so it&rsquo;s even more confusing.</p>
-
-<h2 id="parameters-validation">Parameters validation</h2>
+<h2 id="parameters-validation"><a href="#parameters-validation">Parameters validation  🔗&#xFE0E;</a></h2>
 
 <p><code>BCL</code> contains predefined exceptions intended for parameter&rsquo;s validation such as: <code>ArgumentException</code>, <code>ArgumentNullException</code> and <code>ArgumentOutOfRangeException</code>. Each of these types has a constructor that accepts a string representing the name of the parameter that violates the contract of our method. The obligation of providing this parameter should be enforced by the <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/UseContextAwareConstructor/UseContextAwareConstructorAnalyzer.cs">UseContextAwareConstructorAnalyzer</a>. However, it&rsquo;s important to provide a valid parameter name. Even if we do so, our code can become easily outdated especially if we don&rsquo;t use <code>nameof()</code> expression. I&rsquo;ve also seen a code where argument related exceptions were used for reporting invalid values of local variables or current object members which is, in my opinion, a symptom of improper design. In order to prevent those issues I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ArgumentExceptionParameterName/ArgumentExceptionParameterNameAnalyzer.cs">ArgumentExceptionParameterNameAnalyzer</a> which is responsible for verification if the value of the exception constructor&rsquo;s parameter with name <code>parameterName</code> matches the name of any current method parameter.</p>
-
-<p><img src="invalid_parameter_name.jpg" alt="invalid parameter name" /></p>
-
+<p>
+<a href="invalid_parameter_name.jpg"><img  src="invalid_parameter_name.jpg" alt="invalid parameter name"></a>
+</p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. Somebody confused <code>parameterName</code> with <code>message</code> parameter.</p>
-
-<h2 id="original-culprit">Original culprit</h2>
+<h2 id="original-culprit"><a href="#original-culprit">Original culprit  🔗&#xFE0E;</a></h2>
 
 <p>On numerous occasions I come across a code where somebody catches an exception and from the <code>catch</code> clause throws a new one, without supplying the original exception as the <code>innerException</code> parameter. Re-throwing exception from the <code>catch</code> clause should serve for providing more context information instead of hiding the original reason. Some developers may be doing it on purpose, advocating it with security concerns but this aspect should be rather handled on the service boundary. The original exception in the logs certainly helps you investigate the problem and find the failure reason faster. In order to detect this code smell I&rsquo;ve created <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ProvideInnerExceptionInCatch/ProvideInnerExceptionInCatchAnalyzer.cs">ProvideInnerExceptionInCatchAnalyzer</a>. This analyzer searches for all <code>throw</code> statements inside the <code>catch</code> clause which don&rsquo;t pass caught exception as an <code>innerException</code> parameter for the new exception.</p>
-
-<p><img src="inner_exception_hiding_example.jpg" alt="inner exception hiding example" /></p>
-
+<p>
+<a href="inner_exception_hiding_example.jpg"><img  src="inner_exception_hiding_example.jpg" alt="inner exception hiding example"></a>
+</p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. The original reason of the error is swallowed.</p>
-
-<h2 id="exception-driven-logic">Exception Driven Logic</h2>
+<h2 id="exception-driven-logic"><a href="#exception-driven-logic">Exception Driven Logic  🔗&#xFE0E;</a></h2>
 
 <p>What is the <code>Exception Driven Logic</code>? It&rsquo;s a kind of code where business flows are implemented using exceptions mechanism (<code>try-catch</code>) instead of condition statements (<code>if-else</code>). It can be easily identified because in the same method given exception is thrown and caught, something like that:</p>
-
 <pre><code class="language-cs">try
 {
-    // do sth
-    if(condition)
-    {
-       throw new SpecificException();
-    }
-    // do sth
+	// do sth
+	if(condition)
+	{
+	   throw new SpecificException();
+	}
+	// do sth
 }
 catch(SpecificException e)
 {
-    // do sth
+	// do sth
 }
 </code></pre>
-
-<p>This approach makes the code harder to analyze and has a huge impact on performance. According to
+<p>This approach makes the code harder to analyze and has a huge impact on performance. According to 
 <a href="https://www.amazon.com/Writing-High-Performance-NET-Code-Watson-ebook/dp/B07BF68842/">Writing High-Performance .NET Code</a> by <code>Ben Watson</code> it can be even <strong>thousands of times slower</strong> (For more details on that I recommend reading chapter: &ldquo;General Coding and Class Design - Exceptions&rdquo;). Exceptions are for exceptional situations (when you don&rsquo;t know how to react on given conditions in the current context) and should not be used for well-known business workflow. In order to prevent this kind of violation in the code I&rsquo;ve implemented <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ExceptionDrivenLogic/ExceptionDrivenLogicAnalyzer.cs">ExceptionDrivenLogicAnalyzer</a> which is able to spot places where the exception is thrown and caught inside the code of the same method.</p>
-
-<p><img src="exception_deriven_logic_example.jpg" alt="exception driven logic example" /></p>
-
+<p>
+<a href="exception_deriven_logic_example.jpg"><img  src="exception_deriven_logic_example.jpg" alt="exception driven logic example"></a>
+</p>
 <p><strong>EXAMPLE:</strong> Taken from <a href="https://github.com/nhibernate/nhibernate-core">nhibernate-core</a>. This additional level of indirection seems to be redundant.</p>
-
-<h2 id="summary">Summary</h2>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>This is the first experimental implementation of analyzers so they might report false positives. I would appreciate if you could try it and let me know if it was able to spot real problems in your code base or all those reported diagnostics were wrong. The analyzers can be installed from <code>nuget</code> <a href="https://www.nuget.org/packages/SmartAnalyzers.ExceptionAnalyzer/">SmartAnalyzers.ExceptionAnalyzer</a> and the source code is available on <code>Github</code> as the <a href="https://github.com/smartanalyzers/ExceptionAnalyzer">ExceptionAnalyzer</a> project.</p>
     

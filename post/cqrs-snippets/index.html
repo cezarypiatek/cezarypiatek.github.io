@@ -39,15 +39,15 @@
     <meta property="og:description" content="Skip the boring part of the CQRS with Resharper snippets.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="cqrs">
+    <meta property="og:tags" content="CQRS">
     
-    <meta property="og:tags" content="cqs">
+    <meta property="og:tags" content="CQS">
     
     <meta property="og:tags" content="architecture">
     
     <meta property="og:tags" content="resharper">
     
-    <meta property="og:tags" content="livetemplates">
+    <meta property="og:tags" content="LiveTemplates">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/cqrs-snippets/splashscreen.jpg">
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="Skip the boring part of the CQRS with Resharper snippets.">
 
-	<meta name="keywords" value="cqrs, cqs, architecture, resharper, livetemplates" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="CQRS, CQS, architecture, resharper, LiveTemplates" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>CQRS snippets &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,61 +175,57 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned <code>CQRS</code> and <code>CQS</code> patterns. I heard about them many times before but I&rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects. There are existing libraries which facilitate building application with CQRS pattern but I wanted to implement it by myself from the scratch, in order to better understand the concept. I based my implementation on <a href="https://www.future-processing.pl/blog/cqrs-simple-architecture/">CQRS – Simple architecture</a> article but the idea is also pretty clearly explained by Greg Young in his famous presentation <a href="https://www.infoq.com/presentations/8-lines-code-refactoring">8 Lines of Code </a></p>
-
-<h2 id="it-s-not-all-light-and-bright">It&rsquo;s not all light and bright</h2>
+		<p>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned <code>CQRS</code> and <code>CQS</code> patterns. I heard about them many times before but I&rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects. There are existing libraries which facilitate building application with CQRS pattern but I wanted to implement it by myself from the scratch, in order to better understand the concept. I based my implementation on <a href="https://www.future-processing.pl/blog/cqrs-simple-architecture/">CQRS – Simple architecture</a> article but the idea is also pretty clearly explained by Greg Young in his famous presentation <a href="https://www.infoq.com/presentations/8-lines-code-refactoring">8 Lines of Code </a></p>
+<h2 id="its-not-all-light-and-bright"><a href="#its-not-all-light-and-bright">It&rsquo;s not all light and bright  🔗&#xFE0E;</a></h2>
 
 <p>The CQRS/CQS pattern works great, I immediately found a lot of benefits. It helps me to enforce separation of concerns, single responsibility and consistency in my codebase, as well as eliminate all that AOP magic with restoring full control over the code execution. Unfortunately, there is also a boring side of implementing CQRS - <strong>THE TYPING</strong>. Every time I want to add new command, I need to add 2 classes (<code>Command</code> and <code>CommandHandler</code>) and for every new query 3 classes (<code>Query</code>, <code>QueryResult</code> and <code>QueryHandler</code>). There is a lot of <code>copy&amp;paste</code> work to keep the naming consistency which is very important because <code>CommandDispatcher</code> and <code>QueryDispatcher</code> make it hard to navigate through the codebase. I prepared a couple of snippets with Resharper&rsquo;s <code>LiveTemplates</code> which help to create, consume and test commands and queries to make this tedious part of CQRS more convenient.</p>
-
-<h2 id="creating-commands-and-queries">Creating Commands and Queries</h2>
+<h2 id="creating-commands-and-queries"><a href="#creating-commands-and-queries">Creating Commands and Queries  🔗&#xFE0E;</a></h2>
 
 <p>I started by creating templates for commands and queries definition. For building them I used multi-file template option which is available at <code>File Template</code> tab in <code>Templates Explorer</code>.</p>
-
 <p>For <code>New Command</code> template we need to create two files: one for <code>Command</code> and one for <code>CommandHandler</code>. Each file shares two placeholders: <code>$CommandName$</code> with the macro set to <code>Current file name without extension</code> and <code>$namespace$</code> with <code>Default namespace for current file</code> macro. You can see the complete configuration on the following screenshot:</p>
-
-<p><img src="CommandDefinition.jpg" alt="Command template configuration" /></p>
-
+<p>
+<a href="CommandDefinition.jpg"><img  src="CommandDefinition.jpg" alt="Command template configuration"></a>
+</p>
 <p><code>New query</code> template consists of three files: <code>Query</code>, <code>QueryResult</code> and <code>QueryHandler</code>. There are two placeholders: <code>$QueryName$</code> and <code>$namespace$</code>. Macros are assigned analogously as for <em>New Command</em> template. A detailed configuration looks as follows:</p>
-
-<p><img src="QueryDefinition.jpg" alt="Query template configuration" /></p>
-
+<p>
+<a href="QueryDefinition.jpg"><img  src="QueryDefinition.jpg" alt="Query template configuration"></a>
+</p>
 <p>Now we can easily add commadns and queries using predefined multi-file templates:</p>
-
-<p><img src="insert_command.gif" alt="Insert command using template" /></p>
-
+<p>
+<a href="insert_command.gif"><img  src="insert_command.gif" alt="Insert command using template"></a>
+</p>
 <p>In order to save some clicking, it&rsquo;s good to check &ldquo;Add to quicklist&rdquo; option in &ldquo;Choose template&rdquo; window. After that, chosen template should be available in quick menu after pressing <code>alt + insert</code> on selected directory:</p>
-
-<p><img src="quicklist.jpg" alt="quick list" /></p>
-
-<h2 id="dispatching">Dispatching</h2>
+<p>
+<a href="quicklist.jpg"><img  src="quicklist.jpg" alt="quick list"></a>
+</p>
+<h2 id="dispatching"><a href="#dispatching">Dispatching  🔗&#xFE0E;</a></h2>
 
 <p>Next set of snippets which could be helpful in CQRS codebase is one that allows dispatching commands and queries in controller&rsquo;s actions. It is an inline template which could be prepared using &ldquo;Template Explorer -&gt; Live Templates&rdquo; tab. The definition of such template can looks as follows:</p>
-
-<p><img src="command_action_definition.jpg" alt="command dispatching template" /></p>
-
-<p><img src="query_action_definition.jpg" alt="query dispatching template" /></p>
-
+<p>
+<a href="command_action_definition.jpg"><img  src="command_action_definition.jpg" alt="command dispatching template"></a>
+</p>
+<p>
+<a href="query_action_definition.jpg"><img  src="query_action_definition.jpg" alt="query dispatching template"></a>
+</p>
 <p>I assigned <code>ca</code> shortcut for <code>Command action</code> and <code>qa</code> for <code>Query action</code>. Now we can easily insert actions which dispatch commands and queries.</p>
-
-<p><img src="dispatch_command_and_query.gif" alt="Dispatch command and query" /></p>
-
+<p>
+<a href="dispatch_command_and_query.gif"><img  src="dispatch_command_and_query.gif" alt="Dispatch command and query"></a>
+</p>
 <p>As you can see, these templates save me a lot of typing and ensure that I don&rsquo;t forget to decorate my actions with necessary attributes (<code>[HttpPost]</code> and <code>[FromBody]</code> for commands and <code>[HttpGet]</code> for queries).</p>
-
-<h2 id="testing">Testing</h2>
+<h2 id="testing"><a href="#testing">Testing  🔗&#xFE0E;</a></h2>
 
 <p>The last template that I needed to work with CQRS was one that helps me with creating Unit Tests for commands and queries. The template definitions look as below:</p>
-
-<p><img src="command_test_template.jpg" alt="Command test template" /></p>
-
-<p><img src="query_test_template.jpg" alt="Query test template" /></p>
-
+<p>
+<a href="command_test_template.jpg"><img  src="command_test_template.jpg" alt="Command test template"></a>
+</p>
+<p>
+<a href="query_test_template.jpg"><img  src="query_test_template.jpg" alt="Query test template"></a>
+</p>
 <p>Now using <code>ct</code> snippet for commands and <code>qt</code> snippet for queries we can easily create stubs for our tests:</p>
-
-<p><img src="insert_command_and_query_tests.gif" alt="Insert command and query tests" /></p>
-
-<h2 id="summary">Summary</h2>
+<p>
+<a href="insert_command_and_query_tests.gif"><img  src="insert_command_and_query_tests.gif" alt="Insert command and query tests"></a>
+</p>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>Resharper LiveTemplates is a powerful mechanism that can easily relieve you of boring typing, help to enforce code consistency and allow to focus on implementing what is important - the business requirements. All snippets presented in this blog post are available at Github <a href="https://github.com/cezarypiatek/CQRSsnippets">here</a>. You can import them as a separate layer in your Resharper configuration and easily adjust to your CQRS framework of choice. If you are interested in how to configure and consume your own templates, I recommend you to read my article <a href="../../post/livetemplates/">Don&rsquo;t write dull code - Resharper Live Templates</a> I&rsquo;m curious if you have any other ideas for snippets that could help with CQRS apps. If you do, I would appreciate if you could share them in the comment section below.</p>
     
@@ -354,7 +350,7 @@
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "cqrs,cqs,architecture,resharper,livetemplates"
+				hashtags: "CQRS,CQS,architecture,resharper,LiveTemplates"
 			}
 		}
 	}

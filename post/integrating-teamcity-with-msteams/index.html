@@ -39,15 +39,15 @@
     <meta property="og:description" content="How to send notification to Microsoft Teams channel from TeamCity using PowerShell build step and how to make it reusable with meta runners.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="teamcity">
+    <meta property="og:tags" content="TeamCity">
     
-    <meta property="og:tags" content="powershell">
+    <meta property="og:tags" content="PowerShell">
     
     <meta property="og:tags" content="meta runner">
     
-    <meta property="og:tags" content="ms teams">
+    <meta property="og:tags" content="MS Teams">
     
-    <meta property="og:tags" content="gitlab">
+    <meta property="og:tags" content="Gitlab">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/splashscreen.jpg">
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to send notification to Microsoft Teams channel from TeamCity using PowerShell build step and how to make it reusable with meta runners.">
 
-	<meta name="keywords" value="teamcity, powershell, meta runner, ms teams, gitlab" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="TeamCity, PowerShell, meta runner, MS Teams, Gitlab" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Integrating TeamCity with Microsoft Teams using PowerShell &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,58 +175,43 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>With the beginning of new year I joined a new team where I help with project bootstrapping. I&rsquo;ve been configuring TeamCity, Gitlab and webservers. It&rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &ldquo;Integration&rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat. In my company MS Teams is the basic communication channel, so I gave it a shot and tried to connect the two systems. The configuration was very easy - Gitlab communicates with MS Teams via webhooks - and as result my team receives notification related to merge request on MS Teams channel. This is really cool, but it would be more useful if my continuous integration system could send notifications to my team&rsquo;s channel too. I checked all available build steps in TeamCity and there was noting related to MS Teams. Fortunately, nothing was lost - webhooks are pretty easy concepts so I was able to create this integration with little amount of work. For those who don’t know webhooks mechanism, it is nothing more than REST API. I checked <a href="https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors">MS Teams documentation</a> and in order to send message to MS Teams channel we have to submit POST request to given webhook url with json payload in the following format:</p>
-
+		<p>With the beginning of new year I joined a new team where I help with project bootstrapping. I&rsquo;ve been configuring TeamCity, Gitlab and webservers. It&rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &ldquo;Integration&rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat. In my company MS Teams is the basic communication channel, so I gave it a shot and tried to connect the two systems. The configuration was very easy - Gitlab communicates with MS Teams via webhooks - and as result my team receives notification related to merge request on MS Teams channel. This is really cool, but it would be more useful if my continuous integration system could send notifications to my team&rsquo;s channel too. I checked all available build steps in TeamCity and there was noting related to MS Teams. Fortunately, nothing was lost - webhooks are pretty easy concepts so I was able to create this integration with little amount of work. For those who don’t know webhooks mechanism, it is nothing more than REST API. I checked <a href="https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/connectors">MS Teams documentation</a> and in order to send message to MS Teams channel we have to submit POST request to given webhook url with json payload in the following format:</p>
 <pre><code class="language-javascript">{
     title: &quot;Message title&quot;,
     text: &quot;Message content&quot;
 }
 </code></pre>
-
 <p>The &ldquo;text&rdquo; field can accept html markup.  In order to generate webhook url use right click on given MS Teams channel, click &ldquo;Connectors&rdquo; from the context menu and select &ldquo;Incoming webhook&rdquo; on the &ldquo;Configuration&rdquo; list. The rest is pretty intuitive and easy. We&rsquo;ve got all required data but how can we send a web request from TeamCity? The easiest way without using third party tools is to use PowerShell build step. Powershell has <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1">Invoke-WebRequest</a> cmdlet which allows us to send webrequest very easily. The whole code required to send a message to MS Teams channel can look as follows:</p>
-
 <pre><code class="language-powershell">$body = @{
     title= &quot;Message Title&quot;;
     text= &quot;Message content&quot;
 } | ConvertTo-Json
 Invoke-WebRequest -Method Post -Uri &quot;http://my_ms_teams_channe_webook_url&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing
 </code></pre>
-
 <p>You have to remember about adding <strong>UseBasicParsing</strong> switch to <em>Invoke-WebRequest</em> cmdlet - without it you will get a weird error related to InternetExplorer. In order to run this in TeamCity pipeline add PowerShell build step and past the code from above.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/VHPKLnYGd2o?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 <p>When we run build with this step we should get the following message on our MS Teams channel:</p>
-
-<p><img src="teams_simple_notification.jpg" alt="teams notification" /></p>
-
+<p>
+<a href="teams_simple_notification.jpg"><img  src="teams_simple_notification.jpg" alt="teams notification"></a>
+</p>
 <p>Alright, it was very easy. But how about reusability? I&rsquo;m not going to copy&amp;paste this Powershell script every time I need to send a message to MS Teams channel from TeamCity. For example, I need to send that notification twice during my deployment build: once to inform my team that I started deployment and the test environment will be not available for the next couple of minutes; and the second time when the deployment finished, notifying about that fact as well as version and changelog. Happily, TeamCity development team anticipated this requirement and provided <a href="https://confluence.jetbrains.com/display/TCD10/Working+with+Meta-Runner">meta runners</a> mechanism which allows to convert existing build step configuration into new reusable build step template. Before we convert our build step into meta runner we have to make it more generic by parametrization. Message title, content and webhook url will differ depending on the use case, so we can replace these values with TeamCity configuration parameters (parameter names should start and end with percentage sign).</p>
-
 <pre><code class="language-powershell">$body = @{
     title= &quot;%MSTeams_MessageTitle%&quot;;
     text= &quot;%MSTeams_MessageContent%t&quot;
 } | ConvertTo-Json
 Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body -ContentType &quot;application/json&quot; -UseBasicParsing
 </code></pre>
-
 <p>After saving these changes a new parameter should appear in the &ldquo;Parameters&rdquo; tab in build configuration. You can tweak parameter options by editing it. You can define label and input type which will be used to present this parameter on the build step configuration form.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/U2bm8sGXt1A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 <p>Now you are ready to create meta runner based on your build step. In order to do that select &ldquo;Extract meta-runner&hellip;&rdquo; from the &ldquo;Actions&rdquo;  menu.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/F9yi8jUomXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 <p>Be careful because TeamCity creates meta runner based not on given build step but on our whole pipeline from current build configuration. To change that we have to modify our meta runner xml definition by deleting redundant nodes: <strong>/meta-runner/settings/build-runners/runner</strong> and <strong>/meta-runner/settings/parameters/parameter</strong>. Meta runner definition after these changes should look as follows:</p>
-
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;meta-runner name=&quot;Microsoft Teams Notification&quot;&gt;
   &lt;description&gt;Send notification to MS Teams&lt;/description&gt;
@@ -256,33 +241,25 @@ Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body
   &lt;/settings&gt;
 &lt;/meta-runner&gt;
 </code></pre>
-
 <p>From now your meta runner should be available as a new runner type in build step configuration.</p>
-
-<p><img src="meta_runner_as_build_step.jpg" alt="New Runner Type" /></p>
-
+<p>
+<a href="meta_runner_as_build_step.jpg"><img  src="meta_runner_as_build_step.jpg" alt="New Runner Type"></a>
+</p>
 <p>This powershell-based meta runner has a very interesting feature. All parameters of this runner are passed as a string parameters to powershell cmdlet, hence the string interpolation should work. Simply speaking, any powershell expression wrapped in <strong>$()</strong> should be evaluated. Somebody can say that this can be used to Powershell Injection attacks but I think this is not the case as long as you control the environment. For me this is a really nice point of extensions which gives me a lot of possibilities. For example, if we want content of given file embedded in our message, we can achieve this by adding the following code in our message field:</p>
-
 <pre><code class="language-powershell">$(Get-Content -File file_with_additional_info.txt)
 </code></pre>
-
 <p>I used this hack in my deployment notification to add changelog from file to the message. Complete configuration of build step based on our new meta runner can look as follows:</p>
-
-<p><img src="teams_notification_configured.jpg" alt="Teams notification configuration" /></p>
-
+<p>
+<a href="teams_notification_configured.jpg"><img  src="teams_notification_configured.jpg" alt="Teams notification configuration"></a>
+</p>
 <p>The changelog file is generated by another powershell meta runner in the same build which is responsible for creating a package with application and wired up with deployment build via artifacts dependency. Definition of this meta runner can be found on my github in file <a href="https://github.com/cezarypiatek/TCMetaRunnersPowerPack/blob/master/src/ChangelogGenerator.xml">ChangelogGenerator.xml</a></p>
-
 <p><strong>UPDATE 2021-02-09:</strong> Sometimes there&rsquo;s a need to enrich our MsTeams message with data that are not available through the build variables like build status or build url. This can be easily achieve by calling a dedicated TeamCity REST API endpoint and storing the result in a variable that can be later referenced inside the message&rsquo;s title or body expression:</p>
-
 <pre><code class="language-powershell">$BuildInfo = Invoke-RestMethod -Method Get -Uri '%teamcity.serverUrl%/guestAuth/app/rest/builds/id:%teamcity.build.id%' -Headers @{'Accept' = 'application/json'}
 </code></pre>
-
 <p>Example usage in <code>Title</code> field in build step created based on our metarunner:</p>
-
 <pre><code class="language-plaintext">Build status $($BuildInfo.status)
 </code></pre>
-
-<h2 id="tl-dr">TL;DR</h2>
+<h2 id="tldr"><a href="#tldr">TL;DR  🔗&#xFE0E;</a></h2>
 
 <p>TeamCity can send messages to MS Teams channel via webhooks mechanism. Use PowerShell build step to invoke webhook endpoint (send webrequest with <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webreques">Invoke-WebRequest</a> cmdlet). You can make it reusable by converting this build step into <a href="https://confluence.jetbrains.com/display/TCD10/Working+with+Meta-Runner">meta runner</a>. All meta runners presented here are available on my Github project <a href="https://github.com/cezarypiatek/TCMetaRunnersPowerPack">TCMetaRunnersPowerPack</a></p>
     
@@ -409,7 +386,7 @@ Invoke-WebRequest -Method Post -Uri &quot;%MSTeams_WebhookUrl%&quot; -Body $body
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "teamcity,powershell,metarunner,msteams,gitlab"
+				hashtags: "TeamCity,PowerShell,metarunner,MSTeams,Gitlab"
 			}
 		}
 	}

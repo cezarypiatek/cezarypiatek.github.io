@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="How to keep two different types in synchronization using roslyn analyzers">
 
 	<meta name="keywords" value="dotnet, csharp, roslyn, code analysis, code generation" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Twin types - properties synchronization without inheritance &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,58 +175,47 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>A couple of months ago I&rsquo;ve started working on a simple <code>CRUD</code> service. A mix of <code>ASP Core</code> for <code>REST API</code> with <code>Dapper</code> for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&rsquo;s more complex than I expected and this &ldquo;simple-boring&rdquo; <code>CRUD</code> became more interesting and challenging.</p>
-
-<h2 id="the-problem">The Problem</h2>
+		<p>A couple of months ago I&rsquo;ve started working on a simple <code>CRUD</code> service. A mix of <code>ASP Core</code> for <code>REST API</code> with <code>Dapper</code> for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&rsquo;s more complex than I expected and this &ldquo;simple-boring&rdquo; <code>CRUD</code> became more interesting and challenging.</p>
+<h2 id="the-problem"><a href="#the-problem">The Problem  🔗&#xFE0E;</a></h2>
 
 <p>One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</p>
-
 <ul>
 <li><code>DBO</code> - <code>Data Base Object</code> - types for mapping SQL query result to C# object.</li>
 <li><code>DTO</code> (<code>Data Transfer Object</code>) for the read side -  quite similar to <code>DBO</code> but very often has a more complex shape, aggregates results from more than one DBO, contains additional metadata or pre-formatted data.</li>
 <li><code>DTO</code> (<code>Data Transfer Object</code>) for the write side - similar to this one of the read side but without metadata required for UI and without read-only fields.</li>
 </ul>
-
 <p>Those types require synchronization - when I add a new field to <code>DBO</code>, then it&rsquo;s very likely that I need to add its counterpart to both types of <code>DTO</code> as well (or at least to one of them). Similar situation in case of field renaming - it&rsquo;s an obvious expectation to keep the names consistent across all those types. This causes a need for some sort of mechanism that could help enforce that synchronization somehow automatically. The first thing that comes to mind is <code>inheritance</code> but it has some significant downsides:</p>
-
 <ul>
 <li>It introduces direct dependencies between types that we would like to avoid. It could be very strange that <code>DTO</code> inherits from <code>DBO</code> or the other way around.</li>
 <li>Sometimes types have fields with the same names but different types. This could be solved with generic type parameters, but with a lot of such fields we would end up with a very messy code.</li>
 </ul>
-
 <p>The most important thing about inheritance, that programmers very often forget, is that it was invented to share behaviors, not a code (more precisely a state). Those <code>POCO</code> types have no common behaviors - only similar shapes. We can also try to address this issue by introducing an interface with common fields, but it has similar downsides as inheritance and we end up with an even bigger amount of places that require synchronization. When I add a new field to any of my <code>POCO</code> types, I need to remember to add this field to common interface in order to make this synchronization work - and properties declaration need to be repeated in all types that implement an interface, which results in even more code.</p>
-
 <p>I didn&rsquo;t find a good solution for this problem using standard C# mechanisms, so I came up with the idea of <code>TwinTypes</code>.</p>
-
-<h2 id="the-solution-extending-c-rules-with-custom-analyzer">The Solution - Extending C# rules with custom analyzer</h2>
+<h2 id="the-solution---extending-c-rules-with-custom-analyzer"><a href="#the-solution---extending-c-rules-with-custom-analyzer">The Solution - Extending C# rules with custom analyzer  🔗&#xFE0E;</a></h2>
 
 <p>Because standard C# mechanisms don&rsquo;t provide any satisfying solution, I tried once again to take advantage of the Roslyn analyzers and extend language possibilities. The idea of <code>TwinType</code> is to introduce a marker that will express some sort of <code>&quot;soft dependency&quot;</code> between types. The whole solution consists of three parts:</p>
-
 <ul>
 <li><code>[TwinType]</code> attribute to define this <code>&quot;soft dependency&quot;</code> or <code>&quot;shape similarity&quot;</code> with other types.</li>
 <li>Dedicated Roslyn analyzer that keeps track of related type changes and is able to report missing fields and properties.</li>
 <li>Additional code fix which can generate code of missing members.</li>
 </ul>
-
 <p>Talk is cheap so let&rsquo;s see how it works in code:</p>
-
-<p><img src="analyzer_example.jpg" alt="" /></p>
-
+<p>
+<a href="analyzer_example.jpg"><img  src="analyzer_example.jpg" alt=""></a>
+</p>
 <p><code>TwinTypeAnalyzer</code> verifies if type decorated with <code>[TwinType]</code> attribute has members (properties and fields) with the same names as the type declared to mimic. Members&rsquo; types are ignored so it&rsquo;s possible to have the same field with different types on both sides. <code>[TwinType]</code> attribute can be applied multiple times on the same type so it&rsquo;s possible to achieve some sort of <code>mixins</code> or <code>multiple inheritance</code>:</p>
-
-<p><img src="mixins_example.jpg" alt="multiple twins example" /></p>
-
+<p>
+<a href="mixins_example.jpg"><img  src="mixins_example.jpg" alt="multiple twins example"></a>
+</p>
 <p>It&rsquo;s also valid to have multiple twin relations with the same type using different name prefixes:</p>
-
-<p><img src="multiple_same_twin.jpg" alt="" /></p>
-
+<p>
+<a href="multiple_same_twin.jpg"><img  src="multiple_same_twin.jpg" alt=""></a>
+</p>
 <p>To make life a little bit easier I created a dedicated code fix which can generate declarations of those missing members:</p>
-
-<p><img src="generate_missing_members_animated.png" alt="" /></p>
-
-<h2 id="summary">Summary</h2>
+<p>
+<img  src="generate_missing_members_animated.png" alt="">
+</p>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>All attributes and analyzers described here are available as a single Nuget package <a href="https://www.nuget.org/packages/SmartAnalyzers.CSharpExtensions.Annotations/">SmartAnalyzers.CSharpExtensions.Annotations</a>. The source code is published on <code>Github</code> under <a href="https://github.com/cezarypiatek/CSharpExtensions">CSharpExtensions</a> project. Please let me know what you think about those extensions to C# language and if you encounter any problems with using it, feel free to report an issue on Github page.</p>
     

@@ -13,7 +13,7 @@
             "@type":"WebPage",
             "@id":"https:\/\/cezarypiatek.github.io\/post\/save-tortoise-history-with-repair-move\/"
             },
-          "headline" : "Save your history - TortoiseSVN and \x22Repair move\x22 option.",
+          "headline" : "Save your history - TortoiseSVN and \u0022Repair move\u0022 option.",
           "author" : {
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
@@ -50,7 +50,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="svn, tortoise" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Save your history - TortoiseSVN and &#34;Repair move&#34; option. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -168,25 +168,29 @@
 			<br />
 		
 		<p>TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.</p>
-
 <p>When we try to commit a directory which contains renamed file Tortoise pointing us that there are two changes. There is one missing file and one with non-version status.</p>
-
-<p><img src="h1.jpg" alt="Image of Yaktocat" /></p>
-
+<p>
+<a href="h1.jpg"><img  src="h1.jpg" alt="Image of Yaktocat"></a>
+</p>
 <p>When we select both files in the context menu there should appear additional position “Repair move”. This should fix our problem with renaming and file history. Tortoise will  treat these changes as renamed and continue to keep file history.</p>
-
-<p><img src="h2.jpg" alt="Image of Yaktocat" /></p>
-
+<p>
+<a href="h2.jpg"><img  src="h2.jpg" alt="Image of Yaktocat"></a>
+</p>
 <p>This option works pretty well also in a scenario when we are moving file between dictionaries.
-<img src="h3.jpg" alt="Image of Yaktocat" /></p>
 
+<a href="h3.jpg"><img  src="h3.jpg" alt="Image of Yaktocat"></a>
+</p>
 <p>It can also work if we renamed the directory.
-<img src="h4.jpg" alt="Image of Yaktocat" />
-<img src="h5.jpg" alt="Image of Yaktocat" /></p>
 
+<a href="h4.jpg"><img  src="h4.jpg" alt="Image of Yaktocat"></a>
+
+
+<a href="h5.jpg"><img  src="h5.jpg" alt="Image of Yaktocat"></a>
+</p>
 <p>If we see the “Non-recursive commit of moved/renamed folders” dialog after trying to make commit, that means we have forgotten to select files marked by Tortoise with deleted status. The solution is to choose Cancel and select files on change list that we missed.</p>
-
-<p><img src="h6.jpg" alt="Image of Yaktocat" /></p>    
+<p>
+<a href="h6.jpg"><img  src="h6.jpg" alt="Image of Yaktocat"></a>
+</p>    
 		
 		<hr/>  
 		<p>If you find this blog post useful and you think it's worth to share this idea with others, <strong>please don't hesitate to use these buttons below</strong> 👇</p>	

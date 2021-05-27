@@ -39,15 +39,15 @@
     <meta property="og:description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="automapper">
+    <meta property="og:tags" content="AutoMapper">
     
-    <meta property="og:tags" content="roslyn">
+    <meta property="og:tags" content="Roslyn">
     
     <meta property="og:tags" content="mapping">
     
     <meta property="og:tags" content="code generating">
     
-    <meta property="og:tags" content="c#">
+    <meta property="og:tags" content="C#">
     
     <meta property="og:tags" content="dotnet">
     
@@ -57,8 +57,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="How to substitute AutoMapper with Roslyn code fix provider that generates code in design time.">
 
-	<meta name="keywords" value="automapper, roslyn, mapping, code generating, c#, dotnet" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="AutoMapper, Roslyn, mapping, code generating, C#, dotnet" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Generate mapping code with Roslyn code fix provider. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -178,55 +178,46 @@
 			<br />
 		
 		<p>A few weeks ago I posted about <a href="../../post/why-i-dont-use-automapper/">negative aspects of applying AutoMapper</a>. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like <a href="https://www.nuget.org/packages/T4Scaffolding/">T4Scaffoling</a> or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in <a href="https://msdn.microsoft.com/en-us/library/bb126445.aspx">T4</a> syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking. Then I tried to generate code with PowerShell and <a href="https://docs.microsoft.com/en-us/dotnet/api/envdte">EnvDTE</a>. It worked but it had some limitations and it wasn&rsquo;t convenient enough to start using it on a daily basis. I gave it one more try and after publication of mentioned post I started looking for an existing Roslyn-based solution that could be a really nice substitution for AutoMapper. That&rsquo;s how I found <a href="https://github.com/nejcskofic/ObjectMapper">ObjectMapper</a> project.</p>
-
 <p>At first it looked promising but after some analysis I found few things I didn&rsquo;t like about it. For instance, it requires referencing additional library which contains attributes and interfaces used to mark mapping methods. In practice it means that I need to install additional nuget package to every project in which I want to use mapping generation feature which is quite uncomfortable. So I&rsquo;ve tried to create my own version which will be distributed in the form of Visual Studio Extension and will use conventions to locate candidates for potential mapping methods. I was interested in generating implementation for the following kinds of methods:</p>
-
 <ul>
-<li>Pure mapping method - non-void method that takes single parameter</li>
-</ul>
-
-<pre><code class="language-csharp">  public UserDTO Map(UserEntity entity)
-  {
-      throw new NotImplementedException();
-  }
+<li>
+<p>Pure mapping method - non-void method that takes single parameter</p>
+<pre><code class="language-csharp">public UserDTO Map(UserEntity entity)
+{
+    throw new NotImplementedException();
+}
 </code></pre>
-
-<ul>
-<li>Updating method - void method that takes two parameters</li>
-</ul>
-
-<pre><code class="language-csharp">  public void Update(UserDTO source, UserEntity target)
-  {
-      throw new NotImplementedException();
-  }
+</li>
+<li>
+<p>Updating method - void method that takes two parameters</p>
+<pre><code class="language-csharp">public void Update(UserDTO source, UserEntity target)
+{
+    throw new NotImplementedException();
+}
 </code></pre>
-
-<ul>
-<li>Mapping Constructor - constructor that takes single parameter</li>
-</ul>
-
-<pre><code class="language-csharp">  public UserDTO(UserEntity user)
-  {
+</li>
+<li>
+<p>Mapping Constructor - constructor that takes single parameter</p>
+<pre><code class="language-csharp">public UserDTO(UserEntity user)
+{
       
-  }
+}
 </code></pre>
-
-<ul>
-<li>Updating member method - void member method that takes single parameter</li>
+</li>
+<li>
+<p>Updating member method - void member method that takes single parameter</p>
+<pre><code class="language-csharp">public void UpdateWith(UserEntity en)
+{
+    throw new NotImplementedException();
+}
+</code></pre>
+</li>
 </ul>
-
-<pre><code class="language-csharp">  public void UpdateWith(UserEntity en)
-  {
-      throw new NotImplementedException();
-  }
-</code></pre>
-
 <p>Thanks to the abilities Roslyn gives, I could quite easily create code fix provider that generates implementation for the types of mapping methods mentioned above. A sample code generation in action looks as follows:</p>
-
-<p><img src="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method.gif" alt="mapping code generation" /></p>
-
+<p>
+<a href="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method.gif"><img  src="https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method.gif" alt="mapping code generation"></a>
+</p>
 <p>I&rsquo;ve publish source code on <a href="https://github.com/cezarypiatek/MappingGenerator">github</a> and if you are interested in testing it in action you can install it as Visual Studio Extension from <a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">Visual Studio Marketplace</a>. For now it covers a few basic scenarios (you can read more about it on github) and there is a lot of things that could be improved such as:</p>
-
 <ul>
 <li>extracting method for mapping complex properties</li>
 <li>reusing existing mapping method to map complex properties</li>
@@ -234,7 +225,6 @@
 <li>updating collection instead of replacing content completely</li>
 <li>improving local variables names generating to avoid collisions</li>
 </ul>
-
 <p>With a new asset in my developer toolbox now I&rsquo;m able to quickly generate this boring mapping code and focus enirely on the real coding problems. There is also another positive side effect that comes from the convention-based mappings - it enforces the cohesion of naming. If you have different names for the same thing on both mapping sides you have more code to write manually ;)</p>
     
 		
@@ -358,7 +348,7 @@
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "automapper,roslyn,mapping,codegenerating,csharp,dotnet"
+				hashtags: "AutoMapper,Roslyn,mapping,codegenerating,Csharp,dotnet"
 			}
 		}
 	}

@@ -39,15 +39,15 @@
     <meta property="og:description" content="">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="powershell">
+    <meta property="og:tags" content="PowerShell">
     
     <meta property="og:tags" content="ise">
     
-    <meta property="og:tags" content="gui">
+    <meta property="og:tags" content="GUI">
     
-    <meta property="og:tags" content="powershellcookbook">
+    <meta property="og:tags" content="PowerShellCookbook">
     
-    <meta property="og:tags" content="vscode">
+    <meta property="og:tags" content="VSCode">
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/exploring-powershell-with-gui/splashscreen.jpg">
@@ -55,8 +55,8 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="">
 
-	<meta name="keywords" value="powershell, ise, gui, powershellcookbook, vscode" />
-    <meta name="generator" content="Hugo 0.55.6" />
+	<meta name="keywords" value="PowerShell, ise, GUI, PowerShellCookbook, VSCode" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Exploring PowerShell with graphical user interface. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -173,86 +173,61 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		
-
-<p>I&rsquo;ve recently watched a pretty decent tutorial about DSC on Microsoft Virtual Academy. I&rsquo;m not a huge fan of video tutorials because it always takes more time to watch them than read a book/blog post (you can hack it by increasing video speed and save yourself a couple of minutes) but sometimes there is additional beneficial side effect - the presenter can show you (accidentally or not) some tips and tricks not strictly related to the core subject of the video. This post is an attempt of summarizing tricks from the DSC tutorial and my former knowledge about GUI tools associated with PowerShell. I find it useful when preparing PowerShell scripts and it should be helpful for people who start exploring PowerShell.</p>
-
+		<p>I&rsquo;ve recently watched a pretty decent tutorial about DSC on Microsoft Virtual Academy. I&rsquo;m not a huge fan of video tutorials because it always takes more time to watch them than read a book/blog post (you can hack it by increasing video speed and save yourself a couple of minutes) but sometimes there is additional beneficial side effect - the presenter can show you (accidentally or not) some tips and tricks not strictly related to the core subject of the video. This post is an attempt of summarizing tricks from the DSC tutorial and my former knowledge about GUI tools associated with PowerShell. I find it useful when preparing PowerShell scripts and it should be helpful for people who start exploring PowerShell.</p>
 <p>Mentioned DSC tutorial can be found under the following links:</p>
-
 <p><a href="https://mva.microsoft.com/en-us/training-courses/getting-started-with-powershell-desired-state-configuration-dsc--8672?l=ZwHuclG1_2504984382">Getting Started with PowerShell Desired State Configuration (DSC)</a></p>
-
 <p><a href="https://mva.microsoft.com/en-US/training-courses/advanced-powershell-desired-state-configuration-dsc-and-custom-resources-8702?l=3DnsS2H1_1504984382">Advanced PowerShell Desired State Configuration (DSC) and Custom Resources</a></p>
-
-<h3 id="powershell-and-windows-explorer">PowerShell and Windows Explorer</h3>
+<h3 id="powershell-and-windows-explorer"><a href="#powershell-and-windows-explorer">PowerShell and Windows Explorer  🔗&#xFE0E;</a></h3>
 
 <p>The first tip is about switching between PowerShell console and Windows Explorer back and forth while keeping working directory context. This is the most trivial but at the same time very useful operation.
 In order to open Windows Explorer with current directory simply type:</p>
-
 <pre><code class="language-powershell">&gt; explorer .
 </code></pre>
-
 <p>&hellip; and to open PowerShell console with working directory set to currently opened folder within the Windows Explorer type <strong>powershell</strong> command in address bar.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/cDhM1wreRtw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
-<h3 id="browsing-scripts-in-console">Browsing scripts in console</h3>
+<h3 id="browsing-scripts-in-console"><a href="#browsing-scripts-in-console">Browsing scripts in console  🔗&#xFE0E;</a></h3>
 
 <p>When you are working in console environment and you want to check script content you can use <strong>Get-Content</strong> command to print script into screen in raw format or use <strong>Get-ColorizedContent</strong> to display script with line numbers and syntax highlighting. This cmdlet comes from <a href="https://www.powershellgallery.com/packages/PowerShellCookbook/1.3.6">PowerShellCookbook module</a> which could be easily installed with <strong>Install-Module</strong> cmdlet from <a href="https://www.powershellgallery.com">PowerShell gallery</a>.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/iELQGYxJclw?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
-<h3 id="opening-powershell-ise-from-powershell-console">Opening PowerShell ISE from PowerShell console</h3>
+<h3 id="opening-powershell-ise-from-powershell-console"><a href="#opening-powershell-ise-from-powershell-console">Opening PowerShell ISE from PowerShell console  🔗&#xFE0E;</a></h3>
 
 <p>There is no out-of-the-box editor which allows you to edit scripts right inside the PowerShell console. You can install <a href="https://stackoverflow.com/questions/11045077/edit-a-text-file-on-the-console-in-64-bit-windows">third-party console editors</a> or use PowerShell ISE which comes with Windows Management Framework. Simply type <strong>ise</strong> command with file path as the parameter to open it with ISE (you can skip file parameter to open a new instance of ISE with context set to current directory). In order to open another script in new ISE tab use <strong>psedit</strong> command (this command works only inside the ISE console).</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/sc50cA7M6CY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 <p>PowerShell ISE is very useful to play around with PowerShell scripts because it allows you to execute your script partially (simply select parts of you code and press F8 to send it to PowerShell console).</p>
-
-<h3 id="opening-visual-studio-code-from-powershell-console">Opening Visual Studio Code from PowerShell console</h3>
+<h3 id="opening-visual-studio-code-from-powershell-console"><a href="#opening-visual-studio-code-from-powershell-console">Opening Visual Studio Code from PowerShell console  🔗&#xFE0E;</a></h3>
 
 <p>A good alternative to PowerShell ISE could be <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell">Visual Studio Code with plugin for powershell</a>. I find VSCode better than ISE in terms of support for static analysis and debugging.</p>
-
-<p><img src="vscode_pluggin.jpg" alt="Visual Studio Code plugin for PowerShell" /></p>
-
+<p>
+<a href="vscode_pluggin.jpg"><img  src="vscode_pluggin.jpg" alt="Visual Studio Code plugin for PowerShell"></a>
+</p>
 <p>When VSCode is your PowerShell editor of choice too, you can also easily switch from console to this environment. Just execute <strong>code</strong> command with file path as a parameter to open given script with VSCode or replace the file path parameter with &ldquo;.&rdquo; (dot sign) to load current directory as a workspace inside VSCode.</p>
-
 <pre><code class="language-powershell">&gt; code .
 </code></pre>
-
-<h3 id="filtering-result-list-with-out-gridview">Filtering result list with Out-GridView</h3>
+<h3 id="filtering-result-list-with-out-gridview"><a href="#filtering-result-list-with-out-gridview">Filtering result list with Out-GridView  🔗&#xFE0E;</a></h3>
 
 <p>When your command or script returns a long list it can be hard to spot interesting positions by scrolling through the console. You can make it a lot easier by redirecting the result to <strong>Out-GridView</strong> cmdlet (use <strong>ogv</strong> alias for shorten). The Out-GridView outputter presents data using grid control and allows to sort and filter results by defining complex criteria based on data attributes.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/bNyBg_wEnxY?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
 <p>You can also use Out-GridView to select elements by providing  <strong>OutputMode</strong> parameter</p>
-
-<h3 id="exploring-powershell-cmdlets">Exploring PowerShell CmdLets</h3>
+<h3 id="exploring-powershell-cmdlets"><a href="#exploring-powershell-cmdlets">Exploring PowerShell CmdLets  🔗&#xFE0E;</a></h3>
 
 <p>Sometimes it&rsquo;s hard to remember all method parameters (especially when we use them very rarely). You can check the list of available parameters by displaying method documentation inside the console with <strong>Get-Help</strong> command or utilizing dedicated form which could be created with <strong>Show-Command</strong> cmdlet.</p>
-
 <pre><code class="language-powershell">&gt; Show-Command Invoke-WebRequest 
 </code></pre>
-
 <p>If you don&rsquo;t remember the exact name of the method you can skip it and <strong>Show-Command</strong> cmdlet opens a window which allows you to search command by name. When you select a specific command all available parameter sets will be presented as tabs. You can select a given parameter set, provide values for parameters with dedicated form and click <em>Run</em> button to execute method. You can always get the method manual by clicking <em>help</em> button.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/mZEY1W9-pR8?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
-
-<h3 id="inspecting-complex-objects">Inspecting complex objects</h3>
+<h3 id="inspecting-complex-objects"><a href="#inspecting-complex-objects">Inspecting complex objects  🔗&#xFE0E;</a></h3>
 
 <p>Another interesting cmdlet that we can find in <em>PowerShellCookbook</em> module is <strong>Show-Object</strong>. This command presents complex objects in the form of a tree. This expandable tree allows us to drill down and explore nested properties. It&rsquo;s extremely useful when we have to deal with unknown objects.</p>
-
 <div class="video-container">
 <iframe width="853" height="480" src="https://www.youtube.com/embed/tfx85SkqSEc?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
@@ -375,7 +350,7 @@ In order to open Windows Explorer with current directory simply type:</p>
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "powershell,ise,gui,powershellcookbook,vscode"
+				hashtags: "PowerShell,ise,GUI,PowerShellCookbook,VSCode"
 			}
 		}
 	}

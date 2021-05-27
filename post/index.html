@@ -22,7 +22,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="" />
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <title>Posts &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -312,7 +312,7 @@
 				<img src="https://cezarypiatek.github.io/post/async-analyzers-p2//splashscreen.jpg" width="100%" /><br/><br/>
 			</div>
 			
-			This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&rsquo;m trying to help you answer the question: &ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&rdquo;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.
+			This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&rsquo;m trying to help you answer the question: &ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.
 			
 				... <a href="https://cezarypiatek.github.io/post/async-analyzers-p2/">Read More</a>
 			
@@ -404,15 +404,15 @@
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/nswag"><span class="label label-success">nswag</span></a>
+					<a href="https://cezarypiatek.github.io/tags/nswag"><span class="label label-success">NSwag</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/aspcore"><span class="label label-success">aspcore</span></a>
+					<a href="https://cezarypiatek.github.io/tags/aspcore"><span class="label label-success">AspCore</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/webapi"><span class="label label-success">webapi</span></a>
+					<a href="https://cezarypiatek.github.io/tags/webapi"><span class="label label-success">WebAPI</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/rest"><span class="label label-success">rest</span></a>
+					<a href="https://cezarypiatek.github.io/tags/rest"><span class="label label-success">Rest</span></a>
 				
 			</small>
 			
@@ -435,7 +435,7 @@
 				<img src="https://cezarypiatek.github.io/post/dapper-tips-and-tricks//splashscreen.jpg" width="100%" /><br/><br/>
 			</div>
 			
-			A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects.
+			A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing SQL queries directly in the C# code, because I got used to relying always on ORMs (NHibernate in particular).
 			
 				... <a href="https://cezarypiatek.github.io/post/dapper-tips-and-tricks/">Read More</a>
 			
@@ -445,11 +445,11 @@
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/dapper"><span class="label label-success">dapper</span></a>
+					<a href="https://cezarypiatek.github.io/tags/dapper"><span class="label label-success">Dapper</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/sqlserver"><span class="label label-success">sqlserver</span></a>
+					<a href="https://cezarypiatek.github.io/tags/sqlserver"><span class="label label-success">SqlServer</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/dotnet"><span class="label label-success">dotnet</span></a>
 				
@@ -514,7 +514,7 @@
 			</div>
 			
 			A couple of months ago I&rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&rsquo;s more complex than I expected and this &ldquo;simple-boring&rdquo; CRUD became more interesting and challenging.
-The Problem One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:
+The Problem 🔗&#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:
 			
 				... <a href="https://cezarypiatek.github.io/post/csharp-twin-types/">Read More</a>
 			
@@ -594,7 +594,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				<img src="https://cezarypiatek.github.io/post/immutable-types-with-roslyn//splashscreen.jpg" width="100%" /><br/><br/>
 			</div>
 			
-			Some time ago I came across Jimmy Bogard&rsquo;s article &ldquo;Immutability in DTOs?&rdquo; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition.
+			Some time ago I came across Jimmy Bogard&rsquo;s article &ldquo;Immutability in DTOs?&quot; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&rsquo;s definition.
 			
 				... <a href="https://cezarypiatek.github.io/post/immutable-types-with-roslyn/">Read More</a>
 			
@@ -649,7 +649,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/msbuild"><span class="label label-success">msbuild</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/teamcity"><span class="label label-success">teamcity</span></a>
+					<a href="https://cezarypiatek.github.io/tags/teamcity"><span class="label label-success">TeamCity</span></a>
 				
 			</small>
 			
@@ -688,7 +688,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/roslyn"><span class="label label-success">roslyn</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/automapper"><span class="label label-success">automapper</span></a>
+					<a href="https://cezarypiatek.github.io/tags/automapper"><span class="label label-success">AutoMapper</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/code-generation"><span class="label label-success">code generation</span></a>
 				
@@ -729,7 +729,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/dotnetcore"><span class="label label-success">dotnetcore</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/msbuild"><span class="label label-success">msbuild</span></a>
 				
@@ -770,7 +770,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/visual-studio"><span class="label label-success">visual studio</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">resharper</span></a>
+					<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">Resharper</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/non-nullable"><span class="label label-success">non-nullable</span></a>
 				
@@ -809,7 +809,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/multithreading"><span class="label label-success">multithreading</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 			</small>
 			
@@ -846,9 +846,9 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/productivity"><span class="label label-success">productivity</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/livetemplates"><span class="label label-success">livetemplates</span></a>
+					<a href="https://cezarypiatek.github.io/tags/livetemplates"><span class="label label-success">LiveTemplates</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/code-generation"><span class="label label-success">code generation</span></a>
 				
@@ -887,7 +887,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/multithreading"><span class="label label-success">multithreading</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 			</small>
 			
@@ -1000,13 +1000,13 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">powershell</span></a>
+					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">PowerShell</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/teamcity"><span class="label label-success">teamcity</span></a>
+					<a href="https://cezarypiatek.github.io/tags/teamcity"><span class="label label-success">TeamCity</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/continuous-integration"><span class="label label-success">continuous integration</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/vscode"><span class="label label-success">vscode</span></a>
+					<a href="https://cezarypiatek.github.io/tags/vscode"><span class="label label-success">VSCode</span></a>
 				
 			</small>
 			
@@ -1039,7 +1039,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/dotnet"><span class="label label-success">dotnet</span></a>
 				
@@ -1076,9 +1076,9 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">ELK</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">elasticsearch</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">ElasticSearch</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/devops"><span class="label label-success">devops</span></a>
 				
@@ -1119,13 +1119,13 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">logstash</span></a>
+					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">Logstash</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">elasticsearch</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">ElasticSearch</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">ELK</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/filebeat"><span class="label label-success">filebeat</span></a>
+					<a href="https://cezarypiatek.github.io/tags/filebeat"><span class="label label-success">Filebeat</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/logging"><span class="label label-success">logging</span></a>
 				
@@ -1170,7 +1170,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/architecture"><span class="label label-success">architecture</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/coreclr"><span class="label label-success">coreclr</span></a>
+					<a href="https://cezarypiatek.github.io/tags/coreclr"><span class="label label-success">CoreCLR</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/best-practices"><span class="label label-success">best practices</span></a>
 				
@@ -1207,15 +1207,15 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/cqrs"><span class="label label-success">cqrs</span></a>
+					<a href="https://cezarypiatek.github.io/tags/cqrs"><span class="label label-success">CQRS</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/cqs"><span class="label label-success">cqs</span></a>
+					<a href="https://cezarypiatek.github.io/tags/cqs"><span class="label label-success">CQS</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/architecture"><span class="label label-success">architecture</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">resharper</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/livetemplates"><span class="label label-success">livetemplates</span></a>
+					<a href="https://cezarypiatek.github.io/tags/livetemplates"><span class="label label-success">LiveTemplates</span></a>
 				
 			</small>
 			
@@ -1249,7 +1249,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/selenium"><span class="label label-success">selenium</span></a>
+					<a href="https://cezarypiatek.github.io/tags/selenium"><span class="label label-success">Selenium</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/testing"><span class="label label-success">testing</span></a>
 				
@@ -1288,7 +1288,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/selenium"><span class="label label-success">selenium</span></a>
+					<a href="https://cezarypiatek.github.io/tags/selenium"><span class="label label-success">Selenium</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/testing"><span class="label label-success">testing</span></a>
 				
@@ -1327,15 +1327,15 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/kibana"><span class="label label-success">kibana</span></a>
+					<a href="https://cezarypiatek.github.io/tags/kibana"><span class="label label-success">Kibana</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">logstash</span></a>
+					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">Logstash</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">elasticsearch</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elasticsearch"><span class="label label-success">ElasticSearch</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">ELK</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/filebeat"><span class="label label-success">filebeat</span></a>
+					<a href="https://cezarypiatek.github.io/tags/filebeat"><span class="label label-success">Filebeat</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/logging"><span class="label label-success">logging</span></a>
 				
@@ -1370,11 +1370,11 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">elk</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elk"><span class="label label-success">ELK</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">logstash</span></a>
+					<a href="https://cezarypiatek.github.io/tags/logstash"><span class="label label-success">Logstash</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/ms-teams"><span class="label label-success">ms teams</span></a>
+					<a href="https://cezarypiatek.github.io/tags/ms-teams"><span class="label label-success">MS Teams</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/logging"><span class="label label-success">logging</span></a>
 				
@@ -1411,9 +1411,9 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/tools"><span class="label label-success">tools</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">resharper</span></a>
+					<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">Resharper</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/windirstat"><span class="label label-success">windirstat</span></a>
+					<a href="https://cezarypiatek.github.io/tags/windirstat"><span class="label label-success">WinDirStat</span></a>
 				
 			</small>
 			
@@ -1436,7 +1436,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				<img src="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model//splashscreen.jpg" width="100%" /><br/><br/>
 			</div>
 			
-			The challenge Recently I&rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).
+			The challenge 🔗&#xFE0E;Recently I&rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).
 			
 				... <a href="https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/">Read More</a>
 			
@@ -1448,11 +1448,11 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/data-model"><span class="label label-success">data model</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/nhibernate"><span class="label label-success">nhibernate</span></a>
+					<a href="https://cezarypiatek.github.io/tags/nhibernate"><span class="label label-success">NHibernate</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/sqlite"><span class="label label-success">sqlite</span></a>
+					<a href="https://cezarypiatek.github.io/tags/sqlite"><span class="label label-success">SQLite</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/sql-server"><span class="label label-success">sql server</span></a>
+					<a href="https://cezarypiatek.github.io/tags/sql-server"><span class="label label-success">SQL Server</span></a>
 				
 			</small>
 			
@@ -1485,15 +1485,15 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/automapper"><span class="label label-success">automapper</span></a>
+					<a href="https://cezarypiatek.github.io/tags/automapper"><span class="label label-success">AutoMapper</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/roslyn"><span class="label label-success">roslyn</span></a>
+					<a href="https://cezarypiatek.github.io/tags/roslyn"><span class="label label-success">Roslyn</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/mapping"><span class="label label-success">mapping</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/code-generating"><span class="label label-success">code generating</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/dotnet"><span class="label label-success">dotnet</span></a>
 				
@@ -1528,11 +1528,11 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/content-security-policy"><span class="label label-success">content-security-policy</span></a>
+					<a href="https://cezarypiatek.github.io/tags/content-security-policy"><span class="label label-success">Content-Security-Policy</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/csp"><span class="label label-success">csp</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/asp.net-mvc"><span class="label label-success">asp.net mvc</span></a>
+					<a href="https://cezarypiatek.github.io/tags/asp.net-mvc"><span class="label label-success">ASP.NET MVC</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/ajax"><span class="label label-success">ajax</span></a>
 				
@@ -1571,7 +1571,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/automapper"><span class="label label-success">automapper</span></a>
+					<a href="https://cezarypiatek.github.io/tags/automapper"><span class="label label-success">AutoMapper</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/orm"><span class="label label-success">orm</span></a>
 				
@@ -1583,7 +1583,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/static-analysis"><span class="label label-success">static analysis</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">c#</span></a>
+					<a href="https://cezarypiatek.github.io/tags/c"><span class="label label-success">C#</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/dotnet"><span class="label label-success">dotnet</span></a>
 				
@@ -1618,15 +1618,15 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/teamcity"><span class="label label-success">teamcity</span></a>
+					<a href="https://cezarypiatek.github.io/tags/teamcity"><span class="label label-success">TeamCity</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">powershell</span></a>
+					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">PowerShell</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/meta-runner"><span class="label label-success">meta runner</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/ms-teams"><span class="label label-success">ms teams</span></a>
+					<a href="https://cezarypiatek.github.io/tags/ms-teams"><span class="label label-success">MS Teams</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/gitlab"><span class="label label-success">gitlab</span></a>
+					<a href="https://cezarypiatek.github.io/tags/gitlab"><span class="label label-success">Gitlab</span></a>
 				
 			</small>
 			
@@ -1659,15 +1659,15 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">powershell</span></a>
+					<a href="https://cezarypiatek.github.io/tags/powershell"><span class="label label-success">PowerShell</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/ise"><span class="label label-success">ise</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/gui"><span class="label label-success">gui</span></a>
+					<a href="https://cezarypiatek.github.io/tags/gui"><span class="label label-success">GUI</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/powershellcookbook"><span class="label label-success">powershellcookbook</span></a>
+					<a href="https://cezarypiatek.github.io/tags/powershellcookbook"><span class="label label-success">PowerShellCookbook</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/vscode"><span class="label label-success">vscode</span></a>
+					<a href="https://cezarypiatek.github.io/tags/vscode"><span class="label label-success">VSCode</span></a>
 				
 			</small>
 			
@@ -1704,9 +1704,9 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/clean-code"><span class="label label-success">clean code</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/todo"><span class="label label-success">todo</span></a>
+					<a href="https://cezarypiatek.github.io/tags/todo"><span class="label label-success">TODO</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/todoexplorer"><span class="label label-success">todoexplorer</span></a>
+					<a href="https://cezarypiatek.github.io/tags/todoexplorer"><span class="label label-success">TODOExplorer</span></a>
 				
 			</small>
 			
@@ -1778,13 +1778,13 @@ The Problem One of the first problems that I came across was that I had a lot of
 			<small class="text-muted">
 				
 				
-					<a href="https://cezarypiatek.github.io/tags/todo"><span class="label label-success">todo</span></a>
+					<a href="https://cezarypiatek.github.io/tags/todo"><span class="label label-success">TODO</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/resharper"><span class="label label-success">resharper</span></a>
 				
 					<a href="https://cezarypiatek.github.io/tags/livetemplates"><span class="label label-success">livetemplates</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/todoexplorer"><span class="label label-success">todoexplorer</span></a>
+					<a href="https://cezarypiatek.github.io/tags/todoexplorer"><span class="label label-success">TodoExplorer</span></a>
 				
 			</small>
 			
@@ -1823,7 +1823,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 				
 					<a href="https://cezarypiatek.github.io/tags/webdriver"><span class="label label-success">webdriver</span></a>
 				
-					<a href="https://cezarypiatek.github.io/tags/elementnotinteractableexception"><span class="label label-success">elementnotinteractableexception</span></a>
+					<a href="https://cezarypiatek.github.io/tags/elementnotinteractableexception"><span class="label label-success">ElementNotInteractableException</span></a>
 				
 			</small>
 			
@@ -1917,7 +1917,7 @@ The Problem One of the first problems that I came across was that I had a lot of
 			</div>
 			
 			One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
-Template Explorer You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&gt; Template Explorer&hellip;).
+Template Explorer 🔗&#xFE0E;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&gt; Template Explorer&hellip;).
 			
 				... <a href="https://cezarypiatek.github.io/post/livetemplates/">Read More</a>
 			
