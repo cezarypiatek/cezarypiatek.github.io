@@ -56,3 +56,5 @@ I've publish source code on [github](https://github.com/cezarypiatek/MappingGene
 - improving local variables names generating to avoid collisions
 
 With a new asset in my developer toolbox now I'm able to quickly generate this boring mapping code and focus enirely on the real coding problems. There is also another positive side effect that comes from the convention-based mappings - it enforces the cohesion of naming. If you have different names for the same thing on both mapping sides you have more code to write manually ;)
+
+**UPDATE 2021-06-03:** MappningGenerator project evaluated into a commercial product. You can get more info on the product landing page <a data-gtag="ProductPageArticle2" href="https://www.mappinggenerator.net/">www.mappinggenerator.net</a> 

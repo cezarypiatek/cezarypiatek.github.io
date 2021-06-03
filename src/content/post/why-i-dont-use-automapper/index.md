@@ -108,3 +108,6 @@ AutoMapper is probably good for really small, short-lived projects or proof of c
 **UPDATE 2021-04-08:** The best option to avoid all those problems is writing mapping code explicitly. However, this is very boring and tedious job. To solve that problem I created a Visual Studio plugin which is able to scaffold mapping code in design time. You can download it directly from the Visual Studio Marketplace using this link <a data-gtag="marketplaceArticle1" href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator">MappingGenerator</a> 
 
 ![](https://github.com/cezarypiatek/MappingGenerator/raw/master/doc/pure_mapping_method_newone.gif)
+
+
+**UPDATE 2021-06-03:** MappningGenerator project was converted into a commercial product. You can get more info on the product landing page <a data-gtag="ProductPageArticle1" href="https://www.mappinggenerator.net/">www.mappinggenerator.net</a> 
