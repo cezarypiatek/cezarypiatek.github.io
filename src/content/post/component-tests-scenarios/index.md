@@ -9,11 +9,11 @@ isBlogpost: true
 ---
 
 
-For the last year, I have opportunity to work quite a lot with `Component Tests` for microservices build with ASP.NET Core. The vocabulary related to testing is very vague and terms like `Unit`, `Component`, and `Integration` tests can be interpreted differently based on the context so let me explain first what I mean by `Component Tests`. It's a kind of test that treats your whole service as a black box. You can communicate with your system during the tests only through the publicly available interfaces (REST API, GRPC, Messaging, etc.). You are also not allowed to mock anything besides the external dependencies. Those external dependencies can be mock by replacing the real component with an in-memory counterpart inside the `DI container`, however, the preferred approach is to keep the communication through the actual interfaces and use mocking components that can operate outside the service runtime boundaries (for example for REST dependencies you can use [WireMock.Net](https://github.com/WireMock-Net/WireMock.Net)). Thanks to the limited application of mocks you have more freedom during the refactorings as well as you gain a higher level of confidence during the deployments. Besides those technicalities, there's one more important thing about the Component tests that I really would like to emphasize here. Scenarios for Component Test should be written from the business perspective, they should express the business expectations and confirm that those expectations are met. They should represent realistic and valid business use cases. Scenarios of Component Tests are quite often more complex than the unit test scenarios so it's very important to keep the test script concise, clear, and readable. Approaches like [driver patter](https://github.com/grzesiek-galezowski/driver-pattern-demo/tree/main/DriverInFunctionalHttpApiTests) can definitely help with that, but from my experience, no matter how clear and expressive your test helpers are, your might have a problem with understanding the test script when you get back to it after a while.
+For the last year, I've had an opportunity to work quite a lot with `Component Tests` for microservices built with ASP.NET Core. The vocabulary related to testing is very vague and terms like `Unit`, `Component`, and `Integration` tests can be interpreted differently based on the context, so let me explain first what I mean by `Component Tests`. It's a kind of test that treats your whole service as a black box. You can communicate with your system during the tests only through the publicly available interfaces (REST API, GRPC, Messaging, etc.). You are also not allowed to mock anything besides the external dependencies. Those external dependencies can be mocked by replacing the real component with an in-memory counterpart inside the `DI container`. However, the preferred approach is to keep the communication through the actual interfaces and use mocking components that can operate outside the service runtime boundaries (for example for REST dependencies you can use [WireMock.Net](https://github.com/WireMock-Net/WireMock.Net)). Thanks to the limited application of mocks you have more freedom during the refactorings, as well as you gain a higher level of confidence during the deployments. Besides those technicalities, there's one more important thing about the Component tests that I really would like to emphasize here. Scenarios for Component Test should be written from the business perspective, they should express the business expectations and confirm that those expectations are met. They should represent realistic and valid business use cases. Scenarios of Component Tests are quite often more complex than the unit test scenarios so it's very important to keep the test script concise, clear, and readable. Approaches like [driver patter](https://github.com/grzesiek-galezowski/driver-pattern-demo/tree/main/DriverInFunctionalHttpApiTests) can definitely help with that, but from my experience, no matter how clear and expressive your test helpers are, your might have a problem with understanding the test script when you get back to it after a while.
 
 
-## Complex scenarios
-In the "classical unit tests" quite often developers use `Arrange/Act/Assert` or `Given/When/Then` comments to annotate the main parts of the test method script. It's quite good practice that improves the readability of the tests and helps the developers that are new to the project (even for the authors themselves after a given period) to figure out what's going on. However, the test case scenarios in component tests tend to be more complex. The `Arrange` section could be more robust as there is a need to prepare more prerequisites and there might be more than one pair of `Act` and `Assert` sections. With such complexity, those simple notations don't fit anymore.
+## Annotations with comments
+In the "classical unit tests" developers quite often use `Arrange/Act/Assert` or `Given/When/Then` comments to annotate the main parts of the test method script. It's quite good practice that improves the readability of the tests and helps the developers that are new to the project (and authors themselves, after a given period) to figure out what's going on. However, the test case scenarios in component tests tend to be more complex. The `Arrange` section could be more robust as there is a need to prepare more prerequisites and there might be more than one pair of `Act` and `Assert` sections. With such complexity, those simple notations don't fit anymore.
 
 Let's take a look at a test case scenario for a system responsible for purchasing software licenses:
 
@@ -51,7 +51,7 @@ public async Task should_handle_product_with_double_personal_license()
 }
 ```
 
-As you can see the scenario is quite complex, there are multiple Act and Assert sections and at the first glance, it's not clear what's going on. When I first came across this problem I started using a little bit improved notation with `STEP:` markers:
+As you can see, the scenario is quite complex. There are multiple Act and Assert sections and at the first glance, it's not clear what's going on. When I first came across this problem, I started using an improved notation with `STEP:` markers:
 
 ```cs
 [Test]
@@ -83,9 +83,11 @@ public async Task should_handle_product_with_double_personal_license()
 }
 ```
 
-Now we can easily figure out what it's the test about without even reading the actual code responsible for performing given steps. However, we might still struggle while investigating failed tests - it might not be obvious immediately which part failed, especially when we have quite cryptic assertion messages like `Expected true but was false`(Yes, I know it can be partially addressed with assertion libraries like `FluentAssertion` or `Shouldy` but it's not the point here).
+Now we can easily figure out what the test is about, without even reading the actual code responsible for performing given steps. However, we might still struggle while investigating failed tests - it might not be obvious immediately which part failed, especially when we have quite cryptic assertion messages like `Expected true but was false`(yes, I know it can be partially addressed with assertion libraries like `FluentAssertion` or `Shouldy` but it's not the point here).
 
-The next step on the way to solve the test readability issue was to introduce some kind of programmatic helpers for enforcing steps annotations. I came across an existing library called [xBehave](https://github.com/adamralph/xbehave.net) that tries to address this issue. Using the `xBehave`, our test can look as follows:
+
+## xBehave.net
+The next step on the way to solve the test readability issue was to introduce some kind of programmatic helpers for enforcing steps annotations. I came across an existing library called [xBehave.net](https://github.com/adamralph/xbehave.net) that tries to address this issue. Using the `xBehave.met`, our test can look as follows:
 
 
 ```cs
@@ -137,15 +139,16 @@ After running this test we can get a nice output in the test runner:
 
 ![](xbehave_scenario.png)
 
-However, there are some downsides of the `xBahave` library:
+However, there are some downsides of the `xBahave.net` library:
 
 - It's a `XUnit` plugin so its application is limited only to `xUnit` tests.
 - The `x` extension method is quite cryptic and might confuse developers who are not familiar with the library at first countermen.
 - There is no option to return anything from inside of the step which forces us to split declaration and definition resulting in a more cluttered code (sometimes there's a need to re-use data between steps).
 - The project's Github repository is an archive and the most recent NuGet package with the library is marked as deprecated.
 
+## NScenario
 
-These limitations are not acceptable for me but I really like the main idea so I decide to create my own alternative that is test framework independent. I called my solution `NScenario` and the source code is available on Github [cezarypiatek/NScenario](https://github.com/cezarypiatek/NScenario). With the `NScenario` our test case scenario can be written in the following way:
+These limitations of `xBahave.net` are not acceptable for me. I really like the main idea though, so I decided to create my own alternative that is test framework independent. I called my solution `NScenario` and the source code is available on Github [cezarypiatek/NScenario](https://github.com/cezarypiatek/NScenario). With the `NScenario` our test case scenario can be written in the following way:
 
 ```cs
 [Test]
@@ -278,12 +281,12 @@ This kind of test scenario transcription has the following benefits:
 
 - You can quickly understand what the scenario is about.
 - You can easily validate the meaningfulness of the scenario. In case of any doubts, you can send the transcription to another developer or QA with a request for review/validation.
-- When the test fails, you can faster trace the part that was broken.
+- When the test fails, you can trace the part that was broken much faster.
 
 
 ## Test Driven Development
 
-With `NScenario` is quite easy to do the classical TDD. You can start your work by writing a scenario sketch:
+With `NScenario` it's quite easy to do the classical TDD. You can start your work by writing a scenario sketch:
 
 ```cs
 [Test]
@@ -342,12 +345,12 @@ public async Task should_handle_product_with_double_personal_license()
 }
 ```
 
-In the next step, you can provide actions required to perform given steps (complete TODO). Having a complete test implementation you can finally start working on the implementation of the actual system. Of course, it's natural that during the actual feature implementation phase there might be a need to adjust the test script, especially in assertion parts. This `SCENARIO-FIRST` approach really helps to focus on the business aspects of the implemented features and validate the correctness and completeness of requirements.
+In the next step, you can provide actions required to perform given steps (complete TODO). Having a complete test implementation, you can finally start working on the implementation of the actual system. Of course, it's natural that during the actual feature implementation phase there might be a need to adjust the test script, especially in assertion parts. This `SCENARIO-FIRST` approach really helps to focus on the business aspects of the implemented features and validate the correctness and completeness of requirements.
 
 
 ## Snippet for NScenario
 
-Some of you might say that `NScenario` adds more typing which might distract a little bit. My solution for this kind of problem is to create a code snippet for everything that is repeatable. If you are a `Resharper` user, then you can easily create a snippet for `NScenario` step definition using `Live Templates` (Here's my article how to use LiveTemplates [Don't write dull code - Resharper Live Templates](/post/livetemplates/)). Thanks to the `step` snippet I can very quickly add another steps in my test script like that:
+Some of you might say that `NScenario` adds more typing which might distract a little bit. My solution for this kind of problem is to create a code snippet for everything that is repeatable. If you are a `Resharper` user, then you can easily create a snippet for `NScenario` step definition using `Live Templates` (here's my article how to use LiveTemplates [Don't write dull code - Resharper Live Templates](/post/livetemplates/)). Thanks to the `step` snippet I can very quickly add other steps in my test script like that:
 
 ![](snippet.gif)
 
