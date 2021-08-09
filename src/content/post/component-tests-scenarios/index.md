@@ -1,15 +1,16 @@
 ---
 title: "Readable and clear tests for ASP.NET Core services"
 description: "How to create tests that are easy to understand and maintain"
-date: 2021-08-08T00:10:45+02:00
-tags : ["dotnetcore", "testing", "asp"]
+date: 2021-08-09T00:21:45+02:00
+tags : ["dotnetcore", "testing", "aspcore"]
 highlight: true
+highlightLang: ["csharp", "plaintext"]
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
 
-For the last year, I've had an opportunity to work quite a lot with `Component Tests` for microservices built with ASP.NET Core. The vocabulary related to testing is very vague and terms like `Unit`, `Component`, and `Integration` tests can be interpreted differently based on the context, so let me explain first what I mean by `Component Tests`. It's a kind of test that treats your whole service as a black box. You can communicate with your system during the tests only through the publicly available interfaces (REST API, GRPC, Messaging, etc.). You are also not allowed to mock anything besides the external dependencies. Those external dependencies can be mocked by replacing the real component with an in-memory counterpart inside the `DI container`. However, the preferred approach is to keep the communication through the actual interfaces and use mocking components that can operate outside the service runtime boundaries (for example for REST dependencies you can use [WireMock.Net](https://github.com/WireMock-Net/WireMock.Net)). Thanks to the limited application of mocks you have more freedom during the refactorings, as well as you gain a higher level of confidence during the deployments. Besides those technicalities, there's one more important thing about the Component tests that I really would like to emphasize here. Scenarios for Component Test should be written from the business perspective, they should express the business expectations and confirm that those expectations are met. They should represent realistic and valid business use cases. Scenarios of Component Tests are quite often more complex than the unit test scenarios so it's very important to keep the test script concise, clear, and readable. Approaches like [driver patter](https://github.com/grzesiek-galezowski/driver-pattern-demo/tree/main/DriverInFunctionalHttpApiTests) can definitely help with that, but from my experience, no matter how clear and expressive your test helpers are, your might have a problem with understanding the test script when you get back to it after a while.
+For the last year, I've had an opportunity to work quite a lot with `Component Tests` for microservices built with ASP.NET Core. The vocabulary related to testing is very vague and terms like `Unit`, `Component`, and `Integration` tests can be interpreted differently based on the context, so let me explain first what I mean by `Component Tests`. It's a kind of test that treats your whole service as a black box. You can communicate with your system during the tests only through the publicly available interfaces (REST API, GRPC, Messaging, etc.). You are also not allowed to mock anything besides the external dependencies. Those external dependencies can be mocked by replacing the real component with an in-memory counterpart inside the `DI container`. However, the preferred approach is to keep the communication through the actual interfaces and use mocking components that can operate outside the service runtime boundaries (for example for REST dependencies you can use [WireMock.Net](https://github.com/WireMock-Net/WireMock.Net)). Thanks to the limited application of mocks you have more freedom during the refactorings, as well as you gain a higher level of confidence during the deployments. Besides those technicalities, there's one more important thing about the Component tests that I really would like to emphasize here. Scenarios for Component Test should be written from the business perspective, they should express the business expectations and confirm that those expectations are met. They should represent realistic and valid business use cases. Scenarios of Component Tests are quite often more complex than the unit test scenarios so it's very important to keep the test script concise, clear, and readable. Approaches like [driver patter](https://github.com/grzesiek-galezowski/driver-pattern-demo/tree/main/DriverInFunctionalHttpApiTests) can definitely help with that, but from my experience, no matter how clear and expressive your test helpers are, your might still have a problem with understanding the test script when you get back to it after a while.
 
 
 ## Annotations with comments
@@ -87,7 +88,7 @@ Now we can easily figure out what the test is about, without even reading the ac
 
 
 ## xBehave.net
-The next step on the way to solve the test readability issue was to introduce some kind of programmatic helpers for enforcing steps annotations. I came across an existing library called [xBehave.net](https://github.com/adamralph/xbehave.net) that tries to address this issue. Using the `xBehave.met`, our test can look as follows:
+The next step on the way to solve the test readability issue was to introduce some kind of programmatic helpers for enforcing steps annotations. I came across an existing library called [xBehave.net](https://github.com/adamralph/xbehave.net) that tries to address this issue. Using the `xBehave.net`, our test can look as follows:
 
 
 ```cs
@@ -261,7 +262,7 @@ public async Task should_handle_product_with_double_personal_license()
 
 After running that test we get the following output in console:
 
-```text
+```plaintext
 SCENARIO: should handle product with double personal license
 
 STEP 1: Purchase package containing 2 licenses
@@ -361,6 +362,6 @@ Here are my key advice for writing component tests:
 
 - Write test scenario sketch first.
 - Write meaningful step descriptions that are more business rather than technical oriented.
-- Focus in the first place on happy pats and most common use cases.
-- Ask other Developers or QAs for test scenario printout validation.
+- Focus in the first place on happy paths and most common use cases.
+- Ask other Developers or QAs for test scenario printout validation (Make sure that scenario is easy to understand by others).
 - Use code snippet for inserting step definition.

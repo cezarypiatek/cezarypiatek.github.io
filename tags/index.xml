@@ -6,10 +6,37 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Mar 2021 00:08:00 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 09 Aug 2021 00:21:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AspCore</title>
+      <link>https://cezarypiatek.github.io/tags/aspcore/</link>
+      <pubDate>Mon, 09 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/aspcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dotnetcore</title>
+      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
+      <pubDate>Mon, 09 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
+      <link>https://cezarypiatek.github.io/tags/testing/</link>
+      <pubDate>Mon, 09 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>ApprovalTest</title>
@@ -35,15 +62,6 @@
       <pubDate>Tue, 16 Mar 2021 00:08:00 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>testing</title>
-      <link>https://cezarypiatek.github.io/tags/testing/</link>
-      <pubDate>Tue, 16 Mar 2021 00:08:00 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
       <description></description>
     </item>
     
@@ -80,15 +98,6 @@
       <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/roslyn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dotnetcore</title>
-      <link>https://cezarypiatek.github.io/tags/dotnetcore/</link>
-      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
       <description></description>
     </item>
     
@@ -134,15 +143,6 @@
       <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/async/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>AspCore</title>
-      <link>https://cezarypiatek.github.io/tags/aspcore/</link>
-      <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/aspcore/</guid>
       <description></description>
     </item>
     

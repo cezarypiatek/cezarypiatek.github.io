@@ -6,10 +6,19 @@
     <description>Recent content in dotnetcore on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Jan 2021 10:00:45 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 09 Aug 2021 00:21:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/dotnetcore/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Readable and clear tests for ASP.NET Core services</title>
+      <link>https://cezarypiatek.github.io/post/component-tests-scenarios/</link>
+      <pubDate>Mon, 09 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/component-tests-scenarios/</guid>
+      <description>For the last year, I&amp;rsquo;ve had an opportunity to work quite a lot with Component Tests for microservices built with ASP.NET Core. The vocabulary related to testing is very vague and terms like Unit, Component, and Integration tests can be interpreted differently based on the context, so let me explain first what I mean by Component Tests. It&amp;rsquo;s a kind of test that treats your whole service as a black box.</description>
+    </item>
     
     <item>
       <title>Github Actions for Visual Studio Extension developers</title>
