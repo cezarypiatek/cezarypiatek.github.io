@@ -2,7 +2,7 @@
 title: "Github Actions for Visual Studio Extension developers"
 description: "How to completely automate continuous integration and release management of visual studio extensions."
 date: 2021-01-24T10:00:45+02:00
-tags : ["dotnet", "dotnetcore", "VisualStudio", "Github", "GithubActions"]
+tags : ["dotnet", "dotnetcore", "VisualStudio", "Github", "GithubActions", "vsix"]
 highlight: true
 highlightLang: ["yaml", "powershell"]
 image: "splashscreen.jpg"
