@@ -2,7 +2,7 @@
 title: "Generate mapping code with Roslyn code fix provider."
 description: "How to substitute AutoMapper with Roslyn code fix provider that generates code in design time."
 date: 2018-02-27T00:23:45+02:00
-tags : ["AutoMapper", "Roslyn", "mapping", "code generating", "C#", "dotnet"]
+tags : ["AutoMapper", "Roslyn", "mapping", "code generating", "C#", "dotnet", "vsix"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true

@@ -2,7 +2,7 @@
 title: "CSharp Macros - let the Roslyn type for you"
 description: "How I built very simple macro system for C# that works right in the code editor."
 date: 2019-09-01T00:11:45+02:00
-tags : ["roslyn", "productivity", "C#", "LiveTemplates","code generation"]
+tags : ["roslyn", "vsix", "C#", "LiveTemplates","code generation"]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
