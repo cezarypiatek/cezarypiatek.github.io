@@ -6,10 +6,46 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Aug 2021 00:21:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 29 Aug 2021 00:21:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>extensibility</title>
+      <link>https://cezarypiatek.github.io/tags/extensibility/</link>
+      <pubDate>Sun, 29 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/extensibility/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GithubActions</title>
+      <link>https://cezarypiatek.github.io/tags/githubactions/</link>
+      <pubDate>Sun, 29 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/githubactions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VisualStudio</title>
+      <link>https://cezarypiatek.github.io/tags/visualstudio/</link>
+      <pubDate>Sun, 29 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/visualstudio/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vsix</title>
+      <link>https://cezarypiatek.github.io/tags/vsix/</link>
+      <pubDate>Sun, 29 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/vsix/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>AspCore</title>
@@ -107,24 +143,6 @@
       <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/github/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GithubActions</title>
-      <link>https://cezarypiatek.github.io/tags/githubactions/</link>
-      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/githubactions/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>VisualStudio</title>
-      <link>https://cezarypiatek.github.io/tags/visualstudio/</link>
-      <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/visualstudio/</guid>
       <description></description>
     </item>
     
@@ -311,7 +329,7 @@
     <item>
       <title>productivity</title>
       <link>https://cezarypiatek.github.io/tags/productivity/</link>
-      <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
+      <pubDate>Tue, 30 Jul 2019 00:20:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/productivity/</guid>
       <description></description>

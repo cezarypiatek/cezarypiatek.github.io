@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Taking leverage of MsBuild to support multiple versions of VisualStudio">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/migrate-vsix-to-vs2022\/"
+            },
+          "headline" : "Adding support for VisualStudio 2022 to your extension",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2021-08-29",
+          "dateModified" : "2021-08-29",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/migrate-vsix-to-vs2022\/splashscreen.jpg",
+          "description": "Taking leverage of MsBuild to support multiple versions of VisualStudio"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2021-08-29">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/">	
+	<meta property="og:title" content="Adding support for VisualStudio 2022 to your extension">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/splashscreen.jpg">
+    <meta property="og:description" content="Taking leverage of MsBuild to support multiple versions of VisualStudio">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="vsix">
+    
+    <meta property="og:tags" content="GithubActions">
+    
+    <meta property="og:tags" content="VisualStudio">
+    
+    <meta property="og:tags" content="extensibility">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/splashscreen.jpg">
+	<meta property="twitter:title" content="Adding support for VisualStudio 2022 to your extension">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Taking leverage of MsBuild to support multiple versions of VisualStudio">
+
+	<meta name="keywords" value="vsix, GithubActions, VisualStudio, extensibility" />
+    <meta name="generator" content="Hugo 0.74.3" />
+    <title>Adding support for VisualStudio 2022 to your extension &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/a11y-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Adding support for VisualStudio 2022 to your extension</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>29 August 2021</time></div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>I published my first VisualStudio extension on 26th February 2018. It was initially created for Visual Studio 2017, but a few months later Visual Studio 2019 came out and I needed to support it as I was one of the beneficent. The migration was straightforward: it required only to extend <code>InstallationTarget</code> range to <code>[15.0,17.0)</code> in <code>vsixmanifest</code>, re-compile, and of course, re-publish the extension to the Visual Studio marketplace. Recently, the Visual Studio 2022 Preview was published. After quick scanning of <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/migration/update-visual-studio-extension?view=vs-2022">migration guideline</a> it turned out that changing <code>InstallationTarget</code> was not enough and more work was required to support VS2022. I wanted to postpone the migration a little bit more but I got an email from one of my paid customers, that the need for constant switching between VS2022 and V2019 to use my <a href="https://mappinggenerator.net">MappingGenerator</a> extension is killing his productivity - and I couldn&rsquo;t allow for that to happen.</p>
+<h2 id="what-needs-to-be-changed"><a href="#what-needs-to-be-changed">What needs to be changed  🔗&#xFE0E;</a></h2>
+
+<p>Basically, two things need to be changed to migrate your extension to VS2022. First of all, you need to adjust <code>vsixmanifest</code> by adding the new attribute <code>ProductArchitecture</code> to <code>InstallationTarget</code> configuration:</p>
+<pre><code class="language-xml">&lt;Installation&gt;   
+   &lt;InstallationTarget Id=&quot;Microsoft.VisualStudio.Community&quot; Version=&quot;[17.0,18.0)&quot;&gt;
+      &lt;ProductArchitecture&gt;amd64&lt;/ProductArchitecture&gt;
+   &lt;/InstallationTarget&gt;
+&lt;/Installation&gt;
+</code></pre>
+<p>The next thing that needs to be done is upgrading <code>SDK</code> NuGet package to a version appropriate for VS2022:</p>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+    &lt;PackageReference Include=&quot;Microsoft.VisualStudio.SDK&quot; Version=&quot;17.0.0-previews-1-31410-273&quot; ExcludeAssets=&quot;runtime&quot;&gt;
+        &lt;IncludeAssets&gt;compile; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+    &lt;/PackageReference&gt;
+    &lt;PackageReference Include=&quot;Microsoft.VSSDK.BuildTools&quot; Version=&quot;17.0.3177-preview3&quot;&gt;
+        &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+        &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
+    &lt;/PackageReference&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p>Additionally, you need to change the dotnet framework version to <code>v4.7.2</code>, if you still have an older version:</p>
+<pre><code class="language-xml">&lt;PropertyGroup&gt;
+    &lt;TargetFrameworkVersion&gt;v4.7.2&lt;/TargetFrameworkVersion&gt;
+&lt;/PropertyGroup&gt;
+</code></pre>
+<p>Ok, that&rsquo;s all - it doesn&rsquo;t seem to be a lot of work as I said before. However, those changes are not backward compatible and our extension can&rsquo;t be installed on an older version of VisualStudio anymore (adjusting <code>InstallationTarget.Version</code> won&rsquo;t help). So what can we do about that? According to the migration guideline on MSDN, the recommended approach is to move all extension code to <a href="https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/shared-projects?tabs=windows">Shared Project</a> and reference it from two separate <code>VSIX</code> projects - one for VS2019 (and older) and one for VS2022 (and newer). Each <code>VSIX</code> project has its own <code>vsixmanifest</code> file and references appropriate nuget packages.</p>
+<p>I tried this approach and lost 4 hours of my life. After moving the extension code to Shared Project all my XAML files seemed to be broken and XAML Visual Designer couldn&rsquo;t load them correctly to display preview. Besides the design-time experience, after compiling the extension, it turned out that the images from the Resources couldn&rsquo;t load - for some unknown reason that magical <code>tres comas</code> path notation <code>&quot;pack://application:,,,/Resources/</code> stopped working.</p>
+<p>
+<a href="tres_comas.jpg"><img  src="tres_comas.jpg" alt=""></a>
+</p>
+<h2 id="migration-in-a-smart-way"><a href="#migration-in-a-smart-way">Migration in a smart way  🔗&#xFE0E;</a></h2>
+
+<p>After a couple of hours of struggling with <code>Shared Project</code>, I decided to change the approach. The new idea was to tweak a little bit the <code>csproj</code> file to load appropriate project configuration based on the value of input property called <code>VsTargetVersion</code>. This solution requires a separate compilation for each Visual Studio version (one for VS2019 and older and one for VS2022 and newer) but it allows for keeping a single VSIX project that supports all Visual Studio versions. The final working <code>MsBuild</code> script looks as follows:</p>
+<pre><code class="language-xml">&lt;PropertyGroup&gt;
+    &lt;!-- STEP 1 --&gt;
+    &lt;VsTargetVersion Condition=&quot;'$(VsTargetVersion)' == '' and '$(VisualStudioVersion)' == '17.0' &quot;&gt;VS2022&lt;/VsTargetVersion&gt;
+    &lt;VsTargetVersion Condition=&quot;'$(VsTargetVersion)' == '' and '$(VisualStudioVersion)' == '16.0' &quot;&gt;VS2019&lt;/VsTargetVersion&gt;
+    &lt;!-- STEP 2 --&gt;
+    &lt;OutputPath&gt;bin\$(VsTargetVersion)\$(Configuration)\&lt;/OutputPath&gt;
+    &lt;IntermediateOutputPath&gt;obj\$(VsTargetVersion)\$(Configuration)\&lt;/IntermediateOutputPath&gt;
+  &lt;/PropertyGroup&gt;
+  &lt;!-- STEP 3 --&gt;
+  &lt;Choose&gt;
+    &lt;When Condition=&quot;'$(VsTargetVersion)' == 'VS2022'&quot;&gt;
+      &lt;PropertyGroup&gt;
+        &lt;TargetFrameworkVersion&gt;v4.7.2&lt;/TargetFrameworkVersion&gt;
+        &lt;AssemblyName&gt;MappingGeneratorProVS2022&lt;/AssemblyName&gt;
+      &lt;/PropertyGroup&gt;
+      &lt;ItemGroup&gt;
+        &lt;None Include=&quot;..\Manifests\VS2022\source.extension.vsixmanifest&quot; Link=&quot;source.extension.vsixmanifest&quot;&gt;
+          &lt;SubType&gt;Designer&lt;/SubType&gt;
+        &lt;/None&gt;
+        &lt;PackageReference Include=&quot;Microsoft.VisualStudio.SDK&quot; Version=&quot;17.0.0-previews-1-31410-273&quot; ExcludeAssets=&quot;runtime&quot;&gt;
+          &lt;IncludeAssets&gt;compile; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+        &lt;/PackageReference&gt;
+        &lt;PackageReference Include=&quot;Microsoft.VSSDK.BuildTools&quot; Version=&quot;17.0.3177-preview3&quot;&gt;
+          &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+          &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
+        &lt;/PackageReference&gt;     
+        &lt;PackageReference Include=&quot;System.ComponentModel.Composition&quot; Version=&quot;5.0.0&quot; /&gt;
+      &lt;/ItemGroup&gt;
+    &lt;/When&gt;
+    &lt;Otherwise&gt;
+      &lt;PropertyGroup&gt;
+        &lt;TargetFrameworkVersion&gt;v4.6.1&lt;/TargetFrameworkVersion&gt;
+        &lt;AssemblyName&gt;MappingGeneratorProVS2019&lt;/AssemblyName&gt;
+      &lt;/PropertyGroup&gt;
+      &lt;ItemGroup&gt;
+        &lt;None Include=&quot;..\Manifests\VS2019\source.extension.vsixmanifest&quot; Link=&quot;source.extension.vsixmanifest&quot;&gt;
+          &lt;SubType&gt;Designer&lt;/SubType&gt;
+        &lt;/None&gt;
+        &lt;PackageReference Include=&quot;Microsoft.VisualStudio.SDK&quot; Version=&quot;15.0.1&quot; ExcludeAssets=&quot;runtime&quot;&gt;
+          &lt;IncludeAssets&gt;compile; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+        &lt;/PackageReference&gt;
+        &lt;PackageReference Include=&quot;Microsoft.VSSDK.BuildTools&quot; Version=&quot;15.9.3039&quot;&gt;
+          &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
+          &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
+        &lt;/PackageReference&gt;
+      &lt;/ItemGroup&gt;
+    &lt;/Otherwise&gt;
+  &lt;/Choose&gt;
+</code></pre>
+<p>Explanation:</p>
+<ul>
+<li><strong>STEP 1:</strong> If the <code>VsTargetVersion</code> is not defined (it&rsquo;s not passed explicitly as a compilation parameter), then I&rsquo;m assigning a default value based on the current version of VisualStudio that loaded the project. For some unknown reason, it&rsquo;s not possible to build VS2019 extension with VS2022, so this approach fixes two issues here.</li>
+<li><strong>STEP 2:</strong> In order to avoid any collisions, I&rsquo;m adding value of <code>VsTargetVersion</code> attribute to <code>OutputPath</code> and <code>IntermediateOutputPath</code>. The artifacts and temporary build files will be in separate directories for each version. This also allows for avoiding any unnecessary confusion in the future. Please make sure that those attributes are not defined in other parts of your <code>csproj</code> file.</li>
+<li><strong>STEP 3:</strong> I&rsquo;m using <code>Choose-When-Otherwise</code> syntax for defining different project setting for each Visual Studio target version. In each branch we are allowed to have only a single <code>PropertyGroup</code> and a single <code>ItemGroup</code> definition. In <code>PropertyGroup</code> I&rsquo;m setting <code>TargetFrameworkVersion</code> and <code>AssemblyName</code> appropriately for each <code>VsTargetVersion</code> value. 
+In the <code>ItemGroup</code>, I&rsquo;m defining separate sets of required nuget packages and I&rsquo;m also importing an appropriate variation of <code>vsixmanifest</code> file.</li>
+</ul>
+<p>When I load my solution in <code>VS2019</code>, it automatically switches everything to VS2019 setup and when I open it with VS2022 everything is ready to build and debug the extension under VS2022.</p>
+<h2 id="automated-release"><a href="#automated-release">Automated release  🔗&#xFE0E;</a></h2>
+
+<p>For <code>Continuous Integration</code> I used <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix">strategy.matrix</a> to build <code>VS2019</code> and <code>VS2022</code> versions simultaneously as a part of the same pipeline. This mechanism allows me for branching the pipeline and setting <code>VsTargetVersion</code> environment variable (which is automatically used by MsBuild) differently for each branch. My workflow for releasing extension for <code>VS2019</code> and <code>VS2022</code> looks as follows:</p>
+<p>
+<a href="workflow.jpg"><img  src="workflow.jpg" alt=""></a>
+</p>
+<p>Here&rsquo;s a complete Github Actions script for releasing an extension that supports VS2019 and VS2022:</p>
+<pre><code class="language-yml">name: release
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+env: 
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  RepositoryUrl: 'https://github.com/${{ github.repository }}'
+  RepositoryBranch: '${{ github.ref }}'
+  SourceRevisionId: '${{ github.sha }}'
+  Configuration: Release
+  Version: '2021.8.${{ github.run_number }}'
+  SolutionPath: src\MappingGenerator.sln    
+jobs:
+  build-extension:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        VsTargetVersion: ['VS2019', 'VS2022']
+    env: 
+        VsixManifestPath: src\Manifests\${{ matrix.VsTargetVersion }}\source.extension.vsixmanifest
+        VsTargetVersion: '${{ matrix.VsTargetVersion }}'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2   
+    - name: Setup .NET Core 5
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0'   
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Restore NuGet Packages
+      run: nuget restore $env:SolutionPath
+    - name: Set version for Visual Studio Extension
+      uses: cezarypiatek/VsixVersionAction@1.0
+      with:
+        version: ${{ env.Version }} 
+        vsix-manifest-file: ${{ env.VsixManifestPath }}
+    - name: Build extension
+      run: msbuild $env:SolutionPath /t:Rebuild
+      env: 
+        DeployExtension: False
+    - name: Test extension
+      run: dotnet test --no-build --verbosity normal $env:SolutionPath
+    - name: Upload VSIX artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: VSIX-${{ matrix.VsTargetVersion }}
+        path: 'src\MappingGenerator.Vsix\bin\${{ matrix.VsTargetVersion }}\Release\MappingGeneratorPro${{ matrix.VsTargetVersion }}.vsix'    
+  release-extension:
+    needs: build-extension  
+    runs-on: windows-latest
+    steps:
+    - name: Support longpaths
+      run: git config --system core.longpaths true
+    - name: Checkout repository
+      uses: actions/checkout@v2   
+    - name: Generate release note
+      run: |
+        git fetch --prune --unshallow
+        $commitLog = git log &quot;$(git describe --tags --abbrev=0)..HEAD&quot; --pretty=format:&quot;- %s&quot;
+        &quot;What's new: `r`n`r`n$([string]::Join(&quot;`r`n&quot;,$commitLog))&quot; | Out-File release_note.md -Encoding utf8
+    - uses: actions/download-artifact@master
+      with:
+        name: VSIX-VS2019
+        path: dist/
+    - uses: actions/download-artifact@master
+      with:
+        name: VSIX-VS2022
+        path: dist/
+    - name: Create Github Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.Version }}
+        release_name:  ${{ env.Version }}
+        body_path: release_note.md
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset - MappingGenerator.vsix for VS2019
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'dist/MappingGeneratorProVS2019.vsix'
+        asset_name: 'MappingGeneratorProVS2019.vsix'
+        asset_content_type: binary/octet-stream
+        prerelease: false
+    - name: Upload Release Asset - MappingGenerator.vsix for VS2022
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: 'dist/MappingGeneratorProVS2022.vsix'
+        asset_name: 'MappingGeneratorProVS2022.vsix'
+        asset_content_type: binary/octet-stream       
+    - name: Publish extension to Marketplace for VS2019
+      uses: cezarypiatek/VsixPublisherAction@0.1
+      with:
+        extension-file: 'dist/MappingGeneratorProVS2019.vsix'
+        publish-manifest-file: 'src\Manifests\VS2019\publishManifest.json'
+        personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}
+    - name: Publish extension to Marketplace for VS2022
+      uses: cezarypiatek/VsixPublisherAction@0.1
+      with:
+        extension-file: 'dist/MappingGeneratorProVS2022.vsix'
+        publish-manifest-file: 'src\Manifests\VS2022\publishManifest.json'
+        personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}  
+</code></pre>
+<p>As a result of the <code>build-extension</code> job, we have two <code>vsix</code> files but the Visual Studio marketplace doesn&rsquo;t have an option of uploading multiple files for a single extension. According to MSDN (<a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/migration/update-visual-studio-extension?view=vs-2022#visual-studio-marketplace">more details here</a>), this should be possible in the future, but right now we are forced to publish a version for VS2022 as an extension with a different identity. As you might notice, that&rsquo;s the reason why I have two  <code>publishManifest.json</code> files for each version of VisualStudio.</p>
+    
+		
+		<hr/>
+		<p>Products recommended for highly effective .NET Developers:</p>  
+			<a href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner">
+			<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+		<hr/>
+		
+	</article>
+	
+</main>
+
+  
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/develop-vsextension-with-github-actions/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/develop-vsextension-with-github-actions/splashscreen_hud85bee5dadbc1fc45560823c855f89ae_108037_320x240_fill_q75_box_smart1.jpg" alt="Github Actions for Visual Studio Extension developers">
+								<div class="card-body">
+									<h5 class="card-title">Github Actions for Visual Studio Extension developers</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/csharp-macros/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<div class="card-body">
+									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/generate-mapping-code-with-roslyn/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-mapping-code-with-roslyn/splashscreen_hu86b51efa2999f8280c1d243d5a743591_73415_320x240_fill_q75_box_smart1.jpg" alt="Generate mapping code with Roslyn code fix provider.">
+								<div class="card-body">
+									<h5 class="card-title">Generate mapping code with Roslyn code fix provider.</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/xml.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/yaml.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "vsix,GithubActions,VisualStudio,extensibility"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>

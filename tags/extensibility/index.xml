@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>extensibility on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/extensibility/</link>
+    <description>Recent content in extensibility on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 29 Aug 2021 00:21:45 +0200</lastBuildDate>
+    
+	<atom:link href="https://cezarypiatek.github.io/tags/extensibility/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Adding support for VisualStudio 2022 to your extension</title>
+      <link>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</link>
+      <pubDate>Sun, 29 Aug 2021 00:21:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</guid>
+      <description>I published my first VisualStudio extension on 26th February 2018. It was initially created for Visual Studio 2017, but a few months later Visual Studio 2019 came out and I needed to support it as I was one of the beneficent. The migration was straightforward: it required only to extend InstallationTarget range to [15.0,17.0) in vsixmanifest, re-compile, and of course, re-publish the extension to the Visual Studio marketplace. Recently, the Visual Studio 2022 Preview was published.</description>
+    </item>
+    
+  </channel>
+</rss>

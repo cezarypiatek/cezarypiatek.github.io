@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>VisualStudio on Cezary Piątek Blog</title>
-    <link>https://cezarypiatek.github.io/tags/visualstudio/</link>
-    <description>Recent content in VisualStudio on Cezary Piątek Blog</description>
+    <title>vsix on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/vsix/</link>
+    <description>Recent content in vsix on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 29 Aug 2021 00:21:45 +0200</lastBuildDate>
     
-	<atom:link href="https://cezarypiatek.github.io/tags/visualstudio/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://cezarypiatek.github.io/tags/vsix/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -27,6 +27,24 @@
       
       <guid>https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/</guid>
       <description>I discovered the power of Roslyn over three years ago and since then I&amp;rsquo;ve developed three Visual Studio extensions and a couple of code analyzers. Because I work on those tools only in my free time, the word &amp;ldquo;time&amp;rdquo; is a key here, so automation really matters. So far I&amp;rsquo;ve been using AppVeyor for building and testing my extensions. However, I&amp;rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</description>
+    </item>
+    
+    <item>
+      <title>CSharp Macros - let the Roslyn type for you</title>
+      <link>https://cezarypiatek.github.io/post/csharp-macros/</link>
+      <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/csharp-macros/</guid>
+      <description>I&amp;rsquo;m a programmer but I don&amp;rsquo;t like to write code. OK, it&amp;rsquo;s not the whole truth. I don&amp;rsquo;t like to write the code that is repeatable. Whenever I need to do something more than twice, I start thinking about automation. Hopefully, this problem can be addressed with code snippets. Visual Studio provides a predefined set of snippets that can be extended, but if you are a Resharper user you should definitely get to know LiveTemplates because it&amp;rsquo;s more powerful and easier to configure.</description>
+    </item>
+    
+    <item>
+      <title>Generate mapping code with Roslyn code fix provider.</title>
+      <link>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</link>
+      <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</guid>
+      <description>A few weeks ago I posted about negative aspects of applying AutoMapper. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like T4Scaffoling or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in T4 syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking.</description>
     </item>
     
   </channel>

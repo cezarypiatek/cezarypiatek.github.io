@@ -6,19 +6,10 @@
     <description>Recent content in productivity on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Sep 2019 00:11:45 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jul 2019 00:20:45 +0200</lastBuildDate>
     
 	<atom:link href="https://cezarypiatek.github.io/tags/productivity/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>CSharp Macros - let the Roslyn type for you</title>
-      <link>https://cezarypiatek.github.io/post/csharp-macros/</link>
-      <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/post/csharp-macros/</guid>
-      <description>I&amp;rsquo;m a programmer but I don&amp;rsquo;t like to write code. OK, it&amp;rsquo;s not the whole truth. I don&amp;rsquo;t like to write the code that is repeatable. Whenever I need to do something more than twice, I start thinking about automation. Hopefully, this problem can be addressed with code snippets. Visual Studio provides a predefined set of snippets that can be extended, but if you are a Resharper user you should definitely get to know LiveTemplates because it&amp;rsquo;s more powerful and easier to configure.</description>
-    </item>
     
     <item>
       <title>Effective mocking</title>
