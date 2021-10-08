@@ -218,3 +218,19 @@ ins.play-gif{
     margin-top:20px;
     border: solid 1px orange;
 }
+
+#InArticleBanners {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+#InArticleBanners a {
+    transform: perspective(1px) translateZ(0); 
+    transition-duration: 0.5s;
+}
+#InArticleBanners a:hover, #InArticleBanners a:focus, #InArticleBanners a:active {
+    transition-timing-function: cubic-bezier(0.48, 2.02, 0.32, -0.34);
+    transform: scale(1.1);
+}
