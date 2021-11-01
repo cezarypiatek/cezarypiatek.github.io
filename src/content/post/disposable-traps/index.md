@@ -142,23 +142,23 @@ There's a hazard that something blows up between creating first resource and cre
 ```cs
 public class ControlledScopeDisposable<T> : IDisposable where T : IDisposable
 {
-    private T _disposableImplementation;
+    public T UnderlyingResource { get; private set; }
 
-    public ControlledScopeDisposable(T disposableImplementation)
+    public ControlledScopeDisposable(T underlyingResource)
     {
-        _disposableImplementation = disposableImplementation;
+        UnderlyingResource = underlyingResource;
     }
 
     public T Dispossess()
     {
-        var dispossessed = _disposableImplementation;
-        _disposableImplementation = default;
+        var dispossessed = UnderlyingResource;
+        UnderlyingResource = default;
         return dispossessed;
     }
 
     public void Dispose()
     {
-        _disposableImplementation?.Dispose();
+        UnderlyingResource?.Dispose();
     }
 }
 
@@ -176,15 +176,33 @@ Now we can increase our level of confidence as follows:
 ```cs
 public ResourceManager Create()
 {
-    var resources1 = new MyDisposable().ToControlledScope();
-    var resources2 = new MyDisposable().ToControlledScope();
-    var resources3 = new MyDisposable().ToControlledScope();
+    using var resources1 = new MyDisposable().ToControlledScope();
+    using var resources2 = new MyDisposable().ToControlledScope();
+    using var resources3 = new MyDisposable().ToControlledScope();
     return new ResourceManager(resources1.Dispossess(), resources2.Dispossess(), resources3.Dispossess());
 }
 ```
 
-I don't want you to use this decorator but I would like to remember a potential problems with instantiating multiple disposable resources in a factory methods and pay attention for it during writing and reviewing code.
 
+
+Or to protect from situation when `ResourceManager` might throw an exception, we should actually do this in the following way:
+
+
+```cs
+public ResourceManager Create()
+{
+    using var resources1 = new MyDisposable().ToControlledScope();
+    using var resources2 = new MyDisposable().ToControlledScope();
+    using var resources3 = new MyDisposable().ToControlledScope();
+    var resourceManager = new ResourceManager(resources1.UnderlyingResource, resources2.UnderlyingResource, resources3.UnderlyingResource);
+    _ = resources1.Dispossess();
+    _ = resources2.Dispossess();
+    _ = resources3.Dispossess();
+    return resourceManager;
+}
+```
+
+I don't want you to use this decorator but I would like to remember a potential problems with instantiating multiple disposable resources in a factory methods and pay attention for it during writing and reviewing code.
 
 ## Disposing multiple objects
 
