@@ -10,6 +10,11 @@ isBlogpost: true
 ---
 
 
+.NET Framework allows writing `managed code` which means there's a mechanism called Garbage Collector responsible for automatic memory management. However, on the daily basis, we need to deal with a variety of resources - not only the memory. Some of them might require special treatment, especially they need to be cleaned up or released after they are no longer needed. This clean-up is very important because, like in the real world, the resources are limited and without proper management, they might run out. The C# language provides another mechanism that facilitates our work with this kind of resources - of course, I'm talking here about `disposable resources`.  Thanks to the `using` keyword we can ensure automatic resource disposal at the end of a given scope of everything that implements `IDisposable` interfaces (for asynchronous disposal there are `await using` and `IAsyncDisposable` counterparts). However, this simple mechanism when improperly use or without appropriate attention still might allow for resource leakage. In this blog post, I would like to discuss a few recurring anti-patterns that I came across while dealing with `IDisposable`. They are mostly a result of insufficient attention or the lack of proper understanding of how `IDisposable` works.
+
+
+## How the `using` works
+
 
 
 ## Constructing Disposable objects
@@ -463,6 +468,4 @@ By default `StreamReader` is disposing underlying stream. This might be obvious/
 
 ```cs
 public StreamReader(Stream stream, Encoding? encoding = null, bool detectEncodingFromByteOrderMarks = true, int bufferSize = -1, bool leaveOpen = false)
-        {
 ```
-
