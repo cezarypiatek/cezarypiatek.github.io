@@ -1,10 +1,9 @@
 ---
 title: "Disposable traps"
 description: "TBA"
-date: 2019-07-30T00:20:45+02:00
+date: 2021-11-07T00:20:45+02:00
 tags : ["csharp", "dotnet", "dotnetcore", "best practices"]
 highlight: true
-
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
@@ -13,9 +12,107 @@ isBlogpost: true
 .NET Framework allows writing `managed code` which means there's a mechanism called Garbage Collector responsible for automatic memory management. However, on the daily basis, we need to deal with a variety of resources - not only the memory. Some of them might require special treatment, especially they need to be cleaned up or released after they are no longer needed. This clean-up is very important because, like in the real world, the resources are limited and without proper management, they might run out. The C# language provides another mechanism that facilitates our work with this kind of resources - of course, I'm talking here about `disposable resources`.  Thanks to the `using` keyword we can ensure automatic resource disposal at the end of a given scope of everything that implements `IDisposable` interfaces (for asynchronous disposal there are `await using` and `IAsyncDisposable` counterparts). However, this simple mechanism when improperly use or without appropriate attention still might allow for resource leakage. In this blog post, I would like to discuss a few recurring anti-patterns that I came across while dealing with `IDisposable`. They are mostly a result of insufficient attention or the lack of proper understanding of how `IDisposable` works.
 
 
-## How the `using` works
+## Designing constructors of disposable objects
 
+I would like to start from reminding how the `using` keyword works. It's actually a syntactic sugar which is translated into appropriate `try-finally` blocks. The following sample code:
 
+```cs
+class Program
+{
+    static void Main(string[] args)
+    {
+        using var x = new MyDisposable();
+        Console.WriteLine("Hello World!");
+    }
+}
+```
+
+Is translated to:
+
+```cs
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        MyDisposable myDisposable = new MyDisposable();
+        try
+        {
+            Console.WriteLine("Hello World!");
+        }
+        finally
+        {
+            if (myDisposable != null)
+            {
+                ((IDisposable)myDisposable).Dispose();
+            }
+        }
+    }
+}
+```
+
+The important thing to remember here is the fact, that the object creation takes places before the `try` block. If the constructor invocation throws an exception, then the `Dispose` method won't get invoked. We should take it under consideration while we implement the constructor of object that represent a disposable resource or is a decorator/wrapper/aggregator for other disposables. Let's take as an example the constructor of the following object:
+
+```cs
+internal class MyDisposable : IDisposable
+{
+    private readonly IDisposable firstResource;
+    private readonly IDisposable secondResource;
+
+    public MyDisposable()
+    {
+        firstResource = new SomeDisposable();
+        firstResource.DoSomethingToPrepare(); //This might blow up
+        secondResource = new SomeDisposable();
+        secondResource.DoSomethingToPrepare(); //This might blow up
+    }
+
+    public void Dispose()
+    {
+        //TODO: Dispose all disposable members
+    }
+}
+```
+
+If the invocation of `DoSomethingToPrepare()` blows up, then we are at the risk of leading the already created resources. The best option is to do as little as possible in the constructors and move advance initialization logic that could possibly fail to a separate method like `Init` or `Setup`. Especially the allocation of the actual resources should be moved from the constructor to this dedicated method. Then we can initialize our object in a more safely fashion with a guarantee of proper disposal:
+
+```cs
+internal class MyDisposable : IDisposable
+{
+    private readonly IDisposable firstResource;
+    private readonly IDisposable secondResource;
+
+    public MyDisposable()
+    {
+        firstResource = new SomeDisposable();      
+        secondResource = new SomeDisposable();        
+    }
+
+    public void Setup()
+    {
+        firstResource.DoSomethingToPrepare();
+        secondResource.DoSomethingToPrepare();
+    }
+
+    public void Dispose()
+    {
+        //TODO: Dispose all disposable members
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        using var x = new MyDisposable();
+        x.Setup();
+        Console.WriteLine("Hello World!");
+    }
+}
+```
+
+## Designing factories for disposable objects
+
+Take a look at `CA2000` rule
 
 ## Constructing Disposable objects
 
