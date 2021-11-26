@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-08-02",
-          "dateModified" : "2020-09-06",
+          "dateModified" : "2020-08-02",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/dapper-tips-and-tricks\/splashscreen.jpg",
           "description": "A couple of tricks which simplify database access code while using Dapper library"
         }
@@ -54,7 +54,7 @@
 	<meta property="twitter:description" content="A couple of tricks which simplify database access code while using Dapper library">
 
 	<meta name="keywords" value="Dapper, SqlServer, C#, dotnet" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Working efficiently with legacy database using Dapper &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -184,7 +184,7 @@
 </blockquote>
 <h2 id="resilient-to-refactoring"><a href="#resilient-to-refactoring">Resilient to refactoring  🔗&#xFE0E;</a></h2>
 
-<p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns&rsquo; names match object fields&rsquo; name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
+<p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns' names match object fields' name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
 <pre><code class="language-sql">SELECT 
     UserID AS [Id], 
     UserName AS [Name]

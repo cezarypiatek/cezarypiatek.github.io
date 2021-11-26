@@ -6,11 +6,7 @@
     <description>Recent content in GithubActions on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 29 Aug 2021 00:21:45 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/githubactions/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 29 Aug 2021 00:21:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/githubactions/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Adding support for VisualStudio 2022 to your extension</title>
       <link>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</link>

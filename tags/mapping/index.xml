@@ -6,11 +6,7 @@
     <description>Recent content in mapping on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Dec 2019 00:09:00 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/mapping/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 01 Dec 2019 00:09:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/mapping/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to simulate AutoMapper that works during the build time</title>
       <link>https://cezarypiatek.github.io/post/generate-mappings-on-build/</link>

@@ -6,11 +6,7 @@
     <description>Recent content in CQRS on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 23 Sep 2018 00:20:45 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/cqrs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 23 Sep 2018 00:20:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/cqrs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CQRS snippets</title>
       <link>https://cezarypiatek.github.io/post/cqrs-snippets/</link>

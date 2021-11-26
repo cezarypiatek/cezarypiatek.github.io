@@ -4,9 +4,9 @@ languageCode = "en-us"
 title = "Cezary Piątek Blog"
 theme = ["hugo-dynamic-tabs", "hugo-geo"]
 disqusShortname= "cezarypiatek-github-io"
-publishDir = "../"
+publishDir = "./dist"
 paginate = 5
-enableGitInfo = true
+enableGitInfo = false
 [params]
 	profilepic = "images/7759991.jpg"
 	title = "CEZARY PIĄTEK"

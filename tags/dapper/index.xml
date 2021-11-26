@@ -6,11 +6,7 @@
     <description>Recent content in Dapper on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 02 Aug 2020 00:11:45 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/dapper/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 02 Aug 2020 00:11:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/dapper/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Working efficiently with legacy database using Dapper</title>
       <link>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</link>

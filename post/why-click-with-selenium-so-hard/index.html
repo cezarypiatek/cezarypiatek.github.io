@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2017-10-05",
-          "dateModified" : "2018-11-13",
+          "dateModified" : "2017-10-05",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/why-click-with-selenium-so-hard\/splashscreen.jpg",
           "description": ""
         }
@@ -54,7 +54,7 @@
 	<meta property="twitter:description" content="">
 
 	<meta name="keywords" value="selenium, ui-tests, webdriver, ElementNotInteractableException" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Why clicking with Selenium is so hard. &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -244,16 +244,16 @@ The method documentation comment explains general rules of testing if element is
 <pre><code class="language-cs">static bool IsElementInteractable(this RemoteWebDriver driver, IWebElement element)
 {
    return (bool)driver.ExecuteScript(@&quot;
-       return (function(element)
-       {
-           function belongsToElement(subElement)
-           {
-               return element == subElement || element.contains(subElement);
-           }
-           var rec = element.getBoundingClientRect();                        
-           var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-           return belongsToElement(elementAtPosition);
-       })(arguments[0]);                    
+   	return (function(element)
+   	{
+   		function belongsToElement(subElement)
+   		{
+   			return element == subElement || element.contains(subElement);
+   		}
+   		var rec = element.getBoundingClientRect();                        
+   		var elementAtPosition = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+   		return belongsToElement(elementAtPosition);
+   	})(arguments[0]);                    
    &quot;, element);
 }
 </code></pre>

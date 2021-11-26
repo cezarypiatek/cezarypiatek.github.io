@@ -6,11 +6,7 @@
     <description>Recent content in TODOExplorer on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 14 Dec 2017 22:34:18 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/todoexplorer/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 14 Dec 2017 22:34:18 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/todoexplorer/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Get rid of TODOs from your codebase.</title>
       <link>https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/</link>

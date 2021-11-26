@@ -6,11 +6,7 @@
     <description>Recent content in multithreading on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Sep 2019 00:10:00 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/multithreading/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 15 Sep 2019 00:10:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/multithreading/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</title>
       <link>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/</link>

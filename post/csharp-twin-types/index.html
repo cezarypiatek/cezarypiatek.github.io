@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-06-14",
-          "dateModified" : "2021-02-16",
+          "dateModified" : "2020-06-14",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/csharp-twin-types\/splashscreen.jpg",
           "description": "How to keep two different types in synchronization using roslyn analyzers"
         }
@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="How to keep two different types in synchronization using roslyn analyzers">
 
 	<meta name="keywords" value="dotnet, csharp, roslyn, code analysis, code generation" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Twin types - properties synchronization without inheritance &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -203,7 +203,7 @@
 <p>
 <a href="analyzer_example.jpg"><img  src="analyzer_example.jpg" alt=""></a>
 </p>
-<p><code>TwinTypeAnalyzer</code> verifies if type decorated with <code>[TwinType]</code> attribute has members (properties and fields) with the same names as the type declared to mimic. Members&rsquo; types are ignored so it&rsquo;s possible to have the same field with different types on both sides. <code>[TwinType]</code> attribute can be applied multiple times on the same type so it&rsquo;s possible to achieve some sort of <code>mixins</code> or <code>multiple inheritance</code>:</p>
+<p><code>TwinTypeAnalyzer</code> verifies if type decorated with <code>[TwinType]</code> attribute has members (properties and fields) with the same names as the type declared to mimic. Members' types are ignored so it&rsquo;s possible to have the same field with different types on both sides. <code>[TwinType]</code> attribute can be applied multiple times on the same type so it&rsquo;s possible to achieve some sort of <code>mixins</code> or <code>multiple inheritance</code>:</p>
 <p>
 <a href="mixins_example.jpg"><img  src="mixins_example.jpg" alt="multiple twins example"></a>
 </p>

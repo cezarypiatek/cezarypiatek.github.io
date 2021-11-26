@@ -6,11 +6,7 @@
     <description>Recent content in decompiler on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 10 Dec 2017 10:38:18 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/decompiler/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 10 Dec 2017 10:38:18 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/decompiler/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The fastest way do debug .net code without sources.</title>
       <link>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</link>

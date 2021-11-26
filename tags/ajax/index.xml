@@ -6,11 +6,7 @@
     <description>Recent content in ajax on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Feb 2018 00:22:00 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/ajax/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 18 Feb 2018 00:22:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/ajax/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>What&#39;s wrong with default ajax support in ASP.NET MVC and how to fix it.</title>
       <link>https://cezarypiatek.github.io/post/whats-wrong-with-unobtrusive-ajax/</link>

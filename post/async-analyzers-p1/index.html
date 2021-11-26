@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-10-11",
-          "dateModified" : "2020-11-03",
+          "dateModified" : "2020-10-11",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/async-analyzers-p1\/splashscreen.jpg",
           "description": "Which analyzer package should I use and how to configure it to avoid most common problems related to async\/await."
         }
@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="Which analyzer package should I use and how to configure it to avoid most common problems related to async/await.">
 
 	<meta name="keywords" value="dotnet, csharp, async, roslyn, analyzers" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Async code smells and how to track them down with analyzers - Part I &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -992,7 +992,7 @@ dotnet_diagnostic.CS4014.severity = error
 <table>
 <thead>
 <tr>
-<th align="right">#</th>
+<th style="text-align:right">#</th>
 <th>Code smell</th>
 <th>AsyncFixer</th>
 <th>VS-Threading</th>
@@ -1002,7 +1002,7 @@ dotnet_diagnostic.CS4014.severity = error
 </thead>
 <tbody>
 <tr>
-<td align="right">1.</td>
+<td style="text-align:right">1.</td>
 <td>Unnecessary async/await usage</td>
 <td>🔎🛠️  AsyncFixer01</td>
 <td></td>
@@ -1010,7 +1010,7 @@ dotnet_diagnostic.CS4014.severity = error
 <td>🔎🛠️  RCS1174</td>
 </tr>
 <tr>
-<td align="right">2.</td>
+<td style="text-align:right">2.</td>
 <td>Call sync methods inside async method</td>
 <td>🔎🛠️  AsyncFixer02</td>
 <td>🔎🛠️ VSTHRD103</td>
@@ -1018,7 +1018,7 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">3.</td>
+<td style="text-align:right">3.</td>
 <td>Async void methods</td>
 <td>🔎🛠️ AsyncFixer03</td>
 <td>🔎🛠️ VSTHRD100</td>
@@ -1026,7 +1026,7 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">4.</td>
+<td style="text-align:right">4.</td>
 <td>Unsupported async delegates</td>
 <td></td>
 <td>🔎 VSTHRD101</td>
@@ -1034,7 +1034,7 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">5.</td>
+<td style="text-align:right">5.</td>
 <td>Not awaited Task within using expression</td>
 <td></td>
 <td>🔎🛠️ VSTHRD107</td>
@@ -1042,7 +1042,7 @@ dotnet_diagnostic.CS4014.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">6.</td>
+<td style="text-align:right">6.</td>
 <td>Not awaited Task inside the using block</td>
 <td>🔎 AsyncFixer04</td>
 <td></td>
@@ -1050,7 +1050,7 @@ dotnet_diagnostic.CS4014.severity = error
 <td>🔎🛠️ RCS1229</td>
 </tr>
 <tr>
-<td align="right">7.</td>
+<td style="text-align:right">7.</td>
 <td>Unobserved result of asynchronous method</td>
 <td></td>
 <td>🔎 VSTHRD110</td>

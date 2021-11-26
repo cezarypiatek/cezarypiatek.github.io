@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-11-03",
-          "dateModified" : "2021-02-07",
+          "dateModified" : "2020-11-03",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/async-analyzers-summary\/splashscreen.jpg",
           "description": "Which analyzer package should I use and how to configure it to avoid most common problems related to async\/await."
         }
@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="Which analyzer package should I use and how to configure it to avoid most common problems related to async/await.">
 
 	<meta name="keywords" value="dotnet, dotnetcore, csharp, async, analyzers" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Async code smells and how to track them down with analyzers - Summary &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,7 +175,7 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>In the last two posts, I&rsquo;ve described 14 different code smells related to the <code>async/await</code> keywords. Beside the problem description, I&rsquo;ve also provided info about code analyzers that can detect and report given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They also contain rules from other fields with predefined severity, which might not be appropriate to your needs, or you might not be interested in enforcing them at all. The fact that those analyzers come from different packages provided by different community members results in duplicated effort (some rules were implemented more than once) and forces us to spend more time researching them and deciding which one to use. <strong>I wish there was a single analyzer package that contained all those rules related to async programming, and only them.</strong> This would result in a better time disposition of people who work on the analyzers (in most cases, they are doing it in their spare time without getting paid for it), increasing analyzers&rsquo; quality, and definitely simplifying the consumption. Right now we need to somehow deal with what we have. To save you some time and to finally answer the question <strong>&ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&quot;</strong> I decided to write this summary.</p>
+		<p>In the last two posts, I&rsquo;ve described 14 different code smells related to the <code>async/await</code> keywords. Beside the problem description, I&rsquo;ve also provided info about code analyzers that can detect and report given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They also contain rules from other fields with predefined severity, which might not be appropriate to your needs, or you might not be interested in enforcing them at all. The fact that those analyzers come from different packages provided by different community members results in duplicated effort (some rules were implemented more than once) and forces us to spend more time researching them and deciding which one to use. <strong>I wish there was a single analyzer package that contained all those rules related to async programming, and only them.</strong> This would result in a better time disposition of people who work on the analyzers (in most cases, they are doing it in their spare time without getting paid for it), increasing analyzers' quality, and definitely simplifying the consumption. Right now we need to somehow deal with what we have. To save you some time and to finally answer the question <strong>&ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&quot;</strong> I decided to write this summary.</p>
 <h2 id="installing-the-analyzers"><a href="#installing-the-analyzers">Installing the analyzers  🔗&#xFE0E;</a></h2>
 
 <p>Here are the entries for <code>csproj</code> that add async analyzers to your project.</p>
@@ -311,7 +311,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <table>
 <thead>
 <tr>
-<th align="right">#</th>
+<th style="text-align:right">#</th>
 <th>Code smell</th>
 <th>AsyncFixer</th>
 <th>VS-Threading</th>
@@ -324,7 +324,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 </thead>
 <tbody>
 <tr>
-<td align="right">1.</td>
+<td style="text-align:right">1.</td>
 <td>Unnecessary async/await usage</td>
 <td>🔎🛠️  AsyncFixer01</td>
 <td></td>
@@ -335,7 +335,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">2.</td>
+<td style="text-align:right">2.</td>
 <td>Call sync methods inside async method</td>
 <td>🔎🛠️  AsyncFixer02</td>
 <td>🔎🛠️ VSTHRD103</td>
@@ -346,7 +346,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">3.</td>
+<td style="text-align:right">3.</td>
 <td>Async void methods</td>
 <td>🔎🛠️ AsyncFixer03</td>
 <td>🔎🛠️ VSTHRD100</td>
@@ -357,7 +357,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">4.</td>
+<td style="text-align:right">4.</td>
 <td>Unsupported async delegates</td>
 <td></td>
 <td>🔎 VSTHRD101</td>
@@ -368,7 +368,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">5.</td>
+<td style="text-align:right">5.</td>
 <td>Not awaited Task within using expression</td>
 <td></td>
 <td>🔎🛠️ VSTHRD107</td>
@@ -379,7 +379,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">6.</td>
+<td style="text-align:right">6.</td>
 <td>Not awaited Task inside the using block</td>
 <td>🔎 AsyncFixer04</td>
 <td></td>
@@ -390,7 +390,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">7.</td>
+<td style="text-align:right">7.</td>
 <td>Unobserved result of asynchronous method</td>
 <td></td>
 <td>🔎 VSTHRD110</td>
@@ -401,7 +401,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">8.</td>
+<td style="text-align:right">8.</td>
 <td>Synchronous waits</td>
 <td></td>
 <td>🔎🛠️VSTHRD002</td>
@@ -412,7 +412,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td>🔎🛠️AsyncifyInvocation, AsyncifyVariable</td>
 </tr>
 <tr>
-<td align="right">9.</td>
+<td style="text-align:right">9.</td>
 <td>Missing <code>ConfigureAwait(bool)</code></td>
 <td></td>
 <td>🔎🛠️VSTHRD111</td>
@@ -423,7 +423,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">10.</td>
+<td style="text-align:right">10.</td>
 <td>Returning null from a Task-returning method</td>
 <td></td>
 <td>🔎🛠️VSTHRD114</td>
@@ -434,7 +434,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">11.</td>
+<td style="text-align:right">11.</td>
 <td>Asynchronous method names should end with Async</td>
 <td></td>
 <td>🔎🛠️VSTHRD200</td>
@@ -445,7 +445,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">12.</td>
+<td style="text-align:right">12.</td>
 <td>Non asynchronous method names shouldn&rsquo;t end with Async</td>
 <td></td>
 <td></td>
@@ -456,7 +456,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">13.</td>
+<td style="text-align:right">13.</td>
 <td>Pass cancellation token</td>
 <td></td>
 <td></td>
@@ -467,7 +467,7 @@ dotnet_diagnostic.AsyncFixer05.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">14.</td>
+<td style="text-align:right">14.</td>
 <td>Using cancellation token with IAsyncEnumerable</td>
 <td></td>
 <td></td>

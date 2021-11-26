@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2019-09-15",
-          "dateModified" : "2019-10-20",
+          "dateModified" : "2019-09-15",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/avoid-multithreading-traps-p2\/splashscreen.jpg",
           "description": "How to avoid thread synchronization problems caused by improperly used synchronization primitives"
         }
@@ -52,7 +52,7 @@
 	<meta property="twitter:description" content="How to avoid thread synchronization problems caused by improperly used synchronization primitives">
 
 	<meta name="keywords" value="roslyn, multithreading, C#" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Avoid thread synchronization problems with Roslyn: Synchronization primitives traps &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -199,7 +199,7 @@ finally{
 </ul>
 <h2 id="spinlock-traps"><a href="#spinlock-traps">SpinLock traps  🔗&#xFE0E;</a></h2>
 
-<p>.NET 4.0 introduced a <code>SpinLock</code> which is a new synchronization primitive intended for the critical section with low contention. In certain situation, from the performance perspective, a <code>SpinLock</code> could be a better choice, but before we decide to change <code>lock/Monitor</code> to <code>SpinLock</code> there is a couple of things about the <code>SpinLock</code> that we should be aware of. The first most important information is that  <strong>SpinLock is a struct</strong> so all the rules of value types semantics apply to it. The most obvious effect is that creating a method that accepts <code>SpinLock</code> by value (without the <code>ref</code> modifier) makes it useless - the method always receives a copy of the <code>SpinLock</code> instance and there will be no synchronization between the consumers of <code>SpinLock</code>. We can face a similar but less obvious problem with using <code>SpinLock</code> as a <code>readonly</code> field, because every time we invoke an instance method from a <code>readonly</code> value type field, a copy of it is returned and all invocations of <code>Enter()</code> result with acquiring a lock. There is a <code>Resharper</code>'s inspection called <a href="https://www.jetbrains.com/help/resharper/ImpureMethodCallOnReadonlyValueField.html">Impure method is called for readonly field of value type</a> which can save us from this issue but setting the severity of this rule for <code>Error</code> could end up with reporting a lot of false positives. In order to address both problems with <code>SpinLock</code>, I&rsquo;ve created  Roslyn analyzers that can report those dangerous situations:</p>
+<p>.NET 4.0 introduced a <code>SpinLock</code> which is a new synchronization primitive intended for the critical section with low contention. In certain situation, from the performance perspective, a <code>SpinLock</code> could be a better choice, but before we decide to change <code>lock/Monitor</code> to <code>SpinLock</code> there is a couple of things about the <code>SpinLock</code> that we should be aware of. The first most important information is that  <strong>SpinLock is a struct</strong> so all the rules of value types semantics apply to it. The most obvious effect is that creating a method that accepts <code>SpinLock</code> by value (without the <code>ref</code> modifier) makes it useless - the method always receives a copy of the <code>SpinLock</code> instance and there will be no synchronization between the consumers of <code>SpinLock</code>. We can face a similar but less obvious problem with using <code>SpinLock</code> as a <code>readonly</code> field, because every time we invoke an instance method from a <code>readonly</code> value type field, a copy of it is returned and all invocations of <code>Enter()</code> result with acquiring a lock. There is a <code>Resharper</code>&rsquo;s inspection called <a href="https://www.jetbrains.com/help/resharper/ImpureMethodCallOnReadonlyValueField.html">Impure method is called for readonly field of value type</a> which can save us from this issue but setting the severity of this rule for <code>Error</code> could end up with reporting a lot of false positives. In order to address both problems with <code>SpinLock</code>, I&rsquo;ve created  Roslyn analyzers that can report those dangerous situations:</p>
 <ul>
 <li><code>MT1014: Passed by value SpinLock is useless</code></li>
 <li><code>MT1015: Readonly SpinLock is useless</code></li>

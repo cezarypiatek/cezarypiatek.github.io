@@ -23,7 +23,7 @@
             "name" : "CEZARY PIĄTEK"
           },
           "datePublished" : "2020-10-18",
-          "dateModified" : "2020-10-19",
+          "dateModified" : "2020-10-18",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/async-analyzers-p2\/splashscreen.jpg",
           "description": "Which analyzer package should I use and how to configure it to avoid most common problems related to async\/await."
         }
@@ -56,7 +56,7 @@
 	<meta property="twitter:description" content="Which analyzer package should I use and how to configure it to avoid most common problems related to async/await.">
 
 	<meta name="keywords" value="dotnet, csharp, async, roslyn, analyzers" />
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.89.4" />
     <title>Async code smells and how to track them down with analyzers - Part II &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -175,7 +175,7 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&rsquo;m trying to help you answer the question: <strong>&ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&quot;</strong>. In <a href="../../post/async-analyzers-p1/">the previous episode</a>, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area. Lucky you, they can be easily avoided with an appropriate analyzer - for every issue, I provide entries for <code>.editorconfig</code> that configure analyzers that can detect it. Links to NuGet packages, as well as a complete list of analyzers&rsquo; rules, can be found in the previous article.</p>
+		<p>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&rsquo;m trying to help you answer the question: <strong>&ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&quot;</strong>. In <a href="../../post/async-analyzers-p1/">the previous episode</a>, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area. Lucky you, they can be easily avoided with an appropriate analyzer - for every issue, I provide entries for <code>.editorconfig</code> that configure analyzers that can detect it. Links to NuGet packages, as well as a complete list of analyzers' rules, can be found in the previous article.</p>
 <h2 id="async-code-smells"><a href="#async-code-smells">Async Code Smells  🔗&#xFE0E;</a></h2>
 
 <h3 id="8-synchronous-waits"><a href="#8-synchronous-waits">8. Synchronous waits  🔗&#xFE0E;</a></h3>
@@ -426,7 +426,7 @@ dotnet_diagnostic.MA0080.severity = error
 <table>
 <thead>
 <tr>
-<th align="right">#</th>
+<th style="text-align:right">#</th>
 <th>Code smell</th>
 <th>VS-Threading</th>
 <th>Roslyn.Analyzers</th>
@@ -438,7 +438,7 @@ dotnet_diagnostic.MA0080.severity = error
 </thead>
 <tbody>
 <tr>
-<td align="right">8.</td>
+<td style="text-align:right">8.</td>
 <td>Synchronous waits</td>
 <td>🔎🛠️VSTHRD002</td>
 <td></td>
@@ -448,7 +448,7 @@ dotnet_diagnostic.MA0080.severity = error
 <td>🔎🛠️AsyncifyInvocation, AsyncifyVariable</td>
 </tr>
 <tr>
-<td align="right">9.</td>
+<td style="text-align:right">9.</td>
 <td>Missing <code>ConfigureAwait(bool)</code></td>
 <td>🔎🛠️VSTHRD111</td>
 <td>🔎🛠️ ASYNC0004</td>
@@ -458,7 +458,7 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">10.</td>
+<td style="text-align:right">10.</td>
 <td>Returning null from a Task-returning method</td>
 <td>🔎🛠️VSTHRD114</td>
 <td></td>
@@ -468,7 +468,7 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">11.</td>
+<td style="text-align:right">11.</td>
 <td>Asynchronous method names should end with Async</td>
 <td>🔎🛠️VSTHRD200</td>
 <td>🔎🛠️ASYNC0001</td>
@@ -478,7 +478,7 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">12.</td>
+<td style="text-align:right">12.</td>
 <td>Non asynchronous method names shouldn&rsquo;t end with Async</td>
 <td></td>
 <td>🔎🛠️ASYNC0002</td>
@@ -488,7 +488,7 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">13.</td>
+<td style="text-align:right">13.</td>
 <td>Pass cancellation token</td>
 <td></td>
 <td></td>
@@ -498,7 +498,7 @@ dotnet_diagnostic.MA0080.severity = error
 <td></td>
 </tr>
 <tr>
-<td align="right">14.</td>
+<td style="text-align:right">14.</td>
 <td>Using cancellation token with IAsyncEnumerable</td>
 <td></td>
 <td></td>

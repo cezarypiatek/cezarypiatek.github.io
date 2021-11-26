@@ -6,11 +6,7 @@
     <description>Recent content in code generating on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 27 Feb 2018 00:23:45 +0200</lastBuildDate>
-    
-	<atom:link href="https://cezarypiatek.github.io/tags/code-generating/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 27 Feb 2018 00:23:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/code-generating/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Generate mapping code with Roslyn code fix provider.</title>
       <link>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</link>
