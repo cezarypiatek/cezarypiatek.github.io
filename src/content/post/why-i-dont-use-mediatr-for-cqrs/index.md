@@ -19,7 +19,7 @@ I heard for the very first time about CQRS pattern in 2015 on one of the softwar
  
  ## Implementing "Vanilla" CQRS
 
-After you watch Greg Young presentation, you will realize how The CQRS pattern is very straight forward. To implement it in C# you just need those 4 interfaces:
+The CQRS pattern is a strategic patter, it's a general rule that says that `read` and `write` operation should be somehow `separated`. This rule can be implemented in the code using different tactical patterns. The first step that you can take when you are refactoring existing system with classical n-layer architecture towards the CQRS is to split existing application services into read and write services. For example if you have a `UserService` that performs all operations related to the `User` area, you can move the existing operations appropriately based on the responsibility into one of the following services: `UserReadService` and `UserWriteService`. Those `Read` and `Write` services should be independent of each other - you should not use Read service inside the Write service or in the other way. This is the easier way to start using CQRS in the existing system. However, from my experience, the better approach is to use pattern presented by Greg Young and implement every operation as a separate type. You can do it as a next step after you split your services into `read` and `write`, or use it from the beginning when you are developing a new system. To implement it in C# you just need those 4 interfaces:
 
 ```cs
 interface IQueryHandler<in TQuery, TQueryResult>
@@ -42,7 +42,7 @@ interface ICommandDispatcher
     Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command);
 }
 ```
-If we want to keep strictly to the pattern, the `Handle` method of `ICommandHandler` should not return anything, but in real world application there's always a need to return something like validation result or newly created resource's id so it's much easier when this method return an object.
+If we want to keep strictly with the pattern, the `Handle` method of `ICommandHandler` should not return anything, but in real world application, there's always a need to return something, like validation result or the identifier of newly created resource so it's much easier when this method return an object.
 
 We also need to provide an implementation of dispatcher's interfaces. For ASP.NET core with default DI container it might look as follows:
 
@@ -114,7 +114,7 @@ public class Startup
 }
 ```
 
-I've registered everything with singleton lifetime but some developers prefers to work with scoped lifetime components. I like singleton because it simplifies things a lot. If you start mixing different lifecycles then it's easy to make a mistake.
+I've registered everything with singleton lifetime but some developers prefers to work with scoped lifetime components. I like singleton because it simplifies things a lot. If you start mixing different lifecycle then it's easy to make a mistake.
 
 
 And that's basically everything what you need to start using CQRS in your project. As you can see there are only 4 interfaces and a few lines of code that depends on your DI container of choice.
