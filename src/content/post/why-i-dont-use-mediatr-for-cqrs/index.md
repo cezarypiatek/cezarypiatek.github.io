@@ -114,9 +114,6 @@ public class Startup
 }
 ```
 
-I've registered everything with singleton lifetime but some developers prefers to work with scoped lifetime components. I like singleton because it simplifies things a lot. If you start mixing different lifecycle then it's easy to make a mistake.
-
-
 And that's basically everything what you need to start using CQRS in your project. As you can see there are only 4 interfaces and a few lines of code that depends on your DI container of choice.
 
 ## What about MediatR
@@ -127,7 +124,25 @@ Let's start from the definition taken from the [MSDN article about CQRS](https:/
 
 > CQRS stands for Command and Query Responsibility __Segregation__, a pattern that __separates read and update__ operations for a data store.
 
-I intentionally highlighted `segregation` and `separates` words in the CQRS definition as it's the most important part of this pattern and this should be a starting point for the discussion "should I use MediatR for CQRS?". In MediatR we don't have concepts like `Commands` and `Queries`. There's more generic thing called the `Request` represented by `IRequest<T>` and `IRequestHandler<TRequest TRequestResult>`. Of course there's also a`Notification` that can be implemented with `INotification` and `INotificationHandler<TNotification>` but this is a totally unrelated to CQRS so let's leave it alone. So there's no concepts of `Queries` and `Commands` but we can implemented them based on the `Request`:
+I intentionally highlighted `segregation` and `separates` words in the CQRS definition as it's the most important part of this pattern and this should be a starting point for the discussion "should I use MediatR for CQRS?". In MediatR we don't have concepts like `Commands` and `Queries`. There's more generic thing called the `Request` represented by `IRequest<T>` and `IRequestHandler<TRequest TRequestResult>`. Of course there's also a`Notification` that can be implemented with `INotification` and `INotificationHandler<TNotification>` but this is a totally unrelated to CQRS so let's leave it alone. Using MediatR we can implement every operation as a separated type - same as with our "Vanilla framework" - but there's no distinction between `read` and write `operations`. Why is this a problem and why it's so import to have this kind of demarcation on the code level? The `Read` and `Write` operations have their own, preclusive, set of responsibilities. There are certain actions that are allowed or disallowed in a given kind of the operation, a few examples from the top of my head:
+
+- it's not allowed to modify data in query handlers
+- it's not allowed to commit transaction in query handlers
+- it's mandatory to commit transaction in command handlers after successful data modification
+- it's not allowed to return modified data from the command handlers
+- at the end of processing command operation we likely want to send a notification about the event that just occurred. It's rather unlikely for query operations.
+
+When we have a separate interfaces for query and command handlers then it's easier to focus on the scope of responsibility of that operation and it's much easier to notice any violation of CQRS rules during the code review.
+
+
+- returning modified data from the command handler.
+
+Keeping a separate interfaces for commands and queries dispatcher have the following benefits:
+- you can add very easily caching to queries
+- you can block commands based on the user claims or environments
+- you can enforce readonly UOW for query sides and with write mode for commands.
+
+So there's no concepts of `Queries` and `Commands` but we can implemented them based on the `Request`:
 
 ```cs
 interface ICommand<out TCommandResult>: IRequest<TCommandResult> { }
@@ -142,16 +157,7 @@ Those four extra interfaces allows us to tell apart commands and queries operati
 
 But this is more like with the nail and hammer - "if you have a hammer everything looks like a nail". If the pattern consists of four interfaces and we need to create them anyway to used a library that should provide them, what is the benefit?
 
-Let's talk about this famous separation and why is that important. Keeping a separate interfaces for commands and queries have the following benefits:
-- it's easier to verify and enforce if a given operation obeys the rules of the category to which it belongs. If you see that a given handler implements ICommandHandler or IQueryHandler it's easier to spot problems like
-- modifying data in query handler
-- committing transaction in query handler
-- returning modified data from the command handler.
 
-Keeping a separate interfaces for commands and queries dispatcher have the following benefits:
-- you can add very easily caching to queries
-- you can block commands based on the user claims or environments
-- you can enforce readonly UOW for query sides and with write mode for commands.
 
 Ofc you can achieve all of that by adding some extra code when you are using MediatR but this will end up in fighting with library. When you have a separated interfaces for each side, implementing this kind of behavior is much easier and natural.
 
