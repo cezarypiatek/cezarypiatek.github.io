@@ -134,15 +134,7 @@ I intentionally highlighted `segregation` and `separates` words in the CQRS defi
 
 When we have a separate interfaces for query and command handlers then it's easier to focus on the scope of responsibility of that operation and it's much easier to notice any violation of CQRS rules during the code review.
 
-
-- returning modified data from the command handler.
-
-Keeping a separate interfaces for commands and queries dispatcher have the following benefits:
-- you can add very easily caching to queries
-- you can block commands based on the user claims or environments
-- you can enforce readonly UOW for query sides and with write mode for commands.
-
-So there's no concepts of `Queries` and `Commands` but we can implemented them based on the `Request`:
+As I mentioned before, MediatR doesn't have Commands and Queries but we can introduce such distinction by adding the following marking interfaces:
 
 ```cs
 interface ICommand<out TCommandResult>: IRequest<TCommandResult> { }
@@ -151,11 +143,71 @@ interface ICommandHandler<in TCommand, TCommandResult> : IRequestHandler<TComman
 interface IQuery<out TIQueryResult> : IRequest<TIQueryResult> { }
 interface IQueryHandler<in TQuery, TQueryResult> : IRequestHandler<TQuery, TQueryResult> where TQuery : IQuery<TQueryResult> { }
 ```
+Those four extra interfaces allows us to tell apart commands and queries operations. Now we are more aligned with CQRS definition but this approach has some disadvantages related to maintenance. We need to inform other developers working on the project that we allowed to use only those interfaces to implements our commands and queries and we can't use directly gears provided the MediatR. Of course there's always a hazard that somebody uses `IRequest` and `IRequestHandler` interfaces directly especially when we have a seasoned `MediatR` users or project newcomers - they will need to struggle with all habits. I especially don't recommend do that in the existing project as the mix of this extra abstraction and the original MediatR interfaces might be very confusing. This might be counter-productive as we start fighting with the library which is not well aligned with our design.
 
-Those four extra interfaces allows us to tell apart commands and queries operations. Now we are more aligned with CQRS definition but this approach has some disadvantages. We need to inform other developers working on the project that we allowed to use only those interfaces to implements our commands and queries and we can't use directly gears provided the MediatR. Of course there's always a hazard that somebody uses `IRequest` and `IRequestHandler` interfaces directly especially when we have a seasoned `MediatR` users or project newcomers - they will need to struggle with all habits. I especially don't recommend do that in the existing project as the mix of this extra abstraction and the original MediatR interfaces might be very confusing. This might be counter-productive as we start fighting with the library which is not well aligned with our design.
+Before we go this way we should ask ourself one important question: "If the pattern consists of four interfaces and we need to create them anyway to used a library that should provide them, what is the benefit of that library?"
 
 
-But this is more like with the nail and hammer - "if you have a hammer everything looks like a nail". If the pattern consists of four interfaces and we need to create them anyway to used a library that should provide them, what is the benefit?
+### Cross Cutting Concerns
+
+Another part that is missing the distinction of commands and queries is the mechanism responsible for operation dispatching. In our `Vanilla` framework we can implement all cross cutting concerns by creating decorators for `ICommandDispatcher` and `IQueryDispatcher`. 
+
+```cs
+class SampleQueryDispatcherDecorator: IQueryDispatcher
+{
+    private readonly IQueryDispatcher _queryDispatcherImplementation;
+
+    public SampleQueryDispatcherDecorator(IQueryDispatcher queryDispatcherImplementation) => _queryDispatcherImplementation = queryDispatcherImplementation;
+
+    public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query)
+    {
+        // Before operation stuff
+        var result = await _queryDispatcherImplementation.Dispatch<TQuery, TQueryResult>(query);
+        // After operation stuff
+        return result;
+    }
+}
+```
+
+As we have a two separate interfaces we can create independent workflows for read and write operations. Here are a few examples of operations that you could want to apply only to one kind of operations:
+
+- you can add very easily caching to read operation
+- you can block write operation based on the user claims or environments
+- you can setup Unit Of Work in the readonly mode for query sides and with write mode for commands.
+- you can add automatic retries
+
+In MediatR aspect operation can be implemented with Behaviors (`IPipelineBehavior<TRequest, TResponse>`) but as there's no distinction between Commands and Queries you cannot create separate pipelines for `read` and `write` operations. If you want to have a specific behavior for only one side then you end up with a bunch of if statements in the behavior implementation:
+
+```cs
+class SampleQuerySpecificBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+{
+    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    {
+        if (request is IQuery<TResponse>)
+        {
+            // Before operation stuff
+        }
+
+        var result = await next();
+        
+        if (request is IQuery<TResponse>)
+        {
+            // After operation stuff
+        }
+
+        return result;
+    }
+}
+```
+
+As you can see, the same behavior in the `Vanilla` approach is less clutter, much more readable and easier to understand.
+
+
+
+
+
+
+
 
 
 
@@ -165,5 +217,3 @@ Ofc you can achieve all of that by adding some extra code when you are using Med
 
 - People know libraries without understanding the problem which they solved. I would rather have a developer which understand the patterns and architecture.
 
-
-You might accuse me that I stated that I don't use libraries but I used Scrutor. Scrutor solves the problem that I have - registering components by convention - and it allows to achieve that in a pretty neat way..
