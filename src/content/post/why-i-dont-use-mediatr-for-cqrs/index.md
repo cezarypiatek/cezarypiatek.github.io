@@ -42,7 +42,8 @@ interface ICommandDispatcher
     Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command);
 }
 ```
-If we want to keep strictly with the pattern, the `Handle` method of `ICommandHandler` should not return anything, but in real world application, there's always a need to return something, like validation result or the identifier of newly created resource so it's much easier when this method return an object.
+
+Some guidelines recommend that the `Handle` method of `ICommandHandler` should not return anything. However, in real world applications, there's always a need to return something, like validation result or the identifier of newly created resource so it's much easier when this method return an object.
 
 We also need to provide an implementation of dispatcher's interfaces. For ASP.NET core with default DI container it might look as follows:
 
@@ -152,23 +153,6 @@ Before we go this way we should ask ourself one important question: "If the patt
 
 Another part that is missing the distinction of commands and queries is the mechanism responsible for operation dispatching. In our `Vanilla` framework we can implement all cross cutting concerns by creating decorators for `ICommandDispatcher` and `IQueryDispatcher`. 
 
-```cs
-class SampleQueryDispatcherDecorator: IQueryDispatcher
-{
-    private readonly IQueryDispatcher _queryDispatcherImplementation;
-
-    public SampleQueryDispatcherDecorator(IQueryDispatcher queryDispatcherImplementation) => _queryDispatcherImplementation = queryDispatcherImplementation;
-
-    public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query)
-    {
-        // Before operation stuff
-        var result = await _queryDispatcherImplementation.Dispatch<TQuery, TQueryResult>(query);
-        // After operation stuff
-        return result;
-    }
-}
-```
-
 As we have a two separate interfaces we can create independent workflows for read and write operations. Here are a few examples of operations that you could want to apply only to one kind of operations:
 
 - you can add very easily caching to read operation
@@ -200,20 +184,28 @@ class SampleQuerySpecificBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
 }
 ```
 
-As you can see, the same behavior in the `Vanilla` approach is less clutter, much more readable and easier to understand.
+The same behavior with our `Vanilla` framework can be implemented as follows:
 
+```cs
+class SampleQueryDispatcherDecorator: IQueryDispatcher
+{
+    private readonly IQueryDispatcher _queryDispatcherImplementation;
 
+    public SampleQueryDispatcherDecorator(IQueryDispatcher queryDispatcherImplementation) 
+            => _queryDispatcherImplementation = queryDispatcherImplementation;
 
+    public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query)
+    {
+        // Before operation stuff
+        var result = await _queryDispatcherImplementation.Dispatch<TQuery, TQueryResult>(query);
+        // After operation stuff
+        return result;
+    }
+}
+```
 
+As you can see, it is less clutter, much more readable and easier to understand in comparison to behavior created with `MediatR`.
 
+## Final thoughts
 
-
-
-
-
-Ofc you can achieve all of that by adding some extra code when you are using MediatR but this will end up in fighting with library. When you have a separated interfaces for each side, implementing this kind of behavior is much easier and natural.
-
-
-
-- People know libraries without understanding the problem which they solved. I would rather have a developer which understand the patterns and architecture.
-
+`MediatR` seems to be a pretty decent implementation of [mediator patter](https://en.wikipedia.org/wiki/Mediator_pattern) which has its own area of application. However, `mediator patter` solves totally different problem than CQRS pattern. Of course it can be used to implement CQRS but the cost of adjusting library to play well with CQRS guideline seems to be unjustified considering the simplicity of CQRS patter. In my opinion, the popularity of `MediatR` in CQRS apps seems to be a cargo cult which might have roots in CQRS pattern misunderstanding. I wonder what's your thoughts on the subject?
