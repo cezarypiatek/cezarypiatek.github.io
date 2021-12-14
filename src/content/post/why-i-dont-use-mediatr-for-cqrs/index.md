@@ -1,6 +1,6 @@
 ---
 title: "Why I don't use MediatR for CQRS"
-description: "Is MetiatR really suitable for implementing CQRS pattern?"
+description: "Is MediatR really suitable for implementing CQRS pattern?"
 date: 2021-12-04T00:18:45+02:00
 tags : ["architecture", "dotnet", "dotnetcore", "patterns"]
 highlight: true
@@ -9,7 +9,9 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-The purpose of this article is not to criticize the MediatR library. MediatR is a tool, and as every tool, it has its own scope of application and used incorrectly might do more harm than good.
+The purpose of this article is not to criticize the MediatR library. MediatR is a tool, and as every tool, it has its own scope of application and used incorrectly might do more harm than good. This blog post summarize my thoughts about using MediatR for supporting CQRS architecture.
+
+<!--more-->
 
 ## On the way to understand the CQRS
 
@@ -29,7 +31,7 @@ interface IQueryHandler<in TQuery, TQueryResult>
 
 interface IQueryDispatcher
 {
-    Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query);
+    Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellationToken);
 }
 
 interface ICommandHandler<in TCommand, TCommandResult>
@@ -39,7 +41,7 @@ interface ICommandHandler<in TCommand, TCommandResult>
 
 interface ICommandDispatcher
 {
-    Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command);
+    Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellationToken);
 }
 ```
 
@@ -54,11 +56,10 @@ class CommandDispatcher : ICommandDispatcher
 
     public CommandDispatcher(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
-    public Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command)
+    public Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellationToken)
     {
         var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand, TCommandResult>>();
-        var httpContextAccessor = _serviceProvider.GetRequiredService<IHttpContextAccessor>();
-        return handler.Handle(command, httpContextAccessor.HttpContext?.RequestAborted ?? default);
+        return handler.Handle(command, cancellationToken);
     }
 }
 
@@ -68,11 +69,10 @@ class QueryDispatcher : IQueryDispatcher
 
     public QueryDispatcher(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
-    public Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query)
+    public Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellationToken)
     {
         var handler = _serviceProvider.GetRequiredService<ICommandHandler<TQuery, TQueryResult>>();
-        var httpContextAccessor = _serviceProvider.GetRequiredService<IHttpContextAccessor>();
-        return handler.Handle(query, httpContextAccessor.HttpContext?.RequestAborted ?? default);
+        return handler.Handle(query, cancellationToken);
     }
 }
 
@@ -86,7 +86,6 @@ public class Startup
   // This method gets called by the runtime. Use this method to add services to the container.
   public void ConfigureServices(IServiceCollection services)
   {
-      services.AddHttpContextAccessor();
       services.TryAddSingleton<ICommandDispatcher, CommandDispatcher>();
       services.TryAddSingleton<IQueryDispatcher, QueryDispatcher>();
       
@@ -165,7 +164,7 @@ In MediatR aspect operation can be implemented with Behaviors (`IPipelineBehavio
 ```cs
 class SampleQuerySpecificBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, CancellationToken token, RequestHandlerDelegate<TResponse> next)
     {
         if (request is IQuery<TResponse>)
         {
@@ -189,15 +188,15 @@ The same behavior with our `Vanilla` framework can be implemented as follows:
 ```cs
 class SampleQueryDispatcherDecorator: IQueryDispatcher
 {
-    private readonly IQueryDispatcher _queryDispatcherImplementation;
+    private readonly IQueryDispatcher _queryDispatcher;
 
-    public SampleQueryDispatcherDecorator(IQueryDispatcher queryDispatcherImplementation) 
-            => _queryDispatcherImplementation = queryDispatcherImplementation;
+    public SampleQueryDispatcherDecorator(IQueryDispatcher queryDispatcher) 
+            => _queryDispatcher = queryDispatcher;
 
-    public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query)
+    public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken token)
     {
         // Before operation stuff
-        var result = await _queryDispatcherImplementation.Dispatch<TQuery, TQueryResult>(query);
+        var result = await _queryDispatcher.Dispatch<TQuery, TQueryResult>(query, token);
         // After operation stuff
         return result;
     }
@@ -208,4 +207,4 @@ As you can see, it is less clutter, much more readable and easier to understand 
 
 ## Final thoughts
 
-`MediatR` seems to be a pretty decent implementation of [mediator patter](https://en.wikipedia.org/wiki/Mediator_pattern) which has its own area of application. However, `mediator patter` solves totally different problem than CQRS pattern. Of course it can be used to implement CQRS but the cost of adjusting library to play well with CQRS guideline seems to be unjustified considering the simplicity of CQRS patter. In my opinion, the popularity of `MediatR` in CQRS apps seems to be a cargo cult which might have roots in CQRS pattern misunderstanding. I wonder what's your thoughts on the subject?
+`MediatR` seems to be a pretty decent implementation of [mediator patter](https://en.wikipedia.org/wiki/Mediator_pattern) which has its own area of application. However, `mediator patter` solves totally different problem than CQRS pattern. Of course it can be used to implement CQRS but the cost of adjusting `MediatR` library to play well with CQRS guideline seems to be unjustified considering the simplicity of CQRS patter. In my opinion, the popularity of `MediatR` in CQRS apps seems to be a cargo cult which might have roots in CQRS pattern misunderstanding. I wonder what's your thoughts on the subject?
