@@ -17,9 +17,9 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
   {{ end }}
   {{ if .Params.highlight }}
-	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
 		{{ range .Params.highlightLang }}
-		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/{{.}}.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/{{.}}.min.js"></script>
 		{{end}}
   {{ end }}
   <script src="/lib/gifplayer/jquery.gifplayer.js"></script>
