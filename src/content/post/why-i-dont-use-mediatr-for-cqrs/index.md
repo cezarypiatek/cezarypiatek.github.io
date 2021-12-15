@@ -1,8 +1,8 @@
 ---
 title: "Why I don't use MediatR for CQRS"
 description: "Is MediatR really suitable for implementing CQRS pattern?"
-date: 2021-12-14T00:18:45+02:00
-tags : ["architecture", "dotnet", "dotnetcore", "patterns"]
+date: 2021-12-15T00:18:45+02:00
+tags : ["CQRS", "architecture", "dotnet", "dotnetcore", "patterns"]
 highlight: true
 highlightLang: ["csharp"]
 image: "splashscreen.jpg"
@@ -208,4 +208,4 @@ As you can see, it is less cluttered, much more readable, and easier to understa
 
 ## Final thoughts
 
-`MediatR` seems to be a pretty decent implementation of [mediator patter](https://en.wikipedia.org/wiki/Mediator_pattern) which has its own area of application. However, `mediator patter` solves a totally different problem than the CQRS pattern. Of course, it can be used to implement CQRS but the cost of adjusting the `MediatR` library to play well with the CQRS guideline seems unjustified, considering the simplicity of CQRS pattern. My main objection against using `MediatR` for `CQRS` is the lack of clear distinction between the `read` and `write` sides. In my opinion, the popularity of `MediatR` in CQRS apps seems to be a cargo cult that might have roots in CQRS pattern misunderstanding or the lack of will to understand it. I wonder what are your thoughts on the subject?
+`MediatR` seems to be a pretty decent implementation of [mediator patter](https://en.wikipedia.org/wiki/Mediator_pattern) which has its own area of application. However, `mediator patter` solves a totally different problem than the CQRS pattern. Of course, it can be used to implement CQRS but the cost of adjusting the `MediatR` library to play well with the CQRS guideline seems unjustified, considering the simplicity of CQRS pattern. My main objection against using `MediatR` for `CQRS` is the lack of clear distinction between the `read` and `write` sides. In my opinion, the popularity of `MediatR` in CQRS apps seems to be a cargo cult that might have roots in CQRS pattern misunderstanding or the lack of any will to understand it. I wonder what are your thoughts on the subject?

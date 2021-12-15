@@ -2,22 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</loc>
-    <lastmod>2021-08-29T00:21:45+02:00</lastmod>
+    <loc>https://cezarypiatek.github.io/tags/architecture/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/cqrs/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/patterns/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/post/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</loc>
+    <lastmod>2021-12-15T00:18:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</loc>
     <lastmod>2021-08-29T00:21:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/extensibility/</loc>
     <lastmod>2021-08-29T00:21:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/githubactions/</loc>
-    <lastmod>2021-08-29T00:21:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2021-08-29T00:21:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/</loc>
     <lastmod>2021-08-29T00:21:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/visualstudio/</loc>
@@ -27,9 +45,6 @@
     <lastmod>2021-08-29T00:21:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/aspcore/</loc>
-    <lastmod>2021-08-09T00:21:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/dotnetcore/</loc>
     <lastmod>2021-08-09T00:21:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/post/component-tests-scenarios/</loc>
@@ -42,9 +57,6 @@
     <lastmod>2021-03-16T00:08:00+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/csharp/</loc>
-    <lastmod>2021-03-16T00:08:00+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
     <lastmod>2021-03-16T00:08:00+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</loc>
@@ -185,9 +197,6 @@
     <loc>https://cezarypiatek.github.io/tags/productivity/</loc>
     <lastmod>2019-07-30T00:20:45+02:00</lastmod>
   </url><url>
-    <loc>https://cezarypiatek.github.io/tags/architecture/</loc>
-    <lastmod>2019-06-29T00:09:00+02:00</lastmod>
-  </url><url>
     <loc>https://cezarypiatek.github.io/tags/clean-code/</loc>
     <lastmod>2019-06-29T00:09:00+02:00</lastmod>
   </url><url>
@@ -253,9 +262,6 @@
   </url><url>
     <loc>https://cezarypiatek.github.io/post/the-art-of-designing-exceptions/</loc>
     <lastmod>2018-10-19T00:09:00+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/cqrs/</loc>
-    <lastmod>2018-09-23T00:20:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/post/cqrs-snippets/</loc>
     <lastmod>2018-09-23T00:20:45+02:00</lastmod>

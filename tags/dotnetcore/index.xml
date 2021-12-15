@@ -6,7 +6,16 @@
     <description>Recent content in dotnetcore on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Aug 2021 00:21:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/dotnetcore/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Dec 2021 00:18:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/dotnetcore/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why I don&#39;t use MediatR for CQRS</title>
+      <link>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</link>
+      <pubDate>Wed, 15 Dec 2021 00:18:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</guid>
+      <description>&lt;p&gt;The purpose of this article is not to criticize the MediatR library. MediatR is a tool - and just like any tool, it has its own scope of application, and being used incorrectly might do more harm than good. This blog post summarizes my thoughts about using MediatR for supporting CQRS architecture.&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Readable and clear tests for ASP.NET Core services</title>
       <link>https://cezarypiatek.github.io/post/component-tests-scenarios/</link>
