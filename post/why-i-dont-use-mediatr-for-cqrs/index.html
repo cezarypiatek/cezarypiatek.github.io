@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Is MediatR really suitable for implementing CQRS pattern?">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/why-i-dont-use-mediatr-for-cqrs\/"
+            },
+          "headline" : "Why I don\u0027t use MediatR for CQRS",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2021-12-15",
+          "dateModified" : "2021-12-15",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/why-i-dont-use-mediatr-for-cqrs\/splashscreen.jpg",
+          "description": "Is MediatR really suitable for implementing CQRS pattern?"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2021-12-15">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/">	
+	<meta property="og:title" content="Why I don&#39;t use MediatR for CQRS">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/splashscreen.jpg">
+    <meta property="og:description" content="Is MediatR really suitable for implementing CQRS pattern?">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="CQRS">
+    
+    <meta property="og:tags" content="architecture">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="dotnetcore">
+    
+    <meta property="og:tags" content="patterns">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/splashscreen.jpg">
+	<meta property="twitter:title" content="Why I don&#39;t use MediatR for CQRS">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Is MediatR really suitable for implementing CQRS pattern?">
+
+	<meta name="keywords" value="CQRS, architecture, dotnet, dotnetcore, patterns" />
+    <meta name="generator" content="Hugo 0.89.4" />
+    <title>Why I don&#39;t use MediatR for CQRS &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Natural born software developer</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Why I don&#39;t use MediatR for CQRS</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>15 December 2021</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>The purpose of this article is not to criticize the MediatR library. MediatR is a tool - and just like any tool, it has its own scope of application, and being used incorrectly might do more harm than good. This blog post summarizes my thoughts about using MediatR for supporting CQRS architecture.</p>
+<h2 id="on-the-way-to-understand-the-cqrs"><a href="#on-the-way-to-understand-the-cqrs">On the way to understand the CQRS  🔗&#xFE0E;</a></h2>
+
+<p>I heard about the CQRS pattern for the very first time in 2015 at one of software development conferences (here&rsquo;s <a href="https://www.youtube.com/watch?v=Emr4jkhW9L4&amp;ab_channel=PROIDEAEvents">the recording</a> - only in Polish). However, it took me three more years to gain enough experience with building applications to finally understand what problem does it solve and how this approach makes software much easier to create and maintain. The thing that finally convinced me to start using CQRS in practice was a great keynote from Greg Young entitled <a href="https://www.infoq.com/presentations/8-lines-code-refactoring/">8 Lines of Code</a>. If you haven&rsquo;t seen it yet, I highly recommend spending those 45 minutes on it, as it might be a turning point in your software development career. The main message of that presentation is that the key to good architecture is simplicity. Quite often frameworks promise that simplicity but in reality they introduce a lot of &ldquo;magic&rdquo;, making systems harder to understand and maintain. After watching this video, it turned out that the CQRS pattern is pretty simple to implement and <strong>you actually need only 4 interfaces</strong>.</p>
+<h2 id="implementing-vanilla-cqrs"><a href="#implementing-vanilla-cqrs">Implementing &ldquo;Vanilla&rdquo; CQRS  🔗&#xFE0E;</a></h2>
+
+<p>The CQRS is a strategic pattern. There&rsquo;s a general rule that the <code>read</code> and <code>write</code> operation should be somehow <code>separated</code>. This rule can be implemented in the code using different tactical patterns. The first step that you can take when refactoring an existing system with classical n-layer architecture towards the CQRS is to split existing application services into the read and write services. For example, if you have a <code>UserService</code> that performs all operations related to the <code>User</code> area, you can divide the existing operations appropriately, based on the responsibility, into two services: <code>UserReadService</code> and <code>UserWriteService</code>. Those <code>Read</code> and <code>Write</code> services should be independent of each other - you should not use the Read service inside the Write service, or the other way around. This is the easiest way to start using CQRS in an existing system. However, from my experience, a better approach is to use the pattern presented by Greg Young and implement every operation as a separate type. This way, our code will be more aligned with <a href="https://en.wikipedia.org/wiki/SOLID">SOLID principles</a>, especially with:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Single-responsibility_principle">Single Responsibility</a> rule - because logic responsible for a given operation is enclosed in its own type.</li>
+<li><a href="https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle">Open-Closed</a> rule - because to add new operation you don&rsquo;t need to edit any of the existing types, instead you need to add a new file with a new type representing that operation.</li>
+</ul>
+<p>You can do it as a next step after you split your services into <code>read</code> and <code>write</code>, or use it from the beginning when you are developing a new system. To implement this approach (let&rsquo;s call it <code>CQRS Vanilla</code> for further reference) in C#, you just need those 4 interfaces:</p>
+<pre><code class="language-cs">interface IQueryHandler&lt;in TQuery, TQueryResult&gt;
+{
+    Task&lt;TQueryResult&gt; Handle(TQuery query, CancellationToken cancellation);
+}
+
+interface IQueryDispatcher
+{
+    Task&lt;TQueryResult&gt; Dispatch&lt;TQuery, TQueryResult&gt;(TQuery query, CancellationToken cancellation);
+}
+
+interface ICommandHandler&lt;in TCommand, TCommandResult&gt;
+{
+    Task&lt;TCommandResult&gt; Handle(TCommand query, CancellationToken cancellation);
+}
+
+interface ICommandDispatcher
+{
+    Task&lt;TCommandResult&gt; Dispatch&lt;TCommand, TCommandResult&gt;(TCommand command, CancellationToken cancellation);
+}
+</code></pre>
+<p>Some guidelines recommend that the <code>Handle</code> method of <code>ICommandHandler</code> should not return anything. However, in real world applications, there&rsquo;s always a need to return something (like validation result or identifier of a newly created resource), so it&rsquo;s much easier when this method returns an object.</p>
+<p>We also need to provide an implementation of dispatcher&rsquo;s interfaces. For ASP.NET core with default DI container it might look as follows:</p>
+<pre><code class="language-cs">class CommandDispatcher : ICommandDispatcher
+{
+    private readonly IServiceProvider _serviceProvider;
+
+    public CommandDispatcher(IServiceProvider serviceProvider) =&gt; _serviceProvider = serviceProvider;
+
+    public Task&lt;TCommandResult&gt; Dispatch&lt;TCommand, TCommandResult&gt;(TCommand command, CancellationToken cancellation)
+    {
+        var handler = _serviceProvider.GetRequiredService&lt;ICommandHandler&lt;TCommand, TCommandResult&gt;&gt;();
+        return handler.Handle(command, cancellation);
+    }
+}
+
+class QueryDispatcher : IQueryDispatcher
+{
+    private readonly IServiceProvider _serviceProvider;
+
+    public QueryDispatcher(IServiceProvider serviceProvider) =&gt; _serviceProvider = serviceProvider;
+
+    public Task&lt;TQueryResult&gt; Dispatch&lt;TQuery, TQueryResult&gt;(TQuery query, CancellationToken cancellation)
+    {
+        var handler = _serviceProvider.GetRequiredService&lt;ICommandHandler&lt;TQuery, TQueryResult&gt;&gt;();
+        return handler.Handle(query, cancellation);
+    }
+}
+
+</code></pre>
+<p>The last thing to make everything work is a little bit of plumbing code to register all necessary components in DI container:</p>
+<pre><code class="language-cs">public class Startup
+{
+  public void ConfigureServices(IServiceCollection services)
+  {
+      services.TryAddSingleton&lt;ICommandDispatcher, CommandDispatcher&gt;();
+      services.TryAddSingleton&lt;IQueryDispatcher, QueryDispatcher&gt;();
+      
+      // INFO: Using https://www.nuget.org/packages/Scrutor for registering all Query and Command handlers by convention
+      services.Scan(selector =&gt;
+      {
+        selector.FromExecutingAssembly()
+                .AddClasses(filter =&gt;
+                {
+                    filter.AssignableTo(typeof(IQueryHandler&lt;,&gt;));
+                })
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime();
+      });
+      services.Scan(selector =&gt;
+      {
+        selector.FromExecutingAssembly()
+                .AddClasses(filter =&gt;
+                {
+                    filter.AssignableTo(typeof(ICommandHandler&lt;,&gt;));
+                })
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime();
+      });
+  }
+}
+</code></pre>
+<p>And that&rsquo;s all you need to start using CQRS in your project. As you can see, there are only 4 interfaces and a few lines of code that depend on your DI container of choice.</p>
+<h2 id="what-about-mediatr"><a href="#what-about-mediatr">What about MediatR  🔗&#xFE0E;</a></h2>
+
+<p>Implementing all that stuff by myself helped me to understand how the whole concept works. As everything seemed to be very straightforward, I started using this implementation in my applications without looking for any library or framework that implemented this concept. The fact that CQRS is so simple that you don&rsquo;t need any library for it was emphasized in the presentation I saw back in 2015. However, I started hearing questions from other developers: &ldquo;Why don&rsquo;t you use MediatR for CQRS?&rdquo; and from time to time I encounter different blog posts presenting how to implement CQRS with MediatR library. I was quite surprised because if it was so simple in 2015 then why do I now need a library to make it work? The arguments like &ldquo;MediatR is well known in the community&rdquo; and &ldquo;it has a lot of stars on Github&rdquo; don&rsquo;t seem to be convincing, taking into account the simplicity of the pattern. However, I decided to check what is it that <code>MediatR</code> can actually offer and I went through the documentation. I read it all and I didn&rsquo;t change my mind. I will explain why.</p>
+<p>Let&rsquo;s start from the definition taken from the <a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs">MSDN article about CQRS</a>:</p>
+<blockquote>
+<p>CQRS stands for Command and Query Responsibility <strong>Segregation</strong>, a pattern that <strong>separates read and update</strong> operations for a data store.</p>
+</blockquote>
+<p>I intentionally highlighted the <code>segregation</code> and <code>separates</code> words in the CQRS definition as it&rsquo;s the most important part of this pattern, and it should be a starting point for discussion on &ldquo;should I use MediatR for CQRS?&rdquo;. In MediatR we don&rsquo;t have concepts like <code>Commands</code> and <code>Queries</code>. There&rsquo;s a more generic thing called the <code>Request</code>, represented by <code>IRequest&lt;T&gt;</code> and <code>IRequestHandler&lt;TRequest TRequestResult&gt;</code>. Of course there&rsquo;s also a <code>Notification</code> that can be implemented with <code>INotification</code> and <code>INotificationHandler&lt;TNotification&gt;</code>, but this is unrelated to CQRS so let&rsquo;s leave it alone. Using MediatR we can implement every operation as a separated type - same as with our &ldquo;Vanilla framework&rdquo; - but there&rsquo;s no distinction between <code>read</code> and write <code>operations</code>. Why is this a problem and why is it so important to have this kind of demarcation on the code level? The <code>Read</code> and <code>Write</code> operations have their own preclusive set of responsibilities. There are certain actions that are allowed or disallowed in a given kind of operation, a few examples from the top of my head:</p>
+<ul>
+<li>it&rsquo;s not allowed to modify data in query handlers</li>
+<li>it&rsquo;s not allowed to persist data in the storage (commit transaction) in query handlers</li>
+<li>it&rsquo;s not allowed to return modified data from the command handlers</li>
+<li>it&rsquo;s mandatory to commit transaction in command handlers after successful data modification</li>
+<li>at the end of processing command operation we likely want to send a notification about the event that just occurred; it&rsquo;s rather unlikely for query operations.</li>
+</ul>
+<p><strong>When we have separate interfaces for query and command handlers, it&rsquo;s easier to focus on the scope of responsibility of that operation and it&rsquo;s much easier to notice any violation of CQRS rules during the code review.</strong></p>
+<p>As I mentioned before, MediatR doesn&rsquo;t have Commands and Queries but we can introduce such distinction by adding the following marking interfaces:</p>
+<pre><code class="language-cs">interface ICommand&lt;out TCommandResult&gt;: IRequest&lt;TCommandResult&gt; { }
+interface ICommandHandler&lt;in TCommand, TCommandResult&gt; : IRequestHandler&lt;TCommand, TCommandResult&gt; where TCommand : ICommand&lt;TCommandResult&gt; { }
+
+interface IQuery&lt;out TIQueryResult&gt; : IRequest&lt;TIQueryResult&gt; { }
+interface IQueryHandler&lt;in TQuery, TQueryResult&gt; : IRequestHandler&lt;TQuery, TQueryResult&gt; where TQuery : IQuery&lt;TQueryResult&gt; { }
+</code></pre>
+<p>Those four extra interfaces allow us to tell apart commands and queries operations. Now we are more aligned with the CQRS definition but this approach has some disadvantages related to maintenance. We need to inform other developers working on the project that we are allowed to use only those interfaces to implement our commands and queries, and we can&rsquo;t directly use gears provided the by MediatR. Of course, there&rsquo;s always a risk that somebody uses <code>IRequest</code> and <code>IRequestHandler</code> interfaces directly, especially when we have seasoned <code>MediatR</code> users or project newcomers - they will probably struggle with all habits. I especially don&rsquo;t recommend doing that in an existing project as the mix of this extra abstraction and the original MediatR interfaces might be very confusing. This might be counter-productive as we start fighting with a library that is not well aligned with our design.</p>
+<p>Before we go this way, we should ask ourselves one important question: <strong>&ldquo;If the pattern consists of four interfaces and we need to create them anyway to use a library that should provide them, what is the benefit of that library?&quot;</strong></p>
+<h3 id="cross-cutting-concerns"><a href="#cross-cutting-concerns">Cross Cutting Concerns  🔗&#xFE0E;</a></h3>
+
+<p>Another missing part in MediatR is the distinction of commands and queries in the mechanism responsible for operation dispatching. Having two separate interfaces allows for creating independent workflows for the read and write operations. Here are a few examples of actions that you want to apply to only one side:</p>
+<ul>
+<li>caching results of read operations</li>
+<li>restricting write operations based on the user claims or environment</li>
+<li>setup Unit Of Work in the read-only mode for query side and with write mode for commands</li>
+<li>audit of write operations</li>
+<li>automatic retries</li>
+</ul>
+<p>In the MediatR, aspect operations can be implemented with Behaviors (<code>IPipelineBehavior&lt;TRequest, TResponse&gt;</code>) but as there&rsquo;s no distinction between Commands and Queries, you cannot create separate pipelines for <code>read</code> and <code>write</code> operations. If you want to have a specific behavior only for one side, you end up with a bunch of <code>if statements</code> in the behavior implementation:</p>
+<pre><code class="language-cs">class SampleQuerySpecificBehavior&lt;TRequest, TResponse&gt; : IPipelineBehavior&lt;TRequest, TResponse&gt;
+{
+    public async Task&lt;TResponse&gt; Handle(TRequest request, CancellationToken token, RequestHandlerDelegate&lt;TResponse&gt; next)
+    {
+        if (request is IQuery&lt;TResponse&gt;)
+        {
+            // Before operation stuff
+        }
+
+        var result = await next();
+        
+        if (request is IQuery&lt;TResponse&gt;)
+        {
+            // After operation stuff
+        }
+
+        return result;
+    }
+}
+</code></pre>
+<p>In our <code>Vanilla framework</code> we can implement all cross-cutting concerns by creating decorators for <code>ICommandDispatcher</code> and <code>IQueryDispatcher</code>:</p>
+<pre><code class="language-cs">class SampleQueryDispatcherDecorator: IQueryDispatcher
+{
+    private readonly IQueryDispatcher _queryDispatcher;
+
+    public SampleQueryDispatcherDecorator(IQueryDispatcher queryDispatcher) 
+            =&gt; _queryDispatcher = queryDispatcher;
+
+    public async Task&lt;TQueryResult&gt; Dispatch&lt;TQuery, TQueryResult&gt;(TQuery query, CancellationToken token)
+    {
+        // Before operation stuff
+        var result = await _queryDispatcher.Dispatch&lt;TQuery, TQueryResult&gt;(query, token);
+        // After operation stuff
+        return result;
+    }
+}
+</code></pre>
+<p>As you can see, it is less cluttered, much more readable, and easier to understand in comparison to the behavior created with <code>MediatR</code>.</p>
+<h2 id="final-thoughts"><a href="#final-thoughts">Final thoughts  🔗&#xFE0E;</a></h2>
+
+<p><code>MediatR</code> seems to be a pretty decent implementation of <a href="https://en.wikipedia.org/wiki/Mediator_pattern">mediator patter</a> which has its own area of application. However, <code>mediator patter</code> solves a totally different problem than the CQRS pattern. Of course, it can be used to implement CQRS but the cost of adjusting the <code>MediatR</code> library to play well with the CQRS guideline seems unjustified, considering the simplicity of CQRS pattern. My main objection against using <code>MediatR</code> for <code>CQRS</code> is the lack of clear distinction between the <code>read</code> and <code>write</code> sides. In my opinion, the popularity of <code>MediatR</code> in CQRS apps seems to be a cargo cult that might have roots in CQRS pattern misunderstanding or the lack of any will to understand it. I wonder what are your thoughts on the subject?</p>    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://essentials.dotnetos.org/?utm_source=cezarypiatek&utm_medium=blog&utm_campaign=banner" data-gtag="DotnetEssentials" title="Your free course of .NET environment">
+				<img src="https://dotnetos.org/assets/images/products/essentials.png" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/cqrs-snippets/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/cqrs-snippets/splashscreen_hue4546ab00f78e7c845990f7df11dec67_106998_320x240_fill_q75_box_smart1.jpg" alt="CQRS snippets">
+								<div class="card-body">
+									<h5 class="card-title">CQRS snippets</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/develop-vsextension-with-github-actions/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/develop-vsextension-with-github-actions/splashscreen_hud85bee5dadbc1fc45560823c855f89ae_108037_320x240_fill_q75_box_smart1.jpg" alt="Github Actions for Visual Studio Extension developers">
+								<div class="card-body">
+									<h5 class="card-title">Github Actions for Visual Studio Extension developers</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/async-analyzers-summary/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/async-analyzers-summary/splashscreen_hud85bee5dadbc1fc45560823c855f89ae_1501025_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Summary">
+								<div class="card-body">
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Summary</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/csharp.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "CQRS,architecture,dotnet,dotnetcore,patterns"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>

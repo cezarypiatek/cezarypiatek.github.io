@@ -2,7 +2,7 @@
 title: "CQRS snippets"
 description: "Skip the boring part of the CQRS with Resharper snippets."
 date: 2018-09-23T00:20:45+02:00
-tags : ["CQRS", "CQS", "architecture", "resharper", "LiveTemplates" ]
+tags : ["CQRS", "CQS", "architecture", "resharper", "LiveTemplates", "patterns" ]
 highlight: true
 image: "splashscreen.jpg"
 isBlogpost: true
