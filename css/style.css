@@ -222,6 +222,12 @@ ins.play-gif{
 #InArticleBanners {
     display: flex;
     justify-content: space-around;
+    flex: 1 1 auto;
+}
+
+#InArticleBanners img {
+    width: 90%;
+    max-width: 256px;
 }
 
 
