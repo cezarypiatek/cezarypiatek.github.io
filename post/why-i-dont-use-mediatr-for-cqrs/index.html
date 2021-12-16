@@ -230,7 +230,7 @@ class QueryDispatcher : IQueryDispatcher
 
     public Task&lt;TQueryResult&gt; Dispatch&lt;TQuery, TQueryResult&gt;(TQuery query, CancellationToken cancellation)
     {
-        var handler = _serviceProvider.GetRequiredService&lt;ICommandHandler&lt;TQuery, TQueryResult&gt;&gt;();
+        var handler = _serviceProvider.GetRequiredService&lt;IQueryHandler&lt;TQuery, TQueryResult&gt;&gt;();
         return handler.Handle(query, cancellation);
     }
 }
