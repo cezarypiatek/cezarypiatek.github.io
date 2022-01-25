@@ -514,6 +514,33 @@ class G&lt;K,T&gt; : C&lt;T&gt;
 }
 </code></pre>
 <p>Of course, we don&rsquo;t need to implement all of those methods to use <code>LINQ</code> syntax with our custom type. The list of <code>LINQ</code> operators and methods required for them can be found <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/query-expression-syntax-for-standard-query-operators">here</a>. <code>LINQ</code> syntax with custom types is very often used to implement monads. A really good explanation how to do it can be found in the article <a href="https://codewithstyle.info/understand-monads-linq/">Understand monads with LINQ</a> by <a href="http://miloszpiechocki.com/">Miłosz Piechocki</a></p>
+<h2 id="enumerate-everything-update-2022-01-25"><a href="#enumerate-everything-update-2022-01-25">Enumerate everything (UPDATE: 2022-01-25)  🔗&#xFE0E;</a></h2>
+
+<p>In C# 9, the <code>foreach</code> statement was extended to lookup for <code>GetEnumerator()</code> method also among the extension methods. Thanks to that, we can create an extension method that expands on the fly any type into a collection which can be easily enumerated with <code>foreach</code>. Here&rsquo;s an interesting example from <a href="https://twitter.com/okyrylchuk/status/1483942951113957377">Oleg Kyrylchuk tweet</a></p>
+<pre><code class="language-cs">public static IEnumerable&lt;int&gt; GetEnumerator(this Range rage)
+{
+    if (rage.Start.IsFromEnd)
+    {
+        for (var i = rage.Start.Value; i &gt;= rage.End.Value; i--)
+        {
+            yield return i;
+        }
+    }
+    else
+    {
+        for (var i = rage.Start.Value; i &lt;= rage.End.Value; i++)
+        {
+            yield return i;
+        }
+    }
+}
+</code></pre>
+<p>and sample usage can looks as follows:</p>
+<pre><code class="language-cs">foreach(var i in 4..6)
+{
+    Console.WriteLine(i);
+}
+</code></pre>
 <h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
 
 <p>The purpose of this article was not to encourage you to abuse those syntax tricks but rather to demystify them. On the other hand, they should not be completely avoided. They were invented to be used, and sometimes they can make your code much cleaner. If you are afraid that the resulting code might not be so obvious to your teammates, you should find a way to share your knowledge or at least link to this article ;)

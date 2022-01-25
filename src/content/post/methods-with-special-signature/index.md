@@ -446,7 +446,38 @@ class G<K,T> : C<T>
 
 Of course, we don't need to implement all of those methods to use `LINQ` syntax with our custom type. The list of `LINQ` operators and methods required for them can be found [here](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/query-expression-syntax-for-standard-query-operators). `LINQ` syntax with custom types is very often used to implement monads. A really good explanation how to do it can be found in the article [Understand monads with LINQ](https://codewithstyle.info/understand-monads-linq/) by [Miłosz Piechocki](http://miloszpiechocki.com/)
 
+## Enumerate everything (UPDATE: 2022-01-25)
 
+In C# 9, the `foreach` statement was extended to lookup for `GetEnumerator()` method also among the extension methods. Thanks to that, we can create an extension method that expands on the fly any type into a collection which can be easily enumerated with `foreach`. Here's an interesting example from [Oleg Kyrylchuk tweet](https://twitter.com/okyrylchuk/status/1483942951113957377) 
+
+```cs
+public static IEnumerable<int> GetEnumerator(this Range rage)
+{
+    if (rage.Start.IsFromEnd)
+    {
+        for (var i = rage.Start.Value; i >= rage.End.Value; i--)
+        {
+            yield return i;
+        }
+    }
+    else
+    {
+        for (var i = rage.Start.Value; i <= rage.End.Value; i++)
+        {
+            yield return i;
+        }
+    }
+}
+```
+
+and sample usage can looks as follows:
+
+```cs
+foreach(var i in 4..6)
+{
+    Console.WriteLine(i);
+}
+```
 
 ## Summary
 
