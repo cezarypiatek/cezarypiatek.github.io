@@ -351,6 +351,9 @@ Approvals.VerifyJson(getUserResponsePayload);
                         jArray.Clear();
                         jArray.Add(&quot;__IGNORED_VALUE__&quot;);
                         break;
+                    case JObject jObject:
+                        jObject.Replace(new JValue(&quot;_IGNORED_VALUE_&quot;));
+                        break;
                 }
             }
         }

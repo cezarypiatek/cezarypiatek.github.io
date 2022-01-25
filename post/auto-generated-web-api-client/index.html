@@ -224,7 +224,7 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
 <p>Having <code>nswag.json</code> manifest adjusted to our requirement we can configure automatic Api Client generation during the build. This can be easily achieved with <a href="https://github.com/RicoSuter/NSwag/wiki/NSwag.MSBuild">NSwag.MSBuild</a> package and a little bit of <code>MsBuild</code> scripting. Here&rsquo;s a content of <code>SampleService.ApiClient.csproj</code> file:</p>
 <pre><code class="language-xml">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
   &lt;PropertyGroup&gt;
-    &lt;TargetFramework&gt;netcoreapp3.1&lt;/TargetFramework&gt;
+    &lt;TargetFramework&gt;netstandard2.1&lt;/TargetFramework&gt;
     &lt;!--Automatically generate nuget package with client library--&gt;
     &lt;GeneratePackageOnBuild&gt;true&lt;/GeneratePackageOnBuild&gt;
   &lt;/PropertyGroup&gt;
@@ -241,7 +241,8 @@ Here&rsquo;s the minimal configuration required to correctly generate C# client:
     &lt;!--Add build time reference to SampleService project--&gt;
     &lt;ProjectReference Include=&quot;..\SampleService\SampleService.csproj&quot;&gt;
       &lt;Private&gt;False&lt;/Private&gt;
-      &lt;ReferenceOutputAssembly&gt;False&lt;/ReferenceOutputAssembly&gt;
+      &lt;ReferenceOutputAssembly&gt;false&lt;/ReferenceOutputAssembly&gt;
+      &lt;SkipGetTargetFrameworkProperties&gt;true&lt;/SkipGetTargetFrameworkProperties&gt;
     &lt;/ProjectReference&gt;
   &lt;/ItemGroup&gt;
   &lt;!--Add build step responsible for generating the source code of client api and including it to compilation--&gt;

@@ -63,7 +63,7 @@ Having `nswag.json` manifest adjusted to our requirement we can configure automa
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <!--Automatically generate nuget package with client library-->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -80,7 +80,8 @@ Having `nswag.json` manifest adjusted to our requirement we can configure automa
     <!--Add build time reference to SampleService project-->
     <ProjectReference Include="..\SampleService\SampleService.csproj">
       <Private>False</Private>
-      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
     </ProjectReference>
   </ItemGroup>
   <!--Add build step responsible for generating the source code of client api and including it to compilation-->

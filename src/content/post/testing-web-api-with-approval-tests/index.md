@@ -212,6 +212,9 @@ public static class JsonExtensions
                         jArray.Clear();
                         jArray.Add("__IGNORED_VALUE__");
                         break;
+                    case JObject jObject:
+                        jObject.Replace(new JValue("_IGNORED_VALUE_"));
+                        break;
                 }
             }
         }
