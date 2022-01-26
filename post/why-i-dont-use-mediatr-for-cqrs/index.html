@@ -247,7 +247,7 @@ class QueryDispatcher : IQueryDispatcher
       // INFO: Using https://www.nuget.org/packages/Scrutor for registering all Query and Command handlers by convention
       services.Scan(selector =&gt;
       {
-        selector.FromExecutingAssembly()
+        selector.FromCallingAssembly()
                 .AddClasses(filter =&gt;
                 {
                     filter.AssignableTo(typeof(IQueryHandler&lt;,&gt;));
@@ -257,7 +257,7 @@ class QueryDispatcher : IQueryDispatcher
       });
       services.Scan(selector =&gt;
       {
-        selector.FromExecutingAssembly()
+        selector.FromCallingAssembly()
                 .AddClasses(filter =&gt;
                 {
                     filter.AssignableTo(typeof(ICommandHandler&lt;,&gt;));

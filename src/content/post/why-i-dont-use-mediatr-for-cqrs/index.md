@@ -93,7 +93,7 @@ public class Startup
       // INFO: Using https://www.nuget.org/packages/Scrutor for registering all Query and Command handlers by convention
       services.Scan(selector =>
       {
-        selector.FromExecutingAssembly()
+        selector.FromCallingAssembly()
                 .AddClasses(filter =>
                 {
                     filter.AssignableTo(typeof(IQueryHandler<,>));
@@ -103,7 +103,7 @@ public class Startup
       });
       services.Scan(selector =>
       {
-        selector.FromExecutingAssembly()
+        selector.FromCallingAssembly()
                 .AddClasses(filter =>
                 {
                     filter.AssignableTo(typeof(ICommandHandler<,>));
