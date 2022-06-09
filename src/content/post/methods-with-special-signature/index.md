@@ -448,21 +448,21 @@ Of course, we don't need to implement all of those methods to use `LINQ` syntax 
 
 ## Enumerate everything (UPDATE: 2022-01-25)
 
-In C# 9, the `foreach` statement was extended to lookup for `GetEnumerator()` method also among the extension methods. Thanks to that, we can create an extension method that expands on the fly any type into a collection which can be easily enumerated with `foreach`. Here's an interesting example from [Oleg Kyrylchuk tweet](https://twitter.com/okyrylchuk/status/1483942951113957377) 
+In C# 9, the `foreach` statement was extended to lookup for `GetEnumerator()` method also among the extension methods. More details about this feature can be found on MSDN [Extension GetEnumerator support for foreach loops.](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/extension-getenumerator). Thanks to that, we can create an extension method that expands on the fly any type into a collection which can be easily enumerated with `foreach`. Here's an interesting example from [Oleg Kyrylchuk tweet](https://twitter.com/okyrylchuk/status/1483942951113957377) 
 
 ```cs
-public static IEnumerable<int> GetEnumerator(this Range rage)
+public static IEnumerator<int> GetEnumerator(this Range range)
 {
-    if (rage.Start.IsFromEnd)
+    if (range.Start.IsFromEnd)
     {
-        for (var i = rage.Start.Value; i >= rage.End.Value; i--)
+        for (var i = range.Start.Value; i >= range.End.Value; i--)
         {
             yield return i;
         }
     }
     else
     {
-        for (var i = rage.Start.Value; i <= rage.End.Value; i++)
+        for (var i = range.Start.Value; i <= range.End.Value; i++)
         {
             yield return i;
         }
@@ -476,6 +476,27 @@ and sample usage can looks as follows:
 foreach(var i in 4..6)
 {
     Console.WriteLine(i);
+}
+```
+
+Another interesting example could be enumerator for tuple of `DateOnly` structs that allows us to enumerate through the date range:
+
+```cs
+public static IEnumerator<DateOnly> GetEnumerator(this (DateOnly from, DateOnly to) range)
+{
+    var currentDate = range.from;
+    while(currentDate <= range.to)
+    {
+        yield return currentDate;
+        currentDate = currentDate.AddDays(1);
+    }
+}
+
+
+// Usage
+foreach(var date in (from: new DateOnly(2022,6,1), to: new DateOnly(2022,6,7)))
+{
+    
 }
 ```
 

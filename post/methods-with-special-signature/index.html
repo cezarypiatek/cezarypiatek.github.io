@@ -516,19 +516,19 @@ class G&lt;K,T&gt; : C&lt;T&gt;
 <p>Of course, we don&rsquo;t need to implement all of those methods to use <code>LINQ</code> syntax with our custom type. The list of <code>LINQ</code> operators and methods required for them can be found <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/query-expression-syntax-for-standard-query-operators">here</a>. <code>LINQ</code> syntax with custom types is very often used to implement monads. A really good explanation how to do it can be found in the article <a href="https://codewithstyle.info/understand-monads-linq/">Understand monads with LINQ</a> by <a href="http://miloszpiechocki.com/">Miłosz Piechocki</a></p>
 <h2 id="enumerate-everything-update-2022-01-25"><a href="#enumerate-everything-update-2022-01-25">Enumerate everything (UPDATE: 2022-01-25)  🔗&#xFE0E;</a></h2>
 
-<p>In C# 9, the <code>foreach</code> statement was extended to lookup for <code>GetEnumerator()</code> method also among the extension methods. Thanks to that, we can create an extension method that expands on the fly any type into a collection which can be easily enumerated with <code>foreach</code>. Here&rsquo;s an interesting example from <a href="https://twitter.com/okyrylchuk/status/1483942951113957377">Oleg Kyrylchuk tweet</a></p>
-<pre><code class="language-cs">public static IEnumerable&lt;int&gt; GetEnumerator(this Range rage)
+<p>In C# 9, the <code>foreach</code> statement was extended to lookup for <code>GetEnumerator()</code> method also among the extension methods. More details about this feature can be found on MSDN <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/extension-getenumerator">Extension GetEnumerator support for foreach loops.</a>. Thanks to that, we can create an extension method that expands on the fly any type into a collection which can be easily enumerated with <code>foreach</code>. Here&rsquo;s an interesting example from <a href="https://twitter.com/okyrylchuk/status/1483942951113957377">Oleg Kyrylchuk tweet</a></p>
+<pre><code class="language-cs">public static IEnumerator&lt;int&gt; GetEnumerator(this Range range)
 {
-    if (rage.Start.IsFromEnd)
+    if (range.Start.IsFromEnd)
     {
-        for (var i = rage.Start.Value; i &gt;= rage.End.Value; i--)
+        for (var i = range.Start.Value; i &gt;= range.End.Value; i--)
         {
             yield return i;
         }
     }
     else
     {
-        for (var i = rage.Start.Value; i &lt;= rage.End.Value; i++)
+        for (var i = range.Start.Value; i &lt;= range.End.Value; i++)
         {
             yield return i;
         }
@@ -539,6 +539,24 @@ class G&lt;K,T&gt; : C&lt;T&gt;
 <pre><code class="language-cs">foreach(var i in 4..6)
 {
     Console.WriteLine(i);
+}
+</code></pre>
+<p>Another interesting example could be enumerator for tuple of <code>DateOnly</code> structs that allows us to enumerate through the date range:</p>
+<pre><code class="language-cs">public static IEnumerator&lt;DateOnly&gt; GetEnumerator(this (DateOnly from, DateOnly to) range)
+{
+    var currentDate = range.from;
+    while(currentDate &lt;= range.to)
+    {
+        yield return currentDate;
+        currentDate = currentDate.AddDays(1);
+    }
+}
+
+
+// Usage
+foreach(var date in (from: new DateOnly(2022,6,1), to: new DateOnly(2022,6,7)))
+{
+    
 }
 </code></pre>
 <h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
