@@ -206,6 +206,23 @@ class SampleQueryDispatcherDecorator: IQueryDispatcher
 
 As you can see, it is less cluttered, much more readable, and easier to understand in comparison to the behavior created with `MediatR`.
 
+Decorators can be registered in the DI container using factory method and [ActivatorUtilities](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.activatorutilities.createinstance?view=dotnet-plat-ext-6.0):
+
+```cs
+service.AddSingleton<IQueryDispatcher>(provider => {
+    var defaultDispatcher = ActivatorUtilities.CreateInstance<QueryDispatcher>(provider);
+    return ActivatorUtilities.CreateInstance<SampleQueryDispatcherDecorator>(provider, defaultDispatcher);
+});
+```
+The same can be achieved with Scrutor as follows:
+
+```cs
+service.AddSingleton<IQueryDispatcher, QueryDispatcher>
+    .Decorate<IQueryDispatcher, SampleQueryDispatcherDecorator>();
+```
+
+Of course, the component lifecycle should be adjusted to your needs (singleton here is just an example).
+
 ## Final thoughts
 
 `MediatR` seems to be a pretty decent implementation of [mediator patter](https://en.wikipedia.org/wiki/Mediator_pattern) which has its own area of application. However, `mediator patter` solves a totally different problem than the CQRS pattern. Of course, it can be used to implement CQRS but the cost of adjusting the `MediatR` library to play well with the CQRS guideline seems unjustified, considering the simplicity of CQRS pattern. My main objection against using `MediatR` for `CQRS` is the lack of clear distinction between the `read` and `write` sides. In my opinion, the popularity of `MediatR` in CQRS apps seems to be a cargo cult that might have roots in CQRS pattern misunderstanding or the lack of any will to understand it. I wonder what are your thoughts on the subject?

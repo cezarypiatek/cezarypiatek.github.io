@@ -343,6 +343,17 @@ interface IQueryHandler&lt;in TQuery, TQueryResult&gt; : IRequestHandler&lt;TQue
 }
 </code></pre>
 <p>As you can see, it is less cluttered, much more readable, and easier to understand in comparison to the behavior created with <code>MediatR</code>.</p>
+<p>Decorators can be registered in the DI container using factory method and <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.activatorutilities.createinstance?view=dotnet-plat-ext-6.0">ActivatorUtilities</a>:</p>
+<pre><code class="language-cs">service.AddSingleton&lt;IQueryDispatcher&gt;(provider =&gt; {
+    var defaultDispatcher = ActivatorUtilities.CreateInstance&lt;QueryDispatcher&gt;(provider);
+    return ActivatorUtilities.CreateInstance&lt;SampleQueryDispatcherDecorator&gt;(provider, defaultDispatcher);
+});
+</code></pre>
+<p>The same can be achieved with Scrutor as follows:</p>
+<pre><code class="language-cs">service.AddSingleton&lt;IQueryDispatcher, QueryDispatcher&gt;
+    .Decorate&lt;IQueryDispatcher, SampleQueryDispatcherDecorator&gt;();
+</code></pre>
+<p>Of course, the component lifecycle should be adjusted to your needs (singleton here is just an example).</p>
 <h2 id="final-thoughts"><a href="#final-thoughts">Final thoughts  🔗&#xFE0E;</a></h2>
 
 <p><code>MediatR</code> seems to be a pretty decent implementation of <a href="https://en.wikipedia.org/wiki/Mediator_pattern">mediator patter</a> which has its own area of application. However, <code>mediator patter</code> solves a totally different problem than the CQRS pattern. Of course, it can be used to implement CQRS but the cost of adjusting the <code>MediatR</code> library to play well with the CQRS guideline seems unjustified, considering the simplicity of CQRS pattern. My main objection against using <code>MediatR</code> for <code>CQRS</code> is the lack of clear distinction between the <code>read</code> and <code>write</code> sides. In my opinion, the popularity of <code>MediatR</code> in CQRS apps seems to be a cargo cult that might have roots in CQRS pattern misunderstanding or the lack of any will to understand it. I wonder what are your thoughts on the subject?</p>    
