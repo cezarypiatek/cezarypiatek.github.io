@@ -39,7 +39,7 @@ interface IQueryDispatcher
 
 interface ICommandHandler<in TCommand, TCommandResult>
 {
-    Task<TCommandResult> Handle(TCommand query, CancellationToken cancellation);
+    Task<TCommandResult> Handle(TCommand command, CancellationToken cancellation);
 }
 
 interface ICommandDispatcher

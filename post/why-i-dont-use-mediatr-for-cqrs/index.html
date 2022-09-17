@@ -199,7 +199,7 @@ interface IQueryDispatcher
 
 interface ICommandHandler&lt;in TCommand, TCommandResult&gt;
 {
-    Task&lt;TCommandResult&gt; Handle(TCommand query, CancellationToken cancellation);
+    Task&lt;TCommandResult&gt; Handle(TCommand command, CancellationToken cancellation);
 }
 
 interface ICommandDispatcher
