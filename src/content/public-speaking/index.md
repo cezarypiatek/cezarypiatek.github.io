@@ -9,7 +9,7 @@ date: 2019-02-09T19:59:11+02:00
 _currently nothing in the bucket list_
 
 ## Past
-- [2022-10-19] `"Stress-free automatic deployments with Component Tests"`  - [StoneX x SUSE](https://eventory.cc/event/stonex-x-suse)
+- [2022-10-19] `"Stress-free automatic deployments with Component Tests"`  - [StoneX x SUSE](https://eventory.cc/event/stonex-x-suse) - [Recording](https://vimeo.com/761981294)
 - [2022-05-25] `"Co w testach piszczy czyli BDD od tyłu"` - [137. spotkanie KGD.NET](https://www.meetup.com/kgd-net/events/285920041/) - [Recording](https://www.youtube.com/watch?v=wk89SQvspLA)
 - [2021-07-30] `"Projekty po godzinach, zajawki i Open-source"` - [Podcast "Ostra Piła" odc. 77](https://ostrapila.pl/projekty-po-godzinach-zajawki-i-open-source)
 - [2021-07-12] `"Dlaczego nie Automapper?"` - [Podcast "Backend na froncie" odc.7](https://backendnafroncie.podbean.com/e/bnf-odc-7-dlaczego-nie-automapper/)
