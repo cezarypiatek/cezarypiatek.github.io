@@ -2,7 +2,7 @@
 title: "Mocking dependencies in ASP.NET Core tests"
 description: "How to replace services in DI container with mocks in tests using WebApplicationFactory."
 date: 2023-01-06T00:21:45+02:00
-tags : ["testing", "mocks", "asp", "dotnet", "dotnetcore"]
+tags : ["testing", "mocks", "aspcore", "dotnet", "dotnetcore"]
 highlight: true
 highlightLang: ["cs"]
 image: "splashscreen.jpg"

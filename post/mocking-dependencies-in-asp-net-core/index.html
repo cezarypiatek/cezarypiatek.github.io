@@ -4,16 +4,16 @@
 	<meta name="theme-color" content="#ffffff">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta name="description" content="Taking leverage of MsBuild to support multiple versions of VisualStudio">   
+    <meta name="description" content="How to replace services in DI container with mocks in tests using WebApplicationFactory.">   
     <script type="application/ld+json">
         {
           "@context" : "http://schema.org",
           "@type": "BlogPosting",
             "mainEntityOfPage":{
             "@type":"WebPage",
-            "@id":"https:\/\/cezarypiatek.github.io\/post\/migrate-vsix-to-vs2022\/"
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/mocking-dependencies-in-asp-net-core\/"
             },
-          "headline" : "Adding support for VisualStudio 2022 to your extension",
+          "headline" : "Mocking dependencies in ASP.NET Core tests",
           "author" : {
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
@@ -22,40 +22,42 @@
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
           },
-          "datePublished" : "2021-08-29",
-          "dateModified" : "2021-08-29",
-          "image" : "https:\/\/cezarypiatek.github.io\/post\/migrate-vsix-to-vs2022\/splashscreen.jpg",
-          "description": "Taking leverage of MsBuild to support multiple versions of VisualStudio"
+          "datePublished" : "2023-01-06",
+          "dateModified" : "2023-01-06",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/mocking-dependencies-in-asp-net-core\/splashscreen.jpg",
+          "description": "How to replace services in DI container with mocks in tests using WebApplicationFactory."
         }
         </script>
         
-    <meta property="article:published_time" content="2021-08-29">
+    <meta property="article:published_time" content="2023-01-06">
 	<meta property="og:type" content="article">
     
 	<meta property="og:locale" content="en_US">	
-	<meta property="og:url" content="https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/">	
-	<meta property="og:title" content="Adding support for VisualStudio 2022 to your extension">
-	<meta property="og:image" content="https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/splashscreen.jpg">
-    <meta property="og:description" content="Taking leverage of MsBuild to support multiple versions of VisualStudio">
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/">	
+	<meta property="og:title" content="Mocking dependencies in ASP.NET Core tests">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/splashscreen.jpg">
+    <meta property="og:description" content="How to replace services in DI container with mocks in tests using WebApplicationFactory.">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
-    <meta property="og:tags" content="vsix">
+    <meta property="og:tags" content="testing">
     
-    <meta property="og:tags" content="GithubActions">
+    <meta property="og:tags" content="mocks">
     
-    <meta property="og:tags" content="VisualStudio">
+    <meta property="og:tags" content="aspcore">
     
-    <meta property="og:tags" content="extensibility">
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="dotnetcore">
     
 	<meta property="twitter:card" content="summary_large_image" >
-	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/splashscreen.jpg">
-	<meta property="twitter:title" content="Adding support for VisualStudio 2022 to your extension">	
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/splashscreen.jpg">
+	<meta property="twitter:title" content="Mocking dependencies in ASP.NET Core tests">	
 	<meta property="twitter:creator" content="@cezary_piatek">
-	<meta property="twitter:description" content="Taking leverage of MsBuild to support multiple versions of VisualStudio">
+	<meta property="twitter:description" content="How to replace services in DI container with mocks in tests using WebApplicationFactory.">
 
-	<meta name="keywords" value="vsix, GithubActions, VisualStudio, extensibility" />
+	<meta name="keywords" value="testing, mocks, aspcore, dotnet, dotnetcore" />
     <meta name="generator" content="Hugo 0.89.4" />
-    <title>Adding support for VisualStudio 2022 to your extension &middot; Cezary Piątek Blog</title>
+    <title>Mocking dependencies in ASP.NET Core tests &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -115,7 +117,7 @@
 		
 		
 		
-			<small class="text-center center-block">Natural born software developer</small>
+			<small class="text-center center-block">Automation Tycoon</small>
 		
 		
 		
@@ -163,9 +165,9 @@
 <main>
 	<article>
 		<header>
-			<h1>Adding support for VisualStudio 2022 to your extension</h1>
+			<h1>Mocking dependencies in ASP.NET Core tests</h1>
 			  
-			<div><i class="fa fa-calendar"></i> <time>29 August 2021</time>, Author: Cezary Piątek</div>
+			<div><i class="fa fa-calendar"></i> <time>6 January 2023</time>, Author: Cezary Piątek</div>
 			<hr />
 			
 		</header>
@@ -173,221 +175,209 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>I published my first VisualStudio extension on 26th February 2018. It was initially created for Visual Studio 2017, but a few months later Visual Studio 2019 came out and I needed to support it as I was one of the beneficent. The migration was straightforward: it required only to extend <code>InstallationTarget</code> range to <code>[15.0,17.0)</code> in <code>vsixmanifest</code>, re-compile, and of course, re-publish the extension to the Visual Studio marketplace. Recently, the Visual Studio 2022 Preview was published. After quick scanning of <a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/migration/update-visual-studio-extension?view=vs-2022">migration guideline</a> it turned out that changing <code>InstallationTarget</code> was not enough and more work was required to support VS2022. I wanted to postpone the migration a little bit more but I got an email from one of my paid customers, that the need for constant switching between VS2022 and V2019 to use my <a href="https://mappinggenerator.net">MappingGenerator</a> extension is killing his productivity - and I couldn&rsquo;t allow for that to happen.</p>
-<h2 id="what-needs-to-be-changed"><a href="#what-needs-to-be-changed">What needs to be changed  🔗&#xFE0E;</a></h2>
+		<p>As I recently spent some time writing and refactoring tests that utilize WebApplicationFactory, I&rsquo;ve come to have some thoughts and ideas for improvement that I&rsquo;d like to share. In this article, I&rsquo;ll delve into the process of mocking dependencies in a DI container when using WebApplicationFactory, and offer some insights and best practices I&rsquo;ve learned along the way. Whether you&rsquo;re a seasoned pro or new to unit testing ASP.NET Core applications, I hope this information will be helpful as you work to simplify and streamline your tests.</p>
+<h2 id="getting-started"><a href="#getting-started">Getting started  🔗&#xFE0E;</a></h2>
 
-<p>Basically, two things need to be changed to migrate your extension to VS2022. First of all, you need to adjust <code>vsixmanifest</code> by adding the new attribute <code>ProductArchitecture</code> to <code>InstallationTarget</code> configuration:</p>
-<pre><code class="language-xml">&lt;Installation&gt;   
-   &lt;InstallationTarget Id=&quot;Microsoft.VisualStudio.Community&quot; Version=&quot;[17.0,18.0)&quot;&gt;
-      &lt;ProductArchitecture&gt;amd64&lt;/ProductArchitecture&gt;
-   &lt;/InstallationTarget&gt;
-&lt;/Installation&gt;
-</code></pre>
-<p>The next thing that needs to be done is upgrading <code>SDK</code> NuGet package to a version appropriate for VS2022:</p>
-<pre><code class="language-xml">&lt;ItemGroup&gt;
-    &lt;PackageReference Include=&quot;Microsoft.VisualStudio.SDK&quot; Version=&quot;17.0.0-previews-1-31410-273&quot; ExcludeAssets=&quot;runtime&quot;&gt;
-        &lt;IncludeAssets&gt;compile; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
-    &lt;/PackageReference&gt;
-    &lt;PackageReference Include=&quot;Microsoft.VSSDK.BuildTools&quot; Version=&quot;17.0.3177-preview3&quot;&gt;
-        &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
-        &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
-    &lt;/PackageReference&gt;
-&lt;/ItemGroup&gt;
-</code></pre>
-<p>Additionally, you need to change the dotnet framework version to <code>v4.7.2</code>, if you still have an older version:</p>
-<pre><code class="language-xml">&lt;PropertyGroup&gt;
-    &lt;TargetFrameworkVersion&gt;v4.7.2&lt;/TargetFrameworkVersion&gt;
-&lt;/PropertyGroup&gt;
-</code></pre>
-<p>Ok, that&rsquo;s all - it doesn&rsquo;t seem to be a lot of work as I said before. However, those changes are not backward compatible and our extension can&rsquo;t be installed on an older version of VisualStudio anymore (adjusting <code>InstallationTarget.Version</code> won&rsquo;t help). So what can we do about that? According to the migration guideline on MSDN, the recommended approach is to move all extension code to <a href="https://docs.microsoft.com/en-us/xamarin/cross-platform/app-fundamentals/shared-projects?tabs=windows">Shared Project</a> and reference it from two separate <code>VSIX</code> projects - one for VS2019 (and older) and one for VS2022 (and newer). Each <code>VSIX</code> project has its own <code>vsixmanifest</code> file and references appropriate nuget packages.</p>
-<p>I tried this approach and lost 4 hours of my life. After moving the extension code to Shared Project all my XAML files seemed to be broken and XAML Visual Designer couldn&rsquo;t load them correctly to display preview. Besides the design-time experience, after compiling the extension, it turned out that the images from the Resources couldn&rsquo;t load - for some unknown reason that magical <code>tres comas</code> path notation <code>&quot;pack://application:,,,/Resources/</code> stopped working.</p>
-<p>
-<a href="tres_comas.jpg"><img  src="tres_comas.jpg" alt=""></a>
-</p>
-<h2 id="migration-in-a-smart-way"><a href="#migration-in-a-smart-way">Migration in a smart way  🔗&#xFE0E;</a></h2>
+<p>Testing an ASP.NET Core application can be a complex task, especially when it comes to mocking dependencies in a DI container. Fortunately, the <code>WebApplicationFactory</code> class provided by the <a href="https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Testing">Microsoft.AspNetCore.Mvc.Testing</a> nuget package offers a convenient way to simplify the process of setting up and tearing down a test server for integration tests.</p>
+<p>Here&rsquo;s a minimal setup that you need to host your web app for the testing purpose:</p>
+<pre><code class="language-cs">[Test]
+public async Task should_do_something_v1()
+{
+    // arrange
+    await using var appFactory = new WebApplicationFactory&lt;Program&gt;();
+    var client = appFactory.CreateClient();
 
-<p>After a couple of hours of struggling with <code>Shared Project</code>, I decided to change the approach. The new idea was to tweak a little bit the <code>csproj</code> file to load appropriate project configuration based on the value of input property called <code>VsTargetVersion</code>. This solution requires a separate compilation for each Visual Studio version (one for VS2019 and older and one for VS2022 and newer) but it allows for keeping a single VSIX project that supports all Visual Studio versions. The final working <code>MsBuild</code> script looks as follows:</p>
-<pre><code class="language-xml">&lt;PropertyGroup&gt;
-    &lt;!-- STEP 1 --&gt;
-    &lt;VsTargetVersion Condition=&quot;'$(VsTargetVersion)' == '' and '$(VisualStudioVersion)' == '17.0' &quot;&gt;VS2022&lt;/VsTargetVersion&gt;
-    &lt;VsTargetVersion Condition=&quot;'$(VsTargetVersion)' == '' and '$(VisualStudioVersion)' == '16.0' &quot;&gt;VS2019&lt;/VsTargetVersion&gt;
-    &lt;!-- STEP 2 --&gt;
-    &lt;OutputPath&gt;bin\$(VsTargetVersion)\$(Configuration)\&lt;/OutputPath&gt;
-    &lt;IntermediateOutputPath&gt;obj\$(VsTargetVersion)\$(Configuration)\&lt;/IntermediateOutputPath&gt;
-  &lt;/PropertyGroup&gt;
-  &lt;!-- STEP 3 --&gt;
-  &lt;Choose&gt;
-    &lt;When Condition=&quot;'$(VsTargetVersion)' == 'VS2022'&quot;&gt;
-      &lt;PropertyGroup&gt;
-        &lt;TargetFrameworkVersion&gt;v4.7.2&lt;/TargetFrameworkVersion&gt;
-        &lt;AssemblyName&gt;MappingGeneratorProVS2022&lt;/AssemblyName&gt;
-      &lt;/PropertyGroup&gt;
-      &lt;ItemGroup&gt;
-        &lt;None Include=&quot;..\Manifests\VS2022\source.extension.vsixmanifest&quot; Link=&quot;source.extension.vsixmanifest&quot;&gt;
-          &lt;SubType&gt;Designer&lt;/SubType&gt;
-        &lt;/None&gt;
-        &lt;PackageReference Include=&quot;Microsoft.VisualStudio.SDK&quot; Version=&quot;17.0.0-previews-1-31410-273&quot; ExcludeAssets=&quot;runtime&quot;&gt;
-          &lt;IncludeAssets&gt;compile; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
-        &lt;/PackageReference&gt;
-        &lt;PackageReference Include=&quot;Microsoft.VSSDK.BuildTools&quot; Version=&quot;17.0.3177-preview3&quot;&gt;
-          &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
-          &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
-        &lt;/PackageReference&gt;     
-        &lt;PackageReference Include=&quot;System.ComponentModel.Composition&quot; Version=&quot;5.0.0&quot; /&gt;
-      &lt;/ItemGroup&gt;
-    &lt;/When&gt;
-    &lt;Otherwise&gt;
-      &lt;PropertyGroup&gt;
-        &lt;TargetFrameworkVersion&gt;v4.6.1&lt;/TargetFrameworkVersion&gt;
-        &lt;AssemblyName&gt;MappingGeneratorProVS2019&lt;/AssemblyName&gt;
-      &lt;/PropertyGroup&gt;
-      &lt;ItemGroup&gt;
-        &lt;None Include=&quot;..\Manifests\VS2019\source.extension.vsixmanifest&quot; Link=&quot;source.extension.vsixmanifest&quot;&gt;
-          &lt;SubType&gt;Designer&lt;/SubType&gt;
-        &lt;/None&gt;
-        &lt;PackageReference Include=&quot;Microsoft.VisualStudio.SDK&quot; Version=&quot;15.0.1&quot; ExcludeAssets=&quot;runtime&quot;&gt;
-          &lt;IncludeAssets&gt;compile; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
-        &lt;/PackageReference&gt;
-        &lt;PackageReference Include=&quot;Microsoft.VSSDK.BuildTools&quot; Version=&quot;15.9.3039&quot;&gt;
-          &lt;IncludeAssets&gt;runtime; build; native; contentfiles; analyzers; buildtransitive&lt;/IncludeAssets&gt;
-          &lt;PrivateAssets&gt;all&lt;/PrivateAssets&gt;
-        &lt;/PackageReference&gt;
-      &lt;/ItemGroup&gt;
-    &lt;/Otherwise&gt;
-  &lt;/Choose&gt;
+    // act
+    // assert
+}
 </code></pre>
-<p>Explanation:</p>
+<p>However, using <code>WebApplicationFactory</code> in this way doesn&rsquo;t allow for replacing any dependencies in <code>DI Container</code>. We can overcome that by creating a class that inherits from <code>WebApplicationFactory</code> and overrides <code>ConfigureWebHost</code>. By using a simple trick with <code>Action&lt;IServiceCollection&gt;</code> lambda accepted by the constructor, we can make it reusable:</p>
+<pre><code class="language-cs">public class CustomWebApplicationFactory : WebApplicationFactory&lt;Program&gt;
+{
+    private readonly Action&lt;IServiceCollection&gt;? _overrideDependencies;
+
+    public CustomWebApplicationFactory(Action&lt;IServiceCollection&gt;? overrideDependencies = null)
+    {
+        _overrideDependencies = overrideDependencies;
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices(services =&gt; _overrideDependencies?.Invoke(services));
+    }
+}
+</code></pre>
+<p>With our <code>CustomWebApplicationFactory</code> we can easily prepare the app setup with mocked dependencies as follows:</p>
+<pre><code class="language-cs">[Test]
+public async Task should_do_something_v2()
+{
+    // arrange
+    await using var appFactory = new CustomWebApplicationFactory(services =&gt;
+    {
+        // Mock IXDataProvider
+        services.Replace(ServiceDescriptor.Scoped(_ =&gt;
+        {
+            var providerMock = new Mock&lt;IXDataProvider&gt;();
+            providerMock.Setup(x =&gt; x.GetData()).Returns(new XData { Attr1 = &quot;Val1&quot;, Attr2 = &quot;Val2&quot;});
+            return providerMock.Object;
+        }));
+
+        // Mock IYDataRepository
+        services.Replace(ServiceDescriptor.Scoped(_ =&gt;
+        {
+            var repositoryMock = new Mock&lt;IYDataRepository&gt;();
+            var entity = new YDataEntity { Id = 1, Name = &quot;Some Name&quot; };
+            repositoryMock.Setup(x =&gt; x.Get(entity.Id)).Returns(entity);
+            return repositoryMock.Object;
+        }));
+    });
+
+    var client = appFactory.CreateClient();
+
+    // act
+    // assert
+}
+</code></pre>
+<p>To create a mocked implementations I used <a href="https://www.nuget.org/packages/Moq">Moq</a> library.</p>
+<p>As you can see, our <code>CustomWebApplicationFactory</code> allows for replacing services in DI container quite easily, but there are a few things that I don&rsquo;t like here:</p>
 <ul>
-<li><strong>STEP 1:</strong> If the <code>VsTargetVersion</code> is not defined (it&rsquo;s not passed explicitly as a compilation parameter), then I&rsquo;m assigning a default value based on the current version of VisualStudio that loaded the project. For some unknown reason, it&rsquo;s not possible to build VS2019 extension with VS2022, so this approach fixes two issues here.</li>
-<li><strong>STEP 2:</strong> In order to avoid any collisions, I&rsquo;m adding value of <code>VsTargetVersion</code> attribute to <code>OutputPath</code> and <code>IntermediateOutputPath</code>. The artifacts and temporary build files will be in separate directories for each version. This also allows for avoiding any unnecessary confusion in the future. Please make sure that those attributes are not defined in other parts of your <code>csproj</code> file.</li>
-<li><strong>STEP 3:</strong> I&rsquo;m using <code>Choose-When-Otherwise</code> syntax for defining different project setting for each Visual Studio target version. In each branch we are allowed to have only a single <code>PropertyGroup</code> and a single <code>ItemGroup</code> definition. In <code>PropertyGroup</code> I&rsquo;m setting <code>TargetFrameworkVersion</code> and <code>AssemblyName</code> appropriately for each <code>VsTargetVersion</code> value. 
-In the <code>ItemGroup</code>, I&rsquo;m defining separate sets of required nuget packages and I&rsquo;m also importing an appropriate variation of <code>vsixmanifest</code> file.</li>
+<li>There is a certain amount of code that you need to always repeat for every mocked service. It degrades test code readability and distracts our attention from what&rsquo;s really important here.</li>
+<li>We need to know the original component lifecycle, which smells like an information leak. The component lifecycle is not important from the test case perspective, so it should&rsquo;t be visible here.</li>
 </ul>
-<p>When I load my solution in <code>VS2019</code>, it automatically switches everything to VS2019 setup and when I open it with VS2022 everything is ready to build and debug the extension under VS2022.</p>
-<h2 id="automated-release"><a href="#automated-release">Automated release  🔗&#xFE0E;</a></h2>
+<h2 id="improving-test-setup-readability"><a href="#improving-test-setup-readability">Improving test setup readability  🔗&#xFE0E;</a></h2>
 
-<p>For <code>Continuous Integration</code> I used <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix">strategy.matrix</a> to build <code>VS2019</code> and <code>VS2022</code> versions simultaneously as a part of the same pipeline. This mechanism allows me for branching the pipeline and setting <code>VsTargetVersion</code> environment variable (which is automatically used by MsBuild) differently for each branch. My workflow for releasing extension for <code>VS2019</code> and <code>VS2022</code> looks as follows:</p>
-<p>
-<a href="workflow.jpg"><img  src="workflow.jpg" alt=""></a>
-</p>
-<p>Here&rsquo;s a complete Github Actions script for releasing an extension that supports VS2019 and VS2022:</p>
-<pre><code class="language-yml">name: release
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'src/**'
-env: 
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  RepositoryUrl: 'https://github.com/${{ github.repository }}'
-  RepositoryBranch: '${{ github.ref }}'
-  SourceRevisionId: '${{ github.sha }}'
-  Configuration: Release
-  Version: '2021.8.${{ github.run_number }}'
-  SolutionPath: src\MappingGenerator.sln    
-jobs:
-  build-extension:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        VsTargetVersion: ['VS2019', 'VS2022']
-    env: 
-        VsixManifestPath: src\Manifests\${{ matrix.VsTargetVersion }}\source.extension.vsixmanifest
-        VsTargetVersion: '${{ matrix.VsTargetVersion }}'
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2   
-    - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0'   
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
-    - name: Restore NuGet Packages
-      run: nuget restore $env:SolutionPath
-    - name: Set version for Visual Studio Extension
-      uses: cezarypiatek/VsixVersionAction@1.0
-      with:
-        version: ${{ env.Version }} 
-        vsix-manifest-file: ${{ env.VsixManifestPath }}
-    - name: Build extension
-      run: msbuild $env:SolutionPath /t:Rebuild
-      env: 
-        DeployExtension: False
-    - name: Test extension
-      run: dotnet test --no-build --verbosity normal $env:SolutionPath
-    - name: Upload VSIX artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: VSIX-${{ matrix.VsTargetVersion }}
-        path: 'src\MappingGenerator.Vsix\bin\${{ matrix.VsTargetVersion }}\Release\MappingGeneratorPro${{ matrix.VsTargetVersion }}.vsix'    
-  release-extension:
-    needs: build-extension  
-    runs-on: windows-latest
-    steps:
-    - name: Support longpaths
-      run: git config --system core.longpaths true
-    - name: Checkout repository
-      uses: actions/checkout@v2   
-    - name: Generate release note
-      run: |
-        git fetch --prune --unshallow
-        $commitLog = git log &quot;$(git describe --tags --abbrev=0)..HEAD&quot; --pretty=format:&quot;- %s&quot;
-        &quot;What's new: `r`n`r`n$([string]::Join(&quot;`r`n&quot;,$commitLog))&quot; | Out-File release_note.md -Encoding utf8
-    - uses: actions/download-artifact@master
-      with:
-        name: VSIX-VS2019
-        path: dist/
-    - uses: actions/download-artifact@master
-      with:
-        name: VSIX-VS2022
-        path: dist/
-    - name: Create Github Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ env.Version }}
-        release_name:  ${{ env.Version }}
-        body_path: release_note.md
-        draft: false
-        prerelease: false
-    - name: Upload Release Asset - MappingGenerator.vsix for VS2019
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: 'dist/MappingGeneratorProVS2019.vsix'
-        asset_name: 'MappingGeneratorProVS2019.vsix'
-        asset_content_type: binary/octet-stream
-        prerelease: false
-    - name: Upload Release Asset - MappingGenerator.vsix for VS2022
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: 'dist/MappingGeneratorProVS2022.vsix'
-        asset_name: 'MappingGeneratorProVS2022.vsix'
-        asset_content_type: binary/octet-stream       
-    - name: Publish extension to Marketplace for VS2019
-      uses: cezarypiatek/VsixPublisherAction@0.1
-      with:
-        extension-file: 'dist/MappingGeneratorProVS2019.vsix'
-        publish-manifest-file: 'src\Manifests\VS2019\publishManifest.json'
-        personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}
-    - name: Publish extension to Marketplace for VS2022
-      uses: cezarypiatek/VsixPublisherAction@0.1
-      with:
-        extension-file: 'dist/MappingGeneratorProVS2022.vsix'
-        publish-manifest-file: 'src\Manifests\VS2022\publishManifest.json'
-        personal-access-code: ${{ secrets.VS_PUBLISHER_ACCESS_TOKEN }}  
+<p>We can try to improve the readability and simplify the test setup code with this extension method:</p>
+<pre><code class="language-cs">public static class MockExtensions
+{
+    public static void Mock&lt;TService&gt;(this IServiceCollection @this, Action&lt;Mock&lt;TService&gt;&gt; customize) where TService : class
+    {
+        var serviceType = typeof(TService);
+        if (@this.FirstOrDefault(x =&gt; x.ServiceType == serviceType) is { } existingServiceDescriptor)
+        {
+            @this.Replace(new ServiceDescriptor(serviceType, _ =&gt;
+            {
+                var mock = new Mock&lt;TService&gt;();
+                customize(mock);
+                return mock.Object;
+            }, existingServiceDescriptor.Lifetime));
+            return;
+        }
+
+        throw new InvalidOperationException($&quot;'{serviceType}' was not registered in DI Container&quot;);
+    }
+}
 </code></pre>
-<p>As a result of the <code>build-extension</code> job, we have two <code>vsix</code> files but the Visual Studio marketplace doesn&rsquo;t have an option of uploading multiple files for a single extension. According to MSDN (<a href="https://docs.microsoft.com/en-us/visualstudio/extensibility/migration/update-visual-studio-extension?view=vs-2022#visual-studio-marketplace">more details here</a>), this should be possible in the future, but right now we are forced to publish a version for VS2022 as an extension with a different identity. As you might notice, that&rsquo;s the reason why I have two  <code>publishManifest.json</code> files for each version of VisualStudio.</p>
+<p>Now our test looks a little leaner:</p>
+<pre><code class="language-cs">[Test]
+public async Task should_do_something_v3()
+{
+    // arrange
+    await using var appFactory = new CustomWebApplicationFactory(services =&gt;
+    {
+        services.Mock&lt;IXDataProvider&gt;(mock =&gt;
+        {
+            mock.Setup(x =&gt; x.GetData()).Returns(new XData { Attr1 = &quot;Val1&quot;, Attr2 = &quot;Val2&quot; });
+        });
+
+        services.Mock&lt;IYDataRepository&gt;(mock =&gt;
+        {
+            var entity = new YDataEntity { Id = 1, Name = &quot;Some Name&quot;};
+            mock.Setup(x =&gt; x.Get(entity.Id)).Returns(entity);
+        });
+    });
+
+    var client = appFactory.CreateClient();
+    
+    // act
+    // assert
+}
+</code></pre>
+<p>This is definitively progress in the right direction, but there&rsquo;s still one problem that might affect test maintainability.
+Mocking explicitly specific interfaces in our test case code makes test tightly coupled to the implementation details. This is not good because every time we refactor application code (without changing its behavior), we will be forced to adjust test code to the new implementation. A good example for that could be when we decide that the repository pattern doesn&rsquo;t play well with our architecture and we want to replace with a different solution. This could turn our internal structure upside down. Ideally, after every refactoring, we would like to run existing test suit (without changing it) to verify that the expected behavior was preserved. The same problem could appear when the data source changes - for example our app will need to load given entities from the new GRPC service instead of from the old database. Changing <code>IYDataRepository</code> to <code>ISampleGrpcService</code> will require changing the code of all test cases that mock <code>IYDataRepository</code> interface.</p>
+<p>We can try to limit the scope of changes by abstracting the code responsible for mocking specific interfaces. This can be done with test data builder approach:</p>
+<pre><code class="language-cs">public class TestDataBuilder
+{
+    private XData? _xData;
+
+    public void WithXData(string attr1, string attr2) 
+        =&gt; this._xData = new XData {Attr1 = attr1, Attr2 = attr2};
+
+    private readonly List&lt;YDataEntity&gt; _sampleEntities = new();
+
+    public void WithYData(int id, string name) 
+        =&gt; _sampleEntities.Add(new YDataEntity { Id = id, Name = name});
+
+    public void Build(IServiceCollection serviceCollection)
+    {
+        if (_xData != null)
+        {
+            serviceCollection.Mock&lt;IXDataProvider&gt;(mock =&gt;
+            {
+                mock.Setup(x =&gt; x.GetData()).Returns(_xData);
+            });
+        }
+
+        if (_sampleEntities.Count &gt; 0)
+        {
+            serviceCollection.Mock&lt;IYDataRepository&gt;(mock =&gt;
+            {
+                foreach (var entity in _sampleEntities)
+                {
+                    mock.Setup(x =&gt; x.Get(entity.Id)).Returns(entity);
+                }
+            });
+        }
+    }
+}
+</code></pre>
+<blockquote>
+<p>Ideally, the data builder methods should not use the internal structures of the application as parameters. Instead, they should use custom data structures that only include the attributes that are important for the test case. You can create a custom data structure for this purpose or list the necessary attributes as parameters for the builder method. The builder method should be responsible for converting the custom data structure into the internal structures of the application. If there are any changes to the internal structures of the application, you will only need to adjust the builder methods. The test case code will not be affected.</p>
+</blockquote>
+<p>To use the new approach with data builder, we need to modify our <code>CustomWebApplicationFactory</code> to accept as constructor parameter a lambda that customizes the <code>TestDataBuilder</code> instead of <code>IServiceCollection</code>:</p>
+<pre><code class="language-cs">public class CustomWebApplicationFactory : WebApplicationFactory&lt;Program&gt;
+{
+    private readonly Action&lt;TestDataBuilder&gt;? _setupTestData;
+
+    public CustomWebApplicationFactory(Action&lt;TestDataBuilder&gt;? setupTestData = null)
+    {
+        _setupTestData = setupTestData;
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices(services =&gt;
+        {
+            if (_setupTestData != null)
+            {
+                var dataBuilder = new TestDataBuilder();
+                _setupTestData(dataBuilder);
+                dataBuilder.Build(services);
+            }
+        });
+    }
+}
+</code></pre>
+<p>Using the new version of <code>TestDataBuilder</code>, we can prepare test data in a very concise, readable, and maintainable way as follows:</p>
+<pre><code class="language-cs">[Test]
+public async Task should_do_something_v4()
+{
+    // arrange
+    await using var appFactory = new CustomWebApplicationFactory(builder =&gt;
+    {
+        builder.WithXData(attr1: &quot;Val1&quot;, attr2: &quot;Val2&quot;);
+        builder.WithYData(id: 1, name: &quot;Some Name&quot;);
+    });
+
+    var client = appFactory.CreateClient();
+   
+    // act
+    // assert
+}
+</code></pre>
+<h2 id="summary"><a href="#summary">Summary  🔗&#xFE0E;</a></h2>
+
+<p>In this blog post, I examined the use of WebApplicationFactory and Moq to mock dependencies in a DI container for automated tests. By utilizing the extension methods to eliminate repetitive code and the builder pattern to abstract mocking logic, I was able to increase the readability and maintainability of our tests.</p>
+<p>I&rsquo;d love to hear about your experience with mocking dependencies in a DI container when testing ASP.NET Core applications. Do you use a similar approach or have you discovered alternative solutions that work well for you?</p>
     
 		
 	</article>
@@ -440,11 +430,11 @@ jobs:
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/develop-vsextension-with-github-actions/" >
+						<a href="../../post/component-tests-scenarios/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/develop-vsextension-with-github-actions/splashscreen_hud85bee5dadbc1fc45560823c855f89ae_108037_320x240_fill_q75_box_smart1.jpg" alt="Github Actions for Visual Studio Extension developers">
+								<img class="card-img-top" src="../../post/component-tests-scenarios/splashscreen_hue3f1d570c827aa50eca2e08b191ea1b4_121053_320x240_fill_q75_box_smart1.jpg" alt="Readable and clear tests for ASP.NET Core services">
 								<div class="card-body">
-									<h5 class="card-title">Github Actions for Visual Studio Extension developers</h5>											  
+									<h5 class="card-title">Readable and clear tests for ASP.NET Core services</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -455,11 +445,11 @@ jobs:
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/csharp-macros/" >
+						<a href="../../post/why-i-dont-use-mediatr-for-cqrs/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/csharp-macros/splashscreen_hu831a556e644f698f06f7bab476f01bf6_102766_320x240_fill_q75_box_smart1.jpg" alt="CSharp Macros - let the Roslyn type for you">
+								<img class="card-img-top" src="../../post/why-i-dont-use-mediatr-for-cqrs/splashscreen_hu0e705f403802c959080314158adbb302_92190_320x240_fill_q75_box_smart1.jpg" alt="Why I don&#39;t use MediatR for CQRS">
 								<div class="card-body">
-									<h5 class="card-title">CSharp Macros - let the Roslyn type for you</h5>											  
+									<h5 class="card-title">Why I don&#39;t use MediatR for CQRS</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -470,11 +460,11 @@ jobs:
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/generate-mapping-code-with-roslyn/" >
+						<a href="../../post/testing-web-api-with-approval-tests/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/generate-mapping-code-with-roslyn/splashscreen_hu86b51efa2999f8280c1d243d5a743591_73415_320x240_fill_q75_box_smart1.jpg" alt="Generate mapping code with Roslyn code fix provider.">
+								<img class="card-img-top" src="../../post/testing-web-api-with-approval-tests/splashscreen_hu938e1ed3204600fe4cfb4955eac6e870_54215_320x240_fill_q75_box_smart1.jpg" alt="Testing WebAPI with ApprovalTests.NET">
 								<div class="card-body">
-									<h5 class="card-title">Generate mapping code with Roslyn code fix provider.</h5>											  
+									<h5 class="card-title">Testing WebAPI with ApprovalTests.NET</h5>											  
 								</div>
 							</div></a>
 				</div>		
@@ -499,9 +489,7 @@ jobs:
   
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
 		
-		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/xml.min.js"></script>
-		
-		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/yaml.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
 		
   
   <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
@@ -520,7 +508,7 @@ jobs:
 		passthrough : {
 			twitter: {
 				via: "cezary_piatek",
-				hashtags: "vsix,GithubActions,VisualStudio,extensibility"
+				hashtags: "testing,mocks,aspcore,dotnet,dotnetcore"
 			}
 		}
 	}
