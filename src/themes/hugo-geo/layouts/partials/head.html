@@ -49,8 +49,7 @@
 	<meta property="twitter:creator" content="@cezary_piatek">
 	<meta property="twitter:description" content="{{ .Description }}">
 
-	<meta name="keywords" value="{{range $index, $element := .Params.tags}}{{if $index}}, {{end}}{{$element}}{{end}}" />
-    {{ .Hugo.Generator }}
+	<meta name="keywords" value="{{range $index, $element := .Params.tags}}{{if $index}}, {{end}}{{$element}}{{end}}" />    
     <title>{{ .Title }} &middot; {{ .Site.Title }}</title>
     {{ range .Params.css }}
     <link rel="stylesheet" href="{{ . }}">
