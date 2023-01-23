@@ -59,30 +59,11 @@ public async Task sample_wiremock_usage()
 }
 ```
 
-
-
-- load predefined mocks from file
-- record requests in proxy mode
-- setup wiremock server
-- override app config
-- add prefix to identify downstream service 
-- create mapping
-- dispose mapping
-- create stub object to simplify stubbing request to given downstream service
-- debugging:
-  - fetch a list of requests received by wiremock
-  - get id of a partially matched mapping
-  - fetch details of a given mapping
-  - compare expectations with received request
-
-- API (WithMapping() method) is quite verbose, gives a lot of flexibility how we can define expected request and response. If your Rest API is designed in a consistent way, you will probably need only a subset of this possibilities. To reduce repeatable code, it's good to encode most common scenario with helper extension methods. I created a own mapping model that simplify stub definitions:
-
 ## Troubleshooting
 
-In case of unmatched requests you can do the following 
-- investigate with debugger `wiremock.Mappings` to see currently defined stubs and `wiremock.LogEntries` to check all requests received by `WireMock` server.
+One of the most common issues when working with WireMock.NET are incorrectly defined stubs. If you are receiving 404 code instead of the expected response, that indicates your stubs do not match the requests made by tbe tested app. To troubleshoot this issue, you can use the debugger to investigate requests that reached WireMock server by checking `WireMockServer.LogEntries` and comparing requests parameters with mappings defined in `WireMockServer.Mappings` objects. 
 
-Sometimes it's easier to open in webbrowser `http://localhost:1080/__admin/requests` url to get detailed info about all requests received by wiremock.
+However, checking these objects with a debugger can be cumbersome. An alternative approach is to open the WireMock server's admin interface in a web browser by visiting [http://localhost:1080/__admin/requests](http://localhost:1080/__admin/requests). This will show you all the requests that have been received by WireMock. You should search for the `RequestMatchResult` section of a given request, and all elements from `MatchDetails` with a score below 1 could indicate a problem.
 
 ```json
 [
@@ -146,8 +127,8 @@ Sometimes it's easier to open in webbrowser `http://localhost:1080/__admin/reque
 ]
 ```
 
-Find your unmatched request, take the `PartialMappingGuid` and open `http://localhost:1080/__admin/mappings/{PartialMappingGuid}`.
-Comparing request data with mapping you should be able to quickly figure out what is wrong with your stub. Take a look at `Score` attribute in `MatchDetails`. All items with Score set to 9 are the culprits.
+Take the `PartialMappingGuid` and open `http://localhost:1080/__admin/mappings/{PartialMappingGuid}` to get details about the expected request shape. By comparing request data with mapping you should be able to quickly figure out what is wrong with your stub.
+
 ```json
 {
   "Guid": "12e03c70-6de2-4aa4-81c8-87ab4dab9cf3",
@@ -178,3 +159,39 @@ Comparing request data with mapping you should be able to quickly figure out wha
   "UseWebhooksFireAndForget": false
 }
 ```
+
+## Best practices
+
+
+## Other features
+
+WireMock.NET offers a variety of features beyond basic stubbing and mocking of HTTP requests. One such feature is the ability to [proxy requests](https://github.com/WireMock-Net/WireMock.Net/wiki/Proxying) to a real service using WireMock and capture the responses in the form of mappings. This enables you to easily capture responses from a real service and use them as the basis for your stubs, eliminating the need for manual response definition.
+
+WireMock.NET also enables you to read mappings and stub definitions from [static files](https://github.com/WireMock-Net/WireMock.Net/wiki/Mapping#static-mappings). This allows for easy storage and management of your stubs in a separate file, rather than having to define them programmatically. This can be useful for sharing stubs across different tests or projects.
+
+In addition to this, WireMock.NET also allows for the creation of dynamic [response templates](https://github.com/WireMock-Net/WireMock.Net/wiki/Response-Templating) that include data from the request. This allows you to create responses that vary based on the details of the request, which can be useful for testing edge cases or simulating the behavior of a real service.
+
+Another powerful feature of WireMock.NET is the ability to simulate service behavior with [Scenarios and States](https://github.com/WireMock-Net/WireMock.Net/wiki/Scenarios-and-States). This allows you to test different scenarios and edge cases by simulating different states of a service and switching between them. This can be useful for testing how your code handles different types of failures or responses from a service.
+
+## The rest ....
+
+Beside preparing stubs directly in your code you have also option to
+- provide static mappings in external json file
+- proxy request to a real service via WireMock and snapshot it in the form of mappings 
+
+
+- load predefined mocks from file
+- record requests in proxy mode
+- setup wiremock server
+- override app config
+- add prefix to identify downstream service 
+- create mapping
+- dispose mapping
+- create stub object to simplify stubbing request to given downstream service
+- debugging:
+  - fetch a list of requests received by wiremock
+  - get id of a partially matched mapping
+  - fetch details of a given mapping
+  - compare expectations with received request
+
+- API (WithMapping() method) is quite verbose, gives a lot of flexibility how we can define expected request and response. If your Rest API is designed in a consistent way, you will probably need only a subset of this possibilities. To reduce repeatable code, it's good to encode most common scenario with helper extension methods. I created a own mapping model that simplify stub definitions:
