@@ -1,31 +1,49 @@
 ---
-title: "Mocking outgoing http requests in ASP.NET Core tests"
+title: "Mocking outgoing HTTP requests in ASP.NET Core tests"
 description: "How to replace services in DI container with mocks in tests using WebApplicationFactory."
-date: 2023-01-21T00:21:45+02:00
-tags : ["testing", "mocks", "aspcore", "dotnet", "wiremock"]
+date: 2023-03-07T00:21:45+02:00
+tags : ["testing", "mocks", "aspcore", "dotnet", "WireMock"]
 highlight: true
 highlightLang: ["cs", "json"]
 image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer a different approach that operates outside of the process and works directly with the actual protocol. In this post, I will be introducing WireMock.NET, a powerful tool for mocking HTTP requests in tests. Unlike the DI container approach, WireMock.NET allows for more accurate and complete testing of HTTP communication. Additionally, it eliminates the need for complicated hacks and workarounds when trying to mock HTTP requests. This post will provide a comprehensive guide on how to use WireMock.NET in your ASP.NET Core tests to effectively mock HTTP requests.
+In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer a different approach that operates outside of the process and works directly with the actual protocol. In this post, I will be introducing WireMock.NET, a powerful tool for mocking HTTP requests in tests. Unlike the DI container approach, WireMock.NET allows for more accurate and complete testing of HTTP communication. Additionally, it eliminates the need for complicated hacks and workarounds when trying to mock HTTP requests. 
 
+From this post you will learn:
+- How to easily prepare mocks for HTTP endpoints.
+- How to troubleshoot most common problems. 
+- How to improve mailability of your test scenarios.
+- How to avoid traps related to HTTP endpoint mocking.
 
 ## What is the WireMock.NET?
 
-[WireMock.NET](https://github.com/WireMock-Net/WireMock.Net) is a .NET version of [WireMock](https://wiremock.org/), a library for stubbing and mocking web services. It allows you to simulate the behavior of a real HTTP server in your tests, without the need for a real service to be running. You can use WireMock.NET to define the responses that should be returned for specific requests, and it will intercept and handle those requests for you. This makes it easy to test your code that makes HTTP requests, without having to rely on the actual external service being available.
+[WireMock.NET](https://github.com/WireMock-Net/WireMock.Net) is a .NET version of [WireMock](https://WireMock.org/), a library for stubbing and mocking HTTP services. With WireMock.NET, you can define the expected responses for particular requests, and the library will intercept and manage those requests for you. This makes it easy to test your code that makes HTTP requests, without having to rely on the actual external service being available.
 
-## Getting started
 
-To get started, you need to install `WireMock.Net` as the nuget package. After installing, you can start using WireMock.NET by creating an instance of the WireMockServer class, configuring it with the desired behavior, and starting it. Once the server is running, you can make your HTTP requests as normal and WireMock.NET will intercept and handle them based on your configuration.
+## How to setup WireMock.NET?
+
+To get started, you need to install [WireMock.Net](https://www.nuget.org/packages/WireMock.Net) nuget package first: 
+
+```xml
+<PackageReference Include="WireMock.Net" Version="1.5.17" />
+```
+
+After installing, you can start using `WireMock.NET` by creating an instance of the `WireMockServer` class, configuring it with the desired behavior, and starting it. This can be easily done by calling `WireMockServer.Start` or `WireMockServer.StartWithAdminInterface` method.
+
+You need to also change mocked service address in your application config to point it to WireMock server address.
+
+Now you can start defining mocks for the outgoing requests by using `WithMapping` method.
+
+The minimal sample setup can look as follows:
 
 ```cs
 [Test]
-public async Task sample_wiremock_usage()
+public async Task sample_WireMock_usage()
 {
   //INFO: Setup WireMock.Net server
-  using var wiremock = WireMockServer.StartWithAdminInterface(port: 1080, ssl: false);
+  using var wireMock = WireMockServer.StartWithAdminInterface(port: 1080, ssl: false);
   
   //INFO: Setup WebApplicationFactory
   await using var appFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
@@ -35,29 +53,68 @@ public async Task sample_wiremock_usage()
       //INFO: Override downstream service addresses pointing to WireMock address
       configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
       {
-        ["ExternalServices:Github"] = "http://localhost:1080/GithubService/"
+        ["ExternalServices:WeatherService"] = "HTTP://localhost:1080/WeatherService"
       });
     });
   });
 
   //INFO: Stub outgoing request
-  wiremock
-    .Given(
-      Request.Create()
-        .WithPath("/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest")
-        .UsingGet()
-    )
-    .RespondWith(
-      Response.Create()
-        .WithStatusCode(200)
-        .WithHeader("Content-Type", "application/json; charset=utf-8")
-        .WithBodyAsJson(new
-        {
-          tag_name = "2023.1.52"
-        })
-    );
+  wireMock.WithMapping(new MappingModel
+  {
+      Request = new RequestModel
+      {
+          Methods = new[] { "GET" },
+          Path = "/WeatherService/api/v1.0/weather?lat=10.99&lon=44.34"
+      },
+      Response = new ResponseModel
+      {
+          StatusCode = 200,
+          Headers = new Dictionary<string, object>
+          {
+              ["Content-Type"] = "application/json; charset=utf-8"
+          },
+          BodyAsJson = new
+          {
+              temp = 298.48,
+              feels_like = 298.74,
+              temp_min = 297.56,
+              temp_max = 300.05,
+              pressure = 1015,
+              humidity = 64
+          }
+      }
+  });
 }
 ```
+
+You can alternatively use fluent syntax for defining mappings:
+
+```cs
+WireMock
+  .Given(
+      Request.Create()
+          .WithPath("/WeatherService/api/v1.0/weather?lat=10.99&lon=44.34")
+          .UsingGet()
+  )
+  .RespondWith(
+      Response.Create()
+              .WithStatusCode(200)
+              .WithHeader("Content-Type", "application/json; charset=utf-8")
+              .WithBodyAsJson(new
+              {
+                  temp = 298.48,
+                  feels_like = 298.74,
+                  temp_min = 297.56,
+                  temp_max = 300.05,
+                  pressure = 1015,
+                  humidity = 64
+              })
+  );
+```
+
+
+
+Once the server is running, you can make your HTTP requests as normal and WireMock.NET will intercept and handle them based on your configuration.
 
 ## Troubleshooting
 
@@ -74,8 +131,8 @@ However, checking these objects with a debugger can be cumbersome. An alternativ
       "DateTime": "2023-01-22T17:22:20.9899245Z",
       "Path": "/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest",
       "AbsolutePath": "/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest",
-      "Url": "http://localhost:1080/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest",
-      "AbsoluteUrl": "http://localhost:1080/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest",
+      "Url": "HTTP://localhost:1080/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest",
+      "AbsoluteUrl": "HTTP://localhost:1080/GithubService/repos/cezarypiatek/MappingGeneratorReleases/releases/latest",
       "Query": {},
       "Method": "GET",
       "Headers": {
@@ -86,7 +143,7 @@ However, checking these objects with a debugger can be cumbersome. An alternativ
           "localhost:1080"
         ],
         "User-Agent": [
-          "HttpRequestsSample"
+          "HTTPRequestsSample"
         ],
         "traceparent": [
           "00-ec8a7a4a21eade4de75b183849f395c3-66391ac5260d57e6-00"
@@ -160,38 +217,146 @@ Take the `PartialMappingGuid` and open `http://localhost:1080/__admin/mappings/{
 }
 ```
 
+In order the use the WireMock Admin API, the WireMock server must be running. This is quite obvious fact, but it might be tricky during test session. We need to keep server alive a little longer thant the test duration. Setting breakpoint in the middle of test doesn't work because debugger freezes the whole process and we won't get any response from the Admin API. To handle this situation, I use a simple trick by putting `await Task.Delay(TimeSpan.FromMinutes(10));` in the place when I want to inspect WireMock Admin API.
+
 ## Best practices
+
+
+### Avoiding endpoint addresses clash
+
+When using WireMock it's important to ensure that there are no endpoint address clashes between multiple mocked servers. To avoid this issue, I recommend to suffix the mocked server address with the name of the service being mocked. The same name should be added as a prefix to every endpoint mapping.
+
+
+```cs
+const string WeatherServiceName = "WeatherService";
+
+await using var appFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+{
+  builder.ConfigureAppConfiguration(configurationBuilder =>
+  {
+    //INFO: Override downstream service addresses pointing to WireMock address
+    configurationBuilder.AddInMemoryCollection(new Dictionary<string, string>
+    {
+      ["ExternalServices:WeatherService"] = $"HTTP://localhost:1080/{WeatherServiceName}"
+    });
+  });
+});
+
+WireMock
+  .Given(
+      Request.Create()
+          .WithPath($"/{WeatherServiceName}/api/v1.0/weather?lat=10.99&lon=44.34")
+          .UsingGet()
+  )
+  .RespondWith(/*TODO*/);
+
+
+```
+
+When you start with a one service dependency, this might seems to be redundant but sooner or later you might hit the name clash. Applying this prefix-suffix trick from the very beginning might save you unnecessary debugging session.
+
+### Dispose your mappings
+
+WireMock instance can be re-used between tests to improve test execution performance. However, this approach can lead to mapping clashes, as each test may define different mappings for the same endpoints. This is a real trouble-maker as the WireMock's responses might very based on the test execution order. Test might pass when it's run in isolation and it might fail when it's run as a part of test suite because other test might add mapping for the same endpoint which better matching for current parameters. To ensure that mappings defined in a one test don't affect other tests, it's good to call the `Reset()` method before every test.  In this way, every test starts with a clean slate.
+
+Another option is to create a disposable object that represents each mapping and deletes it in the Dispose method. This approach ensures that all mappings are deleted at the end of the test case, without the need for Setup/Teardown methods. It also allows for greater control over the scope of each mapping, which can be useful when testing different responses from the same endpoint within a single test case. 
+
+```cs
+public class RequestStub: IDisposable
+{
+    private readonly IWireMockServer _WireMock;
+    private readonly Guid _stubId;
+
+    public RequestStub(IWireMockServer WireMock, Guid stubId)
+    {
+        _WireMock = WireMock;
+        _stubId = stubId;
+    }
+
+    public void Dispose() => _WireMock.DeleteMapping(_stubId);
+}
+```
+
+Usage:
+
+```cs
+public RequestStub MockSomething()
+{
+    var stubId = Guid.NewGuid();
+    _WireMock.WithMapping(new MappingModel
+    {
+        Guid = stubId,
+        Request = /*TODO: Define request*/,
+        Response = /*TODO: Define response*/
+    });
+    return new RequestStub(_WireMock, stubId);
+}
+```
+
+
+### StubObjectPattern
+
+While it's possible to define request mocks directly in your test scenario code using WireMock's API, it can quickly become complex and difficult to manage. Instead, it's recommended to create an object that represents the mocked service and provides methods for defining the specific mocks needed for each operation. This approach makes it easier to create and manage mock services, and also allows for more expressive and readable test scenarios. By wrapping the mock definitions into meaningful methods, you can more easily understand the purpose of each mock and avoid errors or inconsistencies in your test code. Overall, this approach simplifies the process of defining and managing mock services in your .NET application.
+
+```cs
+public class WeatherServiceStub
+{
+    private const string ServicePrefix = "WeatherService";
+    private readonly WireMockServer _WireMock;
+
+    public WeatherServiceStub(WireMockServer WireMock)
+    {
+        _WireMock = WireMock;
+    }
+
+    public RequestStub MockCurrentWeather((double lat, double lon) location, Action<WeatherResponse> adjustResponse)
+    {
+        var mappingId = Guid.NewGuid();
+        var expectedResponse = new WeatherResponse();
+        adjustResponse(expectedResponse);
+
+        _WireMock.WithMapping(new MappingModel
+        {
+            Guid = mappingId,
+            Request = new RequestModel
+            {
+                Methods = new[] { "GET" },
+                Path = $"{ServicePrefix}/api/v1.0/weather?lat={location.lat}&lon={location.lon}4"
+            },
+            Response = new ResponseModel
+            {
+                StatusCode = 200,
+                Headers = new Dictionary<string, object>
+                {
+                    ["Content-Type"] = "application/json; charset=utf-8"
+                },
+                BodyAsJson = expectedResponse
+            }
+        });
+        return new RequestStub(_WireMock, mappingId);
+    }
+}
+```
+
+Usage
+
+```cs
+var weatherServiceStub = new WeatherServiceStub(WireMock);
+
+using var currentWeatherMock = weatherServiceStub.MockCurrentWeather(location: (10.99, 44.34), response =>
+{
+    response.temp = 298.48;
+    response.feels_like = 298.74;
+});
+```
 
 
 ## Other features
 
-WireMock.NET offers a variety of features beyond basic stubbing and mocking of HTTP requests. One such feature is the ability to [proxy requests](https://github.com/WireMock-Net/WireMock.Net/wiki/Proxying) to a real service using WireMock and capture the responses in the form of mappings. This enables you to easily capture responses from a real service and use them as the basis for your stubs, eliminating the need for manual response definition.
+WireMock.NET offers a variety of features beyond basic stubbing and mocking of HTTP requests. One such feature is the ability to [proxy requests](https://github.com/WireMock-Net/WireMock.Net/wiki/Proxying) to a real service and capture the responses in the form of mappings. You can use them as the basis for your stubs, eliminating the need for manual response definition.
 
-WireMock.NET also enables you to read mappings and stub definitions from [static files](https://github.com/WireMock-Net/WireMock.Net/wiki/Mapping#static-mappings). This allows for easy storage and management of your stubs in a separate file, rather than having to define them programmatically. This can be useful for sharing stubs across different tests or projects.
+WireMock.NET also enables you to read mappings and stub definitions from [static files](https://github.com/WireMock-Net/WireMock.Net/wiki/Mapping#static-mappings), rather than having to define them programmatically. This can be useful for sharing stubs across different tests or projects.
 
 In addition to this, WireMock.NET also allows for the creation of dynamic [response templates](https://github.com/WireMock-Net/WireMock.Net/wiki/Response-Templating) that include data from the request. This allows you to create responses that vary based on the details of the request, which can be useful for testing edge cases or simulating the behavior of a real service.
 
-Another powerful feature of WireMock.NET is the ability to simulate service behavior with [Scenarios and States](https://github.com/WireMock-Net/WireMock.Net/wiki/Scenarios-and-States). This allows you to test different scenarios and edge cases by simulating different states of a service and switching between them. This can be useful for testing how your code handles different types of failures or responses from a service.
-
-## The rest ....
-
-Beside preparing stubs directly in your code you have also option to
-- provide static mappings in external json file
-- proxy request to a real service via WireMock and snapshot it in the form of mappings 
-
-
-- load predefined mocks from file
-- record requests in proxy mode
-- setup wiremock server
-- override app config
-- add prefix to identify downstream service 
-- create mapping
-- dispose mapping
-- create stub object to simplify stubbing request to given downstream service
-- debugging:
-  - fetch a list of requests received by wiremock
-  - get id of a partially matched mapping
-  - fetch details of a given mapping
-  - compare expectations with received request
-
-- API (WithMapping() method) is quite verbose, gives a lot of flexibility how we can define expected request and response. If your Rest API is designed in a consistent way, you will probably need only a subset of this possibilities. To reduce repeatable code, it's good to encode most common scenario with helper extension methods. I created a own mapping model that simplify stub definitions:
+Another powerful feature of WireMock.NET is the ability to simulate service behavior with [Scenarios and States](https://github.com/WireMock-Net/WireMock.Net/wiki/Scenarios-and-States). You can easily simulate different states of a service and switch between them. This can be useful for testing how your code handles different types of failures or responses from a service.
