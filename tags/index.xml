@@ -6,11 +6,11 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Jan 2023 00:21:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Apr 2023 00:10:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AspCore</title>
       <link>https://cezarypiatek.github.io/tags/aspcore/</link>
-      <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
+      <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/aspcore/</guid>
       <description></description>
@@ -19,9 +19,36 @@
     <item>
       <title>dotnet</title>
       <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
+      <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mocks</title>
+      <link>https://cezarypiatek.github.io/tags/mocks/</link>
+      <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/mocks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
+      <link>https://cezarypiatek.github.io/tags/testing/</link>
+      <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WireMock</title>
+      <link>https://cezarypiatek.github.io/tags/wiremock/</link>
+      <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/tags/wiremock/</guid>
       <description></description>
     </item>
     
@@ -31,24 +58,6 @@
       <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
       
       <guid>https://cezarypiatek.github.io/tags/dotnetcore/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mocks</title>
-      <link>https://cezarypiatek.github.io/tags/mocks/</link>
-      <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/mocks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>testing</title>
-      <link>https://cezarypiatek.github.io/tags/testing/</link>
-      <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
-      
-      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
       <description></description>
     </item>
     

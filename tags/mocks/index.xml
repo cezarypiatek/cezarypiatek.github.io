@@ -6,7 +6,17 @@
     <description>Recent content in mocks on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Jan 2023 00:21:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/mocks/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Apr 2023 00:10:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/mocks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WireMock.NET - Introduction</title>
+      <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</link>
+      <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</guid>
+      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.
+In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
+    </item>
+    
     <item>
       <title>Mocking dependencies in ASP.NET Core tests</title>
       <link>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</link>
