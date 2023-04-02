@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Mocking outgoing HTTP requests in ASP.NET Core tests">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/mocking-outgoing-http-requests-p1\/"
+            },
+          "headline" : "WireMock.NET - Introduction",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2023-04-02",
+          "dateModified" : "2023-04-02",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/mocking-outgoing-http-requests-p1\/splashscreen.jpg",
+          "description": "Mocking outgoing HTTP requests in ASP.NET Core tests"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2023-04-02">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/">	
+	<meta property="og:title" content="WireMock.NET - Introduction">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/splashscreen.jpg">
+    <meta property="og:description" content="Mocking outgoing HTTP requests in ASP.NET Core tests">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="mocks">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="WireMock">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/splashscreen.jpg">
+	<meta property="twitter:title" content="WireMock.NET - Introduction">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Mocking outgoing HTTP requests in ASP.NET Core tests">
+
+	<meta name="keywords" value="testing, mocks, aspcore, dotnet, WireMock" />    
+    <title>WireMock.NET - Introduction &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>WireMock.NET - Introduction</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>2 April 2023</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.</p>
+<p>In this post, I will introduce to you <code>WireMock.NET</code>, a powerful tool for mocking HTTP requests. Unlike the DI container approach, WireMock.NET allows for more accurate and complete testing of HTTP communication. Additionally, it eliminates the need for complicated hacks and workarounds when trying to mock HTTP requests.</p>
+<h2 id="what-is-the-wiremocknet"><a href="#what-is-the-wiremocknet">What is the WireMock.NET?  🔗&#xFE0E;</a></h2>
+
+<p><a href="https://github.com/WireMock-Net/WireMock.Net">WireMock.NET</a> is a .NET version of <a href="https://WireMock.org/">WireMock</a>, a library for stubbing and mocking HTTP services. With WireMock.NET, you can define the expected responses for particular requests, and the library will intercept and manage those requests for you. This allows for easy testing of the code that makes HTTP requests, without having to rely on the actual external service being available and without hacking HttpClient.</p>
+<h2 id="how-to-setup-wiremocknet"><a href="#how-to-setup-wiremocknet">How to setup WireMock.NET?  🔗&#xFE0E;</a></h2>
+
+<p>To get started, you need to install <a href="https://www.nuget.org/packages/WireMock.Net">WireMock.Net</a> nuget package first:</p>
+<pre><code class="language-xml">&lt;PackageReference Include=&quot;WireMock.Net&quot; Version=&quot;1.5.17&quot; /&gt;
+</code></pre>
+<p>After installing, you can start using <code>WireMock.NET</code> by creating an instance of the <code>WireMockServer</code> class and configuring it with the desired behavior. This can be easily done by calling <code>WireMockServer.Start</code> or <code>WireMockServer.StartWithAdminInterface</code> method.</p>
+<pre><code class="language-cs">using var wireMock = WireMockServer.StartWithAdminInterface(port: 1080, ssl: false);
+</code></pre>
+<p>You need to also change mocked service address in your application config to point it to WireMock server address.</p>
+<pre><code class="language-cs">await using var appFactory = new WebApplicationFactory&lt;Program&gt;().WithWebHostBuilder(builder =&gt;
+{
+  builder.ConfigureAppConfiguration(configurationBuilder =&gt;
+  {
+    //INFO: Override downstream service addresses pointing to WireMock address
+    configurationBuilder.AddInMemoryCollection(new Dictionary&lt;string, string&gt;
+    {
+      [&quot;ExternalServices:WeatherService&quot;] = &quot;http://localhost:1080&quot;
+    });
+  });
+});
+</code></pre>
+<p>Now you can start defining mocks for the outgoing requests by using <code>WithMapping</code> method.</p>
+<pre><code class="language-cs">wireMock.WithMapping(new MappingModel
+{
+    Request = new RequestModel
+    {
+        Methods = new[] { &quot;GET&quot; },
+        Path = &quot;/api/v1.0/weather&quot;,
+        Params = new List&lt;ParamModel&gt;
+        {
+            new ParamModel()
+            {
+                Name = &quot;lat&quot;, 
+                Matchers = new MatcherModel[] {new() {Name = &quot;ExactMatcher&quot;, Pattern = &quot;10.99&quot;}}
+            },
+            new ParamModel()
+            {
+                Name = &quot;lon&quot;, 
+                Matchers = new MatcherModel[] {new() {Name = &quot;ExactMatcher&quot;, Pattern = &quot;44.34&quot;}}
+            }
+        }
+    },
+    Response = new ResponseModel
+    {
+        StatusCode = 200,
+        Headers = new Dictionary&lt;string, object&gt;
+        {
+            [&quot;Content-Type&quot;] = &quot;application/json; charset=utf-8&quot;
+        },
+        BodyAsJson = new
+        {
+            temp = 298.48,
+            feels_like = 298.74,
+            temp_min = 297.56,
+            temp_max = 300.05,
+            pressure = 1015,
+            humidity = 64
+        }
+    }
+});
+</code></pre>
+<p>Alternatively, you can use fluent syntax which seems to be more concise:</p>
+<pre><code class="language-cs">wireMock
+    .Given(
+        Request.Create()
+            .WithPath(&quot;/api/v1.0/weather&quot;)
+            .WithParam(&quot;lat&quot;, &quot;10.99&quot;)
+            .WithParam(&quot;lon&quot;, &quot;44.34&quot;)
+            .UsingGet()
+    )
+    .RespondWith(
+        Response.Create()
+            .WithStatusCode(200)
+            .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+            .WithBodyAsJson(new
+            {
+                temp = 298.48,
+                feels_like = 298.74,
+                temp_min = 297.56,
+                temp_max = 300.05,
+                pressure = 1015,
+                humidity = 64
+            })
+    );
+</code></pre>
+<p>Once the server is running, you can make your HTTP requests as normal and WireMock.NET will intercept and handle them based on your configuration.</p>
+<p>The complete minimal sample setup can look as follows:</p>
+<pre><code class="language-cs">[Test]
+public async Task sample_WireMock_usage()
+{
+  //INFO: Setup WireMock.Net server
+  using var wireMock = WireMockServer.StartWithAdminInterface(port: 1080, ssl: false);
+  
+  //INFO: Setup WebApplicationFactory
+  await using var appFactory = new WebApplicationFactory&lt;Program&gt;().WithWebHostBuilder(builder =&gt;
+  {
+    builder.ConfigureAppConfiguration(configurationBuilder =&gt;
+    {
+      //INFO: Override downstream service addresses pointing to WireMock address
+      configurationBuilder.AddInMemoryCollection(new Dictionary&lt;string, string&gt;
+      {
+        [&quot;ExternalServices:WeatherService&quot;] = &quot;http://localhost:1080&quot;
+      });
+    });
+  });
+
+  //INFO: Prepare stub for outgoing request
+  wireMock
+    .Given(
+        Request.Create()
+            .WithPath(&quot;/api/v1.0/weather&quot;)
+            .WithParam(&quot;lat&quot;, &quot;10.99&quot;)
+            .WithParam(&quot;lon&quot;, &quot;44.34&quot;)
+            .UsingGet()
+    )
+    .RespondWith(
+        Response.Create()
+            .WithStatusCode(200)
+            .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+            .WithBodyAsJson(new
+            {
+                temp = 298.48,
+                feels_like = 298.74,
+                temp_min = 297.56,
+                temp_max = 300.05,
+                pressure = 1015,
+                humidity = 64
+            })
+    );
+
+    //INFO: Automate tested app
+}
+</code></pre>
+<h2 id="other-features"><a href="#other-features">Other features  🔗&#xFE0E;</a></h2>
+
+<p>WireMock.NET offers a variety of features beyond basic stubbing and mocking of HTTP requests. One such feature is the ability to <a href="https://github.com/WireMock-Net/WireMock.Net/wiki/Proxying">proxy requests</a> to a real service and capture the responses in the form of mappings. You can use them as a basis for your stubs, eliminating the need for manual response definition.</p>
+<p>WireMock.NET also enables you to read mappings and stub definitions from <a href="https://github.com/WireMock-Net/WireMock.Net/wiki/Mapping#static-mappings">static files</a>, rather than having to define them programmatically. This can be useful for sharing stubs across different tests or projects.</p>
+<p>In addition to this, WireMock.NET also allows for the creation of dynamic <a href="https://github.com/WireMock-Net/WireMock.Net/wiki/Response-Templating">response templates</a> that include data from the request. This allows you to create responses that vary based on the details of the request, which can be useful for testing edge cases or simulating the behavior of a real service.</p>
+<p>Another powerful feature of WireMock.NET is the ability to simulate service behavior with <a href="https://github.com/WireMock-Net/WireMock.Net/wiki/Scenarios-and-States">Scenarios and States</a>. You can easily simulate different states of a service and switch between them. This can be useful for testing how your code handles different types of failures or responses from a service.</p>
+<blockquote>
+<p>To learn more about the possibilities of WireMock.NET, I highly recommend reading the <a href="https://github.com/WireMock-Net/WireMock.Net/wiki">WireMock Wiki page</a></p>
+</blockquote>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://essentials.dotnetos.org/?utm_source=cezarypiatek&utm_medium=blog&utm_campaign=banner" data-gtag="DotnetEssentials" title="Your free course of .NET environment">
+				<img src="https://dotnetos.org/assets/images/products/essentials.png" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-dependencies-in-asp-net-core/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-dependencies-in-asp-net-core/splashscreen_huf1a4b3b79f92880fa199ed5b819d1e17_61369_320x240_fill_q75_box_smart1.jpg" alt="Mocking dependencies in ASP.NET Core tests">
+								<div class="card-body">
+									<h5 class="card-title">Mocking dependencies in ASP.NET Core tests</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/component-tests-scenarios/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/component-tests-scenarios/splashscreen_hue3f1d570c827aa50eca2e08b191ea1b4_121053_320x240_fill_q75_box_smart1.jpg" alt="Readable and clear tests for ASP.NET Core services">
+								<div class="card-body">
+									<h5 class="card-title">Readable and clear tests for ASP.NET Core services</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/testing-web-api-with-approval-tests/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/testing-web-api-with-approval-tests/splashscreen_hu938e1ed3204600fe4cfb4955eac6e870_54215_320x240_fill_q75_box_smart1.jpg" alt="Testing WebAPI with ApprovalTests.NET">
+								<div class="card-body">
+									<h5 class="card-title">Testing WebAPI with ApprovalTests.NET</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "testing,mocks,aspcore,dotnet,WireMock"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>
