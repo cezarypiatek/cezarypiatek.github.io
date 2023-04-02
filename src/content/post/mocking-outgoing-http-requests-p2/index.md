@@ -7,6 +7,7 @@ highlight: true
 highlightLang: ["cs", "json"]
 image: "splashscreen.jpg"
 isBlogpost: true
+draft: true
 ---
 
 In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don't require any changes in the app internals and work directly with the actual protocol used by the application being tested. 
