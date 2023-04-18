@@ -1,7 +1,7 @@
 ---
 title: "WireMock.NET - Troubleshooting"
 description: "How to deal with most common problems while creating HTTP stubs with WireMock"
-date: 2023-04-17T00:10:45+02:00
+date: 2023-04-18T00:10:45+02:00
 tags : ["testing", "mocks", "aspcore", "dotnet", "WireMock"]
 highlight: true
 highlightLang: ["cs", "json"]
@@ -9,18 +9,15 @@ image: "splashscreen.jpg"
 isBlogpost: 
 ---
 
-In the second installment of my blog post series on WireMock.Net, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don't know the drill. I hope that my guideline will save you a lot of time.  <!--more-->  If you are completely new to WireMock, I highly recommend reading my [WireMock.NET - Introduction](/post/mocking-outgoing-http-requests-p1/)
-
-
-
+In the second installment of my blog post series on WireMock.NET, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don't know the drill. I hope that my guideline will save you a lot of time.  <!--more-->  If you are completely new to WireMock, I highly recommend reading my [WireMock.NET - Introduction](/post/mocking-outgoing-http-requests-p1/)
 
 ## Troubleshooting
 
-One of the most common issues when working with WireMock.NET are incorrectly defined mappings. If you are receiving the 404 code instead of the expected response, that indicates your stub doesn't match the request made by the tested app. To troubleshoot this issue, you can use the debugger to investigate requests that reached WireMock server by checking `WireMockServer.LogEntries` and comparing requests parameters with mappings defined in `WireMockServer.Mappings` objects. 
+One of the most common issues when working with WireMock.NET are incorrectly defined mappings. If you are receiving the 404 code instead of the expected response, that indicates your stub doesn't match the request made by the tested app. To troubleshoot this issue, you can use the debugger to investigate requests that reached WireMock server by checking `WireMockServer.LogEntries` and comparing requests' parameters with mappings defined in `WireMockServer.Mappings` objects. 
 
 ![screenshot of watch window with wiremock object](watch.jpg)
 
-However, checking these objects with a debugger can be cumbersome, especially because those collection can contains items related to Admin interface. An alternative approach is to open the WireMock server's admin interface in a web browser by visiting [http://localhost:1080/__admin/requests](http://localhost:1080/__admin/requests). This will show you all the requests that have been received by WireMock. You should search for the `RequestMatchResult` section of a given request, and all elements from `MatchDetails` with a score below 1 could indicate a problem.
+However, checking those objects with a debugger can be cumbersome because they contain items related to Admin interface. An alternative approach is to open the WireMock server's admin interface in a web browser by visiting [http://localhost:1080/__admin/requests](http://localhost:1080/__admin/requests). This will show you all the requests that have been received by WireMock. You should search for the `RequestMatchResult` section of a given request, and all elements from `MatchDetails` with a score below 1 could indicate a problem.
 
 ```json
 [
@@ -153,7 +150,7 @@ Take the `PartialMappingGuid` and open `http://localhost:1080/__admin/mappings/{
 }
 ```
 
-In order the use the WireMock Admin API we need to start WireMock with enabled Admin interface. This can be done calling `WireMockServer.StartWithAdminInterface()` or by providing `WireMockServerSettings` explicitly as follows:
+In order the use the WireMock Admin API we need to start WireMock with enabled Admin interface. This can be done by calling `WireMockServer.StartWithAdminInterface()` or by using `WireMockServerSettings` explicitly as follows:
 
 ```cs
 using var wireMock = WireMockServer.Start(new WireMockServerSettings()
@@ -163,7 +160,7 @@ using var wireMock = WireMockServer.Start(new WireMockServerSettings()
 });
 ```
 
- Additionally, at the moment of calling Admin API, the WireMock server must be running. This is quite an obvious fact, but it might be tricky during test session. We need to keep the server alive a little longer thant the test duration. Setting breakpoint in the middle of the test doesn't work because debugger freezes the whole process and we won't get any response from the Admin API. To handle this situation, I use a simple trick by putting `await Task.Delay(TimeSpan.FromMinutes(10));` in the place when I want to inspect WireMock Admin API.
+ Additionally, at the moment of calling Admin API, the WireMock server must be running. This is quite an obvious fact, but it might be tricky during test session. We need to keep the server alive a little longer thant the test duration. Setting a breakpoint in the middle of the test doesn't work because debugger freezes the whole process and we won't get any response from the Admin API. To handle this situation, I use a simple trick of putting `await Task.Delay(TimeSpan.FromMinutes(10));` at the point where I want to inspect WireMock Admin API.
 
 **Most common mistakes while defining request mapping**:
 - Incorrect request method.
@@ -173,6 +170,10 @@ using var wireMock = WireMockServer.Start(new WireMockServerSettings()
 
 
 ## WireMockInspector
-To simplify the troubleshooting process I created a small cross-platform app called `WireMockInspector` which is available as open source under [WireMock-Net/WireMockInspector](https://github.com/WireMock-Net/WireMockInspector) project. WireMockInspector combines data returned by `__admin/requests` and `__admin/mappings` endpoints and presents it in a very clear way. Having everything visual in a one place should save a lot of time while investigating problems of unmatched requests.
+To simplify the troubleshooting process, I created a small cross-platform app called `WireMockInspector` which is available as open source under [WireMock-Net/WireMockInspector](https://github.com/WireMock-Net/WireMockInspector) project. WireMockInspector combines data returned by `__admin/requests` and `__admin/mappings` endpoints and presents it in a very clear way. Having everything visualized in one place should save a lot of time while investigating problems of unmatched requests.
 
 ![WireMockInspector basic features presentation](wiremock_basic_features.gif)
+
+## Other issues?
+
+I have been using WireMock.NET for more than three years, and incorrectly prepared mappings were definitely the most common problem. I'm curious about your experience with WireMock. What challenges you've encountered and what has caused the most problems for you? Please share your thoughts and experiences in the comments section.
