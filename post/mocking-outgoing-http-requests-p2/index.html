@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to deal with most common problems while creating HTTP stubs with WireMock">   
+        
+    <meta property="article:published_time" content="2023-04-18">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/">	
+	<meta property="og:title" content="WireMock.NET - Troubleshooting">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/splashscreen.jpg">
+    <meta property="og:description" content="How to deal with most common problems while creating HTTP stubs with WireMock">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="mocks">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="WireMock">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/splashscreen.jpg">
+	<meta property="twitter:title" content="WireMock.NET - Troubleshooting">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to deal with most common problems while creating HTTP stubs with WireMock">
+
+	<meta name="keywords" value="testing, mocks, aspcore, dotnet, WireMock" />    
+    <title>WireMock.NET - Troubleshooting &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>WireMock.NET - Troubleshooting</h1>
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>In the second installment of my blog post series on WireMock.NET, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don&rsquo;t know the drill. I hope that my guideline will save you a lot of time.</p>
+<p>If you are completely new to WireMock, I highly recommend reading my <a href="../../post/mocking-outgoing-http-requests-p1/">WireMock.NET - Introduction</a></p>
+<h2 id="troubleshooting"><a href="#troubleshooting">Troubleshooting  🔗&#xFE0E;</a></h2>
+
+<p>One of the most common issues when working with WireMock.NET are incorrectly defined mappings. If you are receiving the 404 code instead of the expected response, that indicates your stub doesn&rsquo;t match the request made by the tested app. To troubleshoot this issue, you can use the debugger to investigate requests that reached WireMock server by checking <code>WireMockServer.LogEntries</code> and comparing requests' parameters with mappings defined in <code>WireMockServer.Mappings</code> objects.</p>
+<p>
+<a href="watch.jpg"><img  src="watch.jpg" alt="screenshot of watch window with wiremock object"></a>
+</p>
+<p>However, checking those objects with a debugger can be cumbersome because they contain items related to Admin interface. An alternative approach is to open the WireMock server&rsquo;s admin interface in a web browser by visiting <a href="http://localhost:1080/__admin/requests">http://localhost:1080/__admin/requests</a>. This will show you all the requests that have been received by WireMock. You should search for the <code>RequestMatchResult</code> section of a given request, and all elements from <code>MatchDetails</code> with a score below 1 could indicate a problem.</p>
+<pre><code class="language-json">[
+  {
+    &quot;Guid&quot;: &quot;7b7331a3-e142-40dd-86c0-8f12c8acd530&quot;,
+    &quot;Request&quot;: {
+      &quot;ClientIP&quot;: &quot;::1&quot;,
+      &quot;DateTime&quot;: &quot;2023-03-26T15:10:17.3587479Z&quot;,
+      &quot;Path&quot;: &quot;/api/v1.0/weather&quot;,
+      &quot;AbsolutePath&quot;: &quot;/api/v1.0/weather&quot;,
+      &quot;Url&quot;: &quot;http://localhost:1080/api/v1.0/weather?lat=10.99&amp;lon=44.34&quot;,
+      &quot;AbsoluteUrl&quot;: &quot;http://localhost:1080/api/v1.0/weather?lat=10.99&amp;lon=44.34&quot;,
+      &quot;Query&quot;: {
+        &quot;lat&quot;: [
+          &quot;10.99&quot;
+        ],
+        &quot;lon&quot;: [
+          &quot;44.34&quot;
+        ]
+      },
+      &quot;Method&quot;: &quot;GET&quot;,
+      &quot;Headers&quot;: {
+        &quot;Host&quot;: [
+          &quot;localhost:1080&quot;
+        ],
+        &quot;traceparent&quot;: [
+          &quot;00-c4d2eaf4ac470b56b1a24397286c7a95-5308e95b0a1d839d-00&quot;
+        ]
+      },
+      &quot;Cookies&quot;: {}
+    },
+    &quot;Response&quot;: {
+      &quot;StatusCode&quot;: 404,
+      &quot;Headers&quot;: {
+        &quot;Content-Type&quot;: [
+          &quot;application/json&quot;
+        ]
+      },
+      &quot;BodyAsJson&quot;: {
+        &quot;Status&quot;: &quot;No matching mapping found&quot;
+      },
+      &quot;DetectedBodyType&quot;: 2
+    },
+    &quot;PartialMappingGuid&quot;: &quot;808559be-cc6d-4197-a686-1238ab5a9da2&quot;,
+    &quot;PartialRequestMatchResult&quot;: {
+      &quot;TotalScore&quot;: 3,
+      &quot;TotalNumber&quot;: 4,
+      &quot;IsPerfectMatch&quot;: false,
+      &quot;AverageTotalScore&quot;: 0.75,
+      &quot;MatchDetails&quot;: [
+        {
+          &quot;Name&quot;: &quot;PathMatcher&quot;,
+          &quot;Score&quot;: 0
+        },
+        {
+          &quot;Name&quot;: &quot;ParamMatcher&quot;,
+          &quot;Score&quot;: 1
+        },
+        {
+          &quot;Name&quot;: &quot;ParamMatcher&quot;,
+          &quot;Score&quot;: 1
+        },
+        {
+          &quot;Name&quot;: &quot;MethodMatcher&quot;,
+          &quot;Score&quot;: 1
+        }
+      ]
+    }
+  }
+]
+</code></pre>
+<p>Take the <code>PartialMappingGuid</code> and open <code>http://localhost:1080/__admin/mappings/{PartialMappingGuid}</code> to get details about the expected request shape. By comparing request data with mapping you should be able to quickly figure out what is wrong with your stub.</p>
+<pre><code class="language-json">{
+  &quot;Guid&quot;: &quot;808559be-cc6d-4197-a686-1238ab5a9da2&quot;,
+  &quot;UpdatedAt&quot;: &quot;2023-03-26T15:10:16.8250017Z&quot;,
+  &quot;Request&quot;: {
+    &quot;Path&quot;: {
+      &quot;Matchers&quot;: [
+        {
+          &quot;Name&quot;: &quot;WildcardMatcher&quot;,
+          &quot;Pattern&quot;: &quot;api/v1.0/weather&quot;,
+          &quot;IgnoreCase&quot;: false
+        }
+      ]
+    },
+    &quot;Methods&quot;: [
+      &quot;GET&quot;
+    ],
+    &quot;Params&quot;: [
+      {
+        &quot;Name&quot;: &quot;lat&quot;,
+        &quot;Matchers&quot;: [
+          {
+            &quot;Name&quot;: &quot;ExactMatcher&quot;,
+            &quot;Pattern&quot;: &quot;10.99&quot;,
+            &quot;IgnoreCase&quot;: false
+          }
+        ]
+      },
+      {
+        &quot;Name&quot;: &quot;lon&quot;,
+        &quot;Matchers&quot;: [
+          {
+            &quot;Name&quot;: &quot;ExactMatcher&quot;,
+            &quot;Pattern&quot;: &quot;44.34&quot;,
+            &quot;IgnoreCase&quot;: false
+          }
+        ]
+      }
+    ]
+  },
+  &quot;Response&quot;: {
+    &quot;StatusCode&quot;: 200,
+    &quot;BodyAsJson&quot;: {
+      &quot;temp&quot;: 298.48,
+      &quot;feels_like&quot;: 298.74,
+      &quot;temp_min&quot;: 297.56,
+      &quot;temp_max&quot;: 300.05,
+      &quot;pressure&quot;: 1015,
+      &quot;humidity&quot;: 64
+    },
+    &quot;Headers&quot;: {
+      &quot;Content-Type&quot;: &quot;application/json; charset=utf-8&quot;
+    }
+  },
+  &quot;UseWebhooksFireAndForget&quot;: false
+}
+</code></pre>
+<p>In order the use the WireMock Admin API we need to start WireMock with enabled Admin interface. This can be done by calling <code>WireMockServer.StartWithAdminInterface()</code> or by using <code>WireMockServerSettings</code> explicitly as follows:</p>
+<pre><code class="language-cs">using var wireMock = WireMockServer.Start(new WireMockServerSettings()
+{
+    StartAdminInterface = true,
+    Port = 1080
+});
+</code></pre>
+<p>Additionally, at the moment of calling Admin API, the WireMock server must be running. This is quite an obvious fact, but it might be tricky during test session. We need to keep the server alive a little longer thant the test duration. Setting a breakpoint in the middle of the test doesn&rsquo;t work because debugger freezes the whole process and we won&rsquo;t get any response from the Admin API. To handle this situation, I use a simple trick of putting <code>await Task.Delay(TimeSpan.FromMinutes(10));</code> at the point where I want to inspect WireMock Admin API.</p>
+<p><strong>Most common mistakes while defining request mapping</strong>:</p>
+<ul>
+<li>Incorrect request method.</li>
+<li>Incorrectly serialized expected request body.</li>
+<li>Redundant or missing <code>/</code> at the beginning/end of the path.</li>
+<li>Adding query parameters in path instead of params.</li>
+</ul>
+<h2 id="wiremockinspector"><a href="#wiremockinspector">WireMockInspector  🔗&#xFE0E;</a></h2>
+
+<p>To simplify the troubleshooting process, I created a small cross-platform app called <code>WireMockInspector</code> which is available as open source under <a href="https://github.com/WireMock-Net/WireMockInspector">WireMock-Net/WireMockInspector</a> project. WireMockInspector combines data returned by <code>__admin/requests</code> and <code>__admin/mappings</code> endpoints and presents it in a very clear way. Having everything visualized in one place should save a lot of time while investigating problems of unmatched requests.</p>
+<p>
+<a href="wiremock_basic_features.gif"><img  src="wiremock_basic_features.gif" alt="WireMockInspector basic features presentation"></a>
+</p>
+<h2 id="other-issues"><a href="#other-issues">Other issues?  🔗&#xFE0E;</a></h2>
+
+<p>I have been using WireMock.NET for more than three years, and incorrectly prepared mappings were definitely the most common problem. I&rsquo;m curious about your experience with WireMock. What challenges you&rsquo;ve encountered and what has caused the most problems for you? Please share your thoughts and experiences in the comments section.</p>    
+		
+	</article>
+	
+</main>
+
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p1/splashscreen_hu3b1c4c54cee5ec2b65443949fccfd391_56344_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Introduction">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Introduction</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-dependencies-in-asp-net-core/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-dependencies-in-asp-net-core/splashscreen_huf1a4b3b79f92880fa199ed5b819d1e17_61369_320x240_fill_q75_box_smart1.jpg" alt="Mocking dependencies in ASP.NET Core tests">
+								<div class="card-body">
+									<h5 class="card-title">Mocking dependencies in ASP.NET Core tests</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/component-tests-scenarios/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/component-tests-scenarios/splashscreen_hue3f1d570c827aa50eca2e08b191ea1b4_121053_320x240_fill_q75_box_smart1.jpg" alt="Readable and clear tests for ASP.NET Core services">
+								<div class="card-body">
+									<h5 class="card-title">Readable and clear tests for ASP.NET Core services</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "testing,mocks,aspcore,dotnet,WireMock"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+  
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>
