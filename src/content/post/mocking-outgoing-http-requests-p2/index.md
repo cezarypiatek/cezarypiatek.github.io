@@ -6,7 +6,7 @@ tags : ["testing", "mocks", "aspcore", "dotnet", "WireMock"]
 highlight: true
 highlightLang: ["cs", "json"]
 image: "splashscreen.jpg"
-isBlogpost: 
+isBlogpost: true
 ---
 
 In the second installment of my blog post series on WireMock.NET, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don't know the drill. I hope that my guideline will save you a lot of time.  <!--more-->  If you are completely new to WireMock, I highly recommend reading my [WireMock.NET - Introduction](/post/mocking-outgoing-http-requests-p1/)
