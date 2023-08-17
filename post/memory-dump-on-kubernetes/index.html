@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to create memory dumps for dotnet core app running in Kubernetes">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/memory-dump-on-kubernetes\/"
+            },
+          "headline" : "Collecting memory dumps for .NET Core on Kubernetes",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2023-08-17",
+          "dateModified" : "2023-08-17",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/memory-dump-on-kubernetes\/splashscreen.jpg",
+          "description": "How to create memory dumps for dotnet core app running in Kubernetes"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2023-08-17">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/memory-dump-on-kubernetes/">	
+	<meta property="og:title" content="Collecting memory dumps for .NET Core on Kubernetes">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/memory-dump-on-kubernetes/splashscreen.jpg">
+    <meta property="og:description" content="How to create memory dumps for dotnet core app running in Kubernetes">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="debugging">
+    
+    <meta property="og:tags" content="Kubernetes">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/memory-dump-on-kubernetes/splashscreen.jpg">
+	<meta property="twitter:title" content="Collecting memory dumps for .NET Core on Kubernetes">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to create memory dumps for dotnet core app running in Kubernetes">
+
+	<meta name="keywords" value="aspcore, dotnet, debugging, Kubernetes" />    
+    <title>Collecting memory dumps for .NET Core on Kubernetes &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Collecting memory dumps for .NET Core on Kubernetes</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>17 August 2023</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>In the world of Kubernetes and microservices, diagnosing and debugging issues can be a challenging task. One powerful tool in your troubleshooting arsenal is memory dump analysis. Memory dumps capture the state of an application&rsquo;s memory at a particular point in time, providing insights into potential issues, bottlenecks, and crashes. In this blog post, I&rsquo;ll walk you through the process of collecting a memory dump from a .NET Core application running on Kubernetes.</p>
+<h2 id="step-1-getting-started"><a href="#step-1-getting-started">Step 1: Getting Started  🔗&#xFE0E;</a></h2>
+
+<p>If you don&rsquo;t already have it, you&rsquo;ll need to install <code>kubectl</code>, the command-line tool for interacting with Kubernetes clusters. You can follow the installation instructions provided on the <a href="https://kubernetes.io/docs/tasks/tools/">official Kubernetes documentation</a> or use the <code>winget</code> command if you&rsquo;re on Windows:</p>
+<pre><code class="language-shell">winget install Kubernetes.kubectl
+</code></pre>
+<p>Having the kubectl tool installed, begin by identifying the relevant pods using a label selector. For instance, you can list the pods with the label <code>app.kubernetes.io/instance=YOUR_APP_NAME</code> in the <code>YOUR_NAMESPACE_NAME</code> namespace:</p>
+<pre><code class="language-shell">kubectl get pods --selector=app.kubernetes.io/instance=YOUR_APP_NAME --namespace YOUR_NAMESPACE_NAME -o=name --kubeconfig &quot;path_to_kubeconfig.yaml&quot;
+</code></pre>
+<p>The <code>--kubeconfig</code> parameter is used to specify the path to the configuration file for authenticating and interacting with a Kubernetes cluster. This file contains information about the cluster&rsquo;s API server, authentication credentials, and context. You can obtain the kubeconfig file from your Kubernetes administrator or generate it yourself if you have access to the cluster. If you are using <code>Rancher</code>, follow <a href="https://ranchermanager.docs.rancher.com/v2.5/how-to-guides/advanced-user-guides/manage-clusters/access-clusters/use-kubectl-and-kubeconfig#accessing-clusters-with-kubectl-from-your-workstation">this guideline</a> to obtain your <code>kubeconfig</code> file.</p>
+<h2 id="step-2-accessing-the-pod"><a href="#step-2-accessing-the-pod">Step 2: Accessing the Pod  🔗&#xFE0E;</a></h2>
+
+<p>To access the pod and execute commands within it, you can use the <code>kubectl exec</code> command. This example assumes you&rsquo;re accessing the pod with the name YOUR_POD_NAME:</p>
+<pre><code class="language-shell">kubectl exec -it &quot;pod/YOUR_POD_NAME&quot; --kubeconfig &quot;path_to_kubeconfig.yaml&quot; --namespace YOUR_NAMESPACE_NAME -- sh
+
+</code></pre>
+<p>You will need to download <code>dotnet-dump</code>. However, you might have limited permission regarding saving data to disk in container so it&rsquo;s good to execute the following steps from <code>/tmp</code> directory. Navigate to the /tmp directory within the pod:</p>
+<pre><code class="language-shell">cd /tmp
+</code></pre>
+<h2 id="step-3-creating-a-memory-dump"><a href="#step-3-creating-a-memory-dump">Step 3: Creating a Memory Dump  🔗&#xFE0E;</a></h2>
+
+<p>Now, let&rsquo;s proceed to collect the memory dump for the .NET Core application. Start by downloading the dotnet-dump tool:</p>
+<pre><code class="language-shell">curl -L -o dotnet-dump https://aka.ms/dotnet-dump/linux-x64
+</code></pre>
+<p>Give the necessary permissions to the downloaded tool:</p>
+<pre><code class="language-shell">chmod 777 ./dotnet-dump
+</code></pre>
+<p>Specify an extraction directory for the tool:</p>
+<pre><code class="language-shell">export DOTNET_BUNDLE_EXTRACT_BASE_DIR=&quot;/tmp/bundle_extract&quot;
+</code></pre>
+<p>Now, initiate the memory dump collection. Replace 1 with the appropriate process ID of your .NET Core application:</p>
+<pre><code class="language-shell">./dotnet-dump collect -p 1
+</code></pre>
+<p>The collected memory dump will be saved as core_<timestamp> in the /tmp directory.</p>
+<h2 id="step-4-archiving-the-memory-dump"><a href="#step-4-archiving-the-memory-dump">Step 4: Archiving the Memory Dump  🔗&#xFE0E;</a></h2>
+
+<p>Once the memory dump is generated, you can compress it for easier transfer and analysis:</p>
+<pre><code class="language-shell">gzip core_&lt;timestamp&gt;
+</code></pre>
+<h2 id="step-5-downloading-the-memory-dump"><a href="#step-5-downloading-the-memory-dump">Step 5: Downloading the Memory Dump  🔗&#xFE0E;</a></h2>
+
+<p>Now that the memory dump is ready, you can copy it from the pod to your local machine using the kubectl cp command.</p>
+<p>First you need to exit the pod console:</p>
+<pre><code class="language-shell">exit
+</code></pre>
+<p>Being back on your workstation console, execute the following command to download the memory file to your machine:</p>
+<pre><code class="language-shell">kubectl cp &quot;YOUR_POD_NAME:/tmp/core_&lt;timestamp&gt;.gz&quot; ./core_&lt;timestamp&gt;.gz --kubeconfig &quot;path_to_kubeconfig.yaml&quot; --namespace YOUR_NAMESPACE_NAME
+</code></pre>
+<h2 id="step-5-unpacking-the-memory-dump"><a href="#step-5-unpacking-the-memory-dump">Step 5: Unpacking the Memory Dump  🔗&#xFE0E;</a></h2>
+
+<p>Now you need to unpack the memory dump file. You can do that with <code>Total Commander</code> or using the PowerShell script that I found here <a href="https://social.technet.microsoft.com/Forums/windowsserver/en-US/5aa53fef-5229-4313-a035-8b3a38ab93f5/unzip-gz-files-using-powershell?forum=winserverpowershell">Unzip GZ files using Powershell</a></p>
+<p>Now you are ready to start a memory analysis. You can do that with VisualStudio, WindDBG or with dotMemory.</p>
+<h2 id="everything-everywhere-all-at-once"><a href="#everything-everywhere-all-at-once">Everything Everywhere All at Once  🔗&#xFE0E;</a></h2>
+
+<p>All the steps described above can be compiled into a simple <code>PowerShell</code> script to bring the whole process to a single command execution.</p>
+<pre><code class="language-powershell">param (
+  [Parameter(Mandatory=$true)][string] $PodName,
+  [Parameter(Mandatory=$true)][string] $Namespace,
+  [Parameter(Mandatory=$true)][string] $KubeconfigFile,
+  [Parameter(Mandatory=$true)][string] $OutputDirectory
+)
+
+
+Write-Host &quot;Preparing dump file&quot;
+
+$linuxDumpScript = @&quot;
+cd /tmp &amp;&amp; \
+curl -L -o dotnet-dump https://aka.ms/dotnet-dump/linux-x64 &amp;&amp; \
+chmod 777 ./dotnet-dump &amp;&amp; \
+export DOTNET_BUNDLE_EXTRACT_BASE_DIR='/tmp/bundle_extract' &amp;&amp; \
+./dotnet-dump collect -p 1
+&quot;@ -replace &quot;`r`n&quot;,&quot;`n&quot;
+
+$dumpLog = kubectl exec -it &quot;pod/$PodName&quot; --kubeconfig $KubeconfigFile --namespace &quot;$Namespace&quot; -- sh -c $linuxDumpScript.Trim() 
+
+Write-Host $dumpLog
+
+$pattern = &quot;Writing full to (.*?)Complete&quot;
+$matches = [Regex]::Matches($dumpLog, $pattern)
+
+if ($matches.Count -eq 0) {
+    Write-Error &quot;Cannot find dump file name&quot;
+    return
+}
+
+$dumpFile = $matches[0].Groups[1].Value.Trim()
+
+Write-Host &quot;Dump file $($matches[0].Groups[1].Value)&quot;
+Write-Host &quot;Packing dump file&quot;
+
+kubectl exec -it &quot;pod/$PodName&quot; --kubeconfig $KubeconfigFile --namespace &quot;$Namespace&quot; -- sh -c &quot;gzip $dumpFile&quot; | Out-Host
+
+$fileName = [System.IO.Path]::GetFileName($dumpFile)
+$archiveFileName = &quot;$fileName.gz&quot;
+
+if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
+    $OutputDirectory = &quot;.&quot;
+}
+
+# Relative path is required by `kubectl cp`
+$directoryRelativePath = Resolve-Path -Relative $OutputDirectory
+$outputFile = Join-Path $directoryRelativePath $archiveFileName
+Write-Host &quot;Downloading dump file to $outputFile&quot;
+
+kubectl cp &quot;$PodName`:$dumpFile`.gz&quot; $outputFile --kubeconfig $KubeconfigFile --namespace $Namespace
+
+function DeGZip-File {
+    param (
+        $infile,
+        $outfile = ($infile -replace '\.gz$', '')
+    )
+
+    $input = [System.IO.File]::OpenRead($inFile)
+    $output = [System.IO.File]::Create($outFile)
+    $gzipStream = [System.IO.Compression.GzipStream]::new($input, [System.IO.Compression.CompressionMode]::Decompress)
+
+    $buffer = [byte[]]::new(1024)
+    while ($true) {
+        $read = $gzipStream.Read($buffer, 0, 1024)
+        if ($read -le 0) { break }
+        $output.Write($buffer, 0, $read)
+    }
+
+    $gzipStream.Close()
+    $output.Close()
+    $input.Close()
+}
+
+Write-Host &quot;Unpacking dump file&quot;
+
+DeGZip-File (Join-Path $OutputDirectory $archiveFileName) (Join-Path $OutputDirectory $fileName)
+</code></pre>
+<p>Save the script as <code>MemoryDump.ps1</code> file and enjoy creating memory dumps with this single line:</p>
+<pre><code class="language-powershell">./MemoryDump.ps1 -PodName 'YOUR_POD_NAME' -Namespace 'YOUR_NAMESPACE' -KubeconfigFile './YOUR_KUBECONFIG.yaml'
+
+</code></pre>
+<h2 id="conclusion"><a href="#conclusion">Conclusion  🔗&#xFE0E;</a></h2>
+
+<p>Collecting memory dumps from applications running on Kubernetes can provide valuable insights into their state during critical moments. Armed with the information from memory dumps, you can more effectively troubleshoot and address issues within your .NET Core applications. Remember that memory dump analysis requires familiarity with debugging tools and techniques, but it&rsquo;s a skill that can significantly enhance your ability to maintain and improve your applications' performance and reliability.</p>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://essentials.dotnetos.org/?utm_source=cezarypiatek&utm_medium=blog&utm_campaign=banner" data-gtag="DotnetEssentials" title="Your free course of .NET environment">
+				<img src="https://dotnetos.org/assets/images/products/essentials.png" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p2/splashscreen_hue7fb845594809c7df3049ff28a55b358_49988_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Troubleshooting">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Troubleshooting</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p1/splashscreen_hu3b1c4c54cee5ec2b65443949fccfd391_56344_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Introduction">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Introduction</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-dependencies-in-asp-net-core/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-dependencies-in-asp-net-core/splashscreen_huf1a4b3b79f92880fa199ed5b819d1e17_61369_320x240_fill_q75_box_smart1.jpg" alt="Mocking dependencies in ASP.NET Core tests">
+								<div class="card-body">
+									<h5 class="card-title">Mocking dependencies in ASP.NET Core tests</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/powershell.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "aspcore,dotnet,debugging,Kubernetes"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>
