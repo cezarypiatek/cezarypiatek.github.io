@@ -1,7 +1,7 @@
 ---
 title: "Sharing WireMock in sequential and parallel tests"
 description: "Practical Tips for solving the challenges of WireMock instance re-usage"
-date: 2023-09-12T00:10:45+02:00
+date: 2023-09-18T00:10:45+02:00
 tags : ["aspcore", "dotnet", "wiremock", "testing","parallel"]
 highlight: true
 highlightLang: ["cs"]
@@ -10,7 +10,7 @@ isBlogpost: true
 ---
 
 
-As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing tested application and Wiremock instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we'll delve into the biggest problems related to WireMock instance re-usage and explore a potential solution.
+As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and Wiremock instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we'll delve into the biggest problems related to WireMock instance re-usage and explore a potential solution.
 
 ## Reusing components' instances
 
@@ -42,7 +42,7 @@ public class GlobalTestFixture: IAsyncDisposable
                 }
              );
         });
-        //INFO: This enforce app setup
+        //INFO: This enforces app setup
         _ = _myService.CreateClient();
     }
 
@@ -98,14 +98,12 @@ public class Tests
     [Test]
     public async Task sample_test()
     {
-
+        // Arrange
         var myServiceClient = GlobalFixture.MyService.CreateClient();
 
         GlobalFixture.WireMockServer.Given(
                 Request.Create()
                     .UsingGet()
-                    // 3. Add condition for traceparent header in WireMock mapping
-                    .WithHeader("traceparent", $"*{activity.TraceId}*")
                     .WithPath("/WeatherService/api/v1.0/weather")
                     .WithParam("lat", "10.99")
                     .WithParam("long", "10.99")
@@ -120,8 +118,11 @@ public class Tests
                     humidity = 64
                 }));
         
+        // Act
         var response = await myServiceClient.GetAsync("WeatherForecast/GetWeatherForecast");
-        //TOD: assert the response
+        
+        // Assert
+        //TODO: assert the response
     }
 }
 ```
@@ -151,7 +152,7 @@ To solve this problem, you need a way to ensure that WireMock mappings, created 
 
 The last point requires us to modify the tested app only for the testing purpose. I don't like to add this kind of things as it always imposes an additional risk. A mechanism that should never be included in the app can affect the performance or stability, event if it seems to be very simple. Luckily, we don't need to add such mechanism as it's already built into the AspNetCore. It turns out that HttpClient contains [DiagnosticHandler](https://github.com/dotnet/runtime/blob/release/5.0/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs#L286) which by default relays `traceparent` header from incoming to outgoing requests. The `traceparent` header is a part of OpenTelemetry standard and it's used for correlating requests between services - just what we need here.
 
-A sample test that laverages `traceparent` can look as follows:
+A sample test that leverages `traceparent` can look as follows:
 
 ```cs
 using static AllTestSetup;
@@ -161,6 +162,7 @@ public class Tests
     [Test]
     public async Task sample_parallel_test()
     {
+        //Arrange
         // 1. Create Activity, to generate unique and correct value for traceparent
         using var activity = new Activity("TestCase").Start();
         var myServiceClient = GlobalFixture.MyService.CreateClient();
@@ -187,11 +189,17 @@ public class Tests
                     humidity = 64
                 }));
         
+        // Act
         var response = await myServiceClient.GetAsync("WeatherForecast/GetWeatherForecast");
-        //TOD: assert the response
+        
+        // Assert
+        //TODO: assert the response
     }
 }
 ```
+
+> Trace parent is always in the format: `{Version}-{Activity.TraceId}-{Activity.SpanId}-{Options}`. Only `Activity.TraceId` will be the same for all requests within single test, so I used `*{activity.TraceId}*` wildcard pattern to correctly match outgoing requests.
+
 
 Steps 1,2 and 3 need to be repeated in every test case. To avoid repetitive code and ensure that traceparent is handled correctly in all test cases we can introduce test case fixture to manage that test's contextual data.
 

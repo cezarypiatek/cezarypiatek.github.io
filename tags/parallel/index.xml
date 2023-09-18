@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>parallel on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/parallel/</link>
+    <description>Recent content in parallel on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 18 Sep 2023 00:10:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/parallel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sharing WireMock in sequential and parallel tests</title>
+      <link>https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/</link>
+      <pubDate>Mon, 18 Sep 2023 00:10:45 +0200</pubDate>
+      
+      <guid>https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/</guid>
+      <description>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and Wiremock instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other.</description>
+    </item>
+    
+  </channel>
+</rss>

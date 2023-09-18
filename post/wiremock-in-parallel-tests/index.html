@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Practical Tips for solving the challenges of WireMock instance re-usage">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/wiremock-in-parallel-tests\/"
+            },
+          "headline" : "Sharing WireMock in sequential and parallel tests",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2023-09-18",
+          "dateModified" : "2023-09-18",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/wiremock-in-parallel-tests\/splashscreen.jpg",
+          "description": "Practical Tips for solving the challenges of WireMock instance re-usage"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2023-09-18">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/">	
+	<meta property="og:title" content="Sharing WireMock in sequential and parallel tests">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/splashscreen.jpg">
+    <meta property="og:description" content="Practical Tips for solving the challenges of WireMock instance re-usage">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="wiremock">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="parallel">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/splashscreen.jpg">
+	<meta property="twitter:title" content="Sharing WireMock in sequential and parallel tests">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Practical Tips for solving the challenges of WireMock instance re-usage">
+
+	<meta name="keywords" value="aspcore, dotnet, wiremock, testing, parallel" />    
+    <title>Sharing WireMock in sequential and parallel tests &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Sharing WireMock in sequential and parallel tests</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>18 September 2023</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and Wiremock instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we&rsquo;ll delve into the biggest problems related to WireMock instance re-usage and explore a potential solution.</p>
+<h2 id="reusing-components-instances"><a href="#reusing-components-instances">Reusing components' instances  🔗&#xFE0E;</a></h2>
+
+<p>To re-use tested application and WireMock instances between tests, we can create a class that holds those instances and manages their lifecycle. I like to call it <code>GlobalTestFixture</code>. A sample implementation can look as follows:</p>
+<pre><code class="language-cs">public class GlobalTestFixture: IAsyncDisposable
+{
+    private WebApplicationFactory&lt;Program&gt;? _myService;
+    public WebApplicationFactory&lt;Program&gt; MyService =&gt; 
+            _myService ?? throw new InvalidOperationException(&quot;Fixture not initializer&quot;);
+
+    private WireMockServer? _wireMockServer;
+    public WireMockServer WireMockServer =&gt; 
+            _wireMockServer ?? throw new InvalidOperationException(&quot;Fixture not initializer&quot;);
+
+    public void Initialize()
+    {
+        _wireMockServer = WireMockServer.StartWithAdminInterface();
+        _myService = new WebApplicationFactory&lt;Program&gt;()
+            .WithWebHostBuilder(builder =&gt; {
+                builder.ConfigureAppConfiguration(configurationBuilder =&gt;
+                {
+                    //INFO: Override downstream service addresses pointing to WireMock address
+                    configurationBuilder.AddInMemoryCollection(new Dictionary&lt;string, string&gt;
+                    {
+                        [&quot;ExternalServices:WeatherService&quot;] = _wireMockServer.Url
+                    });
+                }
+             );
+        });
+        //INFO: This enforces app setup
+        _ = _myService.CreateClient();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _wireMockServer?.Dispose();
+        if(_myService!= null)
+            await _myService.DisposeAsync();
+    }
+}
+</code></pre>
+<p>The code responsible for creating <code>WireMockServer</code> and <code>WebApplicationFactory</code> was put in a dedicated instance method instead of the constructor to handle disposal of those components correctly. With this approach, for example if WebApplicationFactory creation fails, the WireMockServer instance will still be disposed correctly. This won&rsquo;t be possible if we put all that code in the constructor.</p>
+<p>Now we need to ensure that the <code>Initialize</code> method will be invoked only once per test suit. We can achieve that manually by adding some sort of locking, or we can use mechanisms provided by our test frameworks. For example, while working with NUnit we can use <a href="https://docs.nunit.org/articles/nunit/writing-tests/attributes/setupfixture.html">[SetUpFixture]</a> for that:</p>
+<pre><code class="language-cs">using NUnit.Framework;
+
+// INFO: This class should be under main namespace or without namespace to run the setup and teardown only once for all tests
+[SetUpFixture]
+public class AllTestSetup
+{
+    public static GlobalTestFixture GlobalFixture { get; private set; }
+    
+    [OneTimeSetUp]
+    public async Task GlobalSetup()
+    {
+        GlobalFixture = new GlobalTestFixture();
+        GlobalFixture.Initialize();
+    }
+
+    [OneTimeTearDown]
+    public async Task GlobalTeardown()
+    {
+        if (GlobalFixture != null)
+        {
+            await GlobalFixture.DisposeAsync();
+        }
+    }
+}
+</code></pre>
+<p>A sample test case can look as follows:</p>
+<pre><code class="language-cs">using NUnit.Framework;
+using static AllTestSetup;
+
+public class Tests
+{
+    [Test]
+    public async Task sample_test()
+    {
+        // Arrange
+        var myServiceClient = GlobalFixture.MyService.CreateClient();
+
+        GlobalFixture.WireMockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    .WithPath(&quot;/WeatherService/api/v1.0/weather&quot;)
+                    .WithParam(&quot;lat&quot;, &quot;10.99&quot;)
+                    .WithParam(&quot;long&quot;, &quot;10.99&quot;)
+            )
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+                .WithBodyAsJson(new
+                {
+                    temp = 298.48,
+                    pressure = 1015,
+                    humidity = 64
+                }));
+        
+        // Act
+        var response = await myServiceClient.GetAsync(&quot;WeatherForecast/GetWeatherForecast&quot;);
+        
+        // Assert
+        //TODO: assert the response
+    }
+}
+</code></pre>
+<h2 id="sharing-wiremock-in-sequential-tests"><a href="#sharing-wiremock-in-sequential-tests">Sharing WireMock in sequential tests  🔗&#xFE0E;</a></h2>
+
+<p>When multiple tests share the same WireMock instance, it accumulates mappings from all test cases executed before. This becomes problematic when tests involve scenarios where the tested application makes similar requests to an external service but expects different responses. The mappings created in previous test cases might interfere, leading to a non-deterministic test suite where test outcomes depend on the execution order.</p>
+<p>One approach to mitigate this issue is to use the <code>ResetMappings()</code> method before each test to clear all mappings. However, this solution has a drawback: it removes all mappings, including any global mappings that should be shared among all test cases. While it&rsquo;s possible to recreate these global mappings after every ResetMappings() call, it can impact test execution time. Alternatively, you can track all mappings created within a test and remove them individually using the <code>DeleteMapping()</code> method at the end of each test case. This approach allows you to preserve the necessary global mappings while ensuring the test suite remains deterministic. However, it requires careful tracking and management of mappings within each test.</p>
+<h2 id="sharing-wiremock-in-parallel-tests"><a href="#sharing-wiremock-in-parallel-tests">Sharing WireMock in parallel tests  🔗&#xFE0E;</a></h2>
+
+<p>In parallel execution, simply removing all mappings before each test is not feasible because it can adversely affect other concurrently running tests. Tracking mappings within each test falls short either, as mappings added by one test could still temporarily collide with mappings from other tests. Sharing WireMock in parallel test execution requires a different approach compared to sequential testing.</p>
+<p>To solve this problem, you need a way to ensure that WireMock mappings, created within a given test case, match only those requests made by tested application within the same test case. So there&rsquo;s a need for a mechanism that allows for correlating together requests made from test to app, with requests made from the app to external dependency, with WireMock mapping within a given test. Such mechanism can be implemented based on HTTP headers. Here&rsquo;s a high-level overview of the solution:</p>
+<ol>
+<li>
+<p>Generate a unique identifier at the beginning of each test case.</p>
+</li>
+<li>
+<p>Include this identifier as a custom HTTP header in every request sent to the tested application.</p>
+</li>
+<li>
+<p>Extend your WireMock mappings with an assertion for this custom header with a value of unique identifier generated for this test case.</p>
+</li>
+<li>
+<p>Modify tested application to relay this custom header from the incoming request to all outgoing requests. This can be implemented for example with custom RequestHandler.</p>
+</li>
+</ol>
+<p>The last point requires us to modify the tested app only for the testing purpose. I don&rsquo;t like to add this kind of things as it always imposes an additional risk. A mechanism that should never be included in the app can affect the performance or stability, event if it seems to be very simple. Luckily, we don&rsquo;t need to add such mechanism as it&rsquo;s already built into the AspNetCore. It turns out that HttpClient contains <a href="https://github.com/dotnet/runtime/blob/release/5.0/src/libraries/System.Net.Http/src/System/Net/Http/DiagnosticsHandler.cs#L286">DiagnosticHandler</a> which by default relays <code>traceparent</code> header from incoming to outgoing requests. The <code>traceparent</code> header is a part of OpenTelemetry standard and it&rsquo;s used for correlating requests between services - just what we need here.</p>
+<p>A sample test that leverages <code>traceparent</code> can look as follows:</p>
+<pre><code class="language-cs">using static AllTestSetup;
+
+public class Tests
+{
+    [Test]
+    public async Task sample_parallel_test()
+    {
+        //Arrange
+        // 1. Create Activity, to generate unique and correct value for traceparent
+        using var activity = new Activity(&quot;TestCase&quot;).Start();
+        var myServiceClient = GlobalFixture.MyService.CreateClient();
+        
+        // 2. Add traceparent header to all requests made from test scenario
+        myServiceClient.DefaultRequestHeaders.Add(&quot;traceparent&quot;, activity.Id);
+
+        GlobalFixture.WireMockServer.Given(
+                Request.Create()
+                    .UsingGet()
+                    // 3. Add condition for traceparent header in WireMock mapping
+                    .WithHeader(&quot;traceparent&quot;, $&quot;*{activity.TraceId}*&quot;)
+                    .WithPath(&quot;/WeatherService/api/v1.0/weather&quot;)
+                    .WithParam(&quot;lat&quot;, &quot;10.99&quot;)
+                    .WithParam(&quot;long&quot;, &quot;10.99&quot;)
+            )
+            .RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+                .WithBodyAsJson(new
+                {
+                    temp = 298.48,
+                    pressure = 1015,
+                    humidity = 64
+                }));
+        
+        // Act
+        var response = await myServiceClient.GetAsync(&quot;WeatherForecast/GetWeatherForecast&quot;);
+        
+        // Assert
+        //TODO: assert the response
+    }
+}
+</code></pre>
+<blockquote>
+<p>Trace parent is always in the format: <code>{Version}-{Activity.TraceId}-{Activity.SpanId}-{Options}</code>. Only <code>Activity.TraceId</code> will be the same for all requests within single test, so I used <code>*{activity.TraceId}*</code> wildcard pattern to correctly match outgoing requests.</p>
+</blockquote>
+<p>Steps 1,2 and 3 need to be repeated in every test case. To avoid repetitive code and ensure that traceparent is handled correctly in all test cases we can introduce test case fixture to manage that test&rsquo;s contextual data.</p>
+<pre><code class="language-cs">public class TestCaseFixture : IAsyncDisposable
+{
+    private readonly Activity _activity;
+    private readonly WireMockServer _wireMockServer;
+    public HttpClient MyServiceClient { get; }
+
+    public TestCaseFixture(WireMockServer wireMockServer, WebApplicationFactory&lt;Program&gt; myService, string testCaseName)
+    {
+        _wireMockServer = wireMockServer;
+        _activity = new Activity(&quot;TestCase&quot;).AddTag(&quot;TestMethod&quot;, testCaseName).Start();
+        MyServiceClient = myService.CreateClient();
+        MyServiceClient.DefaultRequestHeaders.Add(&quot;traceparent&quot;, _activity.Id);
+    }
+
+    public void MockExternalRequest(Action&lt;IRequestBuilder&gt; adjustRequest, Action&lt;IResponseBuilder&gt; adjustResponse)
+    {
+        var requestBuilder = Request.Create()
+            .WithHeader(&quot;traceparent&quot;, $&quot;*{_activity.TraceId}*&quot;);
+        adjustRequest(requestBuilder);
+        var responseBuilder = Response.Create();
+        adjustResponse(responseBuilder);
+        _wireMockServer.Given(requestBuilder).RespondWith(responseBuilder);
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _activity.Dispose();
+        return default;
+    }
+}
+</code></pre>
+<p>Global fixture can be extended with factory method for test case fixture:</p>
+<pre><code class="language-cs">public class GlobalTestFixture: IAsyncDisposable
+{
+    public TestCaseFixture CreateTestCaseFixture([CallerMemberName] string testCaseName = &quot;&quot;)
+    {
+        return new TestCaseFixture(WireMockServer, MyService, testCaseName);
+    }
+}
+</code></pre>
+<p>Having TestCaseFixture, we can refactor test cases to the following form:</p>
+<pre><code class="language-cs">public class Tests
+{
+    [Test]
+    public async Task sample_parallel_test()
+    {
+        await using var fixture = AllTestSetup.GlobalFixture.CreateTestCaseFixture();
+
+        fixture.MockExternalRequest
+        (
+            adjustRequest: builder =&gt; builder.UsingGet()
+                .WithPath(&quot;/WeatherService/api/v1.0/weather&quot;)
+                .WithParam(&quot;lat&quot;, &quot;10.99&quot;)
+                .WithParam(&quot;lon&quot;, &quot;44.34&quot;),
+            
+            adjustResponse: builder =&gt; builder.WithStatusCode(200)
+                .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+                .WithBodyAsJson(new
+                {
+                    temp = 298.48,
+                    pressure = 1015,
+                    humidity = 64
+                })
+        );
+
+        var response = await fixture.MyServiceClient.GetAsync(&quot;WeatherForecast/GetWeatherForecast&quot;);
+        //TOD: assert the response
+    }
+}
+</code></pre>
+<p>Using <code>traceparent</code> for correlating requests not only solves the problem of re-using WireMock in sequential and parallel test execution, but also opens a possibility to visualize the flow of our test cases with tools like <a href="https://www.jaegertracing.io/">Jeager</a>.</p>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://essentials.dotnetos.org/?utm_source=cezarypiatek&utm_medium=blog&utm_campaign=banner" data-gtag="DotnetEssentials" title="Your free course of .NET environment">
+				<img src="https://dotnetos.org/assets/images/products/essentials.png" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p2/splashscreen_hue7fb845594809c7df3049ff28a55b358_49988_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Troubleshooting">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Troubleshooting</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p1/splashscreen_hu3b1c4c54cee5ec2b65443949fccfd391_56344_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Introduction">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Introduction</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-dependencies-in-asp-net-core/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-dependencies-in-asp-net-core/splashscreen_huf1a4b3b79f92880fa199ed5b819d1e17_61369_320x240_fill_q75_box_smart1.jpg" alt="Mocking dependencies in ASP.NET Core tests">
+								<div class="card-body">
+									<h5 class="card-title">Mocking dependencies in ASP.NET Core tests</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "aspcore,dotnet,wiremock,testing,parallel"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>
