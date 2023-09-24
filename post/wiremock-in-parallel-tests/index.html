@@ -4,7 +4,7 @@
 	<meta name="theme-color" content="#ffffff">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <meta name="description" content="Practical Tips for solving the challenges of WireMock instance re-usage">   
+    <meta name="description" content="Practical Tips for solving the challenges of WireMockServer instance re-usage">   
     <script type="application/ld+json">
         {
           "@context" : "http://schema.org",
@@ -13,7 +13,7 @@
             "@type":"WebPage",
             "@id":"https:\/\/cezarypiatek.github.io\/post\/wiremock-in-parallel-tests\/"
             },
-          "headline" : "Sharing WireMock in sequential and parallel tests",
+          "headline" : "Sharing WireMock.NET in sequential and parallel tests",
           "author" : {
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
@@ -22,21 +22,21 @@
             "@type" : "Person",
             "name" : "CEZARY PIĄTEK"
           },
-          "datePublished" : "2023-09-18",
-          "dateModified" : "2023-09-18",
+          "datePublished" : "2023-09-24",
+          "dateModified" : "2023-09-24",
           "image" : "https:\/\/cezarypiatek.github.io\/post\/wiremock-in-parallel-tests\/splashscreen.jpg",
-          "description": "Practical Tips for solving the challenges of WireMock instance re-usage"
+          "description": "Practical Tips for solving the challenges of WireMockServer instance re-usage"
         }
         </script>
         
-    <meta property="article:published_time" content="2023-09-18">
+    <meta property="article:published_time" content="2023-09-24">
 	<meta property="og:type" content="article">
     
 	<meta property="og:locale" content="en_US">	
 	<meta property="og:url" content="https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/">	
-	<meta property="og:title" content="Sharing WireMock in sequential and parallel tests">
+	<meta property="og:title" content="Sharing WireMock.NET in sequential and parallel tests">
 	<meta property="og:image" content="https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/splashscreen.jpg">
-    <meta property="og:description" content="Practical Tips for solving the challenges of WireMock instance re-usage">
+    <meta property="og:description" content="Practical Tips for solving the challenges of WireMockServer instance re-usage">
     <meta property="og:site_name" content="Cezary Piątek Blog">
     
     <meta property="og:tags" content="aspcore">
@@ -51,12 +51,12 @@
     
 	<meta property="twitter:card" content="summary_large_image" >
 	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/splashscreen.jpg">
-	<meta property="twitter:title" content="Sharing WireMock in sequential and parallel tests">	
+	<meta property="twitter:title" content="Sharing WireMock.NET in sequential and parallel tests">	
 	<meta property="twitter:creator" content="@cezary_piatek">
-	<meta property="twitter:description" content="Practical Tips for solving the challenges of WireMock instance re-usage">
+	<meta property="twitter:description" content="Practical Tips for solving the challenges of WireMockServer instance re-usage">
 
 	<meta name="keywords" value="aspcore, dotnet, wiremock, testing, parallel" />    
-    <title>Sharing WireMock in sequential and parallel tests &middot; Cezary Piątek Blog</title>
+    <title>Sharing WireMock.NET in sequential and parallel tests &middot; Cezary Piątek Blog</title>
     
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -164,9 +164,9 @@
 <main>
 	<article>
 		<header>
-			<h1>Sharing WireMock in sequential and parallel tests</h1>
+			<h1>Sharing WireMock.NET in sequential and parallel tests</h1>
 			  
-			<div><i class="fa fa-calendar"></i> <time>18 September 2023</time>, Author: Cezary Piątek</div>
+			<div><i class="fa fa-calendar"></i> <time>24 September 2023</time>, Author: Cezary Piątek</div>
 			<hr />
 			
 		</header>
@@ -174,10 +174,10 @@
 			<img src="splashscreen.jpg" width="100%" />
 			<br />
 		
-		<p>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and Wiremock instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we&rsquo;ll delve into the biggest problems related to WireMock instance re-usage and explore a potential solution.</p>
+		<p>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and WiremockServer instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we&rsquo;ll delve into the biggest problems related to WireMock.NET instance re-usage and explore a potential solution.</p>
 <h2 id="reusing-components-instances"><a href="#reusing-components-instances">Reusing components' instances  🔗&#xFE0E;</a></h2>
 
-<p>To re-use tested application and WireMock instances between tests, we can create a class that holds those instances and manages their lifecycle. I like to call it <code>GlobalTestFixture</code>. A sample implementation can look as follows:</p>
+<p>To re-use tested application and WireMockServer instances between tests, we can create a class that holds those instances and manages their lifecycle. I like to call it <code>GlobalTestFixture</code>. A sample implementation can look as follows:</p>
 <pre><code class="language-cs">public class GlobalTestFixture: IAsyncDisposable
 {
     private WebApplicationFactory&lt;Program&gt;? _myService;
@@ -279,14 +279,14 @@ public class Tests
     }
 }
 </code></pre>
-<h2 id="sharing-wiremock-in-sequential-tests"><a href="#sharing-wiremock-in-sequential-tests">Sharing WireMock in sequential tests  🔗&#xFE0E;</a></h2>
+<h2 id="sharing-wiremocknet-in-sequential-tests"><a href="#sharing-wiremocknet-in-sequential-tests">Sharing WireMock.NET in sequential tests  🔗&#xFE0E;</a></h2>
 
-<p>When multiple tests share the same WireMock instance, it accumulates mappings from all test cases executed before. This becomes problematic when tests involve scenarios where the tested application makes similar requests to an external service but expects different responses. The mappings created in previous test cases might interfere, leading to a non-deterministic test suite where test outcomes depend on the execution order.</p>
+<p>When multiple tests share the same WireMock.NET instance, it accumulates mappings from all test cases executed before. This becomes problematic when tests involve scenarios where the tested application makes similar requests to an external service but expects different responses. The mappings created in previous test cases might interfere, leading to a non-deterministic test suite where test outcomes depend on the execution order.</p>
 <p>One approach to mitigate this issue is to use the <code>ResetMappings()</code> method before each test to clear all mappings. However, this solution has a drawback: it removes all mappings, including any global mappings that should be shared among all test cases. While it&rsquo;s possible to recreate these global mappings after every ResetMappings() call, it can impact test execution time. Alternatively, you can track all mappings created within a test and remove them individually using the <code>DeleteMapping()</code> method at the end of each test case. This approach allows you to preserve the necessary global mappings while ensuring the test suite remains deterministic. However, it requires careful tracking and management of mappings within each test.</p>
-<h2 id="sharing-wiremock-in-parallel-tests"><a href="#sharing-wiremock-in-parallel-tests">Sharing WireMock in parallel tests  🔗&#xFE0E;</a></h2>
+<h2 id="sharing-wiremocknet-in-parallel-tests"><a href="#sharing-wiremocknet-in-parallel-tests">Sharing WireMock.NET in parallel tests  🔗&#xFE0E;</a></h2>
 
-<p>In parallel execution, simply removing all mappings before each test is not feasible because it can adversely affect other concurrently running tests. Tracking mappings within each test falls short either, as mappings added by one test could still temporarily collide with mappings from other tests. Sharing WireMock in parallel test execution requires a different approach compared to sequential testing.</p>
-<p>To solve this problem, you need a way to ensure that WireMock mappings, created within a given test case, match only those requests made by tested application within the same test case. So there&rsquo;s a need for a mechanism that allows for correlating together requests made from test to app, with requests made from the app to external dependency, with WireMock mapping within a given test. Such mechanism can be implemented based on HTTP headers. Here&rsquo;s a high-level overview of the solution:</p>
+<p>In parallel execution, simply removing all mappings before each test is not feasible because it can adversely affect other concurrently running tests. Tracking mappings within each test falls short either, as mappings added by one test could still temporarily collide with mappings from other tests. Sharing WireMock.NET in parallel test execution requires a different approach compared to sequential testing.</p>
+<p>To solve this problem, you need a way to ensure that WireMock.NET mappings, created within a given test case, match only those requests made by tested application within the same test case. So there&rsquo;s a need for a mechanism that allows for correlating together requests made from test to app, with requests made from the app to external dependency, with WireMock.NET mapping within a given test. Such mechanism can be implemented based on HTTP headers. Here&rsquo;s a high-level overview of the solution:</p>
 <ol>
 <li>
 <p>Generate a unique identifier at the beginning of each test case.</p>
@@ -295,7 +295,7 @@ public class Tests
 <p>Include this identifier as a custom HTTP header in every request sent to the tested application.</p>
 </li>
 <li>
-<p>Extend your WireMock mappings with an assertion for this custom header with a value of unique identifier generated for this test case.</p>
+<p>Extend your WireMock.NET mappings with an assertion for this custom header with a value of unique identifier generated for this test case.</p>
 </li>
 <li>
 <p>Modify tested application to relay this custom header from the incoming request to all outgoing requests. This can be implemented for example with custom RequestHandler.</p>
@@ -419,7 +419,7 @@ public class Tests
     }
 }
 </code></pre>
-<p>Using <code>traceparent</code> for correlating requests not only solves the problem of re-using WireMock in sequential and parallel test execution, but also opens a possibility to visualize the flow of our test cases with tools like <a href="https://www.jaegertracing.io/">Jeager</a>.</p>
+<p>Using <code>traceparent</code> for correlating requests not only solves the problem of re-using WireMock.NET in sequential and parallel test execution, but also opens a possibility to visualize the flow of our test cases with tools like <a href="https://www.jaegertracing.io/">Jeager</a>.</p>
     
 		
 	</article>

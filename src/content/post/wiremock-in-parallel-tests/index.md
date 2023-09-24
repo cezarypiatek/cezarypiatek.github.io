@@ -1,7 +1,7 @@
 ---
-title: "Sharing WireMock in sequential and parallel tests"
-description: "Practical Tips for solving the challenges of WireMock instance re-usage"
-date: 2023-09-18T00:10:45+02:00
+title: "Sharing WireMock.NET in sequential and parallel tests"
+description: "Practical Tips for solving the challenges of WireMockServer instance re-usage"
+date: 2023-09-24T00:10:45+02:00
 tags : ["aspcore", "dotnet", "wiremock", "testing","parallel"]
 highlight: true
 highlightLang: ["cs"]
@@ -10,11 +10,11 @@ isBlogpost: true
 ---
 
 
-As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and Wiremock instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we'll delve into the biggest problems related to WireMock instance re-usage and explore a potential solution.
+As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and WiremockServer instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we'll delve into the biggest problems related to WireMock.NET instance re-usage and explore a potential solution.
 
 ## Reusing components' instances
 
-To re-use tested application and WireMock instances between tests, we can create a class that holds those instances and manages their lifecycle. I like to call it `GlobalTestFixture`. A sample implementation can look as follows:
+To re-use tested application and WireMockServer instances between tests, we can create a class that holds those instances and manages their lifecycle. I like to call it `GlobalTestFixture`. A sample implementation can look as follows:
 
 ```cs
 public class GlobalTestFixture: IAsyncDisposable
@@ -127,25 +127,25 @@ public class Tests
 }
 ```
 
-## Sharing WireMock in sequential tests
+## Sharing WireMock.NET in sequential tests
 
-When multiple tests share the same WireMock instance, it accumulates mappings from all test cases executed before. This becomes problematic when tests involve scenarios where the tested application makes similar requests to an external service but expects different responses. The mappings created in previous test cases might interfere, leading to a non-deterministic test suite where test outcomes depend on the execution order.
+When multiple tests share the same WireMock.NET instance, it accumulates mappings from all test cases executed before. This becomes problematic when tests involve scenarios where the tested application makes similar requests to an external service but expects different responses. The mappings created in previous test cases might interfere, leading to a non-deterministic test suite where test outcomes depend on the execution order.
 
 One approach to mitigate this issue is to use the `ResetMappings()` method before each test to clear all mappings. However, this solution has a drawback: it removes all mappings, including any global mappings that should be shared among all test cases. While it's possible to recreate these global mappings after every ResetMappings() call, it can impact test execution time. Alternatively, you can track all mappings created within a test and remove them individually using the `DeleteMapping()` method at the end of each test case. This approach allows you to preserve the necessary global mappings while ensuring the test suite remains deterministic. However, it requires careful tracking and management of mappings within each test.
 
 
-## Sharing WireMock in parallel tests
+## Sharing WireMock.NET in parallel tests
 
-In parallel execution, simply removing all mappings before each test is not feasible because it can adversely affect other concurrently running tests. Tracking mappings within each test falls short either, as mappings added by one test could still temporarily collide with mappings from other tests. Sharing WireMock in parallel test execution requires a different approach compared to sequential testing. 
+In parallel execution, simply removing all mappings before each test is not feasible because it can adversely affect other concurrently running tests. Tracking mappings within each test falls short either, as mappings added by one test could still temporarily collide with mappings from other tests. Sharing WireMock.NET in parallel test execution requires a different approach compared to sequential testing. 
 
 
-To solve this problem, you need a way to ensure that WireMock mappings, created within a given test case, match only those requests made by tested application within the same test case. So there's a need for a mechanism that allows for correlating together requests made from test to app, with requests made from the app to external dependency, with WireMock mapping within a given test. Such mechanism can be implemented based on HTTP headers. Here's a high-level overview of the solution:
+To solve this problem, you need a way to ensure that WireMock.NET mappings, created within a given test case, match only those requests made by tested application within the same test case. So there's a need for a mechanism that allows for correlating together requests made from test to app, with requests made from the app to external dependency, with WireMock.NET mapping within a given test. Such mechanism can be implemented based on HTTP headers. Here's a high-level overview of the solution:
 
 1. Generate a unique identifier at the beginning of each test case. 
 
 2. Include this identifier as a custom HTTP header in every request sent to the tested application.
 
-3. Extend your WireMock mappings with an assertion for this custom header with a value of unique identifier generated for this test case.
+3. Extend your WireMock.NET mappings with an assertion for this custom header with a value of unique identifier generated for this test case.
 
 4. Modify tested application to relay this custom header from the incoming request to all outgoing requests. This can be implemented for example with custom RequestHandler.
 
@@ -282,4 +282,4 @@ public class Tests
 }
 ```
 
-Using `traceparent` for correlating requests not only solves the problem of re-using WireMock in sequential and parallel test execution, but also opens a possibility to visualize the flow of our test cases with tools like [Jeager](https://www.jaegertracing.io/).
+Using `traceparent` for correlating requests not only solves the problem of re-using WireMock.NET in sequential and parallel test execution, but also opens a possibility to visualize the flow of our test cases with tools like [Jeager](https://www.jaegertracing.io/).
