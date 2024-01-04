@@ -16,21 +16,21 @@ In this blog post I describe the typical problems cause by the usage of `Setup` 
 
 ## Typical test development lifecycle
 
-A typical developer writes some tests. Because he's a good dev and he cares about clean code rules, he refactor those tests and extract duplicated code responsible for preparing and cleaning up test fixtures to separate methods intended for SetUp and TearDown. Those methods are run implicitly by test framework before and after each tests. Another developer add few more tests and as he sees that all code responsible for preparing and cleaning data is put in the SetUp and TearDown methods he also refactor newly added tests and moves appropriate parts of those tests to SetUp and TearDown methods. Yet another developer follows the same path. 
+A typical developer writes some tests. Being a conscientious developer who values clean code principles, he refactors these tests, extracting the duplicated code responsible for preparing and cleaning up test fixtures into separate methods intended for SetUp and TearDown. These methods are implicitly run by the test framework before and after each test. Another developer adds a few more tests and, noticing that all code responsible for preparing and cleaning data is placed in the SetUp and TearDown methods, also refactors the newly added tests, moving the appropriate parts of those tests to the SetUp and TearDown methods. Subsequently, another developer follows suit.
 
 ## The problem
 The work pattern described above leads to the following problems:
 
-1. SetUp and TearDown methods become a dumpster fire. After a while it's impossible to tell which parts of those methods serve to which tests cases. It's not only a maintenance problem but it could also lead to performance issues as the sum of setup and cleanup operations for all tests will be run for each test.
-2. It's harder to understand test scenario without jumping between the actual test code and SetUp and TearDown methods. Sometimes it's not even obvious that such methods exist, especially when somebody goes even further end extract those methods to base class and starts using test class inheritance. Having multiple levels of test class inheritance with a SetUp and TearDown is a real hell.
+1. The SetUp and TearDown methods tend to become overly complex. Over time, it becomes challenging to discern which parts of these methods correspond to specific test cases. This issue presents not only a maintenance challenge but can also lead to performance problems as the cumulative setup and cleanup operations for all tests are executed for each individual test.
+2. Understanding the test scenario becomes more difficult as it requires jumping back and forth between the actual test code and the SetUp and TearDown methods. Sometimes it's not even obvious that such methods exist, especially when somebody goes even further end extract those methods to base class and starts using test class inheritance.
 3. As the test cases method needs to access objects prepared by SetUp method, the test class starts being polluted with extra members. It can negatively contribute to test readability.
 4. If the teardown method fails, the test case is still marked as success. This might hide issues with your test suite for a long time.
 
-Those observations are not a novel discovery. Some of those problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html It was 17 years ago and people are still practice those patterns. This might be due to the fact that James pointed out the problem but he didn't show a solution.
+These observations are not a new discovery. Some of those problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html Despite that was 17 years ago, people continue to adopt these problematic patterns. This might be due to the fact that James highlighted the problem but he didn't offer a solution.
 
 ## The Solution
 
-I solve this problem by taking the leverage of `IDiposable` types. This is very simple to implement and thanks to `using declaration syntax` introduced in C# 8 it's very neat in application:
+I solve this issue by taking the leverage of `IDiposable` types. This is very simple to implement, and thanks to `using declaration syntax` introduced in C# 8, it's very neat in application:
 
 
 ```cs
@@ -72,7 +72,7 @@ To make sure that test case fixture is correctly used - always disposed - you ca
 dotnet_diagnostic.CA2000.severity = error
 ```
 
-You might ask what about splitting the fixture code for specific group of tests. We have a several options here. You can create a dedicated test case fixture type for a given group of tests or you can apply factory or builder pattern (or both them altogether) to create a specialized instance of test fixture that will serve the purpose of a given test scenario. With the second approach you can reduce code duplication without risking performance degradation. 
+You might wonder about segregating the fixture code for a specific group of tests. There are several options available. You can create a dedicated test case fixture type for a particular group of tests, or you can employ the factory or builder pattern (or a combination of both) to create a specialized instance of the test fixture that will suit the needs of a given test scenario. With the latter approach, you can minimize code duplication without compromising performance.
 
 
 ```cs
@@ -122,7 +122,8 @@ Here are some benefits off applying this approach to dealing with Setup and Tear
 2. Setup and teardown codes are part of test case execution so it's easier to detect any issues and it's much easier to maintain and assess test performance.
 3. It's much easier to create more versatile and reusable test fixture that can be parametrized. As the setup code is called explicitly, it's much easier to pass parameters that will adjust fixture to a given test case needs.
 4. TestCaseFixture type can serve as a container for a resources that need to be share between Setup and Teardown logic as well as for those elements that will be needed to access from the test case. Thanks to that, test fixture's elements are easy to discover and they are access in a explicit way.
-5. This approach is test framework independent. You can use it with NUnit, xUnit or whatever you like.
+5. Test fixtures can be reused between test classes without the need for inheritance.
+6. This method is independent of the test framework. It can be employed with NUnit, xUnit, or any framework of your choice.
 
-I've been using this approach for many years with success keeping test maintenance without excessive effort. 
+I have been successfully using this method for many years, keeping test maintenance without excessive effort. 
 
