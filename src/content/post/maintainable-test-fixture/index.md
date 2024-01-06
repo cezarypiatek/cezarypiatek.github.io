@@ -1,7 +1,7 @@
 ---
 title: "Common Setup and Teardown in dotnet tests without test framework magic"
-description: "Practical Tips for solving the challenges of WireMockServer instance re-usage"
-date: 2024-01-02T00:10:45+02:00
+description: "Practical Tips for handling test fixture in a maintainable way."
+date: 2024-01-06T00:10:45+02:00
 tags : ["aspcore", "dotnet",  "testing"]
 highlight: true
 highlightLang: ["cs"]
@@ -26,7 +26,7 @@ The work pattern described above leads to the following problems:
 3. As the test cases method needs to access objects prepared by SetUp method, the test class starts being polluted with extra members. It can negatively contribute to test readability.
 4. If the teardown method fails, the test case is still marked as success. This might hide issues with your test suite for a long time.
 
-These observations are not a new discovery. Some of those problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html Despite that was 17 years ago, people continue to adopt these problematic patterns. This might be due to the fact that James highlighted the problem but he didn't offer a solution.
+These observations are not a novel discovery. Some of those problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html Despite that was 17 years ago, people continue to adopt these problematic patterns. This might be due to the fact that James highlighted the problem but he didn't offer a solution.
 
 ## The Solution
 
@@ -116,14 +116,16 @@ public class Tests
 ```
 
 
-Here are some benefits off applying this approach to dealing with Setup and Teardown:
+Here are some benefits off applying this approach for managing Setup and Teardown:
 
-1. As the whole code is explicitly called, is much easier to comprehend test case logic.
-2. Setup and teardown codes are part of test case execution so it's easier to detect any issues and it's much easier to maintain and assess test performance.
-3. It's much easier to create more versatile and reusable test fixture that can be parametrized. As the setup code is called explicitly, it's much easier to pass parameters that will adjust fixture to a given test case needs.
-4. TestCaseFixture type can serve as a container for a resources that need to be share between Setup and Teardown logic as well as for those elements that will be needed to access from the test case. Thanks to that, test fixture's elements are easy to discover and they are access in a explicit way.
-5. Test fixtures can be reused between test classes without the need for inheritance.
-6. This method is independent of the test framework. It can be employed with NUnit, xUnit, or any framework of your choice.
+1. The explicit invocation of setup and teardown codes as part of test case execution enhances understanding of each test case's logic.
+1. As setup and teardown codes are integral to the test case execution, it simplifies issue detection, maintenance, and performance assessment.
+1. The approach allows for the creation of versatile and reusable test fixtures. Since setup code is explicitly called, it's straightforward to pass parameters that adapt the fixture to the specific needs of a given test case.
+1. The TestCaseFixture type can serve as containers for resources needed both in Setup and Teardown logic and for elements accessed within the test case. This makes fixture elements easily discoverable and explicitly accessible.
+1. Test fixtures can be reused between different test classes, eliminating the need for inheritance.
+1. This method is independent of the test framework. It can be employed with NUnit, xUnit, or any framework of your choice.
 
-I have been successfully using this method for many years, keeping test maintenance without excessive effort. 
+I have been successfully using this method for many years, keeping test maintainable without excessive effort. 
+
+
 
