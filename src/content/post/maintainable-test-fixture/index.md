@@ -1,7 +1,7 @@
 ---
 title: "Common Setup and Teardown in dotnet tests without test framework magic"
-description: "Practical Tips for solving the challenges of WireMockServer instance re-usage"
-date: 2024-01-02T00:10:45+02:00
+description: "Practical Tips for handling test fixture in a maintainable way using only C# features."
+date: 2024-01-06T00:10:45+02:00
 tags : ["aspcore", "dotnet",  "testing"]
 highlight: true
 highlightLang: ["cs"]
@@ -10,7 +10,7 @@ isBlogpost: true
 ---
 
 
-In this blog post I describe the typical problems cause by the usage of `Setup` and `Teardown` method in dotnet tests and how those problems can be solved by using only C# language features.
+In this blog post I describe the typical problems caused by the usage of `Setup` and `Teardown` method in dotnet tests and how those problems can be solved by using only C# language features.
 
 <!--more--> 
 
@@ -26,11 +26,11 @@ The work pattern described above leads to the following problems:
 3. As the test cases method needs to access objects prepared by SetUp method, the test class starts being polluted with extra members. It can negatively contribute to test readability.
 4. If the teardown method fails, the test case is still marked as success. This might hide issues with your test suite for a long time.
 
-These observations are not a new discovery. Some of those problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html Despite that was 17 years ago, people continue to adopt these problematic patterns. This might be due to the fact that James highlighted the problem but he didn't offer a solution.
+These observations are not a novel discovery. Some of these problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html Despite this being 17 years ago, people continue to adopt these problematic patterns. This may be due to the fact that James suggested to keep the setup logic in the test methods, even at the cost of introducing code duplication. From what I have observed, developers are often discouraged from duplicating "similar" lines of code.
 
 ## The Solution
 
-I solve this issue by taking the leverage of `IDiposable` types. This is very simple to implement, and thanks to `using declaration syntax` introduced in C# 8, it's very neat in application:
+I solve this issue by taking the leverage of `IDiposable` types. The solution is very simple: just create a dedicated class that represents your test fixture. The constructor of this class takes the responsibilities of the Setup method and Dispose method implementation from `IDisposable` interface can act as a Teardown. When you create an instance of your test fixture with `using` syntax, the compiler ensures that `Dispose` method is automatically called at the end of your test method scope. Thanks to the `using declaration syntax` introduced in C# 8, it's very neat in application as we no longer need to create new code block for disposable scope:
 
 
 ```cs
@@ -46,11 +46,6 @@ public class TestCaseFixture : IDisposable
         // TODO: Teardown code goes here
     }
 }
-```
-
-Sample usage looks as follows:
-
-```cs
 
 public class Tests
 {
@@ -65,14 +60,14 @@ public class Tests
 
 ```
 
-To make sure that test case fixture is correctly used - always disposed - you can set [CA2000](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2000) rule to error in your `.editorconfig` file. Thanks to that, the build will always fail if somebody forget to add `using` keyword.
+To make sure that test case fixture is correctly used - always disposed - you can set [CA2000](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2000) rule to error in your `.editorconfig` file. Thanks to that, the build will always fail if somebody forgets to add `using` keyword.
 
 ```
 # CA2000: Dispose objects before losing scope
 dotnet_diagnostic.CA2000.severity = error
 ```
 
-You might wonder about segregating the fixture code for a specific group of tests. There are several options available. You can create a dedicated test case fixture type for a particular group of tests, or you can employ the factory or builder pattern (or a combination of both) to create a specialized instance of the test fixture that will suit the needs of a given test scenario. With the latter approach, you can minimize code duplication without compromising performance.
+You might wonder about segregating the fixture code for a specific group of tests. There are several options available. You can create a dedicated test case fixture type for a particular group of tests, or you can employ the factory or builder pattern (or a combination of both) to create a specialized instance of the test fixture that will suit the needs of a given test scenario. With the latter approach, you can minimize code duplication without compromising other qualities of your test code.
 
 
 ```cs
@@ -116,14 +111,16 @@ public class Tests
 ```
 
 
-Here are some benefits off applying this approach to dealing with Setup and Teardown:
+Here are some of the benefits of applying this approach to managing Setup and Teardown:
 
-1. As the whole code is explicitly called, is much easier to comprehend test case logic.
-2. Setup and teardown codes are part of test case execution so it's easier to detect any issues and it's much easier to maintain and assess test performance.
-3. It's much easier to create more versatile and reusable test fixture that can be parametrized. As the setup code is called explicitly, it's much easier to pass parameters that will adjust fixture to a given test case needs.
-4. TestCaseFixture type can serve as a container for a resources that need to be share between Setup and Teardown logic as well as for those elements that will be needed to access from the test case. Thanks to that, test fixture's elements are easy to discover and they are access in a explicit way.
-5. Test fixtures can be reused between test classes without the need for inheritance.
-6. This method is independent of the test framework. It can be employed with NUnit, xUnit, or any framework of your choice.
+1. The explicit invocation of setup and teardown codes as part of test case execution enhances understanding of the logic of each test case.
+2. As setup and teardown codes are integral to the test case execution, it simplifies issue detection, maintenance, and performance assessment.
+3. The approach allows for the creation of versatile and reusable test fixtures. Since setup code is explicitly called, it's straightforward to pass parameters that adapt the fixture to the specific needs of a given test case.
+4. The TestCaseFixture type can serve as a container for resources needed both in Setup and Teardown logic and for elements accessed within the test case. This makes fixture elements easily discoverable and explicitly accessible.
+5. Test fixtures can be reused between different test classes, eliminating the need for inheritance.
+6. This method is independent of the test framework. It can be employed with NUnit, xUnit, or any other framework of your choice.
 
-I have been successfully using this method for many years, keeping test maintenance without excessive effort. 
+I have been successfully using this method for many years, keeping test maintainable without excessive effort. 
+
+
 
