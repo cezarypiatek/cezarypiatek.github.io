@@ -6,24 +6,21 @@
     <description>Recent content in msbuild on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/msbuild/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/msbuild/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Setting assembly and nuget package metadata in .NET Core</title>
       <link>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</link>
       <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</guid>
       <description>The new csproj format introduces two major changes that are important from the artifact metadata management perspective. First of all, a NuGet package definition was moved into the project file which allows sharing common attributes between NuGet package manifest and assembly info. Secondly, a new mechanism for generating source code of assembly metadata attributes was added, which shares some benefits from the first feature as well as simplify how these values can be overridden during the build process.</description>
     </item>
-    
     <item>
       <title>Managing output in the .NET SDK projects</title>
       <link>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</link>
       <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</guid>
       <description>With the new SDK format for .NET projects, it&amp;rsquo;s much easier to manage with the project&amp;rsquo;s dependencies. In most scenarios references added with standard mechanism (Visual Studio or dotnet cli) result in sufficient content in the output directory. However, sometimes we want to do something non-standard that requires a slightly different set of components in the output dir - simply speaking we expect to see there either more or fewer files.</description>
     </item>
-    
   </channel>
 </rss>

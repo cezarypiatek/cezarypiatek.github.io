@@ -6,33 +6,28 @@
     <description>Recent content in TeamCity on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/teamcity/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 09 Dec 2019 00:09:00 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/teamcity/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Setting assembly and nuget package metadata in .NET Core</title>
       <link>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</link>
       <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</guid>
       <description>The new csproj format introduces two major changes that are important from the artifact metadata management perspective. First of all, a NuGet package definition was moved into the project file which allows sharing common attributes between NuGet package manifest and assembly info. Secondly, a new mechanism for generating source code of assembly metadata attributes was added, which shares some benefits from the first feature as well as simplify how these values can be overridden during the build process.</description>
     </item>
-    
     <item>
       <title>Best practices for using PowerShell with TeamCity</title>
       <link>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</guid>
       <description>In the last few projects that I&amp;rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results.</description>
     </item>
-    
     <item>
       <title>Integrating TeamCity with Microsoft Teams using PowerShell</title>
       <link>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</link>
       <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</guid>
       <description>With the beginning of new year I joined a new team where I help with project bootstrapping. I&amp;rsquo;ve been configuring TeamCity, Gitlab and webservers. It&amp;rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &amp;ldquo;Integration&amp;rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat.</description>
     </item>
-    
   </channel>
 </rss>

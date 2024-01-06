@@ -6,88 +6,70 @@
     <description>Recent content in resharper on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Feb 2021 10:00:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/resharper/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Feb 2021 10:00:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/resharper/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Pure functions and unused return values</title>
       <link>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</link>
       <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</guid>
       <description>A while ago I came across &amp;ldquo;Quick notes on a rant&amp;rdquo; authored by Don Syme. This rant criticizes the C# language for the lack of a few important features. The first point is &amp;quot;Implicitly discarding information is so 20th Century&amp;quot; which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you the trouble.</description>
     </item>
-    
     <item>
       <title>Non-nullable references with C# 8 and .NET Core 3.0</title>
       <link>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</link>
       <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</guid>
       <description>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available here on the MSDN, but the one that deserves special attention is Nullable reference types. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference nullability on the compilation stage.</description>
     </item>
-    
     <item>
       <title>CQRS snippets</title>
       <link>https://cezarypiatek.github.io/post/cqrs-snippets/</link>
       <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/cqrs-snippets/</guid>
       <description>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned CQRS and CQS patterns. I heard about them many times before but I&amp;rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects.</description>
     </item>
-    
     <item>
       <title>Space eaten up by Resharper</title>
       <link>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</link>
       <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</guid>
       <description>My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&amp;rsquo;m running out of free space. When there is a need I&amp;rsquo;m starting clearing-up by emptying c:\Users\user_name\AppData\Local\Temp\ and c:\Users\user_name\Downloads\ directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use WinDirStart to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.</description>
     </item>
-    
     <item>
       <title>Get rid of TODOs from your codebase.</title>
       <link>https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/</guid>
       <description>I&amp;rsquo;ve recently written an article about managing TODOs in the codebase with TODOExplorer. I&amp;rsquo;ve also proposed an idea of introducing code snippet for TODOs which helps to keep all TODOs in predefined format as well as provides more information about delayed task (author, receiver, date, issue tracker id). This article was a result of a few discussions with my programmer-colleagues and I hoped that that idea of TODOs snippet was worth sharing (I&amp;rsquo;ve been using it in my project for a while).</description>
     </item>
-    
     <item>
       <title>The fastest way do debug .net code without sources.</title>
       <link>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</link>
       <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</guid>
       <description>Some people used to say that a good programmer doesn&amp;rsquo;t need to debug his own code. However, sometimes we have a problem with third party libraries usage, for example: there is insufficient documentation or the module contains some bugs. Visual Studio has excellent debugging toolset but this is totally useless without symbols and sources (and this is often the case with third party libraries). Thanks to Reshaper decompiler this shouldn’t be a problem anymore.</description>
     </item>
-    
     <item>
       <title>How to manage TODO in your codebase.</title>
       <link>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</link>
       <pubDate>Sun, 03 Dec 2017 10:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</guid>
       <description>It&amp;rsquo;s a good practice to make all things done at the first approach. But in the real world it&amp;rsquo;s not always possible - for example we need to ask customer for clarification and it will take some time, or worst - we don&amp;rsquo;t have enough time right now to implement things in the right way. In order to adress this issue, a TODO was invented to mark all those places in code requiring additional work.</description>
     </item>
-    
     <item>
       <title>Hunt your bugs in design time</title>
       <link>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</link>
       <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</guid>
       <description>Static analysis is a powerful feature of Visual Studio that helps us to spot syntax and semantic errors in our code. It works very well on currently edited file and runs on the whole solution as one of the compilation stages. But it would be a waste of time to run compilation every time you make changes that affect code outside currently edited file, only to check that you didn&amp;rsquo;t cause any compilation errors.</description>
     </item>
-    
     <item>
       <title>Don&#39;t write dull code - Resharper Live Templates</title>
       <link>https://cezarypiatek.github.io/post/livetemplates/</link>
       <pubDate>Sun, 13 Apr 2014 17:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/livetemplates/</guid>
-      <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
-Template Explorer 🔗&amp;#xFE0E;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
+      <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.&#xA;Template Explorer 🔗&amp;#xFE0E;&#xD;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,15 +6,14 @@
     <description>Recent content in Kibana on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jul 2018 00:21:18 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/kibana/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 Jul 2018 00:21:18 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/kibana/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Demystifying ELK stack</title>
       <link>https://cezarypiatek.github.io/post/demystifying-elk-stack/</link>
       <pubDate>Thu, 05 Jul 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/demystifying-elk-stack/</guid>
       <description>Let&amp;rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&amp;rsquo;s quite a challenge.</description>
     </item>
-    
   </channel>
 </rss>

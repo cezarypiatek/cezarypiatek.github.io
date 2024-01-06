@@ -6,15 +6,14 @@
     <description>Recent content in codeannotation on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Apr 2016 21:27:16 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/codeannotation/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 27 Apr 2016 21:27:16 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/codeannotation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hunt your bugs in design time</title>
       <link>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</link>
       <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</guid>
       <description>Static analysis is a powerful feature of Visual Studio that helps us to spot syntax and semantic errors in our code. It works very well on currently edited file and runs on the whole solution as one of the compilation stages. But it would be a waste of time to run compilation every time you make changes that affect code outside currently edited file, only to check that you didn&amp;rsquo;t cause any compilation errors.</description>
     </item>
-    
   </channel>
 </rss>

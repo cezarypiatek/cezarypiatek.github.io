@@ -187,7 +187,7 @@ let main argv =
     0
 </code></pre>
 <blockquote>
-<p>warning FS0020: The result of this expression has type &lsquo;string&rsquo; and is implicitly ignored. Consider using &lsquo;ignore&rsquo; to discard this value explicitly, e.g. &lsquo;expr |&gt; ignore&rsquo;, or &lsquo;let&rsquo; to bind the result to a name, e.g. &lsquo;let result = expr&rsquo;.</p>
+<p>warning FS0020: The result of this expression has type &lsquo;string&rsquo; and is implicitly ignored. Consider using &lsquo;ignore&rsquo; to discard this value explicitly, e.g. &rsquo;expr |&gt; ignore&rsquo;, or &rsquo;let&rsquo; to bind the result to a name, e.g. &rsquo;let result = expr&rsquo;.</p>
 </blockquote>
 <p>However, in <code>PowerShell</code> unconsumed values are treated as function results. For example, the function presented below returns two values: a <code>System.IO.FileSystemInfo</code> object representing a newly created directory and an integer with a value 0.</p>
 <pre><code class="language-powershell">function Do-Something
@@ -356,8 +356,8 @@ csharp_style_unused_value_expression_statement_preference = discard_variable
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

@@ -6,487 +6,385 @@
     <description>Recent content in Posts on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Sep 2023 00:10:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Common Setup and Teardown in dotnet tests without test framework magic</title>
+      <link>https://cezarypiatek.github.io/post/maintainable-test-fixture/</link>
+      <pubDate>Sat, 06 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/maintainable-test-fixture/</guid>
+      <description>&lt;p&gt;In this blog post I describe the typical problems caused by the usage of &lt;code&gt;Setup&lt;/code&gt; and &lt;code&gt;Teardown&lt;/code&gt; method in dotnet tests and how those problems can be solved by using only C# language features.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Sharing WireMock.NET in sequential and parallel tests</title>
       <link>https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/</link>
       <pubDate>Sun, 24 Sep 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/</guid>
       <description>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and WiremockServer instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other.</description>
     </item>
-    
     <item>
       <title>Collecting memory dumps for .NET Core on Kubernetes</title>
       <link>https://cezarypiatek.github.io/post/memory-dump-on-kubernetes/</link>
       <pubDate>Thu, 17 Aug 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/memory-dump-on-kubernetes/</guid>
       <description>In the world of Kubernetes and microservices, diagnosing and debugging issues can be a challenging task. One powerful tool in your troubleshooting arsenal is memory dump analysis. Memory dumps capture the state of an application&amp;rsquo;s memory at a particular point in time, providing insights into potential issues, bottlenecks, and crashes. In this blog post, I&amp;rsquo;ll walk you through the process of collecting a memory dump from a .NET Core application running on Kubernetes.</description>
     </item>
-    
     <item>
       <title>WireMock.NET - Troubleshooting</title>
       <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/</link>
       <pubDate>Tue, 18 Apr 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/</guid>
       <description>&lt;p&gt;In the second installment of my blog post series on WireMock.NET, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don&amp;rsquo;t know the drill. I hope that my guideline will save you a lot of time.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>WireMock.NET - Introduction</title>
       <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</link>
       <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</guid>
-      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.
-In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
+      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.&#xA;In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
     </item>
-    
     <item>
       <title>Mocking dependencies in ASP.NET Core tests</title>
       <link>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</link>
       <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</guid>
       <description>As I recently spent some time writing and refactoring tests that utilize WebApplicationFactory, I&amp;rsquo;ve come to have some thoughts and ideas for improvement that I&amp;rsquo;d like to share. In this article, I&amp;rsquo;ll delve into the process of mocking dependencies in a DI container when using WebApplicationFactory, and offer some insights and best practices I&amp;rsquo;ve learned along the way. Whether you&amp;rsquo;re a seasoned pro or new to unit testing ASP.NET Core applications, I hope this information will be helpful as you work to simplify and streamline your tests.</description>
     </item>
-    
     <item>
       <title>Why I don&#39;t use MediatR for CQRS</title>
       <link>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</link>
       <pubDate>Wed, 15 Dec 2021 00:18:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</guid>
       <description>&lt;p&gt;The purpose of this article is not to criticize the MediatR library. MediatR is a tool - and just like any tool, it has its own scope of application, and being used incorrectly might do more harm than good. This blog post summarizes my thoughts about using MediatR for supporting CQRS architecture.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Adding support for VisualStudio 2022 to your extension</title>
       <link>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</link>
       <pubDate>Sun, 29 Aug 2021 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/migrate-vsix-to-vs2022/</guid>
       <description>I published my first VisualStudio extension on 26th February 2018. It was initially created for Visual Studio 2017, but a few months later Visual Studio 2019 came out and I needed to support it as I was one of the beneficent. The migration was straightforward: it required only to extend InstallationTarget range to [15.0,17.0) in vsixmanifest, re-compile, and of course, re-publish the extension to the Visual Studio marketplace. Recently, the Visual Studio 2022 Preview was published.</description>
     </item>
-    
     <item>
       <title>Readable and clear tests for ASP.NET Core services</title>
       <link>https://cezarypiatek.github.io/post/component-tests-scenarios/</link>
       <pubDate>Mon, 09 Aug 2021 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/component-tests-scenarios/</guid>
       <description>For the last year, I&amp;rsquo;ve had an opportunity to work quite a lot with Component Tests for microservices built with ASP.NET Core. The vocabulary related to testing is very vague and terms like Unit, Component, and Integration tests can be interpreted differently based on the context, so let me explain first what I mean by Component Tests. It&amp;rsquo;s a kind of test that treats your whole service as a black box.</description>
     </item>
-    
     <item>
       <title>Testing WebAPI with ApprovalTests.NET</title>
       <link>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</link>
       <pubDate>Tue, 16 Mar 2021 00:08:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</guid>
       <description>&lt;p&gt;In this blog post, I&amp;rsquo;m going to share my experience on testing &lt;code&gt;ASP.NET Core&lt;/code&gt; applications by applying an unconventional method called &lt;code&gt;snapshot assertions&lt;/code&gt;. In comparison to the classical approach, this method should save you a lot of time and improve assertions maintainability.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Pure functions and unused return values</title>
       <link>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</link>
       <pubDate>Tue, 16 Feb 2021 10:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</guid>
       <description>A while ago I came across &amp;ldquo;Quick notes on a rant&amp;rdquo; authored by Don Syme. This rant criticizes the C# language for the lack of a few important features. The first point is &amp;quot;Implicitly discarding information is so 20th Century&amp;quot; which brings our attention to one of the sources of bugs in C# programs. Lucky me, I got the pleasure to make this kind of bug and find it later in production code, so this blog post is to save you the trouble.</description>
     </item>
-    
     <item>
       <title>Github Actions for Visual Studio Extension developers</title>
       <link>https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/</link>
       <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/</guid>
       <description>I discovered the power of Roslyn over three years ago and since then I&amp;rsquo;ve developed three Visual Studio extensions and a couple of code analyzers. Because I work on those tools only in my free time, the word &amp;ldquo;time&amp;rdquo; is a key here, so automation really matters. So far I&amp;rsquo;ve been using AppVeyor for building and testing my extensions. However, I&amp;rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</description>
     </item>
-    
     <item>
       <title>Async code smells and how to track them down with analyzers - Summary</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-summary/</link>
       <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/async-analyzers-summary/</guid>
       <description>In the last two posts, I&amp;rsquo;ve described 14 different code smells related to the async/await keywords. Beside the problem description, I&amp;rsquo;ve also provided info about code analyzers that can detect and report given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They also contain rules from other fields with predefined severity, which might not be appropriate to your needs, or you might not be interested in enforcing them at all.</description>
     </item>
-    
     <item>
       <title>Async code smells and how to track them down with analyzers - Part II</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-p2/</link>
       <pubDate>Sun, 18 Oct 2020 16:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p2/</guid>
-      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
+      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;rdquo;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
     </item>
-    
     <item>
       <title>Async code smells and how to track them down with analyzers - Part I</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-p1/</link>
       <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p1/</guid>
       <description>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&amp;rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time.</description>
     </item>
-    
     <item>
       <title>Auto generated WebAPI client library with NSwag</title>
       <link>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</link>
       <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</guid>
       <description>In the era of microservices and distributed systems, web browser applications written in JavaScript are not the only consumers of the REST API. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&amp;rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price.</description>
     </item>
-    
     <item>
       <title>Working efficiently with legacy database using Dapper</title>
       <link>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</link>
       <pubDate>Sun, 02 Aug 2020 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/dapper-tips-and-tricks/</guid>
       <description>A year ago I started working on a set of projects that requires accessing data from a huge legacy database. There was a decision to use Dapper to facilitate database access code. For those of you who are not familiar with Dapper, it&amp;rsquo;s a set of extension methods to IDbConnection, which allows to easily map C# object to SQL query parameters, as well as SQL query result to C# objects. I was quite skeptical to use a library that requires writing SQL queries directly in the C# code, because I got used to relying always on ORMs (NHibernate in particular).</description>
     </item>
-    
     <item>
       <title>The Magical Methods in C#</title>
       <link>https://cezarypiatek.github.io/post/methods-with-special-signature/</link>
       <pubDate>Tue, 30 Jun 2020 00:08:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/methods-with-special-signature/</guid>
       <description>There&amp;rsquo;s a certain set of special method signatures in C# which have particular support on the language level. Methods with those signatures allow for using a special syntax which has several benefits. For example, we can use them to simplify our code or create DSL to express a solution to our domain-specific problem in a much cleaner way. I came across those methods in different places, so I decided to create a blog post to summarize all my discoveries on this subject.</description>
     </item>
-    
     <item>
       <title>Twin types - properties synchronization without inheritance</title>
       <link>https://cezarypiatek.github.io/post/csharp-twin-types/</link>
       <pubDate>Sun, 14 Jun 2020 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/csharp-twin-types/</guid>
-      <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.
-The Problem 🔗&amp;#xFE0E;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
+      <description>A couple of months ago I&amp;rsquo;ve started working on a simple CRUD service. A mix of ASP Core for REST API with Dapper for Database access - probably one of the most popular stacks for this kind of application. Very quickly it turned out that it&amp;rsquo;s more complex than I expected and this &amp;ldquo;simple-boring&amp;rdquo; CRUD became more interesting and challenging.&#xA;The Problem 🔗&amp;#xFE0E;&#xD;One of the first problems that I came across was that I had a lot of types that looked very similar but had some differences and served different purposes, like:</description>
     </item>
-    
     <item>
       <title>Improving non-nullable reference types handling</title>
       <link>https://cezarypiatek.github.io/post/better-non-nullable-handling/</link>
       <pubDate>Tue, 24 Mar 2020 20:00:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/better-non-nullable-handling/</guid>
       <description>A few weeks ago I started using non-nullable reference types - a new C# language feature which was shipped with version 8.0. It wasn&amp;rsquo;t a completely new experience for me, because I was working before on projects that were heavily utilizing [NotNull] and [CanBeNull] Resharper annotations. The way how non-nullable types are handled by Roslyn seems to be a little more complex in comparison to Resharper - there are around 40 different diagnostics related to this area.</description>
     </item>
-    
     <item>
       <title>Immutable types in C# with Roslyn</title>
       <link>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</link>
       <pubDate>Sun, 15 Mar 2020 00:08:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/immutable-types-with-roslyn/</guid>
-      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;quot; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
+      <description>Some time ago I came across Jimmy Bogard&amp;rsquo;s article &amp;ldquo;Immutability in DTOs?&amp;rdquo; about the pros and cons of using immutable type pattern/approach. I fully agree with the author - the idea of immutable types is great but without the proper support from the language syntax it might not be worth applying. C# allows creating immutable types by adding readonly keyword to fields or by removing setter from properties. We are obligated then to initialize those readonly members from the constructor or directly in the member&amp;rsquo;s definition.</description>
     </item>
-    
     <item>
       <title>Setting assembly and nuget package metadata in .NET Core</title>
       <link>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</link>
       <pubDate>Mon, 09 Dec 2019 00:09:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/setting-assembly-and-package-metadata/</guid>
       <description>The new csproj format introduces two major changes that are important from the artifact metadata management perspective. First of all, a NuGet package definition was moved into the project file which allows sharing common attributes between NuGet package manifest and assembly info. Secondly, a new mechanism for generating source code of assembly metadata attributes was added, which shares some benefits from the first feature as well as simplify how these values can be overridden during the build process.</description>
     </item>
-    
     <item>
       <title>How to simulate AutoMapper that works during the build time</title>
       <link>https://cezarypiatek.github.io/post/generate-mappings-on-build/</link>
       <pubDate>Sun, 01 Dec 2019 00:09:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/generate-mappings-on-build/</guid>
       <description>Almost two years ago I created the very first version of MappingGenerator. Since then, I&amp;rsquo;ve put a lot of work in this project, adding new functions and improving the mapping generation algorithm with 14 releases (43 issues/feature requests closed) in the meantime. With over 5.5k downloads from the marketplace and 380 stars on Github, it looks like there is quite a market demand for this kind of tool (even though my coffee button statistics indicate something different).</description>
     </item>
-    
     <item>
       <title>Managing output in the .NET SDK projects</title>
       <link>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</link>
       <pubDate>Sun, 03 Nov 2019 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/managing-output-in-sdk-projects/</guid>
       <description>With the new SDK format for .NET projects, it&amp;rsquo;s much easier to manage with the project&amp;rsquo;s dependencies. In most scenarios references added with standard mechanism (Visual Studio or dotnet cli) result in sufficient content in the output directory. However, sometimes we want to do something non-standard that requires a slightly different set of components in the output dir - simply speaking we expect to see there either more or fewer files.</description>
     </item>
-    
     <item>
       <title>Non-nullable references with C# 8 and .NET Core 3.0</title>
       <link>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</link>
       <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</guid>
       <description>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available here on the MSDN, but the one that deserves special attention is Nullable reference types. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference nullability on the compilation stage.</description>
     </item>
-    
     <item>
       <title>Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</title>
       <link>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/</link>
       <pubDate>Sun, 15 Sep 2019 00:10:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/</guid>
       <description>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often the improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The effect of the broken synchronization can be analyzed with various runtime tools, but it would be nice to have an asset that is able to report all those issues in the design time right on the stage of writing code.</description>
     </item>
-    
     <item>
       <title>CSharp Macros - let the Roslyn type for you</title>
       <link>https://cezarypiatek.github.io/post/csharp-macros/</link>
       <pubDate>Sun, 01 Sep 2019 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/csharp-macros/</guid>
       <description>I&amp;rsquo;m a programmer but I don&amp;rsquo;t like to write code. OK, it&amp;rsquo;s not the whole truth. I don&amp;rsquo;t like to write the code that is repeatable. Whenever I need to do something more than twice, I start thinking about automation. Hopefully, this problem can be addressed with code snippets. Visual Studio provides a predefined set of snippets that can be extended, but if you are a Resharper user you should definitely get to know LiveTemplates because it&amp;rsquo;s more powerful and easier to configure.</description>
     </item>
-    
     <item>
       <title>Avoid multithreading traps with Roslyn: Lock object selection</title>
       <link>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</link>
       <pubDate>Sun, 18 Aug 2019 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</guid>
       <description>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The infamous deadlocks can be detected in runtime thanks to tools like Concurrency Visualizer, Parallel Tasks Window or with WinDBG !dlk command. However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce the feedback loop and detect these issues in design time.</description>
     </item>
-    
     <item>
       <title>Effective mocking</title>
       <link>https://cezarypiatek.github.io/post/effective-mocking/</link>
       <pubDate>Tue, 30 Jul 2019 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/effective-mocking/</guid>
       <description>Recently, I&amp;rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with NSubstitute. Of course, my answer was &amp;quot;Yes&amp;quot; but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked nuget.org and Visual Studio extensions marketplace, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for NSubstitute but for other mocking frameworks, just like Moq or Fake It Easy, too.</description>
     </item>
-    
     <item>
       <title>Exception usage analyzer</title>
       <link>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</link>
       <pubDate>Sat, 29 Jun 2019 00:09:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/exceptions-usages-analyzer/</guid>
       <description>Over a year ago I wrote a blog post about designing exceptions. I found this article very useful by myself and I used it as a reference a few times during code review. However, it&amp;rsquo;s almost impossible to expect that, after reading the recommended resource, anybody would start to apply described rules immediately and remember about them all the time. It&amp;rsquo;s a learning process and it takes some time. A while ago I got interested with Roslyn (I even delivered a public presentation about it - polish recording available here) and there is a really cool thing about Roslyn analyzers that can solve this problem - they help to actively introduce best practices into your codebase.</description>
     </item>
-    
     <item>
       <title>Best practices for using PowerShell with TeamCity</title>
       <link>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</guid>
       <description>In the last few projects that I&amp;rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results.</description>
     </item>
-    
     <item>
       <title>Renovate your .NET solution</title>
       <link>https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/</link>
       <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/</guid>
       <description>In the early days of dotnet core, there was an attempt of changing the C# project file format. The old &amp;ldquo;csproj&amp;rdquo; based on XML format was replaced with .xproj/project.json. However, after releasing dotnet core 1.0 the authors decided to get back to XML file. The format stayed the same but the specification went through a major change. With the new schema, a lot of improvements come into .net development and they are not restricted only to dotnet core projects.</description>
     </item>
-    
     <item>
       <title>Scheduled ElasticSearch index cleanup</title>
       <link>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</link>
       <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</guid>
       <description>It&amp;rsquo;s been over a year since I&amp;rsquo;ve started using ELK stack for logging purpose. In the meantime, I was able to successfully introduce it in a few development teams, totally changing the way we are working with application logs. Everything is working fine and the only downside so far was the need for periodical maintenance work. By maintenance, I mean removing old indices. If the disk free space drops below certain level the ElasticSearch stops working correctly.</description>
     </item>
-    
     <item>
       <title>Tips and Tricks for managing ELK configuration</title>
       <link>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</link>
       <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</guid>
       <description>&lt;p&gt;A few months ago I published &amp;ldquo;&lt;a href=&#34;../post/demystifying-elk-stack/&#34;&gt;Demystifying ELK stack&lt;/a&gt;&amp;rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&amp;rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&amp;rsquo;re worth sharing.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>The art of designing exceptions</title>
       <link>https://cezarypiatek.github.io/post/the-art-of-designing-exceptions/</link>
       <pubDate>Fri, 19 Oct 2018 00:09:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/the-art-of-designing-exceptions/</guid>
       <description>Have you ever been in a situation when you discovered an exception in the logs that forced you to spend the next couple of minutes - or even hours - figuring out what exactly went wrong? The message was very cryptic and the only useful information that guided you to the crime scene was a stack trace. And after arriving there, you still had no idea what had really happened and what was the culprit.</description>
     </item>
-    
     <item>
       <title>CQRS snippets</title>
       <link>https://cezarypiatek.github.io/post/cqrs-snippets/</link>
       <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/cqrs-snippets/</guid>
       <description>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned CQRS and CQS patterns. I heard about them many times before but I&amp;rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects.</description>
     </item>
-    
     <item>
       <title>No more StaleElementReferenceException</title>
       <link>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</link>
       <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</guid>
-      <description>StaleElementReferenceException can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:
- an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework  In the first case, StaleElementReferenceException indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
+      <description>StaleElementReferenceException can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:&#xA;an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework In the first case, StaleElementReferenceException indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
     </item>
-    
     <item>
       <title>Feature Object Pattern</title>
       <link>https://cezarypiatek.github.io/post/feature-object-pattern/</link>
       <pubDate>Sun, 05 Aug 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/feature-object-pattern/</guid>
       <description>When it comes to writing maintainable UI test there always appears the term of Page Object Pattern. For those who are not familiar with Page Object, it&amp;rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler here.</description>
     </item>
-    
     <item>
       <title>Demystifying ELK stack</title>
       <link>https://cezarypiatek.github.io/post/demystifying-elk-stack/</link>
       <pubDate>Thu, 05 Jul 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/demystifying-elk-stack/</guid>
       <description>Let&amp;rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&amp;rsquo;s quite a challenge.</description>
     </item>
-    
     <item>
       <title>Be the first to know of the bug</title>
       <link>https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/</link>
       <pubDate>Wed, 13 Jun 2018 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/be-the-first-to-know-of-the-bug/</guid>
       <description>Over a year ago I heard for the first time about the ELK stack. Since then I&amp;rsquo;ve had an opportunity to help five teams to implements ELK as a part of their development process (one team is using it on production, the rest of them so far only in development environment). ELK stands for ElasticSearch-Logstash-Kibana and it&amp;rsquo;s a set of services that helps to improve productivity in the area of logging, covering aspects of collecting, processing, storing and presenting log data.</description>
     </item>
-    
     <item>
       <title>Space eaten up by Resharper</title>
       <link>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</link>
       <pubDate>Mon, 07 May 2018 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/space-eaten-up-by-resharper/</guid>
       <description>My laptop stores everything on 250 GB SSD hard drive (actually Windows sees it as 223 GB), so from time to time I&amp;rsquo;m running out of free space. When there is a need I&amp;rsquo;m starting clearing-up by emptying c:\Users\user_name\AppData\Local\Temp\ and c:\Users\user_name\Downloads\ directories (the second one against all appearances is often full of unnecessary files). When this is not enough I use WinDirStart to analyze my hard disk usage. This simple but extremely useful tool presents directory tree with attributes related to disk utilization such as: size, usage percentage, number of items (files and subdirectories), etc.</description>
     </item>
-    
     <item>
       <title>Validating fields of NHibernate model</title>
       <link>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</link>
       <pubDate>Mon, 16 Apr 2018 00:22:53 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/validate-fields-in-nhibernate-model/</guid>
-      <description>The challenge 🔗&amp;#xFE0E;Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
+      <description>The challenge 🔗&amp;#xFE0E;&#xD;Recently I&amp;rsquo;ve had occasion to work much more than usually with NHibernate. This is a really great ORM and a very mature project, but when you make a mistake it informs you about that in a very generic way (in most cases). The problem that hunted me for a few days was the issue with field length constrains (which was caused by insufficient and inconsistent REST API validation).</description>
     </item>
-    
     <item>
       <title>Generate mapping code with Roslyn code fix provider.</title>
       <link>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</link>
       <pubDate>Tue, 27 Feb 2018 00:23:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/generate-mapping-code-with-roslyn/</guid>
       <description>A few weeks ago I posted about negative aspects of applying AutoMapper. As an alternative I suggested typing all mapping code by hand or utilize some kind of generator like T4Scaffoling or something Roslyn based. In the past I experimented with T4Scaffoling but it was quite tedious. It requires preparation of templates in T4 syntax, referencing it to the project and writing some PowerShell code to provide data for templates. There also was an issue with assembly locking.</description>
     </item>
-    
     <item>
       <title>What&#39;s wrong with default ajax support in ASP.NET MVC and how to fix it.</title>
       <link>https://cezarypiatek.github.io/post/whats-wrong-with-unobtrusive-ajax/</link>
       <pubDate>Sun, 18 Feb 2018 00:22:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/whats-wrong-with-unobtrusive-ajax/</guid>
       <description>jquery.unobtrusive-ajax is the javascript library that every ASP.NET MVC developer certainly knows. It&amp;rsquo;s shipped with MVC bootstrapping template and it&amp;rsquo;s responsible for providing plumbing code which helps to add ajax functionality to rendered forms and links. Unfortunately, it has a few design drawbacks which could have negative impact on our system architecture and generate additional hidden costs. In this post I&amp;rsquo;m going to show you some of jquery.unobtrusive-ajax.js related problems I encountered in my 5-year journey as a ASP.</description>
     </item>
-    
     <item>
       <title>The reasons behind why I don&#39;t use AutoMapper.</title>
       <link>https://cezarypiatek.github.io/post/why-i-dont-use-automapper/</link>
       <pubDate>Mon, 05 Feb 2018 00:22:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/why-i-dont-use-automapper/</guid>
       <description>The idea behind this blog post is pretty old but I haven&amp;rsquo;t had enough motivation to write this down till now. Recently, I&amp;rsquo;ve came across a couple of new articles about AutoMapper and I&amp;rsquo;ve been struck when I saw how people utilize AutoMapper in their projects. I&amp;rsquo;ve encountered cases when AutoMapper transforms simple thing like mapping values from object to other into a really complex problem, which results with highly complicated code only for the price of not writing mappings explicitly.</description>
     </item>
-    
     <item>
       <title>Integrating TeamCity with Microsoft Teams using PowerShell</title>
       <link>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</link>
       <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</guid>
       <description>With the beginning of new year I joined a new team where I help with project bootstrapping. I&amp;rsquo;ve been configuring TeamCity, Gitlab and webservers. It&amp;rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &amp;ldquo;Integration&amp;rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat.</description>
     </item>
-    
     <item>
       <title>Exploring PowerShell with graphical user interface.</title>
       <link>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</link>
       <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</guid>
       <description>I&amp;rsquo;ve recently watched a pretty decent tutorial about DSC on Microsoft Virtual Academy. I&amp;rsquo;m not a huge fan of video tutorials because it always takes more time to watch them than read a book/blog post (you can hack it by increasing video speed and save yourself a couple of minutes) but sometimes there is additional beneficial side effect - the presenter can show you (accidentally or not) some tips and tricks not strictly related to the core subject of the video.</description>
     </item>
-    
     <item>
       <title>Get rid of TODOs from your codebase.</title>
       <link>https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/</link>
       <pubDate>Thu, 14 Dec 2017 22:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/how-get-rid-of-todo-from-codebase/</guid>
       <description>I&amp;rsquo;ve recently written an article about managing TODOs in the codebase with TODOExplorer. I&amp;rsquo;ve also proposed an idea of introducing code snippet for TODOs which helps to keep all TODOs in predefined format as well as provides more information about delayed task (author, receiver, date, issue tracker id). This article was a result of a few discussions with my programmer-colleagues and I hoped that that idea of TODOs snippet was worth sharing (I&amp;rsquo;ve been using it in my project for a while).</description>
     </item>
-    
     <item>
       <title>The fastest way do debug .net code without sources.</title>
       <link>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</link>
       <pubDate>Sun, 10 Dec 2017 10:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/debug-without-sources-part-one/</guid>
       <description>Some people used to say that a good programmer doesn&amp;rsquo;t need to debug his own code. However, sometimes we have a problem with third party libraries usage, for example: there is insufficient documentation or the module contains some bugs. Visual Studio has excellent debugging toolset but this is totally useless without symbols and sources (and this is often the case with third party libraries). Thanks to Reshaper decompiler this shouldn’t be a problem anymore.</description>
     </item>
-    
     <item>
       <title>How to manage TODO in your codebase.</title>
       <link>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</link>
       <pubDate>Sun, 03 Dec 2017 10:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/how-to-manage-todo-in-codebase/</guid>
       <description>It&amp;rsquo;s a good practice to make all things done at the first approach. But in the real world it&amp;rsquo;s not always possible - for example we need to ask customer for clarification and it will take some time, or worst - we don&amp;rsquo;t have enough time right now to implement things in the right way. In order to adress this issue, a TODO was invented to mark all those places in code requiring additional work.</description>
     </item>
-    
     <item>
       <title>Why clicking with Selenium is so hard.</title>
       <link>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</link>
       <pubDate>Thu, 05 Oct 2017 17:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/why-click-with-selenium-so-hard/</guid>
       <description>When I browse StackOverflow questions tagged with selenium label, a lot of them are related to the problem of clicking on page elements. It seems to be one of the most trivial tasks, but can cause a lot of problems. Very often invoking Click() action on webelement ends with exceptions (there is a wide range of them). The main reason is that element on which we try to click is not in &amp;ldquo;Interactable&amp;rdquo; state.</description>
     </item>
-    
     <item>
       <title>Hunt your bugs in design time</title>
       <link>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</link>
       <pubDate>Wed, 27 Apr 2016 21:27:16 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/hunt-your-bugs-design-time/</guid>
       <description>Static analysis is a powerful feature of Visual Studio that helps us to spot syntax and semantic errors in our code. It works very well on currently edited file and runs on the whole solution as one of the compilation stages. But it would be a waste of time to run compilation every time you make changes that affect code outside currently edited file, only to check that you didn&amp;rsquo;t cause any compilation errors.</description>
     </item>
-    
     <item>
       <title>Save your history - TortoiseSVN and &#34;Repair move&#34; option.</title>
       <link>https://cezarypiatek.github.io/post/save-tortoise-history-with-repair-move/</link>
       <pubDate>Sun, 21 Sep 2014 17:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/save-tortoise-history-with-repair-move/</guid>
       <description>&lt;p&gt;TortoiseSVN has a function named simply “rename” which allows you to change the file name and keep the file history as well. But what if we change the file name for example during refactoring using Visual Studio? Are we fated to lose file history? Fortunately TortoiseSVN has an interesting option called “repair move”.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Don&#39;t write dull code - Resharper Live Templates</title>
       <link>https://cezarypiatek.github.io/post/livetemplates/</link>
       <pubDate>Sun, 13 Apr 2014 17:38:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/livetemplates/</guid>
-      <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.
-Template Explorer 🔗&amp;#xFE0E;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
+      <description>One of the greatest features of Resharper are Live Templates. They can speed up your code typing and help you focus only on what is most important (you don’t need to remember and retype anymore long ‘dull’ code constructions). Live Templates are similar to Visual Studio code snippets but are easier to define and introduce smart parameters that help you in faster code completion.&#xA;Template Explorer 🔗&amp;#xFE0E;&#xD;You can manage Live Templates in Templates Explorer from RESHARPER menu (RESHARPER -&amp;gt; Template Explorer&amp;hellip;).</description>
     </item>
-    
   </channel>
 </rss>

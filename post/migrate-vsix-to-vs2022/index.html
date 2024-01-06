@@ -259,7 +259,7 @@
 <ul>
 <li><strong>STEP 1:</strong> If the <code>VsTargetVersion</code> is not defined (it&rsquo;s not passed explicitly as a compilation parameter), then I&rsquo;m assigning a default value based on the current version of VisualStudio that loaded the project. For some unknown reason, it&rsquo;s not possible to build VS2019 extension with VS2022, so this approach fixes two issues here.</li>
 <li><strong>STEP 2:</strong> In order to avoid any collisions, I&rsquo;m adding value of <code>VsTargetVersion</code> attribute to <code>OutputPath</code> and <code>IntermediateOutputPath</code>. The artifacts and temporary build files will be in separate directories for each version. This also allows for avoiding any unnecessary confusion in the future. Please make sure that those attributes are not defined in other parts of your <code>csproj</code> file.</li>
-<li><strong>STEP 3:</strong> I&rsquo;m using <code>Choose-When-Otherwise</code> syntax for defining different project setting for each Visual Studio target version. In each branch we are allowed to have only a single <code>PropertyGroup</code> and a single <code>ItemGroup</code> definition. In <code>PropertyGroup</code> I&rsquo;m setting <code>TargetFrameworkVersion</code> and <code>AssemblyName</code> appropriately for each <code>VsTargetVersion</code> value. 
+<li><strong>STEP 3:</strong> I&rsquo;m using <code>Choose-When-Otherwise</code> syntax for defining different project setting for each Visual Studio target version. In each branch we are allowed to have only a single <code>PropertyGroup</code> and a single <code>ItemGroup</code> definition. In <code>PropertyGroup</code> I&rsquo;m setting <code>TargetFrameworkVersion</code> and <code>AssemblyName</code> appropriately for each <code>VsTargetVersion</code> value.
 In the <code>ItemGroup</code>, I&rsquo;m defining separate sets of required nuget packages and I&rsquo;m also importing an appropriate variation of <code>vsixmanifest</code> file.</li>
 </ul>
 <p>When I load my solution in <code>VS2019</code>, it automatically switches everything to VS2019 setup and when I open it with VS2022 everything is ready to build and debug the extension under VS2022.</p>
@@ -407,8 +407,8 @@ jobs:
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

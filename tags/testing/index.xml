@@ -6,89 +6,77 @@
     <description>Recent content in testing on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Sep 2023 00:10:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Common Setup and Teardown in dotnet tests without test framework magic</title>
+      <link>https://cezarypiatek.github.io/post/maintainable-test-fixture/</link>
+      <pubDate>Sat, 06 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/maintainable-test-fixture/</guid>
+      <description>&lt;p&gt;In this blog post I describe the typical problems caused by the usage of &lt;code&gt;Setup&lt;/code&gt; and &lt;code&gt;Teardown&lt;/code&gt; method in dotnet tests and how those problems can be solved by using only C# language features.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Sharing WireMock.NET in sequential and parallel tests</title>
       <link>https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/</link>
       <pubDate>Sun, 24 Sep 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/wiremock-in-parallel-tests/</guid>
       <description>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and WiremockServer instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other.</description>
     </item>
-    
     <item>
       <title>WireMock.NET - Troubleshooting</title>
       <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/</link>
       <pubDate>Tue, 18 Apr 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/</guid>
       <description>&lt;p&gt;In the second installment of my blog post series on WireMock.NET, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don&amp;rsquo;t know the drill. I hope that my guideline will save you a lot of time.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>WireMock.NET - Introduction</title>
       <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</link>
       <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</guid>
-      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.
-In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
+      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.&#xA;In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
     </item>
-    
     <item>
       <title>Mocking dependencies in ASP.NET Core tests</title>
       <link>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</link>
       <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</guid>
       <description>As I recently spent some time writing and refactoring tests that utilize WebApplicationFactory, I&amp;rsquo;ve come to have some thoughts and ideas for improvement that I&amp;rsquo;d like to share. In this article, I&amp;rsquo;ll delve into the process of mocking dependencies in a DI container when using WebApplicationFactory, and offer some insights and best practices I&amp;rsquo;ve learned along the way. Whether you&amp;rsquo;re a seasoned pro or new to unit testing ASP.NET Core applications, I hope this information will be helpful as you work to simplify and streamline your tests.</description>
     </item>
-    
     <item>
       <title>Readable and clear tests for ASP.NET Core services</title>
       <link>https://cezarypiatek.github.io/post/component-tests-scenarios/</link>
       <pubDate>Mon, 09 Aug 2021 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/component-tests-scenarios/</guid>
       <description>For the last year, I&amp;rsquo;ve had an opportunity to work quite a lot with Component Tests for microservices built with ASP.NET Core. The vocabulary related to testing is very vague and terms like Unit, Component, and Integration tests can be interpreted differently based on the context, so let me explain first what I mean by Component Tests. It&amp;rsquo;s a kind of test that treats your whole service as a black box.</description>
     </item>
-    
     <item>
       <title>Testing WebAPI with ApprovalTests.NET</title>
       <link>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</link>
       <pubDate>Tue, 16 Mar 2021 00:08:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</guid>
       <description>&lt;p&gt;In this blog post, I&amp;rsquo;m going to share my experience on testing &lt;code&gt;ASP.NET Core&lt;/code&gt; applications by applying an unconventional method called &lt;code&gt;snapshot assertions&lt;/code&gt;. In comparison to the classical approach, this method should save you a lot of time and improve assertions maintainability.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Effective mocking</title>
       <link>https://cezarypiatek.github.io/post/effective-mocking/</link>
       <pubDate>Tue, 30 Jul 2019 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/effective-mocking/</guid>
       <description>Recently, I&amp;rsquo;ve been asked if Roslyn can be used for helping with writing code that involves preparing mocks with NSubstitute. Of course, my answer was &amp;quot;Yes&amp;quot; but instead of rushing into creating a new project that would implement this functionality, I performed a small research. I checked nuget.org and Visual Studio extensions marketplace, and I discovered that there was a bunch of existing analyzers and extensions that facilitated working with mocks and not only for NSubstitute but for other mocking frameworks, just like Moq or Fake It Easy, too.</description>
     </item>
-    
     <item>
       <title>No more StaleElementReferenceException</title>
       <link>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</link>
       <pubDate>Sun, 12 Aug 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/no-more-staleelementreferenceexception/</guid>
-      <description>StaleElementReferenceException can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:
- an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework  In the first case, StaleElementReferenceException indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
+      <description>StaleElementReferenceException can be definitely classified as the number 1 nightmare of people who write automated tests with Selenium framework. This exception occurs when given web element with which we are trying to interact is no longer present in DOM tree. This can be caused by multiple factors, the most common being:&#xA;an element was removed in the meantime an element was replaced with newer content (for example by Ajax) an element was re-rendered by JavaScript view/template framework In the first case, StaleElementReferenceException indicates the real issue - the app is broken or our automated test case is invalid - whereas the last two cases are mostly caused by UI framework and shouldn&amp;rsquo;t affect our UI test.</description>
     </item>
-    
     <item>
       <title>Feature Object Pattern</title>
       <link>https://cezarypiatek.github.io/post/feature-object-pattern/</link>
       <pubDate>Sun, 05 Aug 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/feature-object-pattern/</guid>
       <description>When it comes to writing maintainable UI test there always appears the term of Page Object Pattern. For those who are not familiar with Page Object, it&amp;rsquo;s the approach to building UI test that focuses on creating high-level abstraction over low-level details related to interaction with a tested application. This testing interface encapsulates all the noise related to technology and allows to clearly express intention of test cases. This concept is very well described by Martin Fowler here.</description>
     </item>
-    
   </channel>
 </rss>

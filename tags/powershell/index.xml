@@ -6,42 +6,35 @@
     <description>Recent content in PowerShell on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 07 Apr 2019 10:34:18 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/powershell/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 07 Apr 2019 10:34:18 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/powershell/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Best practices for using PowerShell with TeamCity</title>
       <link>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</link>
       <pubDate>Sun, 07 Apr 2019 10:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/best-practices-for-using-powershell-with-teamcity/</guid>
       <description>In the last few projects that I&amp;rsquo;ve attended, I was deeply involved in continuous integration. What I mean is that I was either fully in charge of setting up, configuring and maintaining CI or I was a consultant, helping other teams to deal with different problems related to this subject. All projects have been using TeamCity as a platform for continuous integration. It has a lot of predefined jobs that facilitate most common activities necessary to build pipelines, as well as rich UI that helps to easily configure it and examine pipeline results.</description>
     </item>
-    
     <item>
       <title>Tips and Tricks for managing ELK configuration</title>
       <link>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</link>
       <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</guid>
       <description>&lt;p&gt;A few months ago I published &amp;ldquo;&lt;a href=&#34;../../post/demystifying-elk-stack/&#34;&gt;Demystifying ELK stack&lt;/a&gt;&amp;rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&amp;rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&amp;rsquo;re worth sharing.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Integrating TeamCity with Microsoft Teams using PowerShell</title>
       <link>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</link>
       <pubDate>Sun, 21 Jan 2018 00:05:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/integrating-teamcity-with-msteams/</guid>
       <description>With the beginning of new year I joined a new team where I help with project bootstrapping. I&amp;rsquo;ve been configuring TeamCity, Gitlab and webservers. It&amp;rsquo;s the first time for me to work with Gitlab, so I started looking around and checking what opportunities come to me with that tool. One of my discoveries was the &amp;ldquo;Integration&amp;rdquo; bookmark, allowing me to connect Gitlab with other systems. I checked a list of possible integrations and found that it could communicate with Microsoft Teams chat.</description>
     </item>
-    
     <item>
       <title>Exploring PowerShell with graphical user interface.</title>
       <link>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</link>
       <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</guid>
       <description>I&amp;rsquo;ve recently watched a pretty decent tutorial about DSC on Microsoft Virtual Academy. I&amp;rsquo;m not a huge fan of video tutorials because it always takes more time to watch them than read a book/blog post (you can hack it by increasing video speed and save yourself a couple of minutes) but sometimes there is additional beneficial side effect - the presenter can show you (accidentally or not) some tips and tricks not strictly related to the core subject of the video.</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,24 +6,21 @@
     <description>Recent content in visual studio on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Oct 2019 00:16:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/visual-studio/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Oct 2019 00:16:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/visual-studio/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Non-nullable references with C# 8 and .NET Core 3.0</title>
       <link>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</link>
       <pubDate>Sun, 06 Oct 2019 00:16:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/non-nullable-references-in-dotnet-core/</guid>
       <description>Two weeks ago .NET Core 3.0 was officially published. Together with the new framework version, Visual Studio 2019 got support for a long-awaited C# 8.0. The complete list of the new language features is available here on the MSDN, but the one that deserves special attention is Nullable reference types. This is a very important change in the language semantic, because from now we will be able to eliminate certain class of errors related to reference nullability on the compilation stage.</description>
     </item>
-    
     <item>
       <title>Renovate your .NET solution</title>
       <link>https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/</link>
       <pubDate>Mon, 11 Feb 2019 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/renovate-your-dot-net-solution/</guid>
       <description>In the early days of dotnet core, there was an attempt of changing the C# project file format. The old &amp;ldquo;csproj&amp;rdquo; based on XML format was replaced with .xproj/project.json. However, after releasing dotnet core 1.0 the authors decided to get back to XML file. The format stayed the same but the specification went through a major change. With the new schema, a lot of improvements come into .net development and they are not restricted only to dotnet core projects.</description>
     </item>
-    
   </channel>
 </rss>

@@ -178,7 +178,7 @@
 <p>If you are completely new to WireMock, I highly recommend reading my <a href="../../post/mocking-outgoing-http-requests-p1/">WireMock.NET - Introduction</a></p>
 <h2 id="troubleshooting"><a href="#troubleshooting">Troubleshooting  🔗&#xFE0E;</a></h2>
 
-<p>One of the most common issues when working with WireMock.NET are incorrectly defined mappings. If you are receiving the 404 code instead of the expected response, that indicates your stub doesn&rsquo;t match the request made by the tested app. To troubleshoot this issue, you can use the debugger to investigate requests that reached WireMock server by checking <code>WireMockServer.LogEntries</code> and comparing requests' parameters with mappings defined in <code>WireMockServer.Mappings</code> objects.</p>
+<p>One of the most common issues when working with WireMock.NET are incorrectly defined mappings. If you are receiving the 404 code instead of the expected response, that indicates your stub doesn&rsquo;t match the request made by the tested app. To troubleshoot this issue, you can use the debugger to investigate requests that reached WireMock server by checking <code>WireMockServer.LogEntries</code> and comparing requests&rsquo; parameters with mappings defined in <code>WireMockServer.Mappings</code> objects.</p>
 <p>
 <a href="watch.jpg"><img  src="watch.jpg" alt="screenshot of watch window with wiremock object"></a>
 </p>
@@ -352,8 +352,8 @@
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

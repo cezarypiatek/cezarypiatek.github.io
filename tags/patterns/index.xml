@@ -6,24 +6,21 @@
     <description>Recent content in patterns on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Dec 2021 00:18:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/patterns/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Dec 2021 00:18:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/patterns/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Why I don&#39;t use MediatR for CQRS</title>
       <link>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</link>
       <pubDate>Wed, 15 Dec 2021 00:18:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/</guid>
       <description>&lt;p&gt;The purpose of this article is not to criticize the MediatR library. MediatR is a tool - and just like any tool, it has its own scope of application, and being used incorrectly might do more harm than good. This blog post summarizes my thoughts about using MediatR for supporting CQRS architecture.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>CQRS snippets</title>
       <link>https://cezarypiatek.github.io/post/cqrs-snippets/</link>
       <pubDate>Sun, 23 Sep 2018 00:20:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/cqrs-snippets/</guid>
       <description>A year ago, during my trip to one of Software developer conferences, I got a lot of opportunities to discuss variety of topics related to software architecture. Most of them concerned CQRS and CQS patterns. I heard about them many times before but I&amp;rsquo;ve never had a chance to use them in practice. After getting back from the conference, I decided to give it a shot and try to introduce it in one of my private projects.</description>
     </item>
-    
   </channel>
 </rss>

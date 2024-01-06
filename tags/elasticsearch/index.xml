@@ -6,33 +6,28 @@
     <description>Recent content in ElasticSearch on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Dec 2018 00:21:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Dec 2018 00:21:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Scheduled ElasticSearch index cleanup</title>
       <link>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</link>
       <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</guid>
       <description>It&amp;rsquo;s been over a year since I&amp;rsquo;ve started using ELK stack for logging purpose. In the meantime, I was able to successfully introduce it in a few development teams, totally changing the way we are working with application logs. Everything is working fine and the only downside so far was the need for periodical maintenance work. By maintenance, I mean removing old indices. If the disk free space drops below certain level the ElasticSearch stops working correctly.</description>
     </item>
-    
     <item>
       <title>Tips and Tricks for managing ELK configuration</title>
       <link>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</link>
       <pubDate>Tue, 13 Nov 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/tips-and-tricks-for-managing-elk-configuration/</guid>
       <description>&lt;p&gt;A few months ago I published &amp;ldquo;&lt;a href=&#34;../../post/demystifying-elk-stack/&#34;&gt;Demystifying ELK stack&lt;/a&gt;&amp;rdquo; article that summarizes my knowledge about setting up and configuring the system for collecting, processing and presenting logs, based on Filebeat, Logstash, Kibana, and Elasticsearch. Since then I&amp;rsquo;ve learned a few new DevOps things which help me and my teammates to work more effectively with ELK. I think they&amp;rsquo;re worth sharing.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Demystifying ELK stack</title>
       <link>https://cezarypiatek.github.io/post/demystifying-elk-stack/</link>
       <pubDate>Thu, 05 Jul 2018 00:21:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/demystifying-elk-stack/</guid>
       <description>Let&amp;rsquo;s assume that your system consists of a few microservices. Everything must have high availability so each microservice has at least two active instances on separate machines and everything must be multiplied by the number of testing and production related environments. When there is a situation that requires log analysis you have to skip from server to server looking for the file with desired information. You browse each file using some kind of notepad-based editor and if the files weight hundreds of megabytes it&amp;rsquo;s quite a challenge.</description>
     </item>
-    
   </channel>
 </rss>

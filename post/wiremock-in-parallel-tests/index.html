@@ -175,7 +175,7 @@
 			<br />
 		
 		<p>As .NET developers, we understand the significance of writing automated tests to ensure our applications function correctly. However, as our applications grow more complex and diverse, optimizing the test process becomes crucial. One effective approach is reusing components like tested application and WiremockServer instances between test cases. While this optimization can improve test efficiency, it can also introduce challenges of ensuring that different test cases do not interfere with each other. In this blog post, we&rsquo;ll delve into the biggest problems related to WireMock.NET instance re-usage and explore a potential solution.</p>
-<h2 id="reusing-components-instances"><a href="#reusing-components-instances">Reusing components' instances  🔗&#xFE0E;</a></h2>
+<h2 id="reusing-components-instances"><a href="#reusing-components-instances">Reusing components&rsquo; instances  🔗&#xFE0E;</a></h2>
 
 <p>To re-use tested application and WireMockServer instances between tests, we can create a class that holds those instances and manages their lifecycle. I like to call it <code>GlobalTestFixture</code>. A sample implementation can look as follows:</p>
 <pre><code class="language-cs">public class GlobalTestFixture: IAsyncDisposable
@@ -440,8 +440,8 @@ public class Tests
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     
@@ -502,11 +502,11 @@ public class Tests
 				
 				
 				<div class="col-md-4 col-sm-12">
-						<a href="../../post/mocking-dependencies-in-asp-net-core/" >
+						<a href="../../post/maintainable-test-fixture/" >
 						<div class="card">
-								<img class="card-img-top" src="../../post/mocking-dependencies-in-asp-net-core/splashscreen_huf1a4b3b79f92880fa199ed5b819d1e17_61369_320x240_fill_q75_box_smart1.jpg" alt="Mocking dependencies in ASP.NET Core tests">
+								<img class="card-img-top" src="../../post/maintainable-test-fixture/splashscreen_hu74aef7f019ddbbefd473e4e88945bdc5_3228083_320x240_fill_box_smart1_3.png" alt="Common Setup and Teardown in dotnet tests without test framework magic">
 								<div class="card-body">
-									<h5 class="card-title">Mocking dependencies in ASP.NET Core tests</h5>											  
+									<h5 class="card-title">Common Setup and Teardown in dotnet tests without test framework magic</h5>											  
 								</div>
 							</div></a>
 				</div>		

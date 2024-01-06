@@ -183,7 +183,7 @@
 <p>
 <a href="teamcity_failure_condition.jpg"><img  src="teamcity_failure_condition.jpg" alt=""></a>
 </p>
-<p>Since now all PowerShell errors will be properly reported and will affect build status. Besides these two configuration options in TeamCity, there is one more thing related to the PowerShell errors to keep in mind - PowerShell error model. Powershell errors can be dived into two categories: terminating (mostly syntax errors) and non-terminating. The latter is not obvious and causes a lot of troubles for people without strong PowerShell foundations. Even if the <code>non-terminating</code> error occurs, the script execution is continued. This effect can be highly unwanted for scripts performing interlinked operations dependent on each other. Of course, we can change this behavior and turn all &lsquo;non-terminating&rsquo; errors into &lsquo;terminating&rsquo; ones by setting <code>$ErrorActionPreference</code> variable at the begging of our scripts:</p>
+<p>Since now all PowerShell errors will be properly reported and will affect build status. Besides these two configuration options in TeamCity, there is one more thing related to the PowerShell errors to keep in mind - PowerShell error model. Powershell errors can be dived into two categories: terminating (mostly syntax errors) and non-terminating. The latter is not obvious and causes a lot of troubles for people without strong PowerShell foundations. Even if the <code>non-terminating</code> error occurs, the script execution is continued. This effect can be highly unwanted for scripts performing interlinked operations dependent on each other. Of course, we can change this behavior and turn all &rsquo;non-terminating&rsquo; errors into &rsquo;terminating&rsquo; ones by setting <code>$ErrorActionPreference</code> variable at the begging of our scripts:</p>
 <pre><code class="language-powershell">#Error Action Preference:
 #
 #PowerShell halts execution on terminating errors, as mentioned before. For non-terminating errors we have the option to tell PowerShell how to handle these situations. 
@@ -255,8 +255,8 @@ $ErrorActionPreference = &quot;Stop&quot;
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

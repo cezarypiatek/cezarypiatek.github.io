@@ -6,24 +6,21 @@
     <description>Recent content in WebAPI on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 16 Mar 2021 00:08:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/webapi/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Mar 2021 00:08:00 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/webapi/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Testing WebAPI with ApprovalTests.NET</title>
       <link>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</link>
       <pubDate>Tue, 16 Mar 2021 00:08:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</guid>
       <description>&lt;p&gt;In this blog post, I&amp;rsquo;m going to share my experience on testing &lt;code&gt;ASP.NET Core&lt;/code&gt; applications by applying an unconventional method called &lt;code&gt;snapshot assertions&lt;/code&gt;. In comparison to the classical approach, this method should save you a lot of time and improve assertions maintainability.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Auto generated WebAPI client library with NSwag</title>
       <link>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</link>
       <pubDate>Sun, 06 Sep 2020 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/auto-generated-web-api-client/</guid>
       <description>In the era of microservices and distributed systems, web browser applications written in JavaScript are not the only consumers of the REST API. Today, more and more often this type of communication is used to connect backend services, too. Integrating two services using REST protocol doesn&amp;rsquo;t require any form of shared contract which makes the process extremely easy when both sides are developed in different technologies but it comes at a price.</description>
     </item>
-    
   </channel>
 </rss>

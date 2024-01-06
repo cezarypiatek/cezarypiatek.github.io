@@ -6,15 +6,14 @@
     <description>Recent content in devops on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Dec 2018 00:21:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 09 Dec 2018 00:21:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/devops/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Scheduled ElasticSearch index cleanup</title>
       <link>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</link>
       <pubDate>Sun, 09 Dec 2018 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/scheduled-elasticsearch-cleanup/</guid>
       <description>It&amp;rsquo;s been over a year since I&amp;rsquo;ve started using ELK stack for logging purpose. In the meantime, I was able to successfully introduce it in a few development teams, totally changing the way we are working with application logs. Everything is working fine and the only downside so far was the need for periodical maintenance work. By maintenance, I mean removing old indices. If the disk free space drops below certain level the ElasticSearch stops working correctly.</description>
     </item>
-    
   </channel>
 </rss>

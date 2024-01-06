@@ -6,24 +6,21 @@
     <description>Recent content in multithreading on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Sep 2019 00:10:00 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/multithreading/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Sep 2019 00:10:00 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/multithreading/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Avoid thread synchronization problems with Roslyn: Synchronization primitives traps</title>
       <link>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/</link>
       <pubDate>Sun, 15 Sep 2019 00:10:00 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p2/</guid>
       <description>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often the improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The effect of the broken synchronization can be analyzed with various runtime tools, but it would be nice to have an asset that is able to report all those issues in the design time right on the stage of writing code.</description>
     </item>
-    
     <item>
       <title>Avoid multithreading traps with Roslyn: Lock object selection</title>
       <link>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</link>
       <pubDate>Sun, 18 Aug 2019 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</guid>
       <description>Multithreading is one of the most difficult aspects of programming and can cause a lot of headaches. The main source of problems is often improper usage of synchronization mechanisms, which can result in deadlocks or a complete lack of synchronization despite our expectations. The infamous deadlocks can be detected in runtime thanks to tools like Concurrency Visualizer, Parallel Tasks Window or with WinDBG !dlk command. However, these tools are often used only after some unexpected behavior is observed, but it would be nice to reduce the feedback loop and detect these issues in design time.</description>
     </item>
-    
   </channel>
 </rss>

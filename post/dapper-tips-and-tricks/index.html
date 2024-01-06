@@ -183,7 +183,7 @@
 </blockquote>
 <h2 id="resilient-to-refactoring"><a href="#resilient-to-refactoring">Resilient to refactoring  🔗&#xFE0E;</a></h2>
 
-<p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns' names match object fields' name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
+<p>Dapper allows to easily map SQL query results to C# objects based on the naming convention. There&rsquo;s no problem if the database table columns&rsquo; names match object fields&rsquo; name - if there&rsquo;s a discrepancy, you can deal with it by adding aliases:</p>
 <pre><code class="language-sql">SELECT 
     UserID AS [Id], 
     UserName AS [Name]
@@ -505,8 +505,8 @@ FOR JSON PATH
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

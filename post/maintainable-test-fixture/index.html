@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Practical Tips for handling test fixture in a maintainable way using only C# features.">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/maintainable-test-fixture\/"
+            },
+          "headline" : "Common Setup and Teardown in dotnet tests without test framework magic",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2024-01-06",
+          "dateModified" : "2024-01-06",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/maintainable-test-fixture\/splashscreen.png",
+          "description": "Practical Tips for handling test fixture in a maintainable way using only C# features."
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2024-01-06">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/maintainable-test-fixture/">	
+	<meta property="og:title" content="Common Setup and Teardown in dotnet tests without test framework magic">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/maintainable-test-fixture/splashscreen.png">
+    <meta property="og:description" content="Practical Tips for handling test fixture in a maintainable way using only C# features.">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="testing">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/maintainable-test-fixture/splashscreen.png">
+	<meta property="twitter:title" content="Common Setup and Teardown in dotnet tests without test framework magic">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Practical Tips for handling test fixture in a maintainable way using only C# features.">
+
+	<meta name="keywords" value="aspcore, dotnet, testing" />    
+    <title>Common Setup and Teardown in dotnet tests without test framework magic &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Common Setup and Teardown in dotnet tests without test framework magic</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>6 January 2024</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.png" width="100%" />
+			<br />
+		
+		<p>In this blog post I describe the typical problems caused by the usage of <code>Setup</code> and <code>Teardown</code> method in dotnet tests and how those problems can be solved by using only C# language features.</p>
+<h2 id="typical-test-development-lifecycle"><a href="#typical-test-development-lifecycle">Typical test development lifecycle  🔗&#xFE0E;</a></h2>
+
+<p>A typical developer writes some tests. Being a conscientious developer who values clean code principles, he refactors these tests, extracting the duplicated code responsible for preparing and cleaning up test fixtures into separate methods intended for SetUp and TearDown. These methods are implicitly run by the test framework before and after each test. Another developer adds a few more tests and, noticing that all code responsible for preparing and cleaning data is placed in the SetUp and TearDown methods, also refactors the newly added tests, moving the appropriate parts of those tests to the SetUp and TearDown methods. Subsequently, another developer follows suit.</p>
+<h2 id="the-problem"><a href="#the-problem">The problem  🔗&#xFE0E;</a></h2>
+
+<p>The work pattern described above leads to the following problems:</p>
+<ol>
+<li>The SetUp and TearDown methods tend to become overly complex. Over time, it becomes challenging to discern which parts of these methods correspond to specific test cases. This issue presents not only a maintenance challenge but can also lead to performance problems as the cumulative setup and cleanup operations for all tests are executed for each individual test.</li>
+<li>Understanding the test scenario becomes more difficult as it requires jumping back and forth between the actual test code and the SetUp and TearDown methods. Sometimes it&rsquo;s not even obvious that such methods exist, especially when somebody goes even further end extract those methods to base class and starts using test class inheritance.</li>
+<li>As the test cases method needs to access objects prepared by SetUp method, the test class starts being polluted with extra members. It can negatively contribute to test readability.</li>
+<li>If the teardown method fails, the test case is still marked as success. This might hide issues with your test suite for a long time.</li>
+</ol>
+<p>These observations are not a novel discovery. Some of these problems were described by James Newkirk (co-author of Nunit) in one of his blog posts in 2007 <a href="https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html">https://jamesnewkirk.typepad.com/posts/2007/09/why-you-should-.html</a> Despite this being 17 years ago, people continue to adopt these problematic patterns. This may be due to the fact that James suggested to keep the setup logic in the test methods, even at the cost of introducing code duplication. From what I have observed, developers are often discouraged from duplicating &ldquo;similar&rdquo; lines of code.</p>
+<h2 id="the-solution"><a href="#the-solution">The Solution  🔗&#xFE0E;</a></h2>
+
+<p>I solve this issue by taking the leverage of <code>IDiposable</code> types. The solution is very simple: just create a dedicated class that represents your test fixture. The constructor of this class takes the responsibilities of the Setup method and Dispose method implementation from <code>IDisposable</code> interface can act as a Teardown. When you create an instance of your test fixture with <code>using</code> syntax, the compiler ensures that <code>Dispose</code> method is automatically called at the end of your test method scope. Thanks to the <code>using declaration syntax</code> introduced in C# 8, it&rsquo;s very neat in application as we no longer need to create new code block for disposable scope:</p>
+<pre><code class="language-cs">public class TestCaseFixture : IDisposable
+{
+    public TestCaseFixture()
+    {
+        // TODO: Setup code goes here
+    }
+
+    public void Dispose()
+    {
+        // TODO: Teardown code goes here
+    }
+}
+
+public class Tests
+{
+    [Test]
+    public void should_do_something()
+    {
+        using var fixture = new TestCaseFixture();
+        
+        // TODO: Here goes the test case scenario        
+    }
+}    
+
+</code></pre>
+<p>To make sure that test case fixture is correctly used - always disposed - you can set <a href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2000">CA2000</a> rule to error in your <code>.editorconfig</code> file. Thanks to that, the build will always fail if somebody forgets to add <code>using</code> keyword.</p>
+<pre><code># CA2000: Dispose objects before losing scope
+dotnet_diagnostic.CA2000.severity = error
+</code></pre>
+<p>You might wonder about segregating the fixture code for a specific group of tests. There are several options available. You can create a dedicated test case fixture type for a particular group of tests, or you can employ the factory or builder pattern (or a combination of both) to create a specialized instance of the test fixture that will suit the needs of a given test scenario. With the latter approach, you can minimize code duplication without compromising other qualities of your test code.</p>
+<pre><code class="language-cs">public class TestCaseFixtureBuilder
+{
+    //TODO: Add methods for customizing TestCaseFixture definition
+
+    public TestCaseFixture Build() =&gt; new();
+}
+
+public static class TestCaseFixtureFactory
+{
+    public static TestCaseFixture CreateFixture(Action&lt;TestCaseFixtureBuilder&gt;? adjust = null)
+    {
+        var instance = new TestCaseFixtureBuilder();
+        adjust?.Invoke(instance);
+        return instance.Build();
+    }
+}
+</code></pre>
+<p>Sample usage</p>
+<pre><code class="language-cs">using static TestCaseFixtureFactory;
+
+public class Tests
+{
+    [Test]
+    public void should_do_something()
+    {
+        using var fixture = CreateFixture(builder =&gt;
+        {
+            // TODO: call builder's methods to customize your fixture
+        });
+        
+        // TODO: Here goes the test case scenario        
+    }
+}    
+</code></pre>
+<p>Here are some of the benefits of applying this approach to managing Setup and Teardown:</p>
+<ol>
+<li>The explicit invocation of setup and teardown codes as part of test case execution enhances understanding of the logic of each test case.</li>
+<li>As setup and teardown codes are integral to the test case execution, it simplifies issue detection, maintenance, and performance assessment.</li>
+<li>The approach allows for the creation of versatile and reusable test fixtures. Since setup code is explicitly called, it&rsquo;s straightforward to pass parameters that adapt the fixture to the specific needs of a given test case.</li>
+<li>The TestCaseFixture type can serve as a container for resources needed both in Setup and Teardown logic and for elements accessed within the test case. This makes fixture elements easily discoverable and explicitly accessible.</li>
+<li>Test fixtures can be reused between different test classes, eliminating the need for inheritance.</li>
+<li>This method is independent of the test framework. It can be employed with NUnit, xUnit, or any other framework of your choice.</li>
+</ol>
+<p>I have been successfully using this method for many years, keeping test maintainable without excessive effort.</p>    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://essentials.dotnetos.org/?utm_source=cezarypiatek&utm_medium=blog&utm_campaign=banner" data-gtag="DotnetEssentials" title="Your free course of .NET environment">
+				<img src="https://dotnetos.org/assets/images/products/essentials.png" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/wiremock-in-parallel-tests/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/wiremock-in-parallel-tests/splashscreen_hu6d636afecf1f08eb4bded1584b3bbd3c_281800_320x240_fill_q75_box_smart1.jpg" alt="Sharing WireMock.NET in sequential and parallel tests">
+								<div class="card-body">
+									<h5 class="card-title">Sharing WireMock.NET in sequential and parallel tests</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p2/splashscreen_hue7fb845594809c7df3049ff28a55b358_49988_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Troubleshooting">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Troubleshooting</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p1/splashscreen_hu3b1c4c54cee5ec2b65443949fccfd391_56344_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Introduction">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Introduction</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "aspcore,dotnet,testing"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+
+  <script src="https://github.com/MohamedBassem/spam-referrals-blocker/releases/download/v0.2/spam-referrals-blocker.min.js"></script>
+  <script>
+     if (window.location.hostname === "localhost") {
+		console.log("Analytics not running on local dev.");		
+	}
+	else if(isSpamReferral())
+	{
+		console.log("Sorry, no analytics for spammers");		
+	}
+	else{
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-18735584-9', 'auto');
+		ga('send', 'pageview');
+		window.baseURL = "https:\/\/cezarypiatek.github.io\/";
+	}
+  </script>
+  
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18735584-9"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-18735584-9');
+		$("[data-gtag]").on("click", function(){
+					var eventName = $(this).data("gtag");
+					gtag('event', eventName);
+				});
+</script>
+
+</body>
+</html>

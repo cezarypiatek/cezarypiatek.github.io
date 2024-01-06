@@ -239,7 +239,7 @@ catch(SpecificException e)
 	// do sth
 }
 </code></pre>
-<p>This approach makes the code harder to analyze and has a huge impact on performance. According to 
+<p>This approach makes the code harder to analyze and has a huge impact on performance. According to
 <a href="https://www.amazon.com/Writing-High-Performance-NET-Code-Watson-ebook/dp/B07BF68842/">Writing High-Performance .NET Code</a> by <code>Ben Watson</code> it can be even <strong>thousands of times slower</strong> (For more details on that I recommend reading chapter: &ldquo;General Coding and Class Design - Exceptions&rdquo;). Exceptions are for exceptional situations (when you don&rsquo;t know how to react on given conditions in the current context) and should not be used for well-known business workflow. In order to prevent this kind of violation in the code I&rsquo;ve implemented <a href="https://github.com/smartanalyzers/ExceptionAnalyzer/blob/master/src/ExceptionAnalyzer/ExceptionAnalyzer/Rules/ExceptionDrivenLogic/ExceptionDrivenLogicAnalyzer.cs">ExceptionDrivenLogicAnalyzer</a> which is able to spot places where the exception is thrown and caught inside the code of the same method.</p>
 <p>
 <a href="exception_deriven_logic_example.jpg"><img  src="exception_deriven_logic_example.jpg" alt="exception driven logic example"></a>
@@ -268,8 +268,8 @@ catch(SpecificException e)
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

@@ -6,34 +6,28 @@
     <description>Recent content in mocks on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Apr 2023 00:10:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/mocks/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Apr 2023 00:10:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/mocks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>WireMock.NET - Troubleshooting</title>
       <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/</link>
       <pubDate>Tue, 18 Apr 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p2/</guid>
       <description>&lt;p&gt;In the second installment of my blog post series on WireMock.NET, I will be discussing some of the most common problems that developers encounter while using the library. WireMock troubleshooting can be quite time consuming, especially when you don&amp;rsquo;t know the drill. I hope that my guideline will save you a lot of time.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>WireMock.NET - Introduction</title>
       <link>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</link>
       <pubDate>Sun, 02 Apr 2023 00:10:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-outgoing-http-requests-p1/</guid>
-      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.
-In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
+      <description>In my previous blog post, I discussed the use of dependency injection (DI) containers for mocking dependencies in tests for ASP.NET Core applications. While this approach is useful in some cases, I personally prefer using mocks/stubs/fakes that don&amp;rsquo;t require any changes in the app internals and work directly with the actual protocol used by the application being tested.&#xA;In this post, I will introduce to you WireMock.NET, a powerful tool for mocking HTTP requests.</description>
     </item>
-    
     <item>
       <title>Mocking dependencies in ASP.NET Core tests</title>
       <link>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</link>
       <pubDate>Fri, 06 Jan 2023 00:21:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/mocking-dependencies-in-asp-net-core/</guid>
       <description>As I recently spent some time writing and refactoring tests that utilize WebApplicationFactory, I&amp;rsquo;ve come to have some thoughts and ideas for improvement that I&amp;rsquo;d like to share. In this article, I&amp;rsquo;ll delve into the process of mocking dependencies in a DI container when using WebApplicationFactory, and offer some insights and best practices I&amp;rsquo;ve learned along the way. Whether you&amp;rsquo;re a seasoned pro or new to unit testing ASP.NET Core applications, I hope this information will be helpful as you work to simplify and streamline your tests.</description>
     </item>
-    
   </channel>
 </rss>

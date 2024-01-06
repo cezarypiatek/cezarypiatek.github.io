@@ -6,15 +6,14 @@
     <description>Recent content in GUI on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 Dec 2017 10:34:18 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/gui/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Dec 2017 10:34:18 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/gui/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Exploring PowerShell with graphical user interface.</title>
       <link>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</link>
       <pubDate>Sat, 30 Dec 2017 10:34:18 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/exploring-powershell-with-gui/</guid>
       <description>I&amp;rsquo;ve recently watched a pretty decent tutorial about DSC on Microsoft Virtual Academy. I&amp;rsquo;m not a huge fan of video tutorials because it always takes more time to watch them than read a book/blog post (you can hack it by increasing video speed and save yourself a couple of minutes) but sometimes there is additional beneficial side effect - the presenter can show you (accidentally or not) some tips and tricks not strictly related to the core subject of the video.</description>
     </item>
-    
   </channel>
 </rss>

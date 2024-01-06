@@ -292,7 +292,7 @@ interface IQuery&lt;out TIQueryResult&gt; : IRequest&lt;TIQueryResult&gt; { }
 interface IQueryHandler&lt;in TQuery, TQueryResult&gt; : IRequestHandler&lt;TQuery, TQueryResult&gt; where TQuery : IQuery&lt;TQueryResult&gt; { }
 </code></pre>
 <p>Those four extra interfaces allow us to tell apart commands and queries operations. Now we are more aligned with the CQRS definition but this approach has some disadvantages related to maintenance. We need to inform other developers working on the project that we are allowed to use only those interfaces to implement our commands and queries, and we can&rsquo;t directly use gears provided the by MediatR. Of course, there&rsquo;s always a risk that somebody uses <code>IRequest</code> and <code>IRequestHandler</code> interfaces directly, especially when we have seasoned <code>MediatR</code> users or project newcomers - they will probably struggle with all habits. I especially don&rsquo;t recommend doing that in an existing project as the mix of this extra abstraction and the original MediatR interfaces might be very confusing. This might be counter-productive as we start fighting with a library that is not well aligned with our design.</p>
-<p>Before we go this way, we should ask ourselves one important question: <strong>&ldquo;If the pattern consists of four interfaces and we need to create them anyway to use a library that should provide them, what is the benefit of that library?&quot;</strong></p>
+<p>Before we go this way, we should ask ourselves one important question: <strong>&ldquo;If the pattern consists of four interfaces and we need to create them anyway to use a library that should provide them, what is the benefit of that library?&rdquo;</strong></p>
 <h3 id="cross-cutting-concerns"><a href="#cross-cutting-concerns">Cross Cutting Concerns  🔗&#xFE0E;</a></h3>
 
 <p>Another missing part in MediatR is the distinction of commands and queries in the mechanism responsible for operation dispatching. Having two separate interfaces allows for creating independent workflows for the read and write operations. Here are a few examples of actions that you want to apply to only one side:</p>
@@ -375,8 +375,8 @@ interface IQueryHandler&lt;in TQuery, TQueryResult&gt; : IRequestHandler&lt;TQue
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     

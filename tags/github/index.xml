@@ -6,15 +6,14 @@
     <description>Recent content in Github on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Jan 2021 10:00:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Jan 2021 10:00:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/github/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Github Actions for Visual Studio Extension developers</title>
       <link>https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/</link>
       <pubDate>Sun, 24 Jan 2021 10:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/develop-vsextension-with-github-actions/</guid>
       <description>I discovered the power of Roslyn over three years ago and since then I&amp;rsquo;ve developed three Visual Studio extensions and a couple of code analyzers. Because I work on those tools only in my free time, the word &amp;ldquo;time&amp;rdquo; is a key here, so automation really matters. So far I&amp;rsquo;ve been using AppVeyor for building and testing my extensions. However, I&amp;rsquo;m a huge fan of integrated solutions because they require much less work for setup, and since GithubActions became generally available I wanted to give it a try.</description>
     </item>
-    
   </channel>
 </rss>

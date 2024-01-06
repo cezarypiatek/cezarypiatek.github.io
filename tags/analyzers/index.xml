@@ -6,33 +6,28 @@
     <description>Recent content in analyzers on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Nov 2020 10:00:45 +0200</lastBuildDate><atom:link href="https://cezarypiatek.github.io/tags/analyzers/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Nov 2020 10:00:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/analyzers/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Async code smells and how to track them down with analyzers - Summary</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-summary/</link>
       <pubDate>Tue, 03 Nov 2020 10:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/async-analyzers-summary/</guid>
       <description>In the last two posts, I&amp;rsquo;ve described 14 different code smells related to the async/await keywords. Beside the problem description, I&amp;rsquo;ve also provided info about code analyzers that can detect and report given issue. Those analyzers come from a few different packages that are not strictly devoted to the asynchronous programming area. They also contain rules from other fields with predefined severity, which might not be appropriate to your needs, or you might not be interested in enforcing them at all.</description>
     </item>
-    
     <item>
       <title>Async code smells and how to track them down with analyzers - Part II</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-p2/</link>
       <pubDate>Sun, 18 Oct 2020 16:00:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p2/</guid>
-      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;quot;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
+      <description>This blog post continues the series which is a guide through the code analyzers available on the market and their possibilities. I&amp;rsquo;m trying to help you answer the question: &amp;ldquo;Which analyzer package should I use and how to configure it to avoid problems related to async/await?&amp;rdquo;. In the previous episode, I presented the first seven most common code smells related to asynchronous programming. Today, I present the next seven traps from this area.</description>
     </item>
-    
     <item>
       <title>Async code smells and how to track them down with analyzers - Part I</title>
       <link>https://cezarypiatek.github.io/post/async-analyzers-p1/</link>
       <pubDate>Sun, 11 Oct 2020 00:11:45 +0200</pubDate>
-      
       <guid>https://cezarypiatek.github.io/post/async-analyzers-p1/</guid>
       <description>Roslyn analyzers are great. Not only do they detect different issues in our code, but they are also able to propose solutions, thanks to accompanying code fixes. There&amp;rsquo;s one more, less-advertised aspect of analyzers: besides improving the quality of our codebase, they also improve the state of language knowledge in our teams. This is a real time-saver during the code review because the technical, language-related remarks are reported automatically in design/build time.</description>
     </item>
-    
   </channel>
 </rss>

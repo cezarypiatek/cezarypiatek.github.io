@@ -175,7 +175,7 @@
 
 <h3 id="files-information-diet"><a href="#files-information-diet">Files information diet  🔗&#xFE0E;</a></h3>
 
-<p>In <code>VS2007</code> format the <code>csproj</code> is not a ledger of all project files anymore. This decision has a few benefits. The first one is that we have much fewer conflict situations during committing changes into VCS. Two people can simultaneously add files into the same project and not to worry about the need for merging conflicts. The second one is related to the order in the codebase. I used to work with people who have a bad habit of excluding files from the project instead of deleting them completely. This results in polluting codebase with unnecessary files and causes a lot of confusion (a lot of questions, such as: &ldquo;Is it still necessary?&rdquo;, &ldquo;Why this is not included into the project?&quot;). With the new csproj format this problem disappeared almost completely. Of course, there is still an option of excluding files from the project but the result is an additional entry in csproj and - thanks to that - it is much easier to spot it during code review.</p>
+<p>In <code>VS2007</code> format the <code>csproj</code> is not a ledger of all project files anymore. This decision has a few benefits. The first one is that we have much fewer conflict situations during committing changes into VCS. Two people can simultaneously add files into the same project and not to worry about the need for merging conflicts. The second one is related to the order in the codebase. I used to work with people who have a bad habit of excluding files from the project instead of deleting them completely. This results in polluting codebase with unnecessary files and causes a lot of confusion (a lot of questions, such as: &ldquo;Is it still necessary?&rdquo;, &ldquo;Why this is not included into the project?&rdquo;). With the new csproj format this problem disappeared almost completely. Of course, there is still an option of excluding files from the project but the result is an additional entry in csproj and - thanks to that - it is much easier to spot it during code review.</p>
 <h3 id="nuget"><a href="#nuget">Nuget  🔗&#xFE0E;</a></h3>
 
 <p>With the new <code>csproj</code> format a few changes also come to the nuget. At first, the <code>packages.config</code> has been abandoned and the information about referenced NuGet packages was moved into <code>csproj</code> file - all NuGet dependencies are now listed as <code>PackageReference</code> nodes. The next change is related to creating your own NuGet packages. You don&rsquo;t need <code>nuspec</code> file anymore to generate a NuGet package from your project - all the package metadata is inside the project file. And the most important information: working with NuGet is much nicer because it&rsquo;s finally fast. There is a tremendous difference in NuGet performance between projects in the old and new format. In the old format, even the simplest actions such as install or update a single package were painfully slow. The issue is described here: <a href="https://github.com/NuGet/Home/issues/5805">Why is everything related to NuGet package restore/upgrade so slow</a> and the only working solution is a migration to new csproj format.</p>
@@ -266,8 +266,8 @@
 <hr/>
 	
 	  <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     
