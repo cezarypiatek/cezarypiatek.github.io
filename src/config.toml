@@ -12,7 +12,7 @@ enableGitInfo = false
 	title = "CEZARY PIĄTEK"
 	subtitle = "Automation Tycoon"
 	header = "Resolve all using mine"
-	analytics = "G-TYV83WWGTE"
+	analytics = "UA-18735584-9"
 	addThis = "ra-5a286b9b1c027c15"
 	
 	[[params.socialbuttons]]
