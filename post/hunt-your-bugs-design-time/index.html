@@ -67,6 +67,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYV83WWGTE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TYV83WWGTE');
+    $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+  </script>
 </head>
 <body>
 
@@ -455,19 +466,6 @@
   			});
 		});
 	</script>
-
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TYV83WWGTE"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-TYV83WWGTE');
-	$("[data-gtag]").on("click", function(){
-				var eventName = $(this).data("gtag");
-				gtag('event', eventName);
-			});
-</script>
 
 </body>
 </html>

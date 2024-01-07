@@ -39,6 +39,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
     
     
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYV83WWGTE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TYV83WWGTE');
+    $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+  </script>
 </head>
 <body>
 
@@ -289,18 +300,5 @@ an element was removed in the meantime an element was replaced with newer conten
   <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
   
   
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TYV83WWGTE"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-TYV83WWGTE');
-	$("[data-gtag]").on("click", function(){
-				var eventName = $(this).data("gtag");
-				gtag('event', eventName);
-			});
-</script>
-
 </body>
 </html>
