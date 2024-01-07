@@ -80,10 +80,13 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', '{{ .Site.Params.analytics }}');
-    $("[data-gtag]").on("click", function(){
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
           var eventName = $(this).data("gtag");
           gtag('event', eventName);
         });
+    });
   </script>
 </head>
 <body>
