@@ -6,27 +6,48 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jan 2024 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AspCore</title>
       <link>https://cezarypiatek.github.io/tags/aspcore/</link>
-      <pubDate>Sat, 06 Jan 2024 00:10:45 +0200</pubDate>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/tags/aspcore/</guid>
       <description></description>
     </item>
     <item>
       <title>dotnet</title>
       <link>https://cezarypiatek.github.io/tags/dotnet/</link>
-      <pubDate>Sat, 06 Jan 2024 00:10:45 +0200</pubDate>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/tags/dotnet/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GraphQL</title>
+      <link>https://cezarypiatek.github.io/tags/graphql/</link>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/tags/graphql/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>mocks</title>
+      <link>https://cezarypiatek.github.io/tags/mocks/</link>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/tags/mocks/</guid>
       <description></description>
     </item>
     <item>
       <title>testing</title>
       <link>https://cezarypiatek.github.io/tags/testing/</link>
-      <pubDate>Sat, 06 Jan 2024 00:10:45 +0200</pubDate>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>WireMock</title>
+      <link>https://cezarypiatek.github.io/tags/wiremock/</link>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/tags/wiremock/</guid>
       <description></description>
     </item>
     <item>
@@ -34,13 +55,6 @@
       <link>https://cezarypiatek.github.io/tags/parallel/</link>
       <pubDate>Sun, 24 Sep 2023 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/tags/parallel/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>WireMock</title>
-      <link>https://cezarypiatek.github.io/tags/wiremock/</link>
-      <pubDate>Sun, 24 Sep 2023 00:10:45 +0200</pubDate>
-      <guid>https://cezarypiatek.github.io/tags/wiremock/</guid>
       <description></description>
     </item>
     <item>
@@ -55,13 +69,6 @@
       <link>https://cezarypiatek.github.io/tags/kubernetes/</link>
       <pubDate>Thu, 17 Aug 2023 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>mocks</title>
-      <link>https://cezarypiatek.github.io/tags/mocks/</link>
-      <pubDate>Tue, 18 Apr 2023 00:10:45 +0200</pubDate>
-      <guid>https://cezarypiatek.github.io/tags/mocks/</guid>
       <description></description>
     </item>
     <item>

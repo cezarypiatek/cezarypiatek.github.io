@@ -6,8 +6,15 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 17 Jan 2024 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mocking GraphQL queries with WireMock.NET</title>
+      <link>https://cezarypiatek.github.io/post/mocking-graphql-with-wiremock/</link>
+      <pubDate>Wed, 17 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/mocking-graphql-with-wiremock/</guid>
+      <description>&lt;p&gt;GraphQL is a query language for APIs that allows clients to request exactly what they need, making data retrieval more efficient than traditional REST APIs. It supports three different types of client-server interaction: queries, mutations and subscriptions. When you start integrating a GraphQL API as a consumer in your application, it&amp;rsquo;s likely that you&amp;rsquo;ll need to write automated tests to ensure that the integration works correctly. In this blog post, I will show you how to mock GraphQL queries using WireMock.NET.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Common Setup and Teardown in dotnet tests without test framework magic</title>
       <link>https://cezarypiatek.github.io/post/maintainable-test-fixture/</link>
