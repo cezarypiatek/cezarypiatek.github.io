@@ -112,8 +112,7 @@ wireMock
                         owner = "cezarypiatek",
                         repoName = "NScenario"
                     }
-                })
-                ))
+                })))
     )
     .RespondWith(
         Response.Create()
@@ -163,6 +162,8 @@ Some GraphQL client libraries, such as StrawberryShaker, may rewrite our origina
         }))
     );
 ```
+
+If you have a problem with matching GraphQL requests, you can use [WireMockInspector](https://github.com/WireMock-Net/WireMockInspector) to diagnose the issue.
 
 ## Simulating error response
 
