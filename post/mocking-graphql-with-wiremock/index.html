@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Practical tips for simulating GraphQL query responses with WireMock.NET">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/mocking-graphql-with-wiremock\/"
+            },
+          "headline" : "Mocking GraphQL queries with WireMock.NET",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2024-01-17",
+          "dateModified" : "2024-01-17",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/mocking-graphql-with-wiremock\/splashscreen.jpg",
+          "description": "Practical tips for simulating GraphQL query responses with WireMock.NET"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2024-01-17">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/mocking-graphql-with-wiremock/">	
+	<meta property="og:title" content="Mocking GraphQL queries with WireMock.NET">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/mocking-graphql-with-wiremock/splashscreen.jpg">
+    <meta property="og:description" content="Practical tips for simulating GraphQL query responses with WireMock.NET">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="mocks">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="WireMock">
+    
+    <meta property="og:tags" content="GraphQL">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/mocking-graphql-with-wiremock/splashscreen.jpg">
+	<meta property="twitter:title" content="Mocking GraphQL queries with WireMock.NET">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Practical tips for simulating GraphQL query responses with WireMock.NET">
+
+	<meta name="keywords" value="testing, mocks, aspcore, dotnet, WireMock, GraphQL" />    
+    <title>Mocking GraphQL queries with WireMock.NET &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Mocking GraphQL queries with WireMock.NET</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>17 January 2024</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>GraphQL is a query language for APIs that allows clients to request exactly what they need, making data retrieval more efficient than traditional REST APIs. It supports three different types of client-server interaction: queries, mutations and subscriptions. When you start integrating a GraphQL API as a consumer in your application, it&rsquo;s likely that you&rsquo;ll need to write automated tests to ensure that the integration works correctly. In this blog post, I will show you how to mock GraphQL queries using WireMock.NET.</p>
+<h2 id="graphql-over-http"><a href="#graphql-over-http">GraphQL over HTTP  🔗&#xFE0E;</a></h2>
+
+<p>The GraphQL protocol is built on top of HTTP, so a tool like WireMock.NET can be used to stub GraphQL responses. The key to mocking GraphQL communication is knowing the format of the requests and responses. Detailed documentation of the protocol can be found in the <a href="https://github.com/graphql/graphql-over-http/blob/main/spec/GraphQLOverHTTP.md">GraphQLOverHTTP</a> specification, but in shorthand it looks like this:</p>
+<ul>
+<li>
+<p>For requests, GraphQL uses standard HTTP methods, primarily <code>POST</code> for queries and mutations. The request body contains a JSON object with fields for the query, variables, and operation name. When using a <code>GET</code> request, all required data should be appropriately encoded and passed as query params. Example request payload:</p>
+<pre><code class="language-json">{
+&quot;query&quot;: &quot;query GetRepoBasicInfo($owner:String!, $repoName:String!) {\n repository(owner: $owner, name:$repoName)\n {  \n  stargazerCount\n  latestRelease {      \n      tagName      \n    }\n  }\n} &quot;,
+&quot;variables&quot;: {
+    &quot;owner&quot;: &quot;cezarypiatek&quot;,
+    &quot;repoName&quot;: &quot;NScenario&quot;
+},
+&quot;operationName&quot;: &quot;GetRepoBasicInfo&quot;
+}
+</code></pre>
+</li>
+<li>
+<p>Responses are also in JSON, with a <code>data</code> field for successful requests or an <code>errors</code> array detailing any problems. Content-Type should be set to <code>application/graphql-response+json'</code> or <code>application/json'</code> and the status code should always be set to 200. Example response payload:</p>
+<pre><code class="language-json">{
+    &quot;data&quot;: {
+        &quot;repository&quot;: {
+            &quot;stargazerCount&quot;: 67,
+            &quot;latestRelease&quot;: {
+                &quot;tagName&quot;: &quot;5.2.0&quot;
+            }
+        }
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="mocking-query-request"><a href="#mocking-query-request">Mocking query request  🔗&#xFE0E;</a></h2>
+
+<p>WireMock.net stubs consist of two parts: the matcher and the response. The matcher is responsible for identifying a request for which the predefined response will be returned. We need to prepare a suitable matcher to catch GraphQL requests.</p>
+<p>The first step is to determine the type of request method (GET or POST) used by our GraphQL client. This information can usually be obtained by examining the client code or by sniffing network traffic with tools such as Fiddler. However, matching by <code>request method</code> and <code>path</code> alone may not be sufficient, especially if different GraphQL requests are made during a test scenario.</p>
+<p>As we already know, GraphQL requests are also characterised by attributes such as <code>query</code>, <code>variables</code> and an optional <code>operationName</code>. These are passed as query string parameters in GET requests, or included in the JSON payload for POST requests. Choosing the appropriate attribute to match a specific query requires careful consideration. Using <code>query</code> as a matcher can lead to maintainability issues, as it requires replicating the exact query issued by the application. Relying solely on the <code>variables</code> attribute may not be universally applicable, as some queries lack parameters. While <code>operationName</code> is optional, its usage is enforced when employing tools like StrawberryShake for generating GraphQL client. Therefore, the most effective approach is to combine <code>operationName</code> with <code>variables</code> for matching.</p>
+<p>When preparing a matcher, we must also remember to format the request payload according to the GraphQL specification. To be compliant, it&rsquo;s a good idea to use <code>JsonSerializers</code> from nuget packages such as <code>GraphQL.NewtonsoftJson</code> or <code>GraphQL.SystemTextJson</code>.</p>
+<p>Example stub definition for GET request:</p>
+<pre><code class="language-cs">var wireMock = WireMockServer.Start();
+var graphQlSerializer = new GraphQLSerializer();
+wireMock
+    .Given(
+        Request.Create()
+            .UsingGet()
+            .WithPath(&quot;/graphql/proxy&quot;)
+            .WithParam(&quot;operationName&quot;, &quot;GetRepoBasicInfo&quot;)
+            .WithParam(&quot;variables&quot;, Uri.EscapeDataString(graphQlSerializer.Serialize(new           
+            {
+                owner = &quot;cezarypiatek&quot;,
+                repoName = &quot;NScenario&quot;
+            })))
+            
+    )
+    .RespondWith(
+        Response.Create()
+            .WithStatusCode(200)
+            .WithHeader(&quot;Content-Type&quot;, &quot;application/graphql-response+json&quot;)
+            .WithBody(graphQlSerializer.Serialize(new
+            {
+                data = new
+                {
+                    repository = new
+                    {
+                        stargazerCount = 67,
+                        latestRelease = new 
+                        {
+                            tagName = &quot;5.2.0&quot;
+                        }
+                    }
+                }
+            }))
+    );
+</code></pre>
+<p>Example stub definition for POST request:</p>
+<pre><code class="language-cs">var wireMock = WireMockServer.Start();
+var graphQlSerializer = new GraphQLSerializer();
+wireMock
+    .Given(
+        Request.Create()
+            .UsingPost()
+            .WithPath(&quot;/graphql/proxy&quot;)
+            .WithBody(new JsonPartialMatcher(
+                graphQlSerializer.Serialize(new
+                {
+                    operationName = &quot;GetRepoBasicInfo&quot;,
+                    variables = new
+                    {
+                        owner = &quot;cezarypiatek&quot;,
+                        repoName = &quot;NScenario&quot;
+                    }
+                })))
+    )
+    .RespondWith(
+        Response.Create()
+            .WithStatusCode(200)
+            .WithHeader(&quot;Content-Type&quot;, &quot;application/graphql-response+json&quot;)
+            .WithBody(graphQlSerializer.Serialize(new
+            {
+                data = new
+                {
+                    repository = new 
+                    {
+                        stargazerCount = 67,
+                        latestRelease = new 
+                        {
+                            tagName = &quot;5.2.0&quot;
+                        }
+                    }
+                }
+            }))
+    );
+</code></pre>
+<p>Since our matching pattern for body is only a subset of the actual JSON payload, we need to use a <a href="https://github.com/WireMock-Net/WireMock.Net/wiki/Request-Matching-JsonPartialMatcher">JsonPartialMatcher</a>.</p>
+<p>Some GraphQL client libraries, such as StrawberryShaker, may rewrite our original query with a request for the <code>__typename</code> metadata field. In order for the client to work correctly, we need to include a proper value for this metadata as part of the response data for each object.</p>
+<pre><code class="language-cs"> .RespondWith(
+    Response.Create()
+        .WithStatusCode(200)
+        .WithHeader(&quot;Content-Type&quot;, &quot;application/graphql-response+json&quot;)
+        .WithBody(graphQlSerializer.Serialize(new
+        {
+            data = new
+            {
+                repository = new 
+                {
+                    __typename = &quot;Repository&quot;,
+                    stargazerCount = 67,
+                    latestRelease = new 
+                    {
+                        __typename = &quot;Release&quot;,
+                        tagName = &quot;5.2.0&quot;
+                    }
+                }
+            }
+        }))
+    );
+</code></pre>
+<p>If you have a problem with matching GraphQL requests, you can use <a href="https://github.com/WireMock-Net/WireMockInspector">WireMockInspector</a> to diagnose the issue.</p>
+<h2 id="simulating-error-response"><a href="#simulating-error-response">Simulating error response  🔗&#xFE0E;</a></h2>
+
+<p>In GraphQL, regardless of whether a query fails partially or completely, the HTTP status code returned is typically 200 OK. This is because, unlike REST, GraphQL handles errors at the application level rather than at the HTTP level. Even if a query fails, the server will still successfully process the request and return a response in the expected format, which includes an error field in the JSON payload to provide details of what went wrong. For network or server errors unrelated to the GraphQL query itself, standard HTTP error codes (such as 400, 500, etc.) can still be used.</p>
+<p>The GraphQL protocol distinguishes between two types of error:</p>
+<ul>
+<li><code>Request errors</code> - usually caused by client errors such as syntax or validation problems, prevent execution from starting and result in a response with no &lsquo;data&rsquo; entry, but &rsquo;errors&rsquo; entry detailing the problem.</li>
+<li><code>Field errors</code> - occur during execution due to problems such as internal errors or value coercion failures, usually the fault of the service, and result in partial results with both &lsquo;data&rsquo; and &rsquo;errors&rsquo; entries in the response.</li>
+</ul>
+<p>Mocking <code>Request error</code> response:</p>
+<pre><code class="language-cs">.RespondWith
+(
+    Response.Create()
+        .WithStatusCode(200)
+        .WithHeader(&quot;Content-Type&quot;, &quot;application/graphql-response+json&quot;)
+        .WithBody(graphQlSerializer.Serialize(new
+        {            
+            errors = new string[]
+            {
+                
+            }
+        }))
+);
+</code></pre>
+<p>Mocking <code>Field errors</code> response:</p>
+<pre><code class="language-cs">.RespondWith
+(
+    Response.Create()
+        .WithStatusCode(200)
+        .WithHeader(&quot;Content-Type&quot;, &quot;application/graphql-response+json&quot;)
+        .WithBody(graphQlSerializer.Serialize(new
+        {
+            data = new
+            {
+                
+            },
+            errors = new []
+            {
+                new 
+                {
+                    message = &quot;Name for character with ID 1002 could not be fetched.&quot;,
+                    locations = new [] { new { line = 6, column= 7 }},
+                    path = new object[] { &quot;hero&quot;, &quot;heroFriends&quot;, 1, &quot;name&quot; }
+                }
+            }
+        }))
+);
+</code></pre>
+<p>Detailed specification for GraphQL errors is available here <a href="https://spec.graphql.org/October2021/#sec-Errors">https://spec.graphql.org/October2021/#sec-Errors</a>.</p>    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p2/splashscreen_hue7fb845594809c7df3049ff28a55b358_49988_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Troubleshooting">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Troubleshooting</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p1/splashscreen_hu3b1c4c54cee5ec2b65443949fccfd391_56344_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Introduction">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Introduction</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/wiremock-in-parallel-tests/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/wiremock-in-parallel-tests/splashscreen_hu6d636afecf1f08eb4bded1584b3bbd3c_281800_320x240_fill_q75_box_smart1.jpg" alt="Sharing WireMock.NET in sequential and parallel tests">
+								<div class="card-body">
+									<h5 class="card-title">Sharing WireMock.NET in sequential and parallel tests</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "testing,mocks,aspcore,dotnet,WireMock,GraphQL"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>
