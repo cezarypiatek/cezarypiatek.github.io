@@ -1,8 +1,8 @@
 ---
-title: "Mocking GraphqQL queries with WireMock.NET"
-description: "Mocking outgoing HTTP requests in ASP.NET Core tests"
-date: 2024-01-14T00:10:45+02:00
-tags : ["testing", "mocks", "aspcore", "dotnet", "WireMock"]
+title: "Mocking GraphQL queries with WireMock.NET"
+description: "Practical tips for simulating GraphQL query responses with WireMock.NET"
+date: 2024-01-17T00:10:45+02:00
+tags : ["testing", "mocks", "aspcore", "dotnet", "WireMock", "GraphQL"]
 highlight: true
 highlightLang: ["cs", "json"]
 image: "splashscreen.jpg"
@@ -15,7 +15,7 @@ GraphQL is a query language for APIs that allows clients to request exactly what
 
 ## GraphQL over HTTP
 
-The GraphQL protocol is built on top of HTTP, so a tool like WireMock.NET can be used to stub GraphQL responses. A key to mocking GraphQL communication is knowing the format of the requests and responses. Detailed documentation of the protocol can be found in the [GraphQLOverHTTP](https://github.com/graphql/graphql-over-http/blob/main/spec/GraphQLOverHTTP.md) specification, but in shorthand it looks like this:
+The GraphQL protocol is built on top of HTTP, so a tool like WireMock.NET can be used to stub GraphQL responses. The key to mocking GraphQL communication is knowing the format of the requests and responses. Detailed documentation of the protocol can be found in the [GraphQLOverHTTP](https://github.com/graphql/graphql-over-http/blob/main/spec/GraphQLOverHTTP.md) specification, but in shorthand it looks like this:
 
 -  For requests, GraphQL uses standard HTTP methods, primarily `POST` for queries and mutations. The request body contains a JSON object with fields for the query, variables, and operation name. When using a `GET` request, all required data should be appropriately encoded and passed as query params. Example request payload:
 
@@ -48,9 +48,9 @@ The GraphQL protocol is built on top of HTTP, so a tool like WireMock.NET can be
 
 WireMock.net stubs consist of two parts: the matcher and the response. The matcher is responsible for identifying a request for which the predefined response will be returned. We need to prepare a suitable matcher to catch GraphQL requests. 
  
-The first step is to determine the type of request method (GET or POST) used by our GraphQL client. This information can usually be obtained by examining the client code or by sniffing network traffic with tools such as Fiddler. However, matching by `request method` and `path`` alone may not be sufficient, especially if different GraphQL requests are made during a test scenario. 
+The first step is to determine the type of request method (GET or POST) used by our GraphQL client. This information can usually be obtained by examining the client code or by sniffing network traffic with tools such as Fiddler. However, matching by `request method` and `path` alone may not be sufficient, especially if different GraphQL requests are made during a test scenario. 
 
-As we already know, GraphQL requests are also characterised by attributes such as `query`, `variables` and an optional `operationName`. These are passed as query string parameters in GET requests, or included in the JSON payload for POST requests. Choosing the appropriate attribute to match a specif query requires careful consideration. Using `query` as a matcher can lead to maintainability issues, as it requires replicating the exact query issued by the application. Relying solely on the `variables` attribute may not be universally applicable, as some queries lack parameters. While `operationName` is optional, its usage is enforced when employing tools like StrawberryShake for generating GraphQL client. Therefore, the most effective approach is to combine `operationName` with `variables` for matching. 
+As we already know, GraphQL requests are also characterised by attributes such as `query`, `variables` and an optional `operationName`. These are passed as query string parameters in GET requests, or included in the JSON payload for POST requests. Choosing the appropriate attribute to match a specific query requires careful consideration. Using `query` as a matcher can lead to maintainability issues, as it requires replicating the exact query issued by the application. Relying solely on the `variables` attribute may not be universally applicable, as some queries lack parameters. While `operationName` is optional, its usage is enforced when employing tools like StrawberryShake for generating GraphQL client. Therefore, the most effective approach is to combine `operationName` with `variables` for matching. 
 
 When preparing a matcher, we must also remember to format the request payload according to the GraphQL specification. To be compliant, it's a good idea to use `JsonSerializers` from nuget packages such as `GraphQL.NewtonsoftJson` or `GraphQL.SystemTextJson`.
 
@@ -135,7 +135,7 @@ wireMock
     );
 ```
 
-Since our matching pattern for body is only a subset of the actual JSON payload, we need to use a [JsonPartialMatcher](https://github.com/WireMock-Net/WireMock.Net/wiki/Request-Matching-JsonPartialMatcher) 
+Since our matching pattern for body is only a subset of the actual JSON payload, we need to use a [JsonPartialMatcher](https://github.com/WireMock-Net/WireMock.Net/wiki/Request-Matching-JsonPartialMatcher).
 
 Some GraphQL client libraries, such as StrawberryShaker, may rewrite our original query with a request for the `__typename` metadata field. In order for the client to work correctly, we need to include a proper value for this metadata as part of the response data for each object.
 
@@ -170,8 +170,8 @@ If you have a problem with matching GraphQL requests, you can use [WireMockInspe
 In GraphQL, regardless of whether a query fails partially or completely, the HTTP status code returned is typically 200 OK. This is because, unlike REST, GraphQL handles errors at the application level rather than at the HTTP level. Even if a query fails, the server will still successfully process the request and return a response in the expected format, which includes an error field in the JSON payload to provide details of what went wrong. For network or server errors unrelated to the GraphQL query itself, standard HTTP error codes (such as 400, 500, etc.) can still be used. 
 
 The GraphQL protocol distinguishes between two types of error:
-- `Request errors' - usually caused by client errors such as syntax or validation problems, prevent execution from starting and result in a response with no 'data' entry, but an 'errors' entry detailing the problem.
-- Field errors' - occur during execution due to problems such as internal errors or value coercion failures, usually the fault of the service, and result in partial results with both 'data' and 'errors' entries in the response.
+- `Request errors` - usually caused by client errors such as syntax or validation problems, prevent execution from starting and result in a response with no 'data' entry, but 'errors' entry detailing the problem.
+- `Field errors` - occur during execution due to problems such as internal errors or value coercion failures, usually the fault of the service, and result in partial results with both 'data' and 'errors' entries in the response.
 
 
 Mocking `Request error` response:
@@ -219,4 +219,4 @@ Mocking `Field errors` response:
 );
 ```
 
-Detailed specification for GraphQL errors is available here https://spec.graphql.org/October2021/#sec-Errors
+Detailed specification for GraphQL errors is available here https://spec.graphql.org/October2021/#sec-Errors.
