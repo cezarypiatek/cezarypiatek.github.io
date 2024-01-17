@@ -184,9 +184,13 @@ Mocking `Request error` response:
         .WithHeader("Content-Type", "application/graphql-response+json")
         .WithBody(graphQlSerializer.Serialize(new
         {            
-            errors = new string[]
+            errors = new object[]
             {
-                
+                new 
+                {
+                    message = "Parse error on \"$\" (VAR_SIGN) at [1, 23]",
+                    locations = new [] { new { line = 1, column= 23 }}
+                }
             }
         }))
 );

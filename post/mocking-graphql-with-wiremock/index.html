@@ -344,9 +344,13 @@ wireMock
         .WithHeader(&quot;Content-Type&quot;, &quot;application/graphql-response+json&quot;)
         .WithBody(graphQlSerializer.Serialize(new
         {            
-            errors = new string[]
+            errors = new object[]
             {
-                
+                new 
+                {
+                    message = &quot;Parse error on \&quot;$\&quot; (VAR_SIGN) at [1, 23]&quot;,
+                    locations = new [] { new { line = 1, column= 23 }}
+                }
             }
         }))
 );
