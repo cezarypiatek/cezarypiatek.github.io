@@ -9,11 +9,18 @@ image: "splashscreen.jpg"
 isBlogpost: true
 ---
 
-
-- how to handle proxy to multiple downstream services
-- use WireMockInspector for fetching mapping info
+In my journey through the nuances of API testing, I've often encountered the challenges and time-consuming aspects of creating accurate WireMock mappings. As developers, we often get bogged down in the details of the anatomy of inter-service communication, not to mention the frustrating typos that lead to inaccurate mappings. In this blog post, I will introduce a powerful solution: the WireMock.NET proxy. This feature completely changes the way we approach mapping preparation, significantly reducing both workload and debugging time. Let's explore how this feature can streamline our development process, making our work more efficient and effective.
 
 ## Generate mapping with proxy
+
+
+WireMock.NET proxy allows for generating request stubs automatically based on the request to the actual downstream service. It's very easy to configure:
+- run WireMockServer with enabled Admin interface
+- configure your app by pointing your downstream service address to WireMock
+- Define a special mapping that acts as a proxy to a real downstream service
+
+The matcher can very simple, for example a path with a wildcard. WireMock will forward identified request to the configured 
+
 
 ```cs
 [Test]
@@ -26,11 +33,11 @@ public async Task test_proxy()
     await using var appFactory = new WebApplicationFactory<Program>()
     .WithWebHostBuilder(builder =>
     {
-        builder.ConfigureAppConfiguration((context, configurationBuilder) =>
+        builder.ConfigureAppConfiguration((context, configuration) =>
         {
-            configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+            configuration.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ExternalServices:WeatherService"] = "http://localhost:9095"
+                ["ExternalServices:WeatherService"] = wireMock.Url
             });
         });
     });
@@ -43,7 +50,7 @@ public async Task test_proxy()
         )
         .RespondWith(
             Response.Create()
-                .WithProxy(new ProxyAndRecordSettings()
+                .WithProxy(new ProxyAndRecordSettings
                 {
                     Url = "https://api.openweathermap.org/",
                     SaveMapping = true
@@ -71,28 +78,71 @@ Generated mapping definition, as well as the C# code can be easily retrieved als
 
 ## Create proxy to multiple downstream services
 
+Things get a little more complicated when our application uses multiple external dependencies and we want to define a proxy for more than one downstream service. My solution for this is to add an extra suffix to the service address to distinguish it from other services. Actually, I'm using this approach whenever I test with WireMock.NET, it simplifies a lot of things like endpoint address clash etc.Having a common prefix for all endpoints under a given service allows for the creation of a generic path matcher. However, there's a small catch, if you add an extra suffix to the service address, WireMock.NET will pass that suffix to the actual service and we'll end up with a 404 error response code. Fortunately, this can be overcome by using `ProxyUrlReplaceSettings`, which allows us to strip the extra suffix before passing the request to the downstream service. An example working configuration for two downstream services looks like this
+
 ```cs
-var wireMock = WireMockServer.StartWithAdminInterface(port:9095);
-wireMock
+[Test]
+public async Task test_proxy()
+{
+    // INFO: Start WireMock.NET with admin interface
+    var wireMock = WireMockServer.StartWithAdminInterface(port:9095);
+    
+    // INFO: Setup your app, set WireMock as downstream service address
+    await using var appFactory = new WebApplicationFactory<Program>()
+    .WithWebHostBuilder(builder =>
+    {
+        builder.ConfigureAppConfiguration((context, configuration) =>
+        {
+            configuration.AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ExternalServices:ServiceA"] = $"{wireMock.Url}/ServiceA",
+                ["ExternalServices:ServiceB"] = $"{wireMock.Url}/ServiceB",
+            });
+        });
+    });
+
+    // INFO: Defined proxy for Service A
+    wireMock
     .Given(
         Request.Create()
-            .WithPath("/OpenWeather/*")
+            .WithPath("/ServiceA/*")
     )
     .RespondWith(
         Response.Create()
-            .WithProxy(new ProxyAndRecordSettings()
+            .WithProxy(new ProxyAndRecordSettings
             {
-                Url = "https://api.openweathermap.org/",
+                Url = "http://serviceA.test.local",
                 SaveMapping = true,
-                ReplaceSettings = new ProxyUrlReplaceSettings()
+                ReplaceSettings = new ProxyUrlReplaceSettings
                 {
-                    OldValue = "/OpenWeather/",
+                    OldValue = "/ServiceA/",
                     NewValue = ""
                 }
-            })
-```
+            }));
+    
+    // INFO: Defined proxy for Service B
+    wireMock
+    .Given(
+        Request.Create()
+            .WithPath("/ServiceB/*")
+    )
+    .RespondWith(
+        Response.Create()
+            .WithProxy(new ProxyAndRecordSettings
+            {
+                Url = "http://serviceB.test.local",
+                SaveMapping = true,
+                ReplaceSettings = new ProxyUrlReplaceSettings
+                {
+                    OldValue = "/ServiceB/",
+                    NewValue = ""
+                }
+            }));
 
-1. Use different prefix for each downstream service
-2. Use `ReplaceSettings` to remove prefix
-3. Use endpoint for fetching mappings then use endpoint for fetching code
-4. Use WireMock inspector to get the code
+    // INFO: call an endpoint in your app that use the downstream service
+    _ = await appFactory.CreateClient().GetAsync("/api/sample-endpoint");
+
+    // INFO: Hold the process to inspect WireMock.NET admin api from the browser or WireMockInspector
+    await Task.Delay(TimeSpan.FromDays(1));
+}
+```
