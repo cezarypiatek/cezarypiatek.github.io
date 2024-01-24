@@ -73,8 +73,15 @@ But what if you prefer defining your mappings directly in C# code rather than lo
 
 Generated mapping definition, as well as the C# code can be easily retrieved also by using [WireMockInspector](https://github.com/WireMock-Net/WireMockInspector). Just install `WireMockInspector` dotnet tool and instead of holding your tests with `Task.Delay` use `Inspect` extension method from [WireMock.Net.Extensions.WireMockInspector](https://www.nuget.org/packages/WireMock.Net.Extensions.WireMockInspector) nuget package.
 
+The code that is provided by `__admin/mappings/code/MAPPING_GUID` endpoint, is available on the `Code` tab for selected mapping.
+
 ![](wiremockinspector_generated_mapping.png)
 
+WireMockInspector features also its own engine for generating C# code to configure WireMock.NET mappings. This engine works slightly differently to the one built into WireMock.NET by operating directly on the request and response data rather than on the generated mapping. It also offers customization options. By providing your own liquid templates, you can completely alter the shape of the output code. This should be very useful if you have your own wrappers around WireMock.NET. You can access this feature from the `Code` tab when a request is selected.
+
+![](generate_from_request.png)
+
+More information about code generation for WireMock mappings can be found [here](https://github.com/WireMock-Net/WireMockInspector?tab=readme-ov-file#code-generator).
 
 ## Create proxy to multiple downstream services
 
@@ -115,7 +122,7 @@ public async Task test_proxy()
                 SaveMapping = true,
                 ReplaceSettings = new ProxyUrlReplaceSettings
                 {
-                    OldValue = "/ServiceA/",
+                    OldValue = "/ServiceA",
                     NewValue = ""
                 }
             }));
@@ -134,7 +141,7 @@ public async Task test_proxy()
                 SaveMapping = true,
                 ReplaceSettings = new ProxyUrlReplaceSettings
                 {
-                    OldValue = "/ServiceB/",
+                    OldValue = "/ServiceB",
                     NewValue = ""
                 }
             }));
