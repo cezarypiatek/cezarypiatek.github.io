@@ -6,8 +6,15 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jan 2024 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The fastest way to create WireMock.NET mappings</title>
+      <link>https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/</link>
+      <pubDate>Sun, 28 Jan 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/</guid>
+      <description>In my journey through the nuances of API testing, I&amp;rsquo;ve often encountered the challenges and time-consuming aspects of creating accurate WireMock mappings. As developers, we often get bogged down in the details of the anatomy of inter-service communication, not to mention the frustrating typos that lead to inaccurate mappings. In this blog post, I will introduce a powerful solution: the WireMock.NET proxy. This feature completely changes the way we approach mapping preparation, significantly reducing both workload and debugging time.</description>
+    </item>
     <item>
       <title>Mocking GraphQL queries with WireMock.NET</title>
       <link>https://cezarypiatek.github.io/post/mocking-graphql-with-wiremock/</link>

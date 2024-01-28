@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to use proxies to automatically generate WireMock.MET stubs">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/generate-wiremocknet-mappings-with-proxy\/"
+            },
+          "headline" : "The fastest way to create WireMock.NET mappings",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2024-01-28",
+          "dateModified" : "2024-01-28",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/generate-wiremocknet-mappings-with-proxy\/splashscreen.jpg",
+          "description": "How to use proxies to automatically generate WireMock.MET stubs"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2024-01-28">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/">	
+	<meta property="og:title" content="The fastest way to create WireMock.NET mappings">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/splashscreen.jpg">
+    <meta property="og:description" content="How to use proxies to automatically generate WireMock.MET stubs">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="testing">
+    
+    <meta property="og:tags" content="mocks">
+    
+    <meta property="og:tags" content="aspcore">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="WireMock">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/splashscreen.jpg">
+	<meta property="twitter:title" content="The fastest way to create WireMock.NET mappings">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to use proxies to automatically generate WireMock.MET stubs">
+
+	<meta name="keywords" value="testing, mocks, aspcore, dotnet, WireMock" />    
+    <title>The fastest way to create WireMock.NET mappings &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>The fastest way to create WireMock.NET mappings</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>28 January 2024</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>In my journey through the nuances of API testing, I&rsquo;ve often encountered the challenges and time-consuming aspects of creating accurate WireMock mappings. As developers, we often get bogged down in the details of the anatomy of inter-service communication, not to mention the frustrating typos that lead to inaccurate mappings. In this blog post, I will introduce a powerful solution: the WireMock.NET proxy. This feature completely changes the way we approach mapping preparation, significantly reducing both workload and debugging time. Let&rsquo;s explore how it can streamline our development process, making our work more efficient and effective.</p>
+<h2 id="generate-mapping-with-proxy"><a href="#generate-mapping-with-proxy">Generate mapping with proxy  🔗&#xFE0E;</a></h2>
+
+<p>WireMock.NET proxy allows for generating request stubs automatically based on the request to the actual downstream service. It&rsquo;s very easy to configure:</p>
+<ul>
+<li>run WireMockServer with enabled Admin interface</li>
+<li>configure your app by pointing your downstream service address to WireMock</li>
+<li>define a special mapping that acts as a proxy to a real downstream service. The matcher can be very simple, for example a path with a wildcard.</li>
+</ul>
+<pre><code class="language-cs">[Test]
+public async Task test_proxy()
+{
+    // INFO: Start WireMock.NET with admin interface
+    var wireMock = WireMockServer.StartWithAdminInterface(port:9095);
+    
+    // INFO: Setup your app, set WireMock as downstream service address
+    await using var appFactory = new WebApplicationFactory&lt;Program&gt;()
+    .WithWebHostBuilder(builder =&gt;
+    {
+        builder.ConfigureAppConfiguration((context, configuration) =&gt;
+        {
+            configuration.AddInMemoryCollection(new Dictionary&lt;string, string?&gt;
+            {
+                [&quot;ExternalServices:WeatherService&quot;] = wireMock.Url
+            });
+        });
+    });
+
+    // INFO: Defined proxy
+    wireMock
+        .Given(
+            Request.Create()
+                .WithPath(&quot;/data/2.5/*&quot;)
+        )
+        .RespondWith(
+            Response.Create()
+                .WithProxy(new ProxyAndRecordSettings
+                {
+                    Url = &quot;https://api.openweathermap.org/&quot;,
+                    SaveMapping = true
+                })
+        );
+
+    // INFO: call an endpoint in your app that use the downstream service
+    _ = await appFactory.CreateClient().GetAsync(&quot;/api/sample-endpoint&quot;);
+
+    // INFO: Hold the process to inspect WireMock.NET admin api from the browser or WireMockInspector
+    await Task.Delay(TimeSpan.FromDays(1));
+}
+</code></pre>
+<p>WireMock.NET should automatically generate mapping based on the forwarded request and its response. You can find generated mapping definition by inspecting the result of <code>http://localhost:9095/__admin/mappings</code> endpoint. Additionally, if you set <code>ProxyAndRecordSettings.SaveMappingToFile</code> to true, WireMock.Net will automatically save generated mapping definitions into separate files under <code>/__admin/mappings/</code> in your output dir.</p>
+<p>But what if you prefer defining your mappings directly in C# code rather than loading from files? This can be automatically generated for you too. Just take the GUID of generated mapping and call <code>http://localhost:9095/__admin/mappings/code/MAPPING_GUID</code> endpoint.</p>
+<h2 id="get-your-mappings-with-wiremockinspector"><a href="#get-your-mappings-with-wiremockinspector">Get your mappings with WireMockInspector  🔗&#xFE0E;</a></h2>
+
+<p>Generated mapping definition, as well as the C# code, can be easily retrieved also by using <a href="https://github.com/WireMock-Net/WireMockInspector">WireMockInspector</a>. Just install <code>WireMockInspector</code> dotnet tool and instead of holding your tests with <code>Task.Delay</code>, use <code>Inspect</code> extension method from <a href="https://www.nuget.org/packages/WireMock.Net.Extensions.WireMockInspector">WireMock.Net.Extensions.WireMockInspector</a> nuget package.</p>
+<p>The code that is provided by the <code>__admin/mappings/code/MAPPING_GUID</code> endpoint is available on the <code>Code</code> tab for selected mapping.</p>
+<p>
+<a href="wiremockinspector_generated_mapping.png"><img  src="wiremockinspector_generated_mapping.png" alt=""></a>
+</p>
+<p>WireMockInspector features also its own engine for generating C# code to configure WireMock.NET mappings. This engine works slightly differently to the one built into WireMock.NET by operating directly on the request and response data rather than on the generated mapping. It also offers customization options. By providing your own liquid templates, you can completely alter the shape of the output code. This should be very useful if you have your own wrappers around WireMock.NET. You can access this feature from the <code>Code</code> tab for a selected request.</p>
+<p>
+<a href="generate_from_request.png"><img  src="generate_from_request.png" alt=""></a>
+</p>
+<p>More information about code generation for WireMock mappings can be found <a href="https://github.com/WireMock-Net/WireMockInspector?tab=readme-ov-file#code-generator">here</a>.</p>
+<h2 id="create-proxy-to-multiple-downstream-services"><a href="#create-proxy-to-multiple-downstream-services">Create proxy to multiple downstream services  🔗&#xFE0E;</a></h2>
+
+<p>Things get a little more complicated when our application uses multiple external dependencies and we want to define a proxy for more than one downstream service. My solution for this is to add an extra suffix to the service address to distinguish it from other services. Actually, I use this approach whenever I test with WireMock.NET. It simplifies a lot of things like endpoint address clash, etc. Having a common prefix for all endpoints under a given service allows for the creation of a generic path matcher. However, there&rsquo;s a small catch: if you add an extra suffix to the service address, WireMock.NET will pass that suffix to the actual service and we&rsquo;ll end up with a 404 error response code. Fortunately, this can be overcome by using <code>ProxyUrlReplaceSettings</code>, which allows us to strip the extra suffix before passing the request to the downstream service. An example working configuration for two downstream services looks like this:</p>
+<pre><code class="language-cs">[Test]
+public async Task test_proxy()
+{
+    // INFO: Start WireMock.NET with admin interface
+    var wireMock = WireMockServer.StartWithAdminInterface(port:9095);
+    
+    // INFO: Setup your app, set WireMock as downstream service address
+    await using var appFactory = new WebApplicationFactory&lt;Program&gt;()
+    .WithWebHostBuilder(builder =&gt;
+    {
+        builder.ConfigureAppConfiguration((context, configuration) =&gt;
+        {
+            configuration.AddInMemoryCollection(new Dictionary&lt;string, string?&gt;
+            {
+                [&quot;ExternalServices:ServiceA&quot;] = $&quot;{wireMock.Url}/ServiceA&quot;,
+                [&quot;ExternalServices:ServiceB&quot;] = $&quot;{wireMock.Url}/ServiceB&quot;,
+            });
+        });
+    });
+
+    // INFO: Defined proxy for Service A
+    wireMock
+    .Given(
+        Request.Create()
+            .WithPath(&quot;/ServiceA/*&quot;)
+    )
+    .RespondWith(
+        Response.Create()
+            .WithProxy(new ProxyAndRecordSettings
+            {
+                Url = &quot;http://serviceA.test.local&quot;,
+                SaveMapping = true,
+                ReplaceSettings = new ProxyUrlReplaceSettings
+                {
+                    OldValue = &quot;/ServiceA&quot;,
+                    NewValue = &quot;&quot;
+                }
+            }));
+    
+    // INFO: Defined proxy for Service B
+    wireMock
+    .Given(
+        Request.Create()
+            .WithPath(&quot;/ServiceB/*&quot;)
+    )
+    .RespondWith(
+        Response.Create()
+            .WithProxy(new ProxyAndRecordSettings
+            {
+                Url = &quot;http://serviceB.test.local&quot;,
+                SaveMapping = true,
+                ReplaceSettings = new ProxyUrlReplaceSettings
+                {
+                    OldValue = &quot;/ServiceB&quot;,
+                    NewValue = &quot;&quot;
+                }
+            }));
+
+    // INFO: call an endpoint in your app that use the downstream service
+    _ = await appFactory.CreateClient().GetAsync(&quot;/api/sample-endpoint&quot;);
+
+    // INFO: Hold the process to inspect WireMock.NET admin api from the browser or WireMockInspector
+    await Task.Delay(TimeSpan.FromDays(1));
+}
+</code></pre>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-graphql-with-wiremock/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-graphql-with-wiremock/splashscreen_hu3cc4c9a41a343beca046bb352ebdf397_485050_320x240_fill_q75_box_smart1.jpg" alt="Mocking GraphQL queries with WireMock.NET">
+								<div class="card-body">
+									<h5 class="card-title">Mocking GraphQL queries with WireMock.NET</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p2/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p2/splashscreen_hue7fb845594809c7df3049ff28a55b358_49988_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Troubleshooting">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Troubleshooting</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-outgoing-http-requests-p1/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-outgoing-http-requests-p1/splashscreen_hu3b1c4c54cee5ec2b65443949fccfd391_56344_320x240_fill_q75_box_smart1.jpg" alt="WireMock.NET - Introduction">
+								<div class="card-body">
+									<h5 class="card-title">WireMock.NET - Introduction</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "testing,mocks,aspcore,dotnet,WireMock"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>
