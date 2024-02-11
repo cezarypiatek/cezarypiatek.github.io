@@ -24,7 +24,7 @@ A long time ago I came across a blog post that suggested the idea of creating sh
 | Concept | Shortcut | Snippet |
 | -- | -- | -- |
 |property string| props | `public string $name$ { get; set; }`|
-|property int| propi |`public string $name$ { get; set; }`|
+|property int| propi |`public int $name$ { get; set; }`|
 |property decimal  | propd |`public decimal $name$ { get; set; }`|
 
 We can make it even shorter by using just `p` instead of `prop`. This is a really nice upgrade of the old well-known "prop" snippets. It's shorter and gives me the more specific result I need.
