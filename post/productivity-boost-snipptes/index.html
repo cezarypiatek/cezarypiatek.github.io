@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="My private collection of convention-based code snippets">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/productivity-boost-snipptes\/"
+            },
+          "headline" : "C# code snippets for Resharper and Rider",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2024-02-10",
+          "dateModified" : "2024-02-10",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/productivity-boost-snipptes\/splashscreen.jpg",
+          "description": "My private collection of convention-based code snippets"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2024-02-10">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/productivity-boost-snipptes/">	
+	<meta property="og:title" content="C# code snippets for Resharper and Rider">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/productivity-boost-snipptes/splashscreen.jpg">
+    <meta property="og:description" content="My private collection of convention-based code snippets">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="csharp">
+    
+    <meta property="og:tags" content="snippets">
+    
+    <meta property="og:tags" content="LiveTemplates">
+    
+    <meta property="og:tags" content="dotnet">
+    
+    <meta property="og:tags" content="Rider">
+    
+    <meta property="og:tags" content="Resharper">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/productivity-boost-snipptes/splashscreen.jpg">
+	<meta property="twitter:title" content="C# code snippets for Resharper and Rider">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="My private collection of convention-based code snippets">
+
+	<meta name="keywords" value="csharp, snippets, LiveTemplates, dotnet, Rider, Resharper" />    
+    <title>C# code snippets for Resharper and Rider &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>C# code snippets for Resharper and Rider</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>10 February 2024</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>10 years ago I published my first blog post entitled <a href="../../post/livetemplates/">&ldquo;Don&rsquo;t write dull code&rdquo;</a> which was dedicated to a Resharper feature called LiveTemplates. It&rsquo;s a code snippet engine that was originally introduced in Resharper, but is now also available in Rider. LiveTemplate comes with a set of predefined snippets for basic coding scenarios such as conditions, loops, exception handling, etc. However, the real power lies in the ability to create custom snippets with placeholders that can be completed manually or automatically by macros. What&rsquo;s more, unlike the original Visual Studio snippets feature, adding new snippets is super easy.</p>
+<p>I&rsquo;ve been using Live Templates for over a decade, both in my day job and after hours, and I think it&rsquo;s one of Resharper&rsquo;s best features. However, from my personal observation, it hasn&rsquo;t been very popular among the developers I&rsquo;ve worked with so far. Which is very surprising. If you haven&rsquo;t used Live Templates before, it&rsquo;s definitely worth a try.</p>
+<h2 id="too-many-shortcuts"><a href="#too-many-shortcuts">Too many shortcuts  🔗&#xFE0E;</a></h2>
+
+<p>Each LiveTemplate snippet has assigned a shortcut - a sequence of characters that needs to be typed in order to trigger snippet insertion. For example when you type <code>prop</code> the LiveTemplates will automatically insert <code>public $type$ $name$ {get; set;}</code> and move the cursors appropriately to allow you easily replace the <code>$type$</code> and <code>$name$</code> with desired values. As your collection of custom snippets starts growing, a new problem occurs - how to remember all of those shortcuts.</p>
+<h2 id="concept-driven-typing"><a href="#concept-driven-typing">Concept Driven Typing  🔗&#xFE0E;</a></h2>
+
+<p>A long time ago I came across a blog post that suggested the idea of creating shortcuts for snippets based on conventions. The convention could be, for example, an acronym of the concepts we want to insert, or an acronym of the actual content of the snippet. Such a convention could be a &ldquo;prop&rdquo; prefix plus a first letter representing the type of property we want to insert:</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Shortcut</th>
+<th>Snippet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>property string</td>
+<td>props</td>
+<td><code>public string $name$ { get; set; }</code></td>
+</tr>
+<tr>
+<td>property int</td>
+<td>propi</td>
+<td><code>public string $name$ { get; set; }</code></td>
+</tr>
+<tr>
+<td>property decimal</td>
+<td>propd</td>
+<td><code>public decimal $name$ { get; set; }</code></td>
+</tr>
+</tbody>
+</table>
+<p>We can make it even shorter by using just <code>p</code> instead of <code>prop</code>. This is a really nice upgrade of the old well-known &ldquo;prop&rdquo; snippets. It&rsquo;s shorter and gives me the more specific result I need.</p>
+<p>Another example of using the acronym convention could be a set of snippets for the most common throw exceptions:</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Shortcut</th>
+<th>Snippet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Throw InvalidOperationException</td>
+<td>tio</td>
+<td><code>throw new InvalidOperationException(&quot;$message$);</code></td>
+</tr>
+<tr>
+<td>Throw NotImplementedException</td>
+<td>tni</td>
+<td><code>throw new NotImplementedException(&quot;$message$);</code></td>
+</tr>
+<tr>
+<td>Throw ArgumentException</td>
+<td>ta</td>
+<td><code>throw new ArgumentException(&quot;$message$, nameof($param$));</code></td>
+</tr>
+</tbody>
+</table>
+<p>I started creating my own code snippets based on this idea, and it makes them very easy to remember - actually I don&rsquo;t have to remember them at all. I just write the first letters of the construction or concept I want to enter. This makes coding more enjoyable. I like to call it <code>Concept Driven Typing</code> - by using a shortcut you tell your IDE what you need instead of typing everything manually.</p>
+<h2 id="snippets-in-the-era-of-ai-assistants"><a href="#snippets-in-the-era-of-ai-assistants">Snippets in the era of AI assistants  🔗&#xFE0E;</a></h2>
+
+<p>Why do I still find it useful in the age of copilots and AI assistants? Many of these AI IDE plugins try to predict what we want to write - not always offering the best choice, which slows us down instead of moving us forward. Code snippets allow us to write exactly what we want very quickly, and our attention is not distracted and stays on track. I&rsquo;m not saying one approach is better than the other. I think both tools are complementary. If you know exactly what you want to type, use snippets; if you don&rsquo;t know how to implement something, go with the AI assistant.</p>
+<h2 id="snippets-for-a-cup-of-coffee"><a href="#snippets-for-a-cup-of-coffee">Snippets for a cup of coffee  🔗&#xFE0E;</a></h2>
+
+<p>For over a decade I have been creating lots of code snippets and they allow me to focus more on what I want to write rather than how to write it, saving time and making me more productive.</p>
+<p>Some time ago I started to organise my snippets and I got the idea that it would be great to share them with others. It took me a couple of weeks to get all my snippets into a single collection, fixing formatting, descriptions, adding missing namespaces and categorising them. I even made a really nice cheat sheet showing all the shortcuts along with the content of the snippets. It took me a long time to organise them, so I decided to make them available for the price of a cup of coffee. All snippets along with the cheat sheet are available to download <a href="https://store.mappinggenerator.net/b/productivity-boost-snippets">here</a></p>
+<p>The collection contains about 150 code snippets. It seems a lot and I don&rsquo;t expect you to use all of them, but I bet you will find a subset that will definitely improve your productivity a little. The cheat sheet included in the package should make it easier to discover all the snippets, and its mnemonic character should make it easier to remember them.</p>
+<p>This collection should also serve as an inspiration. You can easily adapt these snippets to your needs or create a whole new one based on what you find in my collection. Enjoy!</p>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/pure-functions-and-unused-return-value/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/pure-functions-and-unused-return-value/splashscreen_hu69c4029683d87b293c088c880ee9b2c7_119434_320x240_fill_q75_box_smart1.jpg" alt="Pure functions and unused return values">
+								<div class="card-body">
+									<h5 class="card-title">Pure functions and unused return values</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/testing-web-api-with-approval-tests/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/testing-web-api-with-approval-tests/splashscreen_hu938e1ed3204600fe4cfb4955eac6e870_54215_320x240_fill_q75_box_smart1.jpg" alt="Testing WebAPI with ApprovalTests.NET">
+								<div class="card-body">
+									<h5 class="card-title">Testing WebAPI with ApprovalTests.NET</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/async-analyzers-summary/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/async-analyzers-summary/splashscreen_hud85bee5dadbc1fc45560823c855f89ae_1501025_320x240_fill_q75_box_smart1.jpg" alt="Async code smells and how to track them down with analyzers - Summary">
+								<div class="card-body">
+									<h5 class="card-title">Async code smells and how to track them down with analyzers - Summary</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "csharp,snippets,LiveTemplates,dotnet,Rider,Resharper"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>
