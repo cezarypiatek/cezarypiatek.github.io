@@ -6,8 +6,15 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 10 Feb 2024 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C# code snippets for Resharper and Rider</title>
+      <link>https://cezarypiatek.github.io/post/productivity-boost-snipptes/</link>
+      <pubDate>Sat, 10 Feb 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/productivity-boost-snipptes/</guid>
+      <description>10 years ago I published my first blog post entitled &amp;ldquo;Don&amp;rsquo;t write dull code&amp;rdquo; which was dedicated to a Resharper feature called LiveTemplates. It&amp;rsquo;s a code snippet engine that was originally introduced in Resharper, but is now also available in Rider. LiveTemplate comes with a set of predefined snippets for basic coding scenarios such as conditions, loops, exception handling, etc. However, the real power lies in the ability to create custom snippets with placeholders that can be completed manually or automatically by macros.</description>
+    </item>
     <item>
       <title>The fastest way to create WireMock.NET mappings</title>
       <link>https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/</link>

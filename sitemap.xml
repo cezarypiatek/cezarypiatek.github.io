@@ -2,22 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://cezarypiatek.github.io/post/productivity-boost-snipptes/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/csharp/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/post/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/rider/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/snippets/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
+    <loc>https://cezarypiatek.github.io/tags/</loc>
+    <lastmod>2024-02-10T00:10:45+02:00</lastmod>
+  </url><url>
     <loc>https://cezarypiatek.github.io/tags/aspcore/</loc>
     <lastmod>2024-01-28T00:10:45+02:00</lastmod>
   </url><url>
-    <loc>https://cezarypiatek.github.io/</loc>
-    <lastmod>2024-01-28T00:10:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/dotnet/</loc>
-    <lastmod>2024-01-28T00:10:45+02:00</lastmod>
-  </url><url>
     <loc>https://cezarypiatek.github.io/tags/mocks/</loc>
-    <lastmod>2024-01-28T00:10:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/post/</loc>
-    <lastmod>2024-01-28T00:10:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/</loc>
     <lastmod>2024-01-28T00:10:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/testing/</loc>
@@ -98,9 +116,6 @@
     <loc>https://cezarypiatek.github.io/tags/approvaltest/</loc>
     <lastmod>2021-03-16T00:08:00+02:00</lastmod>
   </url><url>
-    <loc>https://cezarypiatek.github.io/tags/csharp/</loc>
-    <lastmod>2021-03-16T00:08:00+02:00</lastmod>
-  </url><url>
     <loc>https://cezarypiatek.github.io/post/testing-web-api-with-approval-tests/</loc>
     <lastmod>2021-03-16T00:08:00+02:00</lastmod>
   </url><url>
@@ -111,9 +126,6 @@
     <lastmod>2021-02-16T10:00:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/post/pure-functions-and-unused-return-value/</loc>
-    <lastmod>2021-02-16T10:00:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/resharper/</loc>
     <lastmod>2021-02-16T10:00:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/tags/roslyn/</loc>
@@ -225,9 +237,6 @@
     <lastmod>2019-09-15T00:10:00+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/post/csharp-macros/</loc>
-    <lastmod>2019-09-01T00:11:45+02:00</lastmod>
-  </url><url>
-    <loc>https://cezarypiatek.github.io/tags/livetemplates/</loc>
     <lastmod>2019-09-01T00:11:45+02:00</lastmod>
   </url><url>
     <loc>https://cezarypiatek.github.io/post/avoid-multithreading-traps-p1/</loc>
