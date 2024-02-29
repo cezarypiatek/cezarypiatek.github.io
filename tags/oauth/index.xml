@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OAuth on Cezary Piątek Blog</title>
+    <link>https://cezarypiatek.github.io/tags/oauth/</link>
+    <description>Recent content in OAuth on Cezary Piątek Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 29 Feb 2024 00:10:45 +0200</lastBuildDate>
+    <atom:link href="https://cezarypiatek.github.io/tags/oauth/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mocking authorization tokens with WireMock.NET</title>
+      <link>https://cezarypiatek.github.io/post/mocking-authorization-tokens/</link>
+      <pubDate>Thu, 29 Feb 2024 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/mocking-authorization-tokens/</guid>
+      <description>Testing applications that require authorization presents a unique set of challenges, especially when it comes to simulating different user permissions. Using an actual authorization server and manually creating test users with specific roles and claims can quickly become cumbersome when trying to cover a wide range of permission combinations.&#xA;Another option is to use libraries like fake-authentication-jwtbearer, but these libraries have a significant drawback. They replace the actual authorization logic, so we are not testing what will actually be used on production.</description>
+    </item>
+  </channel>
+</rss>

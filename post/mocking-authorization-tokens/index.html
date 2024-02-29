@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to test Web API protected with OAuth">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/mocking-authorization-tokens\/"
+            },
+          "headline" : "Mocking authorization tokens with WireMock.NET",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2024-02-29",
+          "dateModified" : "2024-02-29",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/mocking-authorization-tokens\/splashscreen.jpg",
+          "description": "How to test Web API protected with OAuth"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2024-02-29">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/mocking-authorization-tokens/">	
+	<meta property="og:title" content="Mocking authorization tokens with WireMock.NET">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/mocking-authorization-tokens/splashscreen.jpg">
+    <meta property="og:description" content="How to test Web API protected with OAuth">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="csharp">
+    
+    <meta property="og:tags" content="JWT">
+    
+    <meta property="og:tags" content="WireMock.NET">
+    
+    <meta property="og:tags" content="OAuth">
+    
+    <meta property="og:tags" content="OpenID">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/mocking-authorization-tokens/splashscreen.jpg">
+	<meta property="twitter:title" content="Mocking authorization tokens with WireMock.NET">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to test Web API protected with OAuth">
+
+	<meta name="keywords" value="csharp, JWT, WireMock.NET, OAuth, OpenID" />    
+    <title>Mocking authorization tokens with WireMock.NET &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Mocking authorization tokens with WireMock.NET</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>29 February 2024</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>Testing applications that require authorization presents a unique set of challenges, especially when it comes to simulating different user permissions. Using an actual authorization server and manually creating test users with specific roles and claims can quickly become cumbersome when trying to cover a wide range of permission combinations.</p>
+<p>Another option is to use libraries like <a href="https://github.com/webmotions/fake-authentication-jwtbearer">fake-authentication-jwtbearer</a>, but these libraries have a significant drawback. They replace the actual authorization logic, so we are not testing what will actually be used on production. In addition, running an application as a separate process during testing sessions limits the ability to change the application setup except for external configurations.</p>
+<p>However, by leveraging a deep understanding of OAuth and the flexibility of WireMock.NET, we can generate JWT tokens with the desired permissions and seamlessly integrate them into our tests without altering the application&rsquo;s core authorization mechanisms. This blog post explores this approach and presents the streamlined solution for fabricated JWT tokens that can be used for testing Web API.</p>
+<h2 id="generate-jwt-token"><a href="#generate-jwt-token">Generate JWT token  🔗&#xFE0E;</a></h2>
+
+<p>First, we need something that allows us to generate signed JWT with the desired set of claims. We can implement a helper like the one below using the mechanisms provided by the <code>Microsoft.AspNetCore.Authentication.JwtBearer</code> nuget package:</p>
+<pre><code class="language-cs">using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+
+namespace WireMockGraphQLExample.Tests;
+
+public record SigningKeyInfo(string Modulus, string Exponent, string Kid, string Algorithm);
+
+public class JwtTokenGenerator : IDisposable
+{
+    public string Authority { get; }
+    public string Audience { get; }
+    private readonly SigningCredentials _signingCredentials;
+    private readonly RSA _rsa;
+    private readonly string _kid;
+
+    public JwtTokenGenerator(string authority, string audience)
+    {
+        Authority = authority;
+        Audience = audience;
+        _kid = Guid.NewGuid().ToString(&quot;N&quot;);
+        _rsa = RSA.Create(2048);
+        _signingCredentials = new SigningCredentials(
+            new RsaSecurityKey(_rsa)
+            {
+                KeyId = _kid
+            },
+            SecurityAlgorithms.RsaSha256
+        );
+    }
+
+    public SigningKeyInfo GetSigningKeyInfo()
+    {  
+        var keyParameters = _rsa.ExportParameters(false);
+        var modulus = Base64UrlEncode(keyParameters.Modulus!);
+        var exponent = Base64UrlEncode(keyParameters.Exponent!);
+        return new SigningKeyInfo(modulus, exponent, _kid, &quot;RS256&quot;);
+    }
+
+    public string CreateToken(IReadOnlyList&lt;Claim&gt;? customClaims= null, DateTime? expiresAt = null)
+    {
+        var claims = new List&lt;Claim&gt;
+        {
+            new(JwtRegisteredClaimNames.Iss, $&quot;{Authority}/&quot;),
+            new(JwtRegisteredClaimNames.Aud, Audience)
+        };
+        if (customClaims != null)
+        {
+            claims.AddRange(customClaims);
+        }
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = expiresAt ?? DateTime.UtcNow.AddHours(1),
+            SigningCredentials = _signingCredentials
+        };
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+
+    private static string Base64UrlEncode(byte[] arg)
+    {
+        var result = Convert.ToBase64String(arg);
+        result = result.Split('=')[0];
+        result = result.Replace('+', '-');
+        result = result.Replace('/', '_');
+        return result;
+    }
+
+    public void Dispose()
+    {
+        _rsa.Dispose();
+    }
+}
+</code></pre>
+<h2 id="mocking-oauth-provider"><a href="#mocking-oauth-provider">Mocking OAUth Provider  🔗&#xFE0E;</a></h2>
+
+<p>We know how to generate JWT tokens with the desired content. Now we need to trick a tested application into recognizing our tokens as valid. Fortunately, it&rsquo;s not as difficult as it may seem, but first we need to understand what happens inside the application when we send a request with JWT to the protected endpoint. The diagram below shows a process of authentication and authorization using OAuth with a focus on token verification:</p>
+<p><a href="https://mermaid.live/edit#pako:eNp1U1tv2jAU_iuWHyaqBQhQLslDJRSmiVbroqVapSnSZBzDzkjszHbKKOK_7zghFagsL0nO-c538eVAucoEDakRfyohuVgA22hWpJLgUzJtgUPJpCURYYZEOQj8npfle8A8XjpIrJUV3IrMFa6gEgeaV_YXSYR-EbqBpLJ5P-IwUVgmkTdPQvJ1ZRlIcv_81PSj7t3dR9dwDGgFOMOBD-Sbs28seVJbcaKaJ10Ed6MQm7bSNQkxsJFobQeoH2t4cdMPYn9VPl42MkrDaxOnlTn34lCtek3rZNpQl5yIbULV8RdguCvvT3bjZZutpev3diLPu1updrKvSiEh63Il17CpNLOgLoOenNRRC2FZxiwjHZA875Hfu635WWm4eaf1WVgCcq0IW6nKkrha5cDdkhiy1qp4m_yv1P3zQ0I6Z3M3V2KHzcaQ7yyH7Nx6baQGnFqiXr8Et4khvdvaKGdQmKukC8HBXJC97bgplTSCdBa4Cv1PWiuNvqhHC6ELBhme-IObSikeo0KkNMTPjOltSlN5RByrrEr2ktPQ6kp4tCqdudPtoOGa5QareKR_KFW0IPyl4YH-peFgNuhNR6Pp7XTsB4NxEEw9uqfh0J_1BqPR7WzsD4MR1mdHj77WDH5vOhxPgmAS-OPBzPdvJx4VGVilvzQ3tL6ox39rjyho">
+<a href="https://mermaid.ink/img/pako:eNp1U1tv2jAU_iuWHyaqBQhQLslDJRSmiVbroqVapSnSZBzDzkjszHbKKOK_7zghFagsL0nO-c538eVAucoEDakRfyohuVgA22hWpJLgUzJtgUPJpCURYYZEOQj8npfle8A8XjpIrJUV3IrMFa6gEgeaV_YXSYR-EbqBpLJ5P-IwUVgmkTdPQvJ1ZRlIcv_81PSj7t3dR9dwDGgFOMOBD-Sbs28seVJbcaKaJ10Ed6MQm7bSNQkxsJFobQeoH2t4cdMPYn9VPl42MkrDaxOnlTn34lCtek3rZNpQl5yIbULV8RdguCvvT3bjZZutpev3diLPu1updrKvSiEh63Il17CpNLOgLoOenNRRC2FZxiwjHZA875Hfu635WWm4eaf1WVgCcq0IW6nKkrha5cDdkhiy1qp4m_yv1P3zQ0I6Z3M3V2KHzcaQ7yyH7Nx6baQGnFqiXr8Et4khvdvaKGdQmKukC8HBXJC97bgplTSCdBa4Cv1PWiuNvqhHC6ELBhme-IObSikeo0KkNMTPjOltSlN5RByrrEr2ktPQ6kp4tCqdudPtoOGa5QareKR_KFW0IPyl4YH-peFgNuhNR6Pp7XTsB4NxEEw9uqfh0J_1BqPR7WzsD4MR1mdHj77WDH5vOhxPgmAS-OPBzPdvJx4VGVilvzQ3tL6ox39rjyho?type=png"><img  src="https://mermaid.ink/img/pako:eNp1U1tv2jAU_iuWHyaqBQhQLslDJRSmiVbroqVapSnSZBzDzkjszHbKKOK_7zghFagsL0nO-c538eVAucoEDakRfyohuVgA22hWpJLgUzJtgUPJpCURYYZEOQj8npfle8A8XjpIrJUV3IrMFa6gEgeaV_YXSYR-EbqBpLJ5P-IwUVgmkTdPQvJ1ZRlIcv_81PSj7t3dR9dwDGgFOMOBD-Sbs28seVJbcaKaJ10Ed6MQm7bSNQkxsJFobQeoH2t4cdMPYn9VPl42MkrDaxOnlTn34lCtek3rZNpQl5yIbULV8RdguCvvT3bjZZutpev3diLPu1updrKvSiEh63Il17CpNLOgLoOenNRRC2FZxiwjHZA875Hfu635WWm4eaf1WVgCcq0IW6nKkrha5cDdkhiy1qp4m_yv1P3zQ0I6Z3M3V2KHzcaQ7yyH7Nx6baQGnFqiXr8Et4khvdvaKGdQmKukC8HBXJC97bgplTSCdBa4Cv1PWiuNvqhHC6ELBhme-IObSikeo0KkNMTPjOltSlN5RByrrEr2ktPQ6kp4tCqdudPtoOGa5QareKR_KFW0IPyl4YH-peFgNuhNR6Pp7XTsB4NxEEw9uqfh0J_1BqPR7WzsD4MR1mdHj77WDH5vOhxPgmAS-OPBzPdvJx4VGVilvzQ3tL6ox39rjyho?type=png" alt=""></a>
+</a></p>
+<p>The diagram shows that during the token verification process, the application queries two endpoints from the authorization server. To convince our application that the tokens are valid, we need to control these endpoints. This can be accomplished with a little help from WireMock.NET.</p>
+<p>First, we need to start WireMock.NET with <code>SSL</code> enabled because ASP.NET core will not make a call to the Authorization Server endpoints if they are not exposed via <code>HTTPS</code>. This can be done with:</p>
+<pre><code class="language-cs">var wireMock = WireMockServer.StartWithAdminInterface(port: 9096, ssl: true)
+</code></pre>
+<p>Or if you still need the <code>HTTP</code> endpoint then you can specify the required endpoints manually:</p>
+<pre><code class="language-cs">var wireMock = WireMockServer.StartWithAdminInterface(new []
+{
+   &quot;http://localhost:9095&quot;,
+   &quot;https://localhost:9096&quot;,
+});
+</code></pre>
+<p>To make the <code>SSL</code> work correctly, you need a trusted certificate. If you don&rsquo;t have your own certificate, you can generate a self-signed development certificate by running the command below:</p>
+<pre><code class="language-sh">dotnet dev-certs https --trust
+</code></pre>
+<p>In the next step, we need to create an instance of our <code>JwtTokenGenerator</code> and override the application config to use the WireMock.NET endpoint as an <code>Authority</code>:</p>
+<pre><code class="language-cs">// Create Token Generator with appropriate audience and authority pointing to WireMock
+var tokenGenerator = new JwtTokenGenerator(authority: &quot;https://localhost:9096/Auth&quot;,  audience: &quot;TestAPIId&quot;);
+
+// Setup app under test and override config with data from our generator
+await using var appFactory = new WebApplicationFactory&lt;Program&gt;().WithWebHostBuilder(builder =&gt;
+{
+    builder.ConfigureAppConfiguration((context, configurationBuilder) =&gt;
+    {
+        configurationBuilder.AddInMemoryCollection(new Dictionary&lt;string, string?&gt;
+        {
+            [&quot;Authorization:Authority&quot;] = tokenGenerator.Authority,
+            [&quot;Authorization:Audience&quot;] = tokenGenerator.Audience,
+        });
+    });
+});
+
+</code></pre>
+<p>The way the application configuration is overridden for testing purposes is based on the assumption that authorization is configured like below:</p>
+<pre><code class="language-cs">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAuthentication(options =&gt;
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =&gt;
+{
+
+    options.Authority = builder.Configuration[&quot;Authorization:Authority&quot;];
+    options.Audience = builder.Configuration[&quot;Authorization:Audience&quot;];
+});
+</code></pre>
+<p>We have configured Application to use WireMock.NET as an OAuth server, and now we need to configure WireMock.NET to mimic the behavior of the OAuth server.
+When an API performs JWT token validation with OAuth 2.0, it calls the <code>.well-known/openid-configuration</code> endpoint of an OpenID provider. This endpoint is part of the OpenID Connect discovery process and returns a JSON document containing various metadata about the OpenID provider, including endpoints and other configuration information. So we need to stub this endpoint appropriately by preparing a response with configuration that directs all endpoints to our WireMock.NET server:</p>
+<pre><code class="language-cs">wiremock
+    .Given(Request.Create()
+        .UsingMethod(&quot;GET&quot;)
+        .WithPath(&quot;/Auth/.well-known/openid-configuration&quot;))
+    .AtPriority(1)
+    .RespondWith(Response.Create()
+        .WithStatusCode(200)
+        .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+        .WithBodyAsJson(new
+        {
+            issuer = $&quot;{tokenGenerator.Authority}/&quot;,
+            authorization_endpoint = $&quot;{tokenGenerator.Authority}/authorize&quot;,
+            token_endpoint = $&quot;{tokenGenerator.Authority}/oauth/token&quot;,
+            device_authorization_endpoint = $&quot;{tokenGenerator.Authority}/oauth/device/code&quot;,
+            userinfo_endpoint = $&quot;{tokenGenerator.Authority}/userinfo&quot;,
+            mfa_challenge_endpoint = $&quot;{tokenGenerator.Authority}/mfa/challenge&quot;,
+            jwks_uri = $&quot;{tokenGenerator.Authority}/.well-known/jwks.json&quot;,
+            registration_endpoint = $&quot;{tokenGenerator.Authority}/oidc/register&quot;,
+            revocation_endpoint = $&quot;{tokenGenerator.Authority}/oauth/revoke&quot;,
+            scopes_supported = new [] { &quot;openid&quot;, &quot;profile&quot;, &quot;offline_access&quot;, &quot;name&quot;, &quot;given_name&quot;, &quot;family_name&quot;, &quot;nickname&quot;, &quot;email&quot;, &quot;email_verified&quot;, &quot;picture&quot;, &quot;created_at&quot;, &quot;identities&quot;, &quot;phone&quot;, &quot;address&quot; },
+            response_types_supported = new [] { &quot;code&quot;, &quot;token&quot;, &quot;id_token&quot;, &quot;code token&quot;, &quot;code id_token&quot;, &quot;token id_token&quot;, &quot;code token id_token&quot; },
+            code_challenge_methods_supported = new [] { &quot;S256&quot;, &quot;plain&quot; },
+            response_modes_supported = new [] { &quot;query&quot;, &quot;fragment&quot;, &quot;form_post&quot; },
+            subject_types_supported = new [] { &quot;public&quot; },
+            id_token_signing_alg_values_supported = new [] { &quot;HS256&quot;, &quot;RS256&quot;, &quot;PS256&quot; },
+            token_endpoint_auth_methods_supported = new [] { &quot;client_secret_basic&quot;, &quot;client_secret_post&quot;, &quot;private_key_jwt&quot; },
+            claims_supported = new [] { &quot;aud&quot;, &quot;auth_time&quot;, &quot;created_at&quot;, &quot;email&quot;, &quot;email_verified&quot;, &quot;exp&quot;, &quot;family_name&quot;, &quot;given_name&quot;, &quot;iat&quot;, &quot;identities&quot;, &quot;iss&quot;, &quot;name&quot;, &quot;nickname&quot;, &quot;phone_number&quot;, &quot;picture&quot;, &quot;sub&quot; },
+            request_uri_parameter_supported = false,
+            request_parameter_supported = false,
+            token_endpoint_auth_signing_alg_values_supported = new [] { &quot;RS256&quot;, &quot;RS384&quot;, &quot;PS256&quot; },
+            backchannel_logout_supported = true,
+            backchannel_logout_session_supported = true,
+            end_session_endpoint = $&quot;{tokenGenerator.Authority}/oidc/logout&quot;
+        })
+    );
+</code></pre>
+<p>Among the returned configuration parameters, there is <code>jwks_uri</code> which is particularly important for token validation. The <code>jwks_uri</code> directs to a JSON Web Key Set endpoint which returns information about the public keys. These public keys are used in asymmetric key cryptography, where a private key signs the token and the corresponding public key verifies the signature. When an API receives a JWT, it must verify the signature of that token to ensure that it was actually issued by the expected authorization server and has not been tampered with. The API retrieves the public keys from the <code>jwks_uri</code> endpoint and uses them to verify the token&rsquo;s signature.</p>
+<p>The authorization token we fabricated with <code>JwtTokenGenerator</code> is signed with our keys. Therefore, we need to mock an endpoint designated as <code>jwks_uri</code> to provide information about our public key so that the application can correctly verify the token signature.</p>
+<pre><code class="language-cs">var signingKeyInfo = tokenGenerator.GetSigningKeyInfo();
+wireMock
+    .Given(Request.Create()
+        .UsingMethod(&quot;GET&quot;)
+        .WithPath(&quot;/Auth/.well-known/jwks.json&quot;))
+    .RespondWith(Response.Create()
+        .WithStatusCode(200)
+        .WithHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+        .WithBodyAsJson(new
+        {
+            keys = new []
+            {
+                new
+                {
+                    kty = &quot;RSA&quot;,
+                    use = &quot;sig&quot;,
+                    n =  signingKeyInfo.Modulus,
+                    e = signingKeyInfo.Exponent,
+                    kid =  signingKeyInfo.Kid,
+                    alg = signingKeyInfo.Algorithm
+                }
+            }
+        })
+    );
+</code></pre>
+<p>Now we can generate an authentication token with desired claims and use it for authenticating requests to the tested application:</p>
+<pre><code class="language-cs">// Create HTTP client to communicated with app under the test
+var appClient = appFactory.CreateClient();
+
+// Create JWT with desired claims
+var authorizationToken = tokenGenerator.CreateToken
+(
+    customClaims: new Claim[]
+    {
+        new(&quot;email&quot;, &quot;sample@email.com&quot;),
+        new(&quot;permissions&quot;, &quot;SamplePermission1&quot;),
+        new(&quot;permissions&quot;, &quot;SamplePermission2&quot;),
+    },
+    expiresAt: DateTime.UtcNow.AddHours(1)
+);
+
+// Set the generated JWT as Authorization header
+appClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme,authorizationToken);
+
+// Issue the authorized request
+var response = await appClient.GetAsync(&quot;/sample&quot;);
+
+// Assert
+Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+</code></pre>
+<h2 id="remarks"><a href="#remarks">Remarks  🔗&#xFE0E;</a></h2>
+
+<ul>
+<li>
+<p>For discovering all needed requests I used WireMock.NET Proxy feature, which is described in my previous blog post <a href="../../post/generate-wiremocknet-mappings-with-proxy/">The fastest way to create WireMock.NET mappings</a>.</p>
+</li>
+<li>
+<p>I omitted the part about verifying the identity of the caller and retrieving JWTs from the authentication server because my focus was on testing APIs that require authorization, which do not involve those elements.</p>
+</li>
+<li>
+<p>I have tested the presented solution with two OAuth servers and it works.</p>
+</li>
+</ul>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/productivity-boost-snipptes/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/productivity-boost-snipptes/splashscreen_hu24bbd8e4113f75245c86a750a50c73d1_724480_320x240_fill_q75_box_smart1.jpg" alt="C# code snippets for Resharper and Rider">
+								<div class="card-body">
+									<h5 class="card-title">C# code snippets for Resharper and Rider</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/testing-web-api-with-approval-tests/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/testing-web-api-with-approval-tests/splashscreen_hu938e1ed3204600fe4cfb4955eac6e870_54215_320x240_fill_q75_box_smart1.jpg" alt="Testing WebAPI with ApprovalTests.NET">
+								<div class="card-body">
+									<h5 class="card-title">Testing WebAPI with ApprovalTests.NET</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/pure-functions-and-unused-return-value/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/pure-functions-and-unused-return-value/splashscreen_hu69c4029683d87b293c088c880ee9b2c7_119434_320x240_fill_q75_box_smart1.jpg" alt="Pure functions and unused return values">
+								<div class="card-body">
+									<h5 class="card-title">Pure functions and unused return values</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/json.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "csharp,JWT,WireMock.NET,OAuth,OpenID"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>

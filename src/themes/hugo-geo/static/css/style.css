@@ -240,3 +240,17 @@ ins.play-gif{
     transition-timing-function: cubic-bezier(0.48, 2.02, 0.32, -0.34);
     transform: scale(1.1);
 }
+
+
+#content code.hljs {
+    background-color: #1f1f1f!important;
+   
+}
+
+#content pre code {
+    color: lightgray!important;
+}
+
+img {
+    background: lightslategrey!important;
+}
