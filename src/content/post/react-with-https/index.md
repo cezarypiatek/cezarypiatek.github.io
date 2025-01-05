@@ -12,7 +12,7 @@ isBlogpost: true
 
 **How to Run a React Development Server with HTTPS Using a Custom Script**
 
-Running a React development server with HTTPS is essential for testing secure interactions in your app. The development server used by `npm start` (powered by a Node.js-based server) supports HTTPS by default. However, web browsers often complain about the default certificate, making development frustrating. In this post, we’ll show you how to prepare and configure a trusted certificate that works seamlessly, providing an automated, cross-platform solution to integrate HTTPS into your React app.
+The development server used by `npm start` (powered by a Node.js-based server) supports HTTPS by default. However, web browsers often complain about the default certificate, making development frustrating. In this post, I will show you how to prepare and configure a trusted certificate that works seamlessly, providing an automated, cross-platform solution to integrate HTTPS into your React app.
 
 
 ### **Step-by-Step Guide**
