@@ -13,7 +13,7 @@
       <link>https://cezarypiatek.github.io/post/react-with-https/</link>
       <pubDate>Sun, 05 Jan 2025 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/post/react-with-https/</guid>
-      <description>How to Run a React Development Server with HTTPS Using a Custom Script&#xA;The development server used by npm start (powered by a Node.js-based server) supports HTTPS by default. However, web browsers often complain about the default certificate, making development frustrating. In this post, I will show you how to prepare and configure a trusted certificate that works seamlessly, providing an automated, cross-platform solution to integrate HTTPS into your React app.</description>
+      <description>Running a React development server with HTTPS is essential for testing secure interactions in your app. The development server used by npm start supports HTTPS by default. However, web browsers often complain about the default certificate, making development frustrating. In this post, I will show you how to prepare and configure a trusted certificate that works seamlessly, providing an automated, cross-platform solution to integrate HTTPS into your React app.&#xA;Step-by-Step Guide 🔗&amp;#xFE0E;&#xD;1.</description>
     </item>
     <item>
       <title>Mocking authorization tokens with WireMock.NET</title>
