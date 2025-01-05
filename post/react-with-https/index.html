@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="Now your React app is securely running with HTTPS, streamlining local development with minimal setup!">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/react-with-https\/"
+            },
+          "headline" : "How to Run a React Development Server with HTTPS",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2025-01-05",
+          "dateModified" : "2025-01-05",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/react-with-https\/splashscreen.jpg",
+          "description": "Now your React app is securely running with HTTPS, streamlining local development with minimal setup!"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2025-01-05">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/react-with-https/">	
+	<meta property="og:title" content="How to Run a React Development Server with HTTPS">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/react-with-https/splashscreen.jpg">
+    <meta property="og:description" content="Now your React app is securely running with HTTPS, streamlining local development with minimal setup!">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="react">
+    
+    <meta property="og:tags" content="npm">
+    
+    <meta property="og:tags" content="ssl">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/react-with-https/splashscreen.jpg">
+	<meta property="twitter:title" content="How to Run a React Development Server with HTTPS">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="Now your React app is securely running with HTTPS, streamlining local development with minimal setup!">
+
+	<meta name="keywords" value="react, npm, ssl" />    
+    <title>How to Run a React Development Server with HTTPS &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>How to Run a React Development Server with HTTPS</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>5 January 2025</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p><strong>How to Run a React Development Server with HTTPS Using a Custom Script</strong></p>
+<p>Running a React development server with HTTPS is essential for testing secure interactions in your app. The development server used by <code>npm start</code> (powered by a Node.js-based server) supports HTTPS by default. However, web browsers often complain about the default certificate, making development frustrating. In this post, we’ll show you how to prepare and configure a trusted certificate that works seamlessly, providing an automated, cross-platform solution to integrate HTTPS into your React app.</p>
+<h3 id="step-by-step-guide"><a href="#step-by-step-guide"><strong>Step-by-Step Guide</strong>  🔗&#xFE0E;</a></h3>
+
+<h4 id="1-install-required-tools"><a href="#1-install-required-tools">1. <strong>Install Required Tools</strong>  🔗&#xFE0E;</a></h4>
+
+<ul>
+<li>Ensure <code>dotenv</code> npm package is installed.</li>
+<li>Install the .NET SDK to access <code>dev-certs</code> command. <a href="https://dotnet.microsoft.com/download">Download here</a>.</li>
+</ul>
+<h4 id="2-create-the-script"><a href="#2-create-the-script">2. <strong>Create the Script</strong>  🔗&#xFE0E;</a></h4>
+
+<p>Add a file named <code>set-ssl.js</code> to your project and paste the following code:</p>
+<pre><code class="language-javascript">const path = require(&quot;path&quot;);
+const os = require(&quot;os&quot;);
+const fs = require(&quot;fs&quot;);
+const { execSync } = require(&quot;child_process&quot;);
+
+const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), &quot;https-cert-&quot;));
+const certFile = path.join(tempDir, &quot;localhost.crt&quot;);
+const keyFile = path.join(tempDir, &quot;localhost.key&quot;);
+
+try {
+    console.log(&quot;Generating new development certificate...&quot;);
+    execSync(`dotnet dev-certs https -ep ${certFile} --no-password --format PEM --trust`, { stdio: &quot;inherit&quot; });
+
+    const eol = os.EOL;
+    const envFilePath = path.join(process.cwd(), &quot;.env.development.local&quot;);
+    let envContent = &quot;&quot;;
+
+    if (fs.existsSync(envFilePath)) {
+        console.log(&quot;Updating existing .env.development.local file...&quot;);
+        const existingContent = fs.readFileSync(envFilePath, { encoding: &quot;utf8&quot; });
+        const lines = existingContent.split(eol);
+        const updatedLines = lines.map(line =&gt; {
+            if (line.startsWith(&quot;HTTPS=&quot;)) return `HTTPS=true`;
+            if (line.startsWith(&quot;SSL_CRT_FILE=&quot;)) return `SSL_CRT_FILE=${certFile}`;
+            if (line.startsWith(&quot;SSL_KEY_FILE=&quot;)) return `SSL_KEY_FILE=${keyFile}`;
+            return line;
+        });
+        if (!updatedLines.some(line =&gt; line.startsWith(&quot;HTTPS=&quot;))) {
+            updatedLines.push(`HTTPS=true`);
+        }
+        if (!updatedLines.some(line =&gt; line.startsWith(&quot;SSL_CRT_FILE=&quot;))) {
+            updatedLines.push(`SSL_CRT_FILE=${certFile}`);
+        }
+        if (!updatedLines.some(line =&gt; line.startsWith(&quot;SSL_KEY_FILE=&quot;))) {
+            updatedLines.push(`SSL_KEY_FILE=${keyFile}`);
+        }
+        envContent = updatedLines.join(eol);
+    } else {
+        console.log(&quot;Creating new .env.development.local file...&quot;);
+        envContent = `HTTPS=true${eol}SSL_CRT_FILE=${certFile}${eol}SSL_KEY_FILE=${keyFile}${eol}`;
+    }
+
+    fs.writeFileSync(envFilePath, envContent, { encoding: &quot;utf8&quot; });
+    console.log(&quot;Certificate paths and HTTPS setting written to .env.development.local:&quot;);
+    console.log(envContent);
+} catch (error) {
+    console.error(&quot;Failed to generate or trust the certificate:&quot;, error);
+    process.exit(1);
+}
+
+</code></pre>
+<h4 id="3-add-the-script-to-packagejson"><a href="#3-add-the-script-to-packagejson">3. <strong>Add the Script to <code>package.json</code></strong>  🔗&#xFE0E;</a></h4>
+
+<p>Include the script as a separate job in your <code>package.json</code> file:</p>
+<pre><code class="language-json">&quot;scripts&quot;: {
+  &quot;ssl&quot;: &quot;node set-ssl.js&quot;,
+  &quot;start&quot;: &quot;react-scripts start&quot;
+}
+</code></pre>
+<h4 id="4-run-the-script"><a href="#4-run-the-script">4. <strong>Run the Script</strong>  🔗&#xFE0E;</a></h4>
+
+<p>Generate and configure the certificate by running:</p>
+<pre><code class="language-bash">npm run ssl
+</code></pre>
+<p>This will:</p>
+<ul>
+<li>Create a new certificate in a temporary directory.</li>
+<li>Trust the certificate on your system.</li>
+<li>Write or update <code>.env.development.local</code> with the necessary HTTPS settings.</li>
+</ul>
+<h4 id="5-start-the-development-server"><a href="#5-start-the-development-server">5. <strong>Start the Development Server</strong>  🔗&#xFE0E;</a></h4>
+
+<p>Once the <code>.env.development.local</code> file is updated, start your React development server:</p>
+<pre><code class="language-bash">npm start
+</code></pre>
+<p>Now your React app is securely running with HTTPS, streamlining local development with minimal setup!</p>
+<h3 id="why-use-envdevelopmentlocal"><a href="#why-use-envdevelopmentlocal"><strong>Why Use <code>.env.development.local</code>?</strong>  🔗&#xFE0E;</a></h3>
+
+<p>The <code>.env.development.local</code> file is part of the environment variable configuration mechanism commonly used in React projects. It allows you to define environment-specific variables for your local development setup. This file:</p>
+<ul>
+<li>Is automatically read by the React development server when using <code>dotenv</code>.</li>
+<li>The <code>.local</code> suffix means that it keeps settings specific to local environment and it should not be committed to version control. Ensure <code>.gitignore</code> includes <code>.env.development.local</code> (this is the default in most React projects).</li>
+</ul>
+<p>The <code>dotenv</code> package, which comes bundled with <code>react-scripts</code>, handles the parsing and loading of these environment variables into your application. If you’re not using <code>react-scripts</code>, you can install it manually:</p>
+<pre><code class="language-bash">npm install dotenv
+</code></pre>
+    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/js.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "react,npm,ssl"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>
