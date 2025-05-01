@@ -225,8 +225,6 @@
 <ul>
 <li>
 <p>A <code>{TestSuiteName}SetupFixture</code> file that holds global setup and teardown logic applied to all tests in that suite (executed before first and after last test). When using a <code>NUnit</code> then this contains class decorated with <a href="https://docs.nunit.org/articles/nunit/writing-tests/attributes/setupfixture.html"><code>[SetUpFixture]</code> attribute</a>. For <code>XUnit</code> enthusiasts this will be a base type for classes holding test methods. This is useful when you want to re-use some infrastructure or state of tested app between all test cases belonging to a given test suits.</p>
-</li>
-<li>
 <p>When I have some global aspects that I want to set up once for all tests, then I put them in the <code>AllTestsSetupFixture</code> class, which is located at the top level of the TestSuites directory. In NUnit, <code>SetUpFixtures</code> are scoped to namespaces, and their execution order follows the nesting of those namespaces. By aligning namespaces with the directory structure, the setup code runs in the expected order: <code>[AllTestsSetupFixture.Setup] -&gt; [{TestSuite}SetupFixture.Setup] -&gt; [TestCases] -&gt; [{TestSuite}SetupFixture.Teardown] -&gt; [AllTestsSetupFixture.Teardown]</code></p>
 </li>
 <li>
