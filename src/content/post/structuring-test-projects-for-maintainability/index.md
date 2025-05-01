@@ -51,6 +51,7 @@ This is where your actual tests live. It’s structured into subdirectories, eac
 
 ```plaintext
 /TestSuits/
+  AllTestsSetupFixture.cs
   /Default/
     DefaultSetupFixture.cs
     /TestCases/
@@ -63,7 +64,9 @@ Each suite directory has:
 
 - A `{TestSuiteName}SetupFixture` file that holds global setup and teardown logic applied to all tests in that suite (executed before first and after last test). When using a `NUnit` then this contains class decorated with [`[SetUpFixture]` attribute](https://docs.nunit.org/articles/nunit/writing-tests/attributes/setupfixture.html). For `XUnit` enthusiasts this will be a base type for classes holding test methods. This is useful when you want to re-use some infrastructure or state of tested app between all test cases belonging to a given test suits.
 
-- A `TestCases` directory where test classes live. These classes should be simple and focused — each one covering a specific part of the system. They should contains only test methods and noting more.
+- When I have some global aspects that I want to set up once for all tests, then I put them in the `AllTestsSetupFixture` class, which is located at the top level of the TestSuites directory. In NUnit, `SetUpFixtures` are scoped to namespaces, and their execution order follows the nesting of those namespaces. By aligning namespaces with the directory structure, the setup code runs in the expected order: `[AllTestsSetupFixture.Setup] -> [{TestSuite}SetupFixture.Setup] -> [TestCases] -> [{TestSuite}SetupFixture.Teardown] -> [AllTestsSetupFixture.Teardown]`
+
+- A `TestCases` directory is a place where test classes live. These classes should be simple and focused — each one covering a specific part of the system. **They should contains only test methods and noting more.**
 
 This structure makes it easy to scale. When you need to test against a different configuration or environment, just add a new test suite. Each suite can have its own isolated setup while reusing common helpers from TestFixtures.
 
