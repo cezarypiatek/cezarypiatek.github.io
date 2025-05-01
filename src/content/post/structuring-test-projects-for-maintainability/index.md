@@ -1,7 +1,7 @@
 ---
 title: "Structuring Test Projects for Maintainability"
 description: "How to organized directories and files inside the test projects"
-date: 2025-04-01T00:10:45+02:00
+date: 2025-05-01T00:10:45+02:00
 tags : ["testing"]
 highlight: true
 highlightLang: ["cs", "js"]
@@ -63,7 +63,7 @@ Each suite directory has:
 
 - A `{TestSuiteName}SetupFixture` file that holds global setup and teardown logic applied to all tests in that suite (executed before first and after last test). When using a `NUnit` then this contains class decorated with [`[SetUpFixture]` attribute](https://docs.nunit.org/articles/nunit/writing-tests/attributes/setupfixture.html). For `XUnit` enthusiasts this will be a base type for classes holding test methods. This is useful when you want to re-use some infrastructure or state of tested app between all test cases belonging to a given test suits.
 
-- A `TestCases` directory where test classes live. These classes should be simple and focused—each one covering a specific part of the system. They should contains only test methods and noting more.
+- A `TestCases` directory where test classes live. These classes should be simple and focused — each one covering a specific part of the system. They should contains only test methods and noting more.
 
 This structure makes it easy to scale. When you need to test against a different configuration or environment, just add a new test suite. Each suite can have its own isolated setup while reusing common helpers from TestFixtures.
 

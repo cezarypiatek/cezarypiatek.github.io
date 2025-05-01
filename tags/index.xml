@@ -6,8 +6,15 @@
     <description>Recent content in Tags on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Jan 2025 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 01 May 2025 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>testing</title>
+      <link>https://cezarypiatek.github.io/tags/testing/</link>
+      <pubDate>Thu, 01 May 2025 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
+      <description></description>
+    </item>
     <item>
       <title>npm</title>
       <link>https://cezarypiatek.github.io/tags/npm/</link>
@@ -111,13 +118,6 @@
       <link>https://cezarypiatek.github.io/tags/mocks/</link>
       <pubDate>Sun, 28 Jan 2024 00:10:45 +0200</pubDate>
       <guid>https://cezarypiatek.github.io/tags/mocks/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>testing</title>
-      <link>https://cezarypiatek.github.io/tags/testing/</link>
-      <pubDate>Sun, 28 Jan 2024 00:10:45 +0200</pubDate>
-      <guid>https://cezarypiatek.github.io/tags/testing/</guid>
       <description></description>
     </item>
     <item>

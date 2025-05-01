@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to organized directories and files inside the test projects">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/structuring-test-projects-for-maintainability\/"
+            },
+          "headline" : "Structuring Test Projects for Maintainability",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2025-05-01",
+          "dateModified" : "2025-05-01",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/structuring-test-projects-for-maintainability\/splashscreen.jpg",
+          "description": "How to organized directories and files inside the test projects"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2025-05-01">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/structuring-test-projects-for-maintainability/">	
+	<meta property="og:title" content="Structuring Test Projects for Maintainability">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/structuring-test-projects-for-maintainability/splashscreen.jpg">
+    <meta property="og:description" content="How to organized directories and files inside the test projects">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="testing">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/structuring-test-projects-for-maintainability/splashscreen.jpg">
+	<meta property="twitter:title" content="Structuring Test Projects for Maintainability">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to organized directories and files inside the test projects">
+
+	<meta name="keywords" value="testing" />    
+    <title>Structuring Test Projects for Maintainability &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Structuring Test Projects for Maintainability</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>1 May 2025</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.jpg" width="100%" />
+			<br />
+		
+		<p>Writing automated tests is an essential part of any software development process — but organizing test code is often an afterthought. In this post, I’ll share a simple and maintainable project structure for managing tests. I’ll also outline some practical tips that have helped me keep test suites clean, concise, and easy to extend over the years.</p>
+<h2 id="the-wild-west-of-test-project-layouts"><a href="#the-wild-west-of-test-project-layouts">The Wild West of Test Project Layouts  🔗&#xFE0E;</a></h2>
+
+<p>If you’ve looked at multiple .NET projects, you’ve probably noticed that there is no single standard for organizing test code. Some developers group all tests under a flat Tests or UnitTests directory. Others mix test classes and helper utilities in the same folders. Many projects rely heavily on class inheritance to share setup logic across test classes. While these approaches might work for smaller codebases, they often become painful to maintain as the project grows.</p>
+<p>Common issues include:</p>
+<ul>
+<li><strong>Poor separation of concerns</strong>: test setup logic is mixed with actual test code.</li>
+<li><strong>Code duplication</strong>: shared test helpers are scattered or inconsistently used.</li>
+<li><strong>Tight coupling via inheritance</strong>: base test classes often become bloated with unrelated setup logic.</li>
+<li><strong>Limited extensibility</strong>: adapting tests to new configurations or environments requires major restructuring.</li>
+</ul>
+<p>These problems could slow down development and make tests harder to trust and modify.</p>
+<h2 id="a-simple-and-scalable-test-project-structure"><a href="#a-simple-and-scalable-test-project-structure">A Simple and Scalable Test Project Structure  🔗&#xFE0E;</a></h2>
+
+<p>To address these issues, I came up with the idea of structuring test project using two main directories: <code>TestFixtures</code> and <code>TestSuits</code>.</p>
+<pre><code class="language-plaintext">/TestFixtures/
+/TestSuits/
+</code></pre>
+<h3 id="testfixtures"><a href="#testfixtures"><code>TestFixtures</code>  🔗&#xFE0E;</a></h3>
+
+<p>This directory contains all supporting code needed to run tests and write clean test cases. Think of it as the toolbox for your test project. It can contain:</p>
+<ul>
+<li>Helpers for setting up an infrastructure required by tested app</li>
+<li>Builders and factories for test objects</li>
+<li>Mock/stub setup helpers</li>
+<li>Assertion helpers</li>
+<li>Any other shared utilities</li>
+</ul>
+<p>By isolating this logic, you avoid cluttering your test classes with low-level details and promote reusability across different test suites.</p>
+<h3 id="testsuits"><a href="#testsuits"><code>TestSuits</code>  🔗&#xFE0E;</a></h3>
+
+<p>This is where your actual tests live. It’s structured into subdirectories, each representing a different test suite. The purpose of test suite is to group tests based on some criteria, for example around a common test environment setup. It might be hard to come up with a name for the first test suite, so you can always start with <code>Default</code> for holding the most common use cases. As you write more test cases, the need for additional specialized test suites will likely emerge — at that point, naming them will become much more intuitive.</p>
+<pre><code class="language-plaintext">/TestSuits/
+  /Default/
+    DefaultSetupFixture.cs
+    /TestCases/
+      SomeFeatureTests.cs
+      AnotherFeatureTests.cs
+
+</code></pre>
+<p>Each suite directory has:</p>
+<ul>
+<li>
+<p>A <code>{TestSuiteName}SetupFixture</code> file that holds global setup and teardown logic applied to all tests in that suite (executed before first and after last test). When using a <code>NUnit</code> then this contains class decorated with <a href="https://docs.nunit.org/articles/nunit/writing-tests/attributes/setupfixture.html"><code>[SetUpFixture]</code> attribute</a>. For <code>XUnit</code> enthusiasts this will be a base type for classes holding test methods. This is useful when you want to re-use some infrastructure or state of tested app between all test cases belonging to a given test suits.</p>
+</li>
+<li>
+<p>A <code>TestCases</code> directory where test classes live. These classes should be simple and focused — each one covering a specific part of the system. They should contains only test methods and noting more.</p>
+</li>
+</ul>
+<p>This structure makes it easy to scale. When you need to test against a different configuration or environment, just add a new test suite. Each suite can have its own isolated setup while reusing common helpers from TestFixtures.</p>
+<h2 id="practical-tips-for-writing-maintainable-test-classes"><a href="#practical-tips-for-writing-maintainable-test-classes">Practical Tips for Writing Maintainable Test classes  🔗&#xFE0E;</a></h2>
+
+<p>After testing software for years, I’ve developed a practical guideline that helps keeping test projects tidy:</p>
+<ul>
+<li>
+<p>Avoid inheritance in test classes. If you need shared setup logic, prefer composition or test fixtures. Inheritance can quickly lead to tangled dependencies between unrelated tests.</p>
+</li>
+<li>
+<p>Test classes should only contain test methods. Move all helper methods to the TestFixtures directory.</p>
+</li>
+<li>
+<p>Test classes should be stateless. Avoid using class-level state that can be mutated across tests. This reduces flakiness and improves parallel execution.</p>
+</li>
+<li>
+<p>Use descriptive naming for test methods and classes. It’s the first thing others will read when they’re trying to understand what your tests do.</p>
+</li>
+</ul>
+<p>By applying this structure and these principles, you’ll end up with a test project that is easier to understand, maintain, and extend over time.</p>    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/generate-wiremocknet-mappings-with-proxy/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-wiremocknet-mappings-with-proxy/splashscreen_hu114f7bd89ff9741a2ea49a0e6a8de623_151298_320x240_fill_q75_box_smart1.jpg" alt="The fastest way to create WireMock.NET mappings">
+								<div class="card-body">
+									<h5 class="card-title">The fastest way to create WireMock.NET mappings</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-graphql-with-wiremock/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-graphql-with-wiremock/splashscreen_hu3cc4c9a41a343beca046bb352ebdf397_485050_320x240_fill_q75_box_smart1.jpg" alt="Mocking GraphQL queries with WireMock.NET">
+								<div class="card-body">
+									<h5 class="card-title">Mocking GraphQL queries with WireMock.NET</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/maintainable-test-fixture/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/maintainable-test-fixture/splashscreen_hu74aef7f019ddbbefd473e4e88945bdc5_3228083_320x240_fill_box_smart1_3.png" alt="Common Setup and Teardown in dotnet tests without test framework magic">
+								<div class="card-body">
+									<h5 class="card-title">Common Setup and Teardown in dotnet tests without test framework magic</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/js.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "testing"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>

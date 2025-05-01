@@ -6,8 +6,15 @@
     <description>Recent content in testing on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Jan 2024 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 01 May 2025 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Structuring Test Projects for Maintainability</title>
+      <link>https://cezarypiatek.github.io/post/structuring-test-projects-for-maintainability/</link>
+      <pubDate>Thu, 01 May 2025 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/structuring-test-projects-for-maintainability/</guid>
+      <description>&lt;p&gt;Writing automated tests is an essential part of any software development process — but organizing test code is often an afterthought. In this post, I’ll share a simple and maintainable project structure for managing tests. I’ll also outline some practical tips that have helped me keep test suites clean, concise, and easy to extend over the years.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The fastest way to create WireMock.NET mappings</title>
       <link>https://cezarypiatek.github.io/post/generate-wiremocknet-mappings-with-proxy/</link>
