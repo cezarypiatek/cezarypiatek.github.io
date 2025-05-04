@@ -6,8 +6,15 @@
     <description>Recent content on Cezary Piątek Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 01 May 2025 00:10:45 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 04 May 2025 00:10:45 +0200</lastBuildDate>
     <atom:link href="https://cezarypiatek.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Visualizing Test Execution with OpenTelemetry</title>
+      <link>https://cezarypiatek.github.io/post/visualizing-test-execution-with-opentelemetry/</link>
+      <pubDate>Sun, 04 May 2025 00:10:45 +0200</pubDate>
+      <guid>https://cezarypiatek.github.io/post/visualizing-test-execution-with-opentelemetry/</guid>
+      <description>&lt;p&gt;Writing automated tests is only half the battle. Debugging them when something goes wrong is often the bigger challenge — especially when the test runner hijacks the console output or tests run in parallel. The fastest way to identify the source of a problem is to visualize the flow. Imagine being able to see exactly what&amp;rsquo;s happening in your tests and in the application under test. With OpenTelemetry, that’s entirely possible.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Structuring Test Projects for Maintainability</title>
       <link>https://cezarypiatek.github.io/post/structuring-test-projects-for-maintainability/</link>

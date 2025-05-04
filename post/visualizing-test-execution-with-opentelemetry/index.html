@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# website: http://ogp.me/ns/website#">   
+	<meta name="theme-color" content="#ffffff">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="How to speed up debugging with OpenTelemetry data">   
+    <script type="application/ld+json">
+        {
+          "@context" : "http://schema.org",
+          "@type": "BlogPosting",
+            "mainEntityOfPage":{
+            "@type":"WebPage",
+            "@id":"https:\/\/cezarypiatek.github.io\/post\/visualizing-test-execution-with-opentelemetry\/"
+            },
+          "headline" : "Visualizing Test Execution with OpenTelemetry",
+          "author" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "publisher" : {
+            "@type" : "Person",
+            "name" : "CEZARY PIĄTEK"
+          },
+          "datePublished" : "2025-05-04",
+          "dateModified" : "2025-05-04",
+          "image" : "https:\/\/cezarypiatek.github.io\/post\/visualizing-test-execution-with-opentelemetry\/splashscreen.png",
+          "description": "How to speed up debugging with OpenTelemetry data"
+        }
+        </script>
+        
+    <meta property="article:published_time" content="2025-05-04">
+	<meta property="og:type" content="article">
+    
+	<meta property="og:locale" content="en_US">	
+	<meta property="og:url" content="https://cezarypiatek.github.io/post/visualizing-test-execution-with-opentelemetry/">	
+	<meta property="og:title" content="Visualizing Test Execution with OpenTelemetry">
+	<meta property="og:image" content="https://cezarypiatek.github.io/post/visualizing-test-execution-with-opentelemetry/splashscreen.png">
+    <meta property="og:description" content="How to speed up debugging with OpenTelemetry data">
+    <meta property="og:site_name" content="Cezary Piątek Blog">
+    
+    <meta property="og:tags" content="testing">
+    
+	<meta property="twitter:card" content="summary_large_image" >
+	<meta property="twitter:image" content="https://cezarypiatek.github.io/post/visualizing-test-execution-with-opentelemetry/splashscreen.png">
+	<meta property="twitter:title" content="Visualizing Test Execution with OpenTelemetry">	
+	<meta property="twitter:creator" content="@cezary_piatek">
+	<meta property="twitter:description" content="How to speed up debugging with OpenTelemetry data">
+
+	<meta name="keywords" value="testing" />    
+    <title>Visualizing Test Execution with OpenTelemetry &middot; Cezary Piątek Blog</title>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github-dark.min.css">
+    
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/css/style.css">
+    <link rel="stylesheet" href="https://cezarypiatek.github.io/lib/gifplayer/gifplayer.css">
+    
+    <link href="https://cezarypiatek.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Cezary Piątek Blog" />
+        
+	<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+  <link rel="mask-icon" href="../../safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.css">
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WQ242F0N6N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WQ242F0N6N');
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $("[data-gtag]").on("click", function(){
+          var eventName = $(this).data("gtag");
+          gtag('event', eventName);
+        });
+    });
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top visible-xs">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+				<a class="navbar-brand" href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a>
+			
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				
+				
+					<li><a href="https://cezarypiatek.github.io/">Blog</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/projects/">Projects</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a></li>
+				
+					<li><a href="https://cezarypiatek.github.io/about/">About me</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="container-fluid">
+	<div class="row">
+		<div id="menu" class="hidden-xs col-sm-4 col-md-3">
+	<div id="menu-content" class="vertical-align">
+		
+			<h1 class="text-center"><a href="https://cezarypiatek.github.io/">CEZARY PIĄTEK</a></h1>
+		
+		
+		
+			<small class="text-center center-block">Automation Tycoon</small>
+		
+		
+		
+			<img id="profile-pic" src="https://cezarypiatek.github.io//images/7759991.jpg" alt="My Picture" class="img-circle center-block">
+		
+		<div id="social" class="text-center">
+			
+				<a href="https://github.com/cezarypiatek" title="Check my Open Source works" data-gtag="github" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			
+				<a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fpublish.twitter.com%2F%3FbuttonType%3DFollowButton%26query%3D%2540cezary_piatek%26widget%3DButton&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=cezary_piatek&amp;tw_p=followbutton" title="Follow me on Twitter" data-gtag="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a>
+			
+				<a href="https://www.linkedin.com/in/%F0%9F%9B%A0-cezary-pi%C4%85tek-373737185/" title="Follow me on LinkedIn" data-gtag="linkedin" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a>
+			
+				<a href="https://stackoverflow.com/users/876060/cezarypiatek" title="Check my StackOverflow profile" data-gtag="stack-overflow" target="_blank"><i class="fa fa-stack-overflow fa-2x"></i></a>
+			
+				<a href="../../index.xml" title="Be up to date - subscribe to my rss feed channel" data-gtag="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a>
+			
+
+			
+		</div>
+		<div id="links" class="text-center">
+			
+			
+				<a href="https://cezarypiatek.github.io/">Blog</a>
+			
+				<a href="https://cezarypiatek.github.io/projects/">Projects</a>
+			
+				<a href="https://cezarypiatek.github.io/public-speaking/">Public speaking</a>
+			
+				<a href="https://cezarypiatek.github.io/about/">About me</a>
+			
+		</div>
+		<div>
+			<a href="https://marketplace.visualstudio.com/items?itemName=54748ff9-45fc-43c2-8ec5-cf7912bc3b84.mappinggenerator" data-gtag="marketplace">
+				<img src="https://cezarypiatek.github.io/images/mapping_generator_baner.png" id="poster" />
+			</a>
+		</div>
+	</div>
+</div>
+
+		<div id="content" class="col-xs-12 col-sm-8 col-md-9">
+			<div class="row">
+				<div id="post" class="col-sm-offset-1 col-sm-10 col-md-10 col-lg-8 ssg">
+
+<main>
+	<article>
+		<header>
+			<h1>Visualizing Test Execution with OpenTelemetry</h1>
+			  
+			<div><i class="fa fa-calendar"></i> <time>4 May 2025</time>, Author: Cezary Piątek</div>
+			<hr />
+			
+		</header>
+		
+			<img src="splashscreen.png" width="100%" />
+			<br />
+		
+		<p>Writing automated tests is only half the battle. Debugging them when something goes wrong is often the bigger challenge — especially when the test runner hijacks the console output or tests run in parallel. The fastest way to identify the source of a problem is to visualize the flow. Imagine being able to see exactly what&rsquo;s happening in your tests and in the application under test. With OpenTelemetry, that’s entirely possible.</p>
+<p>In the article <a href="../../post/wiremock-in-parallel-tests/">Sharing WireMock.NET in sequential and parallel tests</a>, I described how OpenTelemetry can help correlate WireMock stubs with HTTP requests to address the challenges of parallel test execution. But OpenTelemetry has even broader applications in testing - you can use it to quickly pinpoint a failing elements or identify slow parts of your system. In this article, I&rsquo;ll show you how to set up OpenTelemetry tracing for NUnit tests, collect useful telemetry data, and visualize the results using open-source tools.</p>
+<h2 id="everything-starts-with-activity"><a href="#everything-starts-with-activity">Everything starts with Activity  🔗&#xFE0E;</a></h2>
+
+<p>When working with distributed tracing or structured diagnostics in .NET, <code>System.Diagnostics.Activity</code> is a fundamental building block. It represents a single unit of work — like a web request, background job, or in our case, a test case. Activities can be nested and carry contextual information like operation name, tags, timing, and exceptions. This makes them incredibly useful for capturing the full picture of what happened during execution.</p>
+<p>Wrapping each test case in its own Activity allows you to:</p>
+<ul>
+<li>Clearly isolate logs and telemetry for each test.</li>
+<li>Correlate logs, metrics, and spans across systems using trace IDs.</li>
+<li>Easily spot failed tests and related errors in observability platforms like Grafana, Jaeger, or Application Insights.</li>
+</ul>
+<p>Without isolation, it&rsquo;s hard to trace the origin of logs or understand the full scope of what a test executed.</p>
+<h2 id="wrapping-tests-in-activities"><a href="#wrapping-tests-in-activities">Wrapping tests in Activities  🔗&#xFE0E;</a></h2>
+
+<p>As I explained in the previous paragraph, we need to wrap each test with its own Activity. However, bloating a test case code with Activity related logic is not an option. A better alternative is to use NUnit&rsquo;s <a href="https://docs.nunit.org/api/NUnit.Framework.ITestAction.html">ITestAction</a> interface which allows us to automatically inject logic before and after each test execution. We can wrap all the code responsible for creating and disposing of the Activity into a custom attribute that inherits from <code>ITestAction</code> and apply it at the assembly level to ensure that every test is wrapped in an Activity.</p>
+<pre><code class="language-cs">using System.Diagnostics;
+using ComponentTests.TestFixtures;
+using NUnit.Framework.Interfaces;
+
+// INFO: Apply attribute to all tests inside the assembly - should be outside the namespace
+[assembly: TestCaseWithActivity]
+
+namespace ComponentTests.TestFixtures;
+
+[AttributeUsage(AttributeTargets.Assembly)]
+public class TestCaseWithActivityAttribute : Attribute, ITestAction
+{
+    public static readonly ActivitySource TestCaseActivitySource = new(&quot;TestCaseActivitySource&quot;);
+
+    public void BeforeTest(ITest test)
+    {
+        if(test.IsSuite == false)
+        {
+            _ = TestCaseActivitySource.StartActivity(test.Name);
+        }
+    }
+
+    public void AfterTest(ITest test)
+    {
+        if(Activity.Current is {} activity)
+        {
+            var result = TestContext.CurrentContext.Result;
+            if(result.Outcome.Status == TestStatus.Failed)
+            {
+                activity.SetStatus(ActivityStatusCode.Error);
+                if(string.IsNullOrWhiteSpace(result.Message) == false)
+                {
+                    activity.AddEvent(new (&quot;Exception&quot;, tags: new ()
+                    {
+                        [&quot;exception.escaped&quot;] = true,
+                        [&quot;exception.message&quot;] = result.Message,
+                        [&quot;exception.stacktrace&quot;] = result.StackTrace ?? string.Empty,
+                        [&quot;exception.type&quot;] = &quot;TestFailed&quot;
+                    }));
+                }
+            }
+            
+            activity.Dispose();
+        }
+    }
+
+    public ActionTargets Targets =&gt; ActionTargets.Test;
+}
+</code></pre>
+<p>This way, each test execution will be properly captured in its own activity context, which is essential for correlating events and telemetry data.</p>
+<h2 id="setting-up-opentelemetry-in-tests"><a href="#setting-up-opentelemetry-in-tests">Setting Up OpenTelemetry in Tests  🔗&#xFE0E;</a></h2>
+
+<p>Once we have activity creation in place, the next step is to configure OpenTelemetry to collect trace data. This involves creating a TracerProvider, registering all activity sources relevant to your test infrastructure (HTTP clients, messaging systems, databases, etc), and ensuring proper shutdown to flush the telemetry at the end.</p>
+<p>Here&rsquo;s how to set up the tracing for whole test session using global <a href="https://docs.nunit.org/articles/nunit/writing-tests/attributes/setupfixture.html">SetUpFixture</a>:</p>
+<pre><code class="language-cs">using ComponentTests.TestFixtures;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
+namespace ComponentTests.TestSuits;
+
+//INFO: This class should be located in the namespace superior to all classes containing tests
+[SetUpFixture]
+public class AllTestsSetUpFixture
+{
+    private TracerProvider? _tracerProvider;
+
+    [OneTimeSetUp]
+    public Task GlobalSetup()
+    {
+        this._tracerProvider = Sdk.CreateTracerProviderBuilder()
+            .ConfigureResource(builder =&gt;
+            {
+                builder.AddService
+                (
+                    serviceName: &quot;TestRunner&quot;,
+                    serviceInstanceId: DateTime.Now.ToString(&quot;yyyyMMddHHmmss&quot;)
+                );
+            })
+            // INFO: Add Activities created for each test case
+            .AddSource(TestCaseWithActivityAttribute.TestCaseActivitySource.Name)
+            // INFO: Collect activities from HttpClient used in tests
+             .AddHttpClientInstrumentation(options =&gt;
+             {
+                options.EnrichWithHttpRequestMessage = (activity, message) =&gt;
+                {
+                    // INFO: To make spans more readable
+                    activity.DisplayName = $&quot;{message.Method} {message.RequestUri?.ToString()}&quot;;
+                };
+            })
+            .AddOtlpExporter(options =&gt;
+            {
+                //INFO: The sink of your choice
+                options.Endpoint = new Uri(&quot;http://localhost:4317&quot;); 
+            })
+            .Build();
+        return Task.CompletedTask;
+    }
+    
+    [OneTimeTearDown]
+    public Task TeardownSetup()
+    {
+        if(this._tracerProvider != null)
+        {
+            this._tracerProvider.ForceFlush();
+            this._tracerProvider.Shutdown();
+            this._tracerProvider.Dispose();
+        }
+        return Task.CompletedTask;
+    }
+}
+</code></pre>
+<p>The code above requires some nuget packages with OpenTelemetry facility:</p>
+<pre><code class="language-xml">&lt;ItemGroup&gt;
+  &lt;PackageReference Include=&quot;OpenTelemetry.Api&quot; Version=&quot;1.12.0&quot; /&gt;
+  &lt;PackageReference Include=&quot;OpenTelemetry.Exporter.OpenTelemetryProtocol&quot; Version=&quot;1.12.0&quot; /&gt;
+  &lt;PackageReference Include=&quot;OpenTelemetry.Instrumentation.Http&quot; Version=&quot;1.11.1&quot; /&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p>You need also ensure that app under test has also configured support for OpenTelemetry and export data to the same sink as tests.</p>
+<h2 id="visualizing-collected-telemetry"><a href="#visualizing-collected-telemetry">Visualizing Collected Telemetry  🔗&#xFE0E;</a></h2>
+
+<p>Just collecting OpenTelemetry data isn’t enough — it’s like logging everything to a file and never opening it. To actually make use of the telemetry, we need a way to visualize the data in a convenient and readable form.</p>
+<p>There are many tools that support OpenTelemetry, but setting them up manually can be tedious. A full telemetry stack typically requires at least three components:</p>
+<ul>
+<li>A data collector (like the OpenTelemetry Collector)</li>
+<li>Some form of storage (for traces, metrics, and logs)</li>
+<li>A UI to browse and explore the data.</li>
+</ul>
+<p>Fortunately, there are several pre-packaged Docker images that bundle all these components together. These are perfect for local development setups where ease-of-use is more important than production-grade durability or scalability. Most of these solutions keep data in memory, so they&rsquo;re not suited for long-term usage or deployment, but they’re excellent for exploring what’s going on during test execution.</p>
+<h3 id="jaeger-all-in-one"><a href="#jaeger-all-in-one">Jaeger All-In-One  🔗&#xFE0E;</a></h3>
+
+<p><a href="https://www.jaegertracing.io/">Jaeger</a> is an open-source tool focused on distributed tracing. The <a href="%5D(https://hub.docker.com/r/jaegertracing/all-in-one)">All-In-One Docker</a> image packages everything needed — collector, storage, and UI — into a single container, making local setup quick and effortless. It&rsquo;s limited to tracing only, with no support for logs or metrics. The built-in UI is clean and intuitive, offering a clear view into trace data across your system or test suite.</p>
+<pre><code class="language-shell">docker run -it --rm -p 16686:16686 -p 4317:4317 jaegertracing/all-in-one
+</code></pre>
+<p>Once running, you can open <a href="http://localhost:16686">http://localhost:16686</a> to inspect traces.</p>
+<p>
+<a href="image.png"><img  src="image.png" alt="alt text"></a>
+
+
+<a href="image-1.png"><img  src="image-1.png" alt="alt text"></a>
+</p>
+<h3 id="net-aspire-dashboard"><a href="#net-aspire-dashboard">.NET Aspire Dashboard  🔗&#xFE0E;</a></h3>
+
+<p>The <a href="https://hub.docker.com/r/microsoft/dotnet-aspire-dashboard/">.NET Aspire Dashboard</a> is a part of .NET Aspire ecosystem, but it can be used as a standalone tool even if your app doesn&rsquo;t use Aspire framework. It supports logs, traces, and metrics out of the box, offering a holistic view into your system’s behavior. The UI is clean and intuitive, with predefined views for each OpenTelemetry dimension.</p>
+<pre><code class="language-shell">docker run -it --rm -p 18888:18888 -p 4317:18889 -e DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS=true  mcr.microsoft.com/dotnet/aspire-dashboard
+</code></pre>
+<p>After starting docker container, the dashboard is available at <a href="http://localhost:18888">http://localhost:18888</a></p>
+<p>
+<a href="image-3.png"><img  src="image-3.png" alt="alt text"></a>
+
+
+<a href="image-2.png"><img  src="image-2.png" alt="alt text"></a>
+</p>
+<h3 id="grafana-otel-lgtm-stack"><a href="#grafana-otel-lgtm-stack">Grafana OTEL-LGTM Stack  🔗&#xFE0E;</a></h3>
+
+<p>Grafana is a widely-used open-source platform for visualizing and analyzing metrics, logs, and traces. The <a href="https://hub.docker.com/r/grafana/otel-lgtm">OTEL-LGTM Docker image</a> bundles Grafana with Tempo (tracing), Loki (logging), Prometheus (metrics), and the OpenTelemetry Collector, providing a comprehensive observability stack in a single container. While it offers a robust UI for exploring telemetry data, it lacks predefined dashboards for OpenTelemetry traces. To retain and reuse custom dashboards, you need to build a custom Docker image based on the official one and configure dashboard provisioning manually.</p>
+<pre><code class="language-shell">docker run -it --rm -p 3000:3000 -p 4317:4317 grafana/otel-lgtm
+</code></pre>
+<p>Once the Docker container is running, you can access the dashboard at <a href="http://localhost:3000">http://localhost:3000</a></p>
+<p>
+<a href="image-4.png"><img  src="image-4.png" alt="alt text"></a>
+</p>    
+		
+	</article>
+	
+</main>
+
+
+<hr/>
+	<p>Products recommended for highly effective .NET Developers:</p>  
+	<div id="InArticleBanners">
+			<a class="hvr-bounce-in" href="https://mappinggenerator.net/?utm_source=blog.cezarypiatek&utm_medium=banner&utm_campaign=friends_blogs" data-gtag="MappingInArticleBanner" title="Visual Studio plugin for generating mapping code in design time">
+				<img src="../../images/MappingGeneratorSquareBaner256.png" />
+			</a>
+			<a class="hvr-bounce-in" href="https://store.mappinggenerator.net/b/productivity-boost-snippets" data-gtag="PBSInArticleBanner" title="A curated collection of code snippets for Resharper and Rider">
+				<img src="../../images/pbs_banner_square.jpeg" />
+			</a>
+	</div>
+<hr/>
+	
+	  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "cezarypiatek-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	
+
+
+
+	
+	<h3>See Also</h3>
+	<div class="row">
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/structuring-test-projects-for-maintainability/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/structuring-test-projects-for-maintainability/splashscreen_hu776411be6cbba65866f8e8ebf39af712_229518_320x240_fill_q75_box_smart1.jpg" alt="Structuring Test Projects for Maintainability">
+								<div class="card-body">
+									<h5 class="card-title">Structuring Test Projects for Maintainability</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/generate-wiremocknet-mappings-with-proxy/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/generate-wiremocknet-mappings-with-proxy/splashscreen_hu114f7bd89ff9741a2ea49a0e6a8de623_151298_320x240_fill_q75_box_smart1.jpg" alt="The fastest way to create WireMock.NET mappings">
+								<div class="card-body">
+									<h5 class="card-title">The fastest way to create WireMock.NET mappings</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+			
+				
+				
+				
+				<div class="col-md-4 col-sm-12">
+						<a href="../../post/mocking-graphql-with-wiremock/" >
+						<div class="card">
+								<img class="card-img-top" src="../../post/mocking-graphql-with-wiremock/splashscreen_hu3cc4c9a41a343beca046bb352ebdf397_485050_320x240_fill_q75_box_smart1.jpg" alt="Mocking GraphQL queries with WireMock.NET">
+								<div class="card-body">
+									<h5 class="card-title">Mocking GraphQL queries with WireMock.NET</h5>											  
+								</div>
+							</div></a>
+				</div>		
+			
+		
+	</div>
+	<br />
+	
+
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/story-show-gallery@2/dist/ssg.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  
+  
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/cs.min.js"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/xml.min.js"></script>
+		
+  
+  <script src="../../lib/gifplayer/jquery.gifplayer.js"></script>
+  <script>
+	   $(document).ready(function(){   
+		$("img[src$='_animated.png']").gifplayer({
+			label: "▶"
+		});
+	  });
+  </script>
+  <script src="https://cezarypiatek.github.io//js/App.js"></script>
+  
+  <script type="text/javascript">
+	var addthis_share = addthis_share || {}
+	addthis_share = {
+		passthrough : {
+			twitter: {
+				via: "cezary_piatek",
+				hashtags: "testing"
+			}
+		}
+	}
+	</script> 
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a286b9b1c027c15" async></script>
+  
+    
+	<script src="//cdn.rawgit.com/mburakerman/prognroll/master/src/prognroll.js"></script>
+	<script>
+		$(function() {
+		  $("#content").prognroll({
+				height: 5,
+				custom: true
+  			});
+		});
+	</script>
+
+</body>
+</html>
